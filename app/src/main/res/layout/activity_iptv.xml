@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/tv_dark_bg">
+
+    <ImageView
+        android:id="@+id/iv_backdrop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/backdrop_scenery" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/tv_dimmer" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/overscan_safe_margin_horizontal"
+        android:paddingTop="@dimen/overscan_safe_margin_vertical"
+        android:paddingEnd="@dimen/overscan_safe_margin_horizontal"
+        android:paddingBottom="@dimen/overscan_safe_margin_vertical">
+
+        <!-- Left Sidebar Navigation Rail -->
+        <LinearLayout
+            android:id="@+id/container_sidebar"
+            android:layout_width="@dimen/sidebar_width"
+            android:layout_height="0dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/btn_nav_apps"
+                android:layout_width="@dimen/sidebar_button_size"
+                android:layout_height="@dimen/sidebar_button_size"
+                android:background="@drawable/bg_nav_tile"
+                android:contentDescription="@string/nav_home_apps"
+                android:focusable="true"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_nav_apps" />
+
+            <ImageButton
+                android:id="@+id/btn_nav_media"
+                android:layout_width="@dimen/sidebar_button_size"
+                android:layout_height="@dimen/sidebar_button_size"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_nav_tile"
+                android:contentDescription="@string/nav_media"
+                android:focusable="true"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_nav_iptv" />
+
+            <ImageButton
+                android:id="@+id/btn_nav_iptv"
+                android:layout_width="@dimen/sidebar_button_size"
+                android:layout_height="@dimen/sidebar_button_size"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_nav_tile"
+                android:contentDescription="@string/nav_iptv"
+                android:focusable="true"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_nav_iptv" />
+
+            <ImageButton
+                android:id="@+id/btn_nav_games"
+                android:layout_width="@dimen/sidebar_button_size"
+                android:layout_height="@dimen/sidebar_button_size"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_nav_tile"
+                android:contentDescription="@string/nav_games"
+                android:focusable="true"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_nav_games" />
+
+            <ImageButton
+                android:id="@+id/btn_nav_cast"
+                android:layout_width="@dimen/sidebar_button_size"
+                android:layout_height="@dimen/sidebar_button_size"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_nav_tile"
+                android:contentDescription="@string/nav_cast"
+                android:focusable="true"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_nav_cast" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/btn_nav_power"
+                android:layout_width="@dimen/circle_button_size"
+                android:layout_height="@dimen/circle_button_size"
+                android:background="@drawable/bg_circle_button"
+                android:contentDescription="@string/nav_power"
+                android:focusable="true"
+                android:padding="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_nav_power" />
+
+        </LinearLayout>
+
+        <!-- Main Live TV Canvas -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/container_sidebar"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Top Bar -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/container_top_bar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/topbar_height"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Live TV &amp; EPG Guide"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_clock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-black"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="17:31" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 2-Column Split: Player/Categories (Left) & EPG Guide (Right) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/container_top_bar">
+
+                <!-- Left Column: Video Preview + Categories -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="4"
+                    android:orientation="vertical">
+
+                    <!-- Player Preview Container -->
+                    <FrameLayout
+                        android:id="@+id/player_preview_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp"
+                        android:background="@drawable/bg_focus_app_card"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <androidx.media3.ui.PlayerView
+                            android:id="@+id/player_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:use_controller="false" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_poster_gradient" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top|start"
+                            android:layout_margin="12dp"
+                            android:background="@drawable/bg_circle_mic"
+                            android:fontFamily="sans-serif-black"
+                            android:paddingStart="8dp"
+                            android:paddingTop="3dp"
+                            android:paddingEnd="8dp"
+                            android:paddingBottom="3dp"
+                            android:text="LIVE"
+                            android:textColor="@color/white"
+                            android:textSize="10sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:id="@+id/tv_preview_channel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-bold"
+                                android:text="002 Sky Sports Premier"
+                                android:textColor="@color/white"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/tv_preview_program"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="sans-serif"
+                                android:text="UEFA Champions League • Semi Final"
+                                android:textColor="@color/leanback_cyan"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+                    <!-- Categories Grid -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="sans-serif-bold"
+                        android:text="Categories"
+                        android:textColor="@color/white_60"
+                        android:textSize="12sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btn_cat_all"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_marginEnd="6dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_focus_app_card"
+                            android:focusable="true"
+                            android:fontFamily="sans-serif-bold"
+                            android:text="All (840)"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+
+                        <Button
+                            android:id="@+id/btn_cat_sports"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_focus_app_card"
+                            android:focusable="true"
+                            android:fontFamily="sans-serif-bold"
+                            android:text="Sports (48)"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btn_cat_cinema"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_marginEnd="6dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_focus_app_card"
+                            android:focusable="true"
+                            android:fontFamily="sans-serif-bold"
+                            android:text="Cinema (124)"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+
+                        <Button
+                            android:id="@+id/btn_cat_news"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_focus_app_card"
+                            android:focusable="true"
+                            android:fontFamily="sans-serif-bold"
+                            android:text="News (62)"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Right Column: EPG Live Timeline Guide -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="6"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-bold"
+                        android:text="EPG Live TV Guide"
+                        android:textColor="@color/leanback_cyan"
+                        android:textSize="14sp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_epg_channels"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:clipToPadding="false"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

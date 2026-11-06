@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.SmartTvLauncher" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@color/tv_dark_bg</item>
+        <item name="android:colorBackground">@color/tv_dark_bg</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowOverscan">true</item>
+        <item name="android:hardwareAccelerated">true</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white_60</item>
+    </style>
+</resources>

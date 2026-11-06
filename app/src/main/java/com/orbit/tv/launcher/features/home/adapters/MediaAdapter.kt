@@ -1,0 +1,66 @@
+package com.orbit.tv.launcher.features.home.adapters
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import com.orbit.tv.launcher.R
+import com.orbit.tv.launcher.core.focus.TvFocusHelper
+import com.orbit.tv.launcher.databinding.ItemMediaCardBinding
+import com.orbit.tv.launcher.features.home.model.MediaModel
+
+class MediaAdapter(
+    private val onMediaClick: (MediaModel) -> Unit
+) : ListAdapter<MediaModel, MediaAdapter.MediaViewHolder>(MediaDiffCallback()) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediaViewHolder {
+        val binding = ItemMediaCardBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return MediaViewHolder(binding, onMediaClick)
+    }
+
+    override fun onBindViewHolder(holder: MediaViewHolder, position: Int) {
+        holder.bind(getItem(position))
+    }
+
+    class MediaViewHolder(
+        private val binding: ItemMediaCardBinding,
+        private val onMediaClick: (MediaModel) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            TvFocusHelper.bindFocusScale(binding.cardContainer, scaleRatio = 1.05f, elevationDp = 10f)
+        }
+
+        fun bind(media: MediaModel) {
+            binding.tvTitle.text = media.title
+            binding.tvBadge.text = media.badge
+
+            // Memory-optimized Coil loading
+            binding.ivPoster.load(media.posterUrl) {
+                crossfade(true)
+                placeholder(R.drawable.bg_focus_media_card)
+                error(R.drawable.bg_focus_media_card)
+            }
+
+            binding.cardContainer.setOnClickListener {
+                onMediaClick(media)
+            }
+        }
+    }
+
+    private class MediaDiffCallback : DiffUtil.ItemCallback<MediaModel>() {
+        override fun areItemsTheSame(oldItem: MediaModel, newItem: MediaModel): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: MediaModel, newItem: MediaModel): Boolean {
+            return oldItem == newItem
+        }
+    }
+}

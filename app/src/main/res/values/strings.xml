@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Smart TV Launcher</string>
+    <string name="search_hint">Search Movies, Serial, Video</string>
+    <string name="search_voice">Voice Search</string>
+    
+    <!-- Topbar Labels -->
+    <string name="vpn_status_connected">USA</string>
+    <string name="vpn_status_disconnected">OFF</string>
+    <string name="settings_title">Settings</string>
+    
+    <!-- Row Section Titles -->
+    <string name="title_movies">Movies</string>
+    <string name="subtitle_movies_trending">Trending this week</string>
+    <string name="title_series">Serial</string>
+    <string name="subtitle_series_top">Top TV Shows</string>
+    <string name="see_all">See all</string>
+    
+    <!-- Nav Drawer Content Descriptions -->
+    <string name="nav_home_apps">Home Apps</string>
+    <string name="nav_media">Media &amp; Streaming</string>
+    <string name="nav_iptv">Live TV / IPTV</string>
+    <string name="nav_games">Gaming Arcade</string>
+    <string name="nav_cast">Wireless Display</string>
+    <string name="nav_power">System Power</string>
+
+    <!-- Error / Capability States -->
+    <string name="vpn_not_configured">No VPN client configured. Tap to open Settings.</string>
+    <string name="cast_not_supported">Screen Mirroring is managed by system settings.</string>
+    <string name="offline_mode">Offline Mode</string>
+    <string name="retry">Retry</string>
+</resources>

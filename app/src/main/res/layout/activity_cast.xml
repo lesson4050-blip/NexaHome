@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/tv_dark_bg">
+
+    <ImageView
+        android:id="@+id/iv_backdrop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/backdrop_scenery" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/tv_dimmer" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/overscan_safe_margin_horizontal"
+        android:paddingTop="@dimen/overscan_safe_margin_vertical"
+        android:paddingEnd="@dimen/overscan_safe_margin_horizontal"
+        android:paddingBottom="@dimen/overscan_safe_margin_vertical">
+
+        <!-- Left Sidebar Navigation Rail -->
+        <LinearLayout
+            android:id="@+id/container_sidebar"
+            android:layout_width="@dimen/sidebar_width"
+            android:layout_height="0dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/btn_nav_apps"
+                android:layout_width="@dimen/sidebar_button_size"
+                android:layout_height="@dimen/sidebar_button_size"
+                android:background="@drawable/bg_nav_tile"
+                android:contentDescription="@string/nav_home_apps"
+                android:focusable="true"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_nav_apps" />
+
+            <ImageButton
+                android:id="@+id/btn_nav_media"
+                android:layout_width="@dimen/sidebar_button_size"
+                android:layout_height="@dimen/sidebar_button_size"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_nav_tile"
+                android:contentDescription="@string/nav_media"
+                android:focusable="true"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_nav_iptv" />
+
+            <ImageButton
+                android:id="@+id/btn_nav_iptv"
+                android:layout_width="@dimen/sidebar_button_size"
+                android:layout_height="@dimen/sidebar_button_size"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_nav_tile"
+                android:contentDescription="@string/nav_iptv"
+                android:focusable="true"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_nav_iptv" />
+
+            <ImageButton
+                android:id="@+id/btn_nav_games"
+                android:layout_width="@dimen/sidebar_button_size"
+                android:layout_height="@dimen/sidebar_button_size"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_nav_tile"
+                android:contentDescription="@string/nav_games"
+                android:focusable="true"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_nav_games" />
+
+            <ImageButton
+                android:id="@+id/btn_nav_cast"
+                android:layout_width="@dimen/sidebar_button_size"
+                android:layout_height="@dimen/sidebar_button_size"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_nav_tile"
+                android:contentDescription="@string/nav_cast"
+                android:focusable="true"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_nav_cast" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/btn_nav_power"
+                android:layout_width="@dimen/circle_button_size"
+                android:layout_height="@dimen/circle_button_size"
+                android:background="@drawable/bg_circle_button"
+                android:contentDescription="@string/nav_power"
+                android:focusable="true"
+                android:padding="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_nav_power" />
+
+        </LinearLayout>
+
+        <!-- Main Cast Canvas -->
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/container_sidebar"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Card Cast Hub Container -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_focus_app_card"
+                android:orientation="vertical"
+                android:padding="28dp">
+
+                <!-- Header Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_circle_mic"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_nav_cast" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-bold"
+                            android:text="Wireless Cast &amp; Screen Mirroring"
+                            android:textColor="@color/white"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="sans-serif"
+                            android:text="Ready to pair with phones, tablets &amp; laptops (Miracast, Google Cast, AirPlay)"
+                            android:textColor="@color/white_60"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_vpn_widget"
+                        android:fontFamily="sans-serif-bold"
+                        android:paddingStart="14dp"
+                        android:paddingTop="6dp"
+                        android:paddingEnd="14dp"
+                        android:paddingBottom="6dp"
+                        android:text="Ready to Connect"
+                        android:textColor="@color/vpn_emerald"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <!-- Protocols Grid -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:orientation="horizontal">
+
+                    <!-- Miracast Protocol -->
+                    <LinearLayout
+                        android:id="@+id/btn_proto_miracast"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_focus_app_card"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-bold"
+                            android:text="Miracast / Wi-Fi Display"
+                            android:textColor="@color/white"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="sans-serif"
+                            android:text="Direct screen mirroring from Windows and Android devices"
+                            android:textColor="@color/white_60"
+                            android:textSize="11sp" />
+
+                    </LinearLayout>
+
+                    <!-- Google Cast -->
+                    <LinearLayout
+                        android:id="@+id/btn_proto_chromecast"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_focus_app_card"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-bold"
+                            android:text="Google Cast"
+                            android:textColor="@color/white"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="sans-serif"
+                            android:text="Stream YouTube, Chrome tabs and media from mobile apps"
+                            android:textColor="@color/white_60"
+                            android:textSize="11sp" />
+
+                    </LinearLayout>
+
+                    <!-- Apple AirPlay -->
+                    <LinearLayout
+                        android:id="@+id/btn_proto_airplay"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_focus_app_card"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-bold"
+                            android:text="Apple AirPlay"
+                            android:textColor="@color/white"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="sans-serif"
+                            android:text="Mirror iPhone, iPad and Mac displays via compatible receiver"
+                            android:textColor="@color/white_60"
+                            android:textSize="11sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

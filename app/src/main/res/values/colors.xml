@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Core Leanback Palette -->
+    <color name="leanback_cyan">#00B4D8</color>
+    <color name="leanback_cyan_focus">#38BDF8</color>
+    <color name="leanback_cyan_glow">#6600B4D8</color>
+    <color name="leanback_cyan_glow_light">#3300B4D8</color>
+    
+    <!-- TV Background & Dimming -->
+    <color name="tv_dark_bg">#0B1522</color>
+    <color name="tv_dimmer">#A60F172A</color>
+    <color name="tv_sidebar_bg">#80000000</color>
+    <color name="tv_card_dark">#171F2C</color>
+    <color name="tv_card_border">#26FFFFFF</color>
+    
+    <!-- VPN Status Colors -->
+    <color name="vpn_emerald">#10B981</color>
+    <color name="vpn_emerald_glow">#6610B981</color>
+    <color name="vpn_disconnected">#9CA3AF</color>
+    <color name="vpn_disconnected_glow">#4D9CA3AF</color>
+    
+    <!-- Alpha Transparencies -->
+    <color name="white">#FFFFFFFF</color>
+    <color name="white_08">#14FFFFFF</color>
+    <color name="white_10">#1AFFFFFF</color>
+    <color name="white_20">#33FFFFFF</color>
+    <color name="white_40">#66FFFFFF</color>
+    <color name="white_60">#99FFFFFF</color>
+    <color name="white_80">#CCFFFFFF</color>
+    <color name="white_90">#E6FFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="black_60">#99000000</color>
+    <color name="black_90">#E6000000</color>
+    
+    <!-- Search Bar -->
+    <color name="search_bg">#FFFFFFFF</color>
+    <color name="search_text">#1E293B</color>
+    <color name="search_hint">#64748B</color>
+</resources>
