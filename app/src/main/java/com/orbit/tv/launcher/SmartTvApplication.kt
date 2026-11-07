@@ -15,6 +15,7 @@ class SmartTvApplication : Application(), ImageLoaderFactory {
 
     override fun onCreate() {
         super.onCreate()
+        com.orbit.tv.launcher.features.cast.CastServerManager.start(this)
     }
 
     override fun newImageLoader(): ImageLoader {

@@ -1,6 +1,36 @@
-# ProGuard rules for Smart TV Launcher (1GB RAM optimization)
--keepattributes *Annotation*
--dontwarn okio.**
--dontwarn coil.**
+# ProGuard / R8 rules for Orbit TV Launcher (Optimized for 1GB RAM Android TV hardware)
+
+# Preserve annotations and line numbers for stack traces
+-keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod
+
+# Keep data models used across UI and JSON parsing
+-keep class com.orbit.tv.launcher.features.home.model.** { *; }
+-keep class com.orbit.tv.launcher.features.iptv.model.** { *; }
+-keep class com.orbit.tv.launcher.features.vpn.model.** { *; }
 -keep class com.orbit.tv.launcher.platform.** { *; }
 -keep class com.orbit.tv.launcher.core.** { *; }
+
+# Keep Room Database entities and DAOs
+-keep class androidx.room.** { *; }
+-keep class com.orbit.tv.launcher.features.iptv.data.** { *; }
+-dontwarn androidx.room.paging.**
+
+# Keep Media3 / ExoPlayer
+-keep class androidx.media3.** { *; }
+-dontwarn androidx.media3.**
+
+# Keep Coil & Coroutines
+-dontwarn okio.**
+-dontwarn coil.**
+-keep class kotlinx.coroutines.** { *; }
+
+# Keep ZXing QR Code generator
+-keep class com.google.zxing.** { *; }
+
+# Keep Javascript Interface for Arcade WebViews
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+
+# Android TV Leanback
+-keep class androidx.leanback.** { *; }

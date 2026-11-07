@@ -10,5 +10,6 @@ data class IptvChannel(
     val currentProgram: String,
     val nextProgram: String = "Upcoming Broadcast",
     val timeRange: String = "LIVE NOW",
-    val progressPercent: Int = 45
+    val progressPercent: Int = 45,
+    val isFavorite: Boolean = false
 )

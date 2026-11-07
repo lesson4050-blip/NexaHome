@@ -65,6 +65,14 @@ class IptvViewModel(application: Application) : AndroidViewModel(application) {
         _isFullscreen.value = false
     }
 
+    fun toggleFavorite(channel: IptvChannel) {
+        viewModelScope.launch {
+            val newFav = !channel.isFavorite
+            repository.toggleFavorite(channel.id, newFav)
+            loadChannels()
+        }
+    }
+
     private fun applyFilter(category: String) {
         val all = _allChannels.value
         _filteredChannels.value = if (category.equals("All", ignoreCase = true)) {

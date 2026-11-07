@@ -17,7 +17,7 @@ import com.google.zxing.EncodeHintType
 import com.google.zxing.qrcode.QRCodeWriter
 import com.orbit.tv.launcher.core.focus.TvFocusHelper
 import com.orbit.tv.launcher.databinding.ActivityCastBinding
-import com.orbit.tv.launcher.features.cast.CastWebServer
+import com.orbit.tv.launcher.features.cast.CastServerManager
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -31,23 +31,17 @@ class CastActivity : AppCompatActivity() {
     private var countdownJob: Job? = null
     private var secondsRemaining = 15 * 60 // 15 minutes
     private var currentPin = "849-210"
-    private var webServer: CastWebServer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCastBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        CastServerManager.start(this)
         setupFocus()
         setupListeners()
         setupBackNavigation()
         refreshPinAndQr(showToast = false)
-        startWebServer()
-    }
-
-    private fun startWebServer() {
-        webServer = CastWebServer(applicationContext, 8080) { currentPin }
-        webServer?.start(lifecycleScope)
     }
 
     private fun setupFocus() {
@@ -123,9 +117,11 @@ class CastActivity : AppCompatActivity() {
     }
 
     private fun refreshPinAndQr(showToast: Boolean) {
-        val p1 = (100..999).random()
-        val p2 = (100..999).random()
-        currentPin = "$p1-$p2"
+        currentPin = if (showToast) {
+            CastServerManager.refreshPin()
+        } else {
+            CastServerManager.getPin()
+        }
         binding.castPairingPin.text = "PIN: $currentPin"
 
         val ip = getLocalIpAddress()
@@ -278,6 +274,5 @@ class CastActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         countdownJob?.cancel()
-        webServer?.stop()
     }
 }
