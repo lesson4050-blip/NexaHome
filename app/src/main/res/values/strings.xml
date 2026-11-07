@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Smart TV Launcher</string>
+    <string name="app_name">Orbit TV</string>
     <string name="search_hint">Search Movies, Serial, Video</string>
     <string name="search_voice">Voice Search</string>
     
     <!-- Topbar Labels -->
-    <string name="vpn_status_connected">USA</string>
+    <string name="vpn_status_connected">VPN</string>
     <string name="vpn_status_disconnected">OFF</string>
     <string name="settings_title">Settings</string>
     

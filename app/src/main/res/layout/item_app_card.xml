@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_container"
     android:layout_width="@dimen/app_card_width"
@@ -37,5 +38,27 @@
             tools:text="YouTube" />
 
     </LinearLayout>
+
+    <!-- Star / Pin indicator (visible if pinned to favorites shelf) -->
+    <ImageView
+        android:id="@+id/iv_pin_indicator"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_gravity="top|end"
+        android:src="@drawable/ic_pin"
+        app:tint="@color/leanback_cyan_focus"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <!-- Eye-off indicator (visible if app is hidden in debloat view) -->
+    <ImageView
+        android:id="@+id/iv_hidden_indicator"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_gravity="top|start"
+        android:src="@drawable/ic_eye_off"
+        app:tint="#F87171"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
 </FrameLayout>

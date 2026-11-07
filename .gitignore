@@ -11,3 +11,9 @@ local.properties
 app/build/
 *.hprof
 *.apk
+
+# Temporary design artifacts
+/extracted/
+/web_preview/
+*.zip
+

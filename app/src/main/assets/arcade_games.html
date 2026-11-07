@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Orbit TV Retro Arcade</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+    body {
+      background-color: #07090e;
+      color: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      height: 100vh;
+      overflow: hidden;
+      padding: 14px 20px;
+    }
+    header {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 10px 20px;
+    }
+    .title-box { display: flex; align-items: center; gap: 12px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: #ef4444; }
+    h1 { font-size: 16px; font-weight: 800; color: #fff; }
+    .sub { font-size: 11px; color: rgba(255, 255, 255, 0.5); }
+    
+    #canvas_wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      width: 100%;
+      margin: 8px 0;
+      overflow: hidden;
+    }
+    canvas {
+      background: #000;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      border-radius: 14px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      max-width: 90vw;
+      max-height: 78vh;
+      aspect-ratio: 256 / 240;
+      object-fit: contain;
+    }
+    footer {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.4);
+      text-align: center;
+    }
+  </style>
+  <script src="jsnes.min.js"></script>
+</head>
+<body>
+
+  <header>
+    <div class="title-box">
+      <div class="dot"></div>
+      <div>
+        <h1 id="game_title">Super Mario Bros.</h1>
+        <div class="sub" id="game_sub">1985 • Nintendo • Оригинальная версия NES</div>
+      </div>
+    </div>
+    <div style="font-size: 11px; color: rgba(255, 255, 255, 0.6); font-family: monospace;">
+      D-Pad / A / B
+    </div>
+  </header>
+
+  <div id="canvas_wrap">
+    <canvas id="nes_canvas" width="256" height="240"></canvas>
+  </div>
+
+  <footer>
+    D-Pad: Крестовина • [OK / Enter]: Start • [Space / Menu]: Select • [X / A]: Прыжок • [Z / B]: Бег • [Esc / Back]: Выход
+  </footer>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const gameParam = urlParams.get('game') || 'mario';
+
+    const ROMS = {
+      'mario': { file: 'mario.nes', title: 'Super Mario Bros.', sub: '1985 • Nintendo' },
+      'tetris': { file: 'tetris.nes', title: 'Tetris', sub: '1989 • Nintendo' },
+      'mario3': { file: 'mario3.nes', title: 'Super Mario Bros. 3', sub: '1988 • Nintendo' },
+      'mario2': { file: 'mario2.nes', title: 'Super Mario Bros. 2', sub: '1988 • Nintendo' },
+      'snake': { file: 'mario.nes', title: 'Super Mario Bros.', sub: '1985 • Nintendo' },
+      '2048': { file: 'mario3.nes', title: 'Super Mario Bros. 3', sub: '1988 • Nintendo' },
+      'breaker': { file: 'mario2.nes', title: 'Super Mario Bros. 2', sub: '1988 • Nintendo' }
+    };
+
+    const targetGame = ROMS[gameParam] || ROMS['mario'];
+    document.getElementById('game_title').textContent = targetGame.title;
+    document.getElementById('game_sub').textContent = targetGame.sub;
+
+    const canvas = document.getElementById('nes_canvas');
+    const ctx = canvas.getContext('2d', { alpha: false });
+    const imageData = ctx.createImageData(256, 240);
+    const buf32 = new Uint32Array(imageData.data.buffer);
+
+    let nes = null;
+    let nesLoopId = null;
+    let lastFrameTime = 0;
+    const FRAME_DURATION = 1000 / 60;
+
+    let audioCtx = null;
+    let scriptNode = null;
+    let audioBufferL = [];
+    let audioBufferR = [];
+
+    function initAudio() {
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 44100 });
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        if (!scriptNode) {
+          scriptNode = audioCtx.createScriptProcessor(2048, 0, 2);
+          scriptNode.onaudioprocess = function(e) {
+            const outL = e.outputBuffer.getChannelData(0);
+            const outR = e.outputBuffer.getChannelData(1);
+            const len = e.outputBuffer.length;
+            for (let i = 0; i < len; i++) {
+              outL[i] = audioBufferL.length > 0 ? audioBufferL.shift() : 0;
+              outR[i] = audioBufferR.length > 0 ? audioBufferR.shift() : 0;
+            }
+          };
+          scriptNode.connect(audioCtx.destination);
+        }
+      } catch (e) {
+        console.warn('AudioContext error:', e);
+      }
+    }
+
+    function loadRom(url) {
+      return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.responseType = 'arraybuffer';
+        xhr.onload = function() {
+          if (xhr.status === 200 || xhr.status === 0) {
+            resolve(xhr.response);
+          } else {
+            reject(new Error('Status ' + xhr.status));
+          }
+        };
+        xhr.onerror = function() {
+          fetch(url).then(r => r.arrayBuffer()).then(resolve).catch(reject);
+        };
+        xhr.send();
+      });
+    }
+
+    async function boot() {
+      try {
+        initAudio();
+        const arrayBuf = await loadRom(targetGame.file);
+        const bytes = new Uint8Array(arrayBuf);
+
+        let binary = '';
+        const chunk = 8192;
+        for (let i = 0; i < bytes.length; i += chunk) {
+          binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+        }
+
+        nes = new jsnes.NES({
+          onFrame: function(frameBuffer) {
+            for (let i = 0; i < 61440; i++) {
+              buf32[i] = 0xFF000000 | frameBuffer[i];
+            }
+            ctx.putImageData(imageData, 0, 0);
+          },
+          onAudioSample: function(l, r) {
+            if (audioBufferL.length < 8192) {
+              audioBufferL.push(l);
+              audioBufferR.push(r);
+            }
+          }
+        });
+
+        nes.loadROM(binary);
+
+        function loop(time) {
+          if (!nes) return;
+          if (!lastFrameTime) lastFrameTime = time;
+          const elapsed = time - lastFrameTime;
+          if (elapsed >= FRAME_DURATION - 2) {
+            nes.frame();
+            lastFrameTime = time;
+          }
+          nesLoopId = requestAnimationFrame(loop);
+        }
+
+        nesLoopId = requestAnimationFrame(loop);
+      } catch (err) {
+        console.error('Failed to boot NES:', err);
+      }
+    }
+
+    const KEY_MAP = {
+      19: 4,  // DPAD_UP
+      38: 4,  // ArrowUp
+      87: 4,  // W
+      20: 5,  // DPAD_DOWN
+      40: 5,  // ArrowDown
+      83: 5,  // S
+      21: 6,  // DPAD_LEFT
+      37: 6,  // ArrowLeft
+      65: 6,  // A
+      22: 7,  // DPAD_RIGHT
+      39: 7,  // ArrowRight
+      68: 7,  // D
+      23: 3,  // DPAD_CENTER
+      66: 3,  // Enter
+      13: 3,  // Enter
+      82: 2,  // MENU
+      32: 2,  // Space
+      16: 2,  // Shift
+      88: 0,  // X -> NES A (Jump)
+      96: 0,  // Gamepad A
+      90: 1,  // Z -> NES B (Run/Fire)
+      99: 1,  // Gamepad X
+      17: 1   // Ctrl
+    };
+
+    window.addEventListener('keydown', (e) => {
+      initAudio();
+      const code = e.keyCode || e.which;
+      const btn = KEY_MAP[code];
+      if (btn !== undefined && nes) {
+        nes.buttonDown(1, btn);
+        e.preventDefault();
+      }
+    });
+
+    window.addEventListener('keyup', (e) => {
+      const code = e.keyCode || e.which;
+      const btn = KEY_MAP[code];
+      if (btn !== undefined && nes) {
+        nes.buttonUp(1, btn);
+        e.preventDefault();
+      }
+    });
+
+    // Gamepad API polling loop
+    let lastGpState = {};
+    function pollGamepads() {
+      const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
+      for (let gp of gamepads) {
+        if (!gp || !nes) continue;
+        const check = (pressed, btn) => {
+          const was = lastGpState[btn] || false;
+          if (pressed && !was) nes.buttonDown(1, btn);
+          else if (!pressed && was) nes.buttonUp(1, btn);
+          lastGpState[btn] = pressed;
+        };
+        check(gp.buttons[12]?.pressed || gp.axes[1] < -0.5, 4); // UP
+        check(gp.buttons[13]?.pressed || gp.axes[1] > 0.5, 5);  // DOWN
+        check(gp.buttons[14]?.pressed || gp.axes[0] < -0.5, 6); // LEFT
+        check(gp.buttons[15]?.pressed || gp.axes[0] > 0.5, 7);  // RIGHT
+        check(gp.buttons[0]?.pressed || gp.buttons[1]?.pressed, 0); // A
+        check(gp.buttons[2]?.pressed || gp.buttons[3]?.pressed, 1); // B
+        check(gp.buttons[9]?.pressed, 3); // START
+        check(gp.buttons[8]?.pressed, 2); // SELECT
+      }
+      requestAnimationFrame(pollGamepads);
+    }
+    requestAnimationFrame(pollGamepads);
+
+    window.addEventListener('load', boot);
+  </script>
+</body>
+</html>

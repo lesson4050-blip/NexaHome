@@ -21,14 +21,15 @@
         android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".SmartTvApplication"
         android:allowBackup="true"
-        android:banner="@drawable/backdrop_scenery"
-        android:icon="@drawable/ic_nav_apps"
+        android:banner="@drawable/banner_orbit"
+        android:icon="@drawable/ic_orbit_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:supportsRtl="true"
@@ -81,6 +82,17 @@
             android:exported="false"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <!-- FileProvider for Sharing Cast Uploaded Media -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
         <!-- Boot Completed Receiver for Auto-Launch on Devices without Home Picker -->
         <receiver

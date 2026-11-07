@@ -1,0 +1,93 @@
+package com.orbit.tv.launcher.features.apps.repository
+
+import android.content.Context
+import android.content.SharedPreferences
+
+/**
+ * Persists user customization for Android TV apps:
+ * - Pinned apps on Home screen shelf (ordered list).
+ * - Hidden apps (bloatware/system junk) excluded from main launchers.
+ *
+ * Uses SharedPreferences for zero memory overhead on 1GB RAM budget.
+ */
+class AppPreferencesRepository(context: Context) {
+
+    private val prefs: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
+    fun getPinnedPackages(): List<String> {
+        val raw = prefs.getString(KEY_PINNED_APPS, "") ?: ""
+        if (raw.isBlank()) return emptyList()
+        return raw.split(",").filter { it.isNotBlank() }
+    }
+
+    fun isPinned(packageName: String): Boolean {
+        return getPinnedPackages().contains(packageName)
+    }
+
+    fun pinApp(packageName: String) {
+        val current = getPinnedPackages().toMutableList()
+        if (!current.contains(packageName)) {
+            current.add(packageName)
+            savePinnedPackages(current)
+        }
+    }
+
+    fun unpinApp(packageName: String) {
+        val current = getPinnedPackages().toMutableList()
+        if (current.remove(packageName)) {
+            savePinnedPackages(current)
+        }
+    }
+
+    fun togglePin(packageName: String): Boolean {
+        return if (isPinned(packageName)) {
+            unpinApp(packageName)
+            false
+        } else {
+            pinApp(packageName)
+            true
+        }
+    }
+
+    private fun savePinnedPackages(packages: List<String>) {
+        prefs.edit().putString(KEY_PINNED_APPS, packages.joinToString(",")).apply()
+    }
+
+    fun getHiddenPackages(): Set<String> {
+        return prefs.getStringSet(KEY_HIDDEN_APPS, emptySet()) ?: emptySet()
+    }
+
+    fun isHidden(packageName: String): Boolean {
+        return getHiddenPackages().contains(packageName)
+    }
+
+    fun hideApp(packageName: String) {
+        val current = getHiddenPackages().toMutableSet()
+        current.add(packageName)
+        // Also unpin if it was pinned
+        unpinApp(packageName)
+        prefs.edit().putStringSet(KEY_HIDDEN_APPS, current).apply()
+    }
+
+    fun unhideApp(packageName: String) {
+        val current = getHiddenPackages().toMutableSet()
+        current.remove(packageName)
+        prefs.edit().putStringSet(KEY_HIDDEN_APPS, current).apply()
+    }
+
+    fun toggleHide(packageName: String): Boolean {
+        return if (isHidden(packageName)) {
+            unhideApp(packageName)
+            false
+        } else {
+            hideApp(packageName)
+            true
+        }
+    }
+
+    companion object {
+        private const val PREFS_NAME = "orbit_launcher_app_prefs"
+        private const val KEY_PINNED_APPS = "key_pinned_packages"
+        private const val KEY_HIDDEN_APPS = "key_hidden_packages"
+    }
+}

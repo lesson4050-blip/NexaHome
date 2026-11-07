@@ -1,0 +1,13 @@
+Version: 1.0 (debug)
+Build Date: 2026-11-07 18:46:39
+Package: com.orbit.tv.launcher.debug
+SHA-256: E804C59D8BE4EC7A34D1A6923B6810F7D8E2A5BD1E84C6F8CF867B6679FDDA0B
+File: OrbitTV_Launcher_v1.0_debug.apk
+
+Changes included in this build:
+1. Wi-Fi status icon fix (ACCESS_WIFI_STATE permission + TRANSPORT_WIFI detection + clean redesigned arc vector).
+2. Apps & Games Hub search bar clipping fix (clipChildren/clipToPadding false + 8dp top padding).
+3. Local Web Cast receiver on port 8080 (serves mobile web page for YouTube deep-link, photo/video casting, volume control).
+4. Miracast sink integration (com.droidlogic.miracast/.WiFiDirectMainActivity).
+5. AirPlay / Google Cast receiver routing (com.ionitech.airscreen).
+6. 1080p/4K responsive scaling & lightweight Tanix 2/16 memory footprint optimizations.

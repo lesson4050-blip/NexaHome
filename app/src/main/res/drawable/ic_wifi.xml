@@ -3,7 +3,20 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
+    <!-- Top Arc -->
     <path
         android:fillColor="@color/white"
-        android:pathData="M12,3C7.79,3,3.96,4.64,1.07,7.34L12,21.5l10.93,-14.16C20.04,4.64,16.21,3,12,3z M12,6c3.27,0,6.27,1.24,8.54,3.29L12,19.34L3.46,9.29C5.73,7.24,8.73,6,12,6z"/>
+        android:pathData="M12,3C7.41,3 3.23,4.8 0.15,7.72L2.57,9.9C5.16,7.44 8.41,6 12,6C15.59,6 18.84,7.44 21.43,9.9L23.85,7.72C20.77,4.8 16.59,3 12,3Z"/>
+    <!-- Middle Arc -->
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M12,8C8.59,8 5.48,9.34 3.19,11.51L5.61,13.68C7.4,11.99 9.58,11 12,11C14.42,11 16.6,11.99 18.39,13.68L20.81,11.51C18.52,9.34 15.41,8 12,8Z"/>
+    <!-- Lower Arc -->
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M12,13C9.77,13 7.73,13.88 6.22,15.31L8.64,17.48C9.64,16.55 10.76,16 12,16C13.24,16 14.36,16.55 15.36,17.48L17.78,15.31C16.27,13.88 14.23,13 12,13Z"/>
+    <!-- Dot / Base -->
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M12,18C10.9,18 10,18.9 10,20C10,21.1 10.9,22 12,22C13.1,22 14,21.1 14,20C14,18.9 13.1,18 12,18Z"/>
 </vector>

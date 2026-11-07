@@ -138,3 +138,46 @@ app/src/main/java/com/orbit/tv/
 * **RAM Footprint (Home Screen)**: ≤ 45 МБ PSS в режиме покоя.
 * **FPS при скролле рядов**: Стабильные 60 FPS (90 FPS при поддержке панели).
 * **Crash-free Rate**: 99.9% при вызовах сторонних Intent и возврате по кнопке Home.
+
+---
+
+## 7. Каталог фильмов и сериалов: Интеграция Cinemeta и диалог деталей
+
+### Архитектурное решение
+1. **Публичный мета-каталог Cinemeta**:
+   - `https://v3-cinemeta.strem.io/catalog/movie/top.json`
+   - `https://v3-cinemeta.strem.io/catalog/series/top.json`
+   - Без API-ключей, без rate limits, актуальные рейтинги IMDb, жанры и синопсисы на 2026 год.
+2. **Отказоустойчивость и кэширование**:
+   - Сетевой запрос через `HttpURLConnection` в фоновом потоке `Dispatchers.IO` (таймаут 6 с).
+   - Автоматическое кэширование JSON в `context.cacheDir/cached_movies.json` и `cached_series.json`.
+   - Кураторский оффлайн-бейзлайн для мгновенного первого запуска без интернета.
+3. **Легковесный диалог деталей (`MediaDetailDialog`)**:
+   - Leanback D-pad фокус на кнопках "Смотреть трейлер" и "Искать в приложениях".
+   - Вызов нативных интентов `Intent.ACTION_VIEW` для поиска трейлеров на YouTube и контента в установленных приложениях.
+   - Очистка ресурсов и `RecycledViewPool` между рядами фильмов и сериалов для жесткого бюджета 1 ГБ RAM.
+
+---
+
+## 8. Игровой хаб и беспроводная трансляция (Gaming & Cast Hubs)
+
+### 8.1. Gaming & Cloud Arcade (`GamesActivity`)
+- **Диспетчеризация облачного гейминга**:
+  - GeForce NOW (`com.nvidia.geforcenow`).
+  - Xbox Cloud Gaming / Game Pass (`com.gamepass`).
+  - PlayStation Remote Play (`com.playstation.remoteplay`).
+  - Прямой запуск при наличии пакета на устройстве; автоматический переход в Android TV Play Store (`market://details?id=...`) при отсутствии.
+- **Интеграция с локальными играми**:
+  - Фильтрация пакетов с атрибутом `isGame = true`.
+  - Показ понятного Empty State при отсутствии установленных нативных игр.
+  - Поддержка меню деблоата и закрепления (Long click -> `AppOptionsDialog`).
+- **Защита от сброса лаунчера**:
+  - `OnBackPressedCallback` безопасно возвращает фокус на главный экран без падения в черный экран.
+
+### 8.2. Wireless Cast & Mirroring Hub (`CastActivity`)
+- **Поддержка протоколов без фиктивных обещаний**:
+  - **Miracast / Wi-Fi Display**: вызов `android.settings.WIFI_DISPLAY_SETTINGS` и системного `Settings.ACTION_CAST_SETTINGS`, плюс детекция OEM-пакетов вендоров (Amlogic, Rockchip, Allwinner, Actions).
+  - **Chromecast Built-in**: проверка и вызов системного Cast экрана.
+  - **Apple AirPlay 2**: обнаружение установленных приемников (`AirScreen`, `AirReceiver`) с автоматическим предложением установки AirScreen из Google Play при их отсутствии.
+
+

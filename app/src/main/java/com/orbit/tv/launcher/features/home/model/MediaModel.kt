@@ -10,6 +10,8 @@ data class MediaModel(
     val badge: String,
     val genre: String = "",
     val rating: String = "",
+    val description: String = "",
+    val releaseYear: String = "",
     val isSeries: Boolean = false,
     val deeplinkUri: String? = null
 )

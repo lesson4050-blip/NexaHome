@@ -10,5 +10,7 @@ data class AppModel(
     val label: String,
     val iconDrawable: Drawable?,
     val isGame: Boolean = false,
-    val launchIntent: android.content.Intent? = null
+    val launchIntent: android.content.Intent? = null,
+    val isPinned: Boolean = false,
+    val isHidden: Boolean = false
 )

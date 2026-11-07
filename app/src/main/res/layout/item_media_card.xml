@@ -6,6 +6,7 @@
     android:layout_height="@dimen/media_card_height"
     android:layout_marginEnd="@dimen/card_spacing"
     android:background="@drawable/bg_focus_media_card"
+    android:foreground="@drawable/fg_focus_media_card"
     android:clipToOutline="true"
     android:clickable="true"
     android:focusable="true">
