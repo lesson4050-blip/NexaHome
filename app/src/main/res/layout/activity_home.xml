@@ -214,6 +214,38 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
+                    <!-- Weather Widget Pill (Open-Meteo) -->
+                    <LinearLayout
+                        android:id="@+id/btn_system_weather"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/bg_vpn_widget"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp">
+
+                        <ImageView
+                            android:id="@+id/iv_weather_icon"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@drawable/ic_weather_cloud" />
+
+                        <TextView
+                            android:id="@+id/tv_weather_temp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:text="+18°C"
+                            android:textColor="#E2E8F0"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
                     <!-- VPN Widget Pill -->
                     <LinearLayout
                         android:id="@+id/btn_system_vpn"

@@ -45,6 +45,7 @@ class HomeActivity : AppCompatActivity() {
         setupClickListeners()
         setupBackNavigation()
         observeViewModelState()
+        fetchAndDisplayWeather(forceRefresh = false)
     }
 
     private fun setupBackNavigation() {
@@ -75,6 +76,7 @@ class HomeActivity : AppCompatActivity() {
         // Topbar controls focus animation
         TvFocusHelper.bindFocusScale(binding.searchBar, scaleRatio = 1.04f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.btnVoiceSearch, scaleRatio = 1.12f, elevationDp = 8f)
+        TvFocusHelper.bindFocusScale(binding.btnSystemWeather, scaleRatio = 1.08f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.btnSystemVpn, scaleRatio = 1.08f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.ivWifiStatus, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnSettings, scaleRatio = 1.12f, elevationDp = 8f)
@@ -143,6 +145,11 @@ class HomeActivity : AppCompatActivity() {
         }
         binding.btnNavCast.setOnClickListener {
             startActivity(Intent(this, CastActivity::class.java))
+        }
+
+        // Weather Widget -> Open-Meteo refresh / city info
+        binding.btnSystemWeather.setOnClickListener {
+            fetchAndDisplayWeather(forceRefresh = true)
         }
 
         // VPN Widget
@@ -318,6 +325,21 @@ class HomeActivity : AppCompatActivity() {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private fun fetchAndDisplayWeather(forceRefresh: Boolean) {
+        lifecycleScope.launch {
+            try {
+                val weatherRepo = com.orbit.tv.launcher.features.weather.WeatherRepository(this@HomeActivity)
+                val info = weatherRepo.fetchWeather()
+                binding.tvWeatherTemp.text = info.temperature
+                if (forceRefresh) {
+                    Toast.makeText(this@HomeActivity, "${info.city}: ${info.temperature}", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }
