@@ -27,6 +27,7 @@
     <!-- Error / Capability States -->
     <string name="vpn_not_configured">No VPN client configured. Tap to open Settings.</string>
     <string name="cast_not_supported">Screen Mirroring is managed by system settings.</string>
-    <string name="offline_mode">Offline Mode</string>
-    <string name="retry">Retry</string>
+    <!-- Accessibility Home Watcher -->
+    <string name="accessibility_home_service_label">Orbit TV Home Guard</string>
+    <string name="accessibility_home_service_desc">Обеспечивает приоритетный возврат на домашний экран Orbit TV при нажатии кнопки Home на пультах ТВ-боксов.</string>
 </resources>
