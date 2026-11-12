@@ -299,4 +299,5 @@
     <string name="vpn_loc_us">🇺🇸 США</string>
     <string name="vpn_loc_de">🇩🇪 Германия</string>
     <string name="vpn_loc_pl">🇵🇱 Польша</string>
+    <string name="google_assistant">Google Ассистент</string>
 </resources>

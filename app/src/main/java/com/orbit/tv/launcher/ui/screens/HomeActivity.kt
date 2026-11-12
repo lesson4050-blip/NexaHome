@@ -22,6 +22,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.orbit.tv.launcher.R
+import com.orbit.tv.launcher.core.assistant.GoogleAssistantHelper
 import com.orbit.tv.launcher.core.focus.TvFocusHelper
 import com.orbit.tv.launcher.databinding.ActivityHomeBinding
 import com.orbit.tv.launcher.features.home.HomeViewModel
@@ -86,6 +87,7 @@ class HomeActivity : AppCompatActivity() {
         java.util.Locale.setDefault(viewModel.getActiveLocale())
         // Refresh apps list in case packages were uninstalled/installed while user was in another app
         viewModel.loadInstalledApps()
+        updateGoogleAssistantVisibility()
     }
 
     override fun onPause() {
@@ -112,6 +114,7 @@ class HomeActivity : AppCompatActivity() {
         // Topbar controls focus animation
         TvFocusHelper.bindFocusScale(binding.searchBar, scaleRatio = 1.04f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.btnVoiceSearch, scaleRatio = 1.12f, elevationDp = 8f)
+        TvFocusHelper.bindFocusScale(binding.btnGoogleAssistant, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnSystemVpn, scaleRatio = 1.08f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.ivWifiStatus, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnSettings, scaleRatio = 1.12f, elevationDp = 8f)
@@ -217,9 +220,22 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
+        // Google Assistant -> Dedicated System Assistant launch
+        binding.btnGoogleAssistant.setOnClickListener {
+            GoogleAssistantHelper.launch(this)
+        }
+
         // Power Button
         binding.btnNavPower.setOnClickListener {
             TvPowerDialog.show(supportFragmentManager)
+        }
+    }
+
+    private fun updateGoogleAssistantVisibility() {
+        binding.btnGoogleAssistant.visibility = if (GoogleAssistantHelper.isAvailable(this)) {
+            View.VISIBLE
+        } else {
+            View.GONE
         }
     }
 

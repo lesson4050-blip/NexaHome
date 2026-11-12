@@ -24,6 +24,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.orbit.tv.launcher.R
+import com.orbit.tv.launcher.core.assistant.GoogleAssistantHelper
 import com.orbit.tv.launcher.core.focus.TvFocusHelper
 import com.orbit.tv.launcher.databinding.ActivityAppsHubBinding
 import com.orbit.tv.launcher.features.home.HomeViewModel
@@ -135,6 +136,7 @@ class AppsHubActivity : AppCompatActivity() {
         if (currentTab == HubTab.RECOMMENDED) {
             renderRecommendedList()
         }
+        updateGoogleAssistantVisibility()
     }
 
     override fun onPause() {
@@ -161,6 +163,7 @@ class AppsHubActivity : AppCompatActivity() {
         // Top bar
         TvFocusHelper.bindFocusScale(binding.searchBar, scaleRatio = 1.04f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.btnVoiceSearch, scaleRatio = 1.12f, elevationDp = 8f)
+        TvFocusHelper.bindFocusScale(binding.btnGoogleAssistant, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnSystemVpn, scaleRatio = 1.08f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.ivWifiStatus, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnSettings, scaleRatio = 1.12f, elevationDp = 8f)
@@ -205,24 +208,11 @@ class AppsHubActivity : AppCompatActivity() {
     private fun onRecommendedAppAction(app: RecommendedAppModel) {
         if (app.isInstalled) {
             if (app.packageName == "com.google.android.katniss") {
-                try {
-                    val assistIntent = Intent("android.intent.action.VOICE_ASSIST").apply {
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    }
-                    startActivity(assistIntent)
+                if (GoogleAssistantHelper.launch(this)) {
                     return
-                } catch (_: Exception) {
-                    try {
-                        val assistIntent = Intent(Intent.ACTION_ASSIST).apply {
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        }
-                        startActivity(assistIntent)
-                        return
-                    } catch (_: Exception) {
-                        startInPlaceVoiceRecognition()
-                        return
-                    }
                 }
+                startInPlaceVoiceRecognition()
+                return
             }
 
             val launchIntent = packageManager.getLaunchIntentForPackage(app.packageName)
@@ -349,6 +339,18 @@ class AppsHubActivity : AppCompatActivity() {
                 startInPlaceVoiceRecognition()
             }
         }
+
+        binding.btnGoogleAssistant.setOnClickListener {
+            GoogleAssistantHelper.launch(this)
+        }
+    }
+
+    private fun updateGoogleAssistantVisibility() {
+        binding.btnGoogleAssistant.visibility = if (GoogleAssistantHelper.isAvailable(this)) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
     }
 
     private fun animateVoiceMicActive(active: Boolean) {
@@ -385,6 +387,7 @@ class AppsHubActivity : AppCompatActivity() {
                     override fun onReadyForSpeech(params: Bundle?) {
                         isRecordingVoice = true
                         animateVoiceMicActive(true)
+                        binding.tvSearchInput.text = getString(R.string.search_voice_listening)
                     }
 
                     override fun onBeginningOfSpeech() {}
@@ -398,19 +401,33 @@ class AppsHubActivity : AppCompatActivity() {
 
                     override fun onBufferReceived(buffer: ByteArray?) {}
 
-                    override fun onEndOfSpeech() {}
+                    override fun onEndOfSpeech() {
+                        binding.tvSearchInput.text = getString(R.string.search_voice_processing)
+                    }
 
                     override fun onError(error: Int) {
                         isRecordingVoice = false
                         animateVoiceMicActive(false)
+                        binding.tvSearchInput.text = getString(R.string.search_apps_hint)
                     }
 
                     override fun onResults(results: Bundle?) {
                         isRecordingVoice = false
                         animateVoiceMicActive(false)
+                        binding.tvSearchInput.text = getString(R.string.search_apps_hint)
+
+                        val spoken = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.firstOrNull()
+                        if (!spoken.isNullOrBlank()) {
+                            openSearchDialog(spoken)
+                        }
                     }
 
-                    override fun onPartialResults(partialResults: Bundle?) {}
+                    override fun onPartialResults(partialResults: Bundle?) {
+                        val partial = partialResults?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.firstOrNull()
+                        if (!partial.isNullOrBlank()) {
+                            binding.tvSearchInput.text = partial
+                        }
+                    }
 
                     override fun onEvent(eventType: Int, params: Bundle?) {}
                 })
