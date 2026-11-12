@@ -14,18 +14,21 @@ import com.orbit.tv.launcher.features.home.model.AppModel
 
 class AppsAdapter(
     private val showPinBadge: Boolean = true,
+    private val isGridMode: Boolean = false,
     private val onAppClick: (AppModel) -> Unit,
     private val onAppLongClick: ((AppModel) -> Unit)? = null
 ) : ListAdapter<AppModel, AppsAdapter.AppViewHolder>(AppDiffCallback()) {
 
-    constructor(onAppClick: (AppModel) -> Unit) : this(true, onAppClick, null)
+    constructor(onAppClick: (AppModel) -> Unit) : this(true, false, onAppClick, null)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppViewHolder {
-        val binding = ItemAppCardBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding = if (isGridMode) {
+            val view = layoutInflater.inflate(R.layout.item_app_card_grid, parent, false)
+            ItemAppCardBinding.bind(view)
+        } else {
+            ItemAppCardBinding.inflate(layoutInflater, parent, false)
+        }
         return AppViewHolder(binding, showPinBadge, onAppClick, onAppLongClick)
     }
 

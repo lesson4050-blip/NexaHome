@@ -17,5 +17,7 @@ app/build/
 /web_preview/
 *.zip
 *.png
+!app/src/main/res/**/*.png
+scratch/
 
 

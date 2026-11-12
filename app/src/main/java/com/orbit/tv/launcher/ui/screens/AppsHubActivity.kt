@@ -177,6 +177,8 @@ class AppsHubActivity : AppCompatActivity() {
 
     private fun setupGrids() {
         appsGridAdapter = AppsAdapter(
+            showPinBadge = true,
+            isGridMode = true,
             onAppClick = { app ->
                 viewModel.launchApp(app)
             },
@@ -186,7 +188,7 @@ class AppsHubActivity : AppCompatActivity() {
         )
 
         binding.rvAllApps.apply {
-            layoutManager = GridLayoutManager(this@AppsHubActivity, 5)
+            layoutManager = GridLayoutManager(this@AppsHubActivity, 6)
             adapter = appsGridAdapter
         }
 
