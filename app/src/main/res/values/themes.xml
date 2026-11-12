@@ -10,5 +10,7 @@
         <item name="android:hardwareAccelerated">true</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/white_60</item>
+        <item name="android:fontFamily">@font/app_font</item>
+        <item name="fontFamily">@font/app_font</item>
     </style>
 </resources>

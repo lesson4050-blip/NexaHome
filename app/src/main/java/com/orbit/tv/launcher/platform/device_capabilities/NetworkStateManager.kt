@@ -19,6 +19,12 @@ enum class NetworkStatus {
     DISCONNECTED
 }
 
+enum class WifiUiState {
+    DISABLED,     // Radio switch is OFF in system settings -> ic_wifi_off (crossed out)
+    CONNECTED,    // Radio switch is ON and connected to Wi-Fi AP -> ic_wifi (1.0f)
+    DISCONNECTED  // Radio switch is ON, but not connected / saved -> ic_wifi (0.55f dimmed, NOT crossed out)
+}
+
 /**
  * Monitors real-time network connectivity: Wi-Fi, Ethernet, or Disconnected/Disabled.
  */
@@ -32,6 +38,12 @@ class NetworkStateManager(private val context: Context) {
 
     private val _networkStatus = MutableStateFlow(determineCurrentStatus())
     val networkStatus: StateFlow<NetworkStatus> = _networkStatus.asStateFlow()
+
+    private val _isWifiActive = MutableStateFlow(isWifiEnabled())
+    val isWifiActive: StateFlow<Boolean> = _isWifiActive.asStateFlow()
+
+    private val _wifiUiState = MutableStateFlow(determineWifiUiState())
+    val wifiUiState: StateFlow<WifiUiState> = _wifiUiState.asStateFlow()
 
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
@@ -79,40 +91,73 @@ class NetworkStateManager(private val context: Context) {
     }
 
     fun updateStatus() {
+        _wifiUiState.value = determineWifiUiState()
+        _isWifiActive.value = isWifiEnabled()
         _networkStatus.value = determineCurrentStatus()
     }
 
-    private fun determineCurrentStatus(): NetworkStatus {
+    fun isWifiEnabled(): Boolean {
+        return try {
+            wifiManager?.isWifiEnabled ?: false
+        } catch (_: Exception) {
+            false
+        }
+    }
+
+    fun determineWifiUiState(): WifiUiState {
+        val enabled = isWifiEnabled()
+        if (!enabled) return WifiUiState.DISABLED
+        return if (isWifiConnected()) WifiUiState.CONNECTED else WifiUiState.DISCONNECTED
+    }
+
+    fun isWifiConnected(): Boolean {
         try {
+            val isEnabled = wifiManager?.isWifiEnabled ?: false
+            if (!isEnabled) return false
+
             val activeNetwork = connectivityManager.activeNetwork
             if (activeNetwork != null) {
                 val caps = connectivityManager.getNetworkCapabilities(activeNetwork)
-                if (caps != null) {
-                    if (caps.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-                        return NetworkStatus.WIFI_CONNECTED
-                    }
-                    if (caps.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
-                        return NetworkStatus.ETHERNET_CONNECTED
-                    }
+                if (caps?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) == true) {
+                    return true
                 }
             }
 
             for (net in connectivityManager.allNetworks) {
                 val caps = connectivityManager.getNetworkCapabilities(net) ?: continue
                 if (caps.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-                    return NetworkStatus.WIFI_CONNECTED
+                    return true
                 }
-                if (caps.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+            }
+
+            val wifiInfo = wifiManager?.connectionInfo
+            if (wifiInfo != null && wifiInfo.networkId != -1 && wifiInfo.bssid != null && wifiInfo.bssid != "00:00:00:00:00:00") {
+                return true
+            }
+        } catch (_: Exception) {}
+        return false
+    }
+
+    private fun determineCurrentStatus(): NetworkStatus {
+        try {
+            if (isWifiConnected()) {
+                return NetworkStatus.WIFI_CONNECTED
+            }
+
+            val activeNetwork = connectivityManager.activeNetwork
+            if (activeNetwork != null) {
+                val caps = connectivityManager.getNetworkCapabilities(activeNetwork)
+                if (caps != null && caps.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
                     return NetworkStatus.ETHERNET_CONNECTED
                 }
             }
 
-            try {
-                val wifiInfo = wifiManager?.connectionInfo
-                if (wifiInfo != null && wifiInfo.networkId != -1) {
-                    return NetworkStatus.WIFI_CONNECTED
+            for (net in connectivityManager.allNetworks) {
+                val caps = connectivityManager.getNetworkCapabilities(net) ?: continue
+                if (caps.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                    return NetworkStatus.ETHERNET_CONNECTED
                 }
-            } catch (e: Exception) {}
+            }
 
             return NetworkStatus.DISCONNECTED
         } catch (e: Exception) {

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#050811"
+    android:clipChildren="false"
+    android:clipToPadding="false">
+
+    <!-- Fullscreen Video / Trailer WebView -->
+    <WebView
+        android:id="@+id/web_view_trailer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#050811"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
+
+    <!-- Centered Loading Spinner -->
+    <ProgressBar
+        android:id="@+id/pb_trailer_loading"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/leanback_cyan" />
+
+    <!-- Sleek Top Bar Overlay -->
+    <LinearLayout
+        android:id="@+id/trailer_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="top"
+        android:background="#FF050811"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="24dp"
+        android:paddingEnd="32dp">
+
+        <ImageButton
+            android:id="@+id/btn_close_trailer"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:background="@drawable/bg_circle_button"
+            android:contentDescription="@string/close_action"
+            android:focusable="true"
+            android:padding="9dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_close" />
+
+        <TextView
+            android:id="@+id/tv_trailer_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="14dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-bold"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            tools:text="Dune: Part Two — Trailer" />
+
+        <Button
+            android:id="@+id/btn_open_external_yt"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/bg_tab_pill"
+            android:focusable="true"
+            android:fontFamily="sans-serif-medium"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="@string/trailer_btn_open_yt"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</FrameLayout>

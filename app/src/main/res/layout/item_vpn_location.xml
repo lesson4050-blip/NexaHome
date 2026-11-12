@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="46dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:background="@drawable/bg_tab_pill"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="14dp"
+    android:paddingEnd="14dp">
+
+    <TextView
+        android:id="@+id/tv_loc_flag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        tools:text="⚡" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_loc_country"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-bold"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            tools:text="Cloudflare WARP" />
+
+        <TextView
+            android:id="@+id/tv_loc_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif"
+            android:maxLines="1"
+            android:textColor="@color/white_60"
+            android:textSize="10sp"
+            tools:text="Быстрый глобальный маршрут" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_loc_ping"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/vpn_emerald"
+        android:textSize="11sp"
+        tools:text="14 ms" />
+
+    <View
+        android:id="@+id/dot_loc_selected"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:background="@drawable/bg_circle_button"
+        android:backgroundTint="@color/vpn_emerald"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+</LinearLayout>

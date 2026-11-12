@@ -4,20 +4,22 @@ import android.content.ComponentName
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.widget.Toast
+import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.qrcode.QRCodeWriter
+import com.orbit.tv.launcher.R
 import com.orbit.tv.launcher.core.focus.TvFocusHelper
 import com.orbit.tv.launcher.databinding.ActivityCastBinding
 import com.orbit.tv.launcher.features.cast.CastServerManager
+import com.orbit.tv.launcher.ui.overlays.CastProtocolDialog
+import com.orbit.tv.launcher.ui.overlays.TvPowerDialog
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -41,7 +43,12 @@ class CastActivity : AppCompatActivity() {
         setupFocus()
         setupListeners()
         setupBackNavigation()
-        refreshPinAndQr(showToast = false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateProtocolBadges()
+        refreshPinAndQr(animatePin = false)
     }
 
     private fun setupFocus() {
@@ -72,70 +79,136 @@ class CastActivity : AppCompatActivity() {
             finish()
         }
         binding.btnNavGames.setOnClickListener {
-            startActivity(Intent(this, GamesActivity::class.java))
+            startActivity(Intent(this, OptimizerActivity::class.java))
             finish()
         }
         binding.btnNavPower.setOnClickListener {
-            try {
-                startActivity(Intent(Intent.ACTION_POWER_USAGE_SUMMARY))
-            } catch (e: Exception) {
-                Toast.makeText(this, "Таймер сна: используйте клавишу питания на пульте", Toast.LENGTH_SHORT).show()
-            }
+            TvPowerDialog.show(supportFragmentManager)
         }
 
         binding.btnRefreshPin.setOnClickListener {
-            refreshPinAndQr(showToast = true)
+            refreshPinAndQr(animatePin = true)
         }
 
-        // 1. Miracast / Wi-Fi Display (Hardware screen mirroring)
+        // 1. Miracast / Wi-Fi Display (Android Smart View & Windows)
         binding.btnProtoMiracast.setOnClickListener {
-            val opened = tryLaunchMiracast()
-            if (!opened) {
-                Toast.makeText(this, "Miracast активен. Откройте «Беспроводной экран» на смартфоне или ПК", Toast.LENGTH_LONG).show()
+            if (hasHardwareMiracastPackage()) {
+                if (tryLaunchMiracast()) return@setOnClickListener
             }
+            val isAirScreenInstalled = isAppInstalled("com.ionitech.airscreen")
+            CastProtocolDialog.show(
+                fragmentManager = supportFragmentManager,
+                title = getString(R.string.cast_proto_miracast_title),
+                subtitle = getString(R.string.cast_proto_miracast_desc),
+                instructions = getString(R.string.cast_miracast_instructions),
+                iconRes = R.drawable.ic_cast_miracast,
+                primaryText = if (isAirScreenInstalled) getString(R.string.cast_btn_launch_airscreen) else getString(R.string.cast_btn_install_airscreen),
+                localIp = getLocalIpAddress()
+            )
         }
 
         // 2. Google Cast / Chromecast
         binding.btnProtoChromecast.setOnClickListener {
-            val opened = tryLaunchAirScreen("Chromecast")
-            if (!opened) {
-                try {
-                    startActivity(Intent(Settings.ACTION_CAST_SETTINGS))
-                } catch (e: Exception) {
-                    Toast.makeText(this, "Chromecast готов к трансляции из YouTube, Chrome или Google Home", Toast.LENGTH_LONG).show()
-                }
-            }
+            val isAirScreenInstalled = isAppInstalled("com.ionitech.airscreen")
+            CastProtocolDialog.show(
+                fragmentManager = supportFragmentManager,
+                title = getString(R.string.cast_proto_chromecast_title),
+                subtitle = getString(R.string.cast_proto_chromecast_desc),
+                instructions = getString(R.string.cast_chromecast_instructions),
+                iconRes = R.drawable.ic_cast_chromecast,
+                primaryText = if (isAirScreenInstalled) getString(R.string.cast_btn_launch_airscreen) else getString(R.string.cast_btn_install_airscreen),
+                localIp = getLocalIpAddress()
+            )
         }
 
         // 3. Apple AirPlay (iOS / macOS Mirroring)
         binding.btnProtoAirplay.setOnClickListener {
-            val opened = tryLaunchAirScreen("Apple AirPlay")
-            if (!opened) {
-                handleAirplayActionFallback()
-            }
+            val isAirScreenInstalled = isAppInstalled("com.ionitech.airscreen")
+            CastProtocolDialog.show(
+                fragmentManager = supportFragmentManager,
+                title = getString(R.string.cast_proto_airplay_title),
+                subtitle = getString(R.string.cast_proto_airplay_desc),
+                instructions = getString(R.string.cast_airplay_instructions),
+                iconRes = R.drawable.ic_cast_airplay,
+                primaryText = if (isAirScreenInstalled) getString(R.string.cast_btn_launch_airscreen) else getString(R.string.cast_btn_install_airscreen),
+                localIp = getLocalIpAddress()
+            )
         }
     }
 
-    private fun refreshPinAndQr(showToast: Boolean) {
-        currentPin = if (showToast) {
+    private fun updateProtocolBadges() {
+        val isAirScreenInstalled = isAppInstalled("com.ionitech.airscreen")
+        val hasHwMiracast = hasHardwareMiracastPackage()
+
+        val emerald = ContextCompat.getColor(this, R.color.vpn_emerald)
+        val cyan = ContextCompat.getColor(this, R.color.leanback_cyan)
+
+        if (isAirScreenInstalled) {
+            binding.badgeAirplay.text = getString(R.string.cast_badge_open)
+            binding.badgeAirplay.setTextColor(emerald)
+            binding.badgeChromecast.text = getString(R.string.cast_badge_open)
+            binding.badgeChromecast.setTextColor(emerald)
+        } else {
+            binding.badgeAirplay.text = getString(R.string.cast_badge_setup)
+            binding.badgeAirplay.setTextColor(cyan)
+            binding.badgeChromecast.text = getString(R.string.cast_badge_setup)
+            binding.badgeChromecast.setTextColor(cyan)
+        }
+
+        if (hasHwMiracast) {
+            binding.badgeMiracast.text = getString(R.string.cast_badge_launch)
+            binding.badgeMiracast.setTextColor(Color.parseColor("#C084FC"))
+        } else if (isAirScreenInstalled) {
+            binding.badgeMiracast.text = getString(R.string.cast_badge_open)
+            binding.badgeMiracast.setTextColor(emerald)
+        } else {
+            binding.badgeMiracast.text = getString(R.string.cast_badge_setup)
+            binding.badgeMiracast.setTextColor(cyan)
+        }
+    }
+
+    private fun refreshPinAndQr(animatePin: Boolean) {
+        currentPin = if (animatePin) {
             CastServerManager.refreshPin()
         } else {
             CastServerManager.getPin()
         }
-        binding.castPairingPin.text = "PIN: $currentPin"
 
         val ip = getLocalIpAddress()
-        val qrUrl = "http://$ip:8080/cast?pin=$currentPin"
+        if (ip != null) {
+            binding.tvCastNetworkInfo.text = "Orbit TV • $ip:8080"
+            binding.castPairingPin.text = "PIN: $currentPin"
+            binding.tvCastExpiry.visibility = View.VISIBLE
+            binding.imgCastQr.alpha = 1.0f
 
-        val qrBitmap = generateQrCodeBitmap(qrUrl, 400)
-        if (qrBitmap != null) {
-            binding.imgCastQr.setImageBitmap(qrBitmap)
+            val qrUrl = "http://$ip:8080/cast?pin=$currentPin"
+            val qrBitmap = generateQrCodeBitmap(qrUrl, 400)
+            if (qrBitmap != null) {
+                binding.imgCastQr.setImageBitmap(qrBitmap)
+            }
+            startCountdownTimer()
+        } else {
+            binding.tvCastNetworkInfo.text = getString(R.string.cast_network_offline)
+            binding.castPairingPin.text = getString(R.string.cast_pin_offline)
+            binding.tvCastExpiry.visibility = View.INVISIBLE
+            binding.imgCastQr.setImageResource(R.drawable.ic_wifi)
+            binding.imgCastQr.alpha = 0.35f
+            countdownJob?.cancel()
         }
 
-        startCountdownTimer()
-
-        if (showToast) {
-            Toast.makeText(this, "Новый PIN сгенерирован: $currentPin", Toast.LENGTH_SHORT).show()
+        if (animatePin) {
+            binding.castPairingPin.animate()
+                .scaleX(1.15f)
+                .scaleY(1.15f)
+                .setDuration(120)
+                .withEndAction {
+                    binding.castPairingPin.animate()
+                        .scaleX(1.0f)
+                        .scaleY(1.0f)
+                        .setDuration(140)
+                        .start()
+                }
+                .start()
         }
     }
 
@@ -146,12 +219,12 @@ class CastActivity : AppCompatActivity() {
             while (isActive && secondsRemaining > 0) {
                 val m = secondsRemaining / 60
                 val s = secondsRemaining % 60
-                binding.tvCastExpiry.text = String.format("Действителен: %02d:%02d", m, s)
+                binding.tvCastExpiry.text = getString(R.string.cast_expiry_format, m, s)
                 delay(1000)
                 secondsRemaining--
             }
             if (isActive && secondsRemaining <= 0) {
-                refreshPinAndQr(showToast = false)
+                refreshPinAndQr(animatePin = false)
             }
         }
     }
@@ -177,11 +250,11 @@ class CastActivity : AppCompatActivity() {
         }
     }
 
-    private fun getLocalIpAddress(): String {
+    private fun getLocalIpAddress(): String? {
         try {
-            val interfaces = NetworkInterface.getNetworkInterfaces()
+            val interfaces = NetworkInterface.getNetworkInterfaces() ?: return null
             for (intf in interfaces) {
-                val addrs = intf.inetAddresses
+                val addrs = intf.inetAddresses ?: continue
                 for (addr in addrs) {
                     if (!addr.isLoopbackAddress && addr is Inet4Address) {
                         val host = addr.hostAddress ?: continue
@@ -192,11 +265,38 @@ class CastActivity : AppCompatActivity() {
                 }
             }
         } catch (e: Exception) {}
-        return "192.168.31.204"
+        return null
+    }
+
+    private fun isAppInstalled(pkg: String): Boolean {
+        return try {
+            packageManager.getPackageInfo(pkg, 0)
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    private fun hasHardwareMiracastPackage(): Boolean {
+        val oemPackages = listOf(
+            "com.droidlogic.miracast",
+            "com.amlogic.miracast",
+            "com.actions.wifidisplay",
+            "com.rockchip.mediacenter",
+            "com.softwinner.miracast"
+        )
+        return oemPackages.any { isAppInstalled(it) }
+    }
+
+    private fun launchAirScreen() {
+        val launchIntent = packageManager.getLaunchIntentForPackage("com.ionitech.airscreen")
+        if (launchIntent != null) {
+            startActivity(launchIntent)
+        }
     }
 
     private fun tryLaunchMiracast(): Boolean {
-        // 1. Try launching hardware Amlogic/Droidlogic Miracast directly
+        // 1. Hardware Amlogic/Droidlogic Miracast activity
         try {
             val intent = Intent().apply {
                 component = ComponentName("com.droidlogic.miracast", "com.droidlogic.miracast.WiFiDirectMainActivity")
@@ -232,35 +332,6 @@ class CastActivity : AppCompatActivity() {
         } catch (e: Exception) {}
 
         return false
-    }
-
-    private fun tryLaunchAirScreen(protocolName: String): Boolean {
-        val airScreenPkg = "com.ionitech.airscreen"
-        val launchIntent = packageManager.getLaunchIntentForPackage(airScreenPkg)
-        if (launchIntent != null) {
-            startActivity(launchIntent)
-            Toast.makeText(this, "$protocolName активен через AirScreen. Выберите Orbit TV на телефоне", Toast.LENGTH_LONG).show()
-            return true
-        }
-        return false
-    }
-
-    private fun handleAirplayActionFallback() {
-        val ip = getLocalIpAddress()
-        AlertDialog.Builder(this)
-            .setTitle("Apple AirPlay")
-            .setMessage("Для трансляции с iPhone, iPad или Mac убедитесь, что устройство подключено к одной сети Wi-Fi.\n\nИмя ТВ: Orbit TV\nIP адрес: $ip\n\nРекомендуется установить AirScreen из Google Play.")
-            .setPositiveButton("Установить AirScreen") { _, _ ->
-                try {
-                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.ionitech.airscreen")))
-                } catch (e: Exception) {
-                    try {
-                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.ionitech.airscreen")))
-                    } catch (e2: Exception) {}
-                }
-            }
-            .setNegativeButton("Понятно", null)
-            .show()
     }
 
     private fun setupBackNavigation() {

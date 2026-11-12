@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="540dp"
+    android:minWidth="540dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_focus_app_card"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <!-- Header: Shield Icon & Title -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_shield"
+            app:tint="@color/leanback_cyan" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-black"
+                android:text="Рекомендуемые VPN"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="Установите приложение для доступа ко всем странам мира"
+                android:textColor="@color/white_60"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btn_close_recommended"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/bg_circle_button"
+            android:contentDescription="@string/close_action"
+            android:focusable="true"
+            android:padding="8dp"
+            android:src="@drawable/ic_close" />
+
+    </LinearLayout>
+
+    <!-- List of Recommended VPN Apps -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_recommended_vpns"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:nestedScrollingEnabled="false" />
+
+    <!-- Info Banner -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_tab_pill"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:background="@drawable/bg_circle_button"
+            android:backgroundTint="@color/vpn_emerald" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:fontFamily="sans-serif"
+            android:text="Лаунчер автоматически определит активный VPN и покажет статус в строке состояния."
+            android:textColor="@color/white_70"
+            android:textSize="10sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

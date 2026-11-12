@@ -12,6 +12,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import android.content.res.Resources
+import android.os.Build
+import android.text.format.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -23,6 +26,8 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     val vpnManager = com.orbit.tv.launcher.features.vpn.VpnManager(application)
     val networkStateManager = com.orbit.tv.launcher.platform.device_capabilities.NetworkStateManager(application)
     val networkStatus = networkStateManager.networkStatus
+    val isWifiActive = networkStateManager.isWifiActive
+    val wifiUiState = networkStateManager.wifiUiState
 
     private val _rawInstalledApps = MutableStateFlow<List<AppModel>>(emptyList())
     val rawInstalledApps: StateFlow<List<AppModel>> = _rawInstalledApps.asStateFlow()
@@ -92,17 +97,48 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         return packageManagerRepository.launchApp(app)
     }
 
+    fun getActiveLocale(): Locale {
+        return try {
+            val sysConfig = Resources.getSystem().configuration
+            val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                if (!sysConfig.locales.isEmpty) sysConfig.locales[0] else null
+            } else {
+                @Suppress("DEPRECATION")
+                sysConfig.locale
+            }
+            locale ?: Locale.getDefault()
+        } catch (e: Exception) {
+            Locale.getDefault()
+        }
+    }
+
     private fun startClockTicker() {
         viewModelScope.launch {
-            val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-            val dateFormat = SimpleDateFormat("d MMMM yyyy", Locale.getDefault())
-            val dayFormat = SimpleDateFormat("EEEE", Locale.getDefault())
+            val app = getApplication<Application>()
+            var cachedLocale: Locale? = null
+            var cached24Hour: Boolean? = null
+            var timeFormat: SimpleDateFormat? = null
+            var dateFormat: SimpleDateFormat? = null
+            var dayFormat: SimpleDateFormat? = null
 
             while (true) {
+                val currentLocale = getActiveLocale()
+                val is24Hour = DateFormat.is24HourFormat(app)
+
+                if (currentLocale != cachedLocale || is24Hour != cached24Hour) {
+                    cachedLocale = currentLocale
+                    cached24Hour = is24Hour
+                    Locale.setDefault(currentLocale)
+                    val timePattern = if (is24Hour) "HH:mm" else "hh:mm a"
+                    timeFormat = SimpleDateFormat(timePattern, currentLocale)
+                    dateFormat = SimpleDateFormat("d MMMM yyyy", currentLocale)
+                    dayFormat = SimpleDateFormat("EEEE", currentLocale)
+                }
+
                 val now = Date()
-                _currentTime.value = timeFormat.format(now)
-                _currentDate.value = dateFormat.format(now)
-                _currentDay.value = dayFormat.format(now).uppercase(Locale.getDefault())
+                _currentTime.value = timeFormat?.format(now).orEmpty()
+                _currentDate.value = dateFormat?.format(now).orEmpty()
+                _currentDay.value = dayFormat?.format(now)?.uppercase(currentLocale).orEmpty()
                 delay(1000L)
             }
         }

@@ -1,0 +1,21 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <!-- Deep Violet background -->
+    <path
+        android:fillColor="#1A102F"
+        android:pathData="M8,4h32c4.4,0 8,3.6 8,8v24c0,4.4 -3.6,8 -8,8H8c-4.4,0 -8,-3.6 -8,-8V12c0,-4.4 3.6,-8 8,-8z" />
+    <!-- Proton Triangle / Shield in Neon Green -->
+    <path
+        android:fillColor="#6D4AFF"
+        android:pathData="M24,10L12,34h12l8,-16z" />
+    <path
+        android:fillColor="#00D166"
+        android:pathData="M24,10l-4,8 8,16h8z" />
+    <!-- Accent Highlight -->
+    <path
+        android:fillColor="#B794F6"
+        android:pathData="M24,10l4,8h-8z" />
+</vector>

@@ -46,11 +46,18 @@ class EpgChannelAdapter(
         }
 
         fun bind(channel: IptvChannel, isActive: Boolean) {
+            val context = binding.root.context
             binding.tvChannelNumber.text = String.format("%03d", channel.number)
             binding.tvChannelName.text = channel.name
-            binding.tvChannelCategory.text = channel.group
+            binding.tvChannelCategory.text = when (channel.group.lowercase()) {
+                "sports" -> context.getString(R.string.cat_sports)
+                "cinema" -> context.getString(R.string.cat_cinema)
+                "news" -> context.getString(R.string.cat_news)
+                "all" -> context.getString(R.string.cat_all)
+                else -> channel.group
+            }
             binding.tvCurrentProgram.text = channel.currentProgram
-            binding.tvNextProgram.text = "Next: ${channel.nextProgram}"
+            binding.tvNextProgram.text = context.getString(R.string.iptv_next_program_format, channel.nextProgram)
             binding.pbEpgProgress.progress = channel.progressPercent
 
             binding.dotActiveIndicator.visibility = if (isActive) View.VISIBLE else View.GONE

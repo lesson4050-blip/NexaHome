@@ -13,6 +13,33 @@ import com.orbit.tv.launcher.ui.screens.HomeActivity
  */
 class TvHomeWatcherService : AccessibilityService() {
 
+    companion object {
+        var instance: TvHomeWatcherService? = null
+            private set
+
+        fun showGlobalPowerDialog(): Boolean {
+            return instance?.performGlobalAction(GLOBAL_ACTION_POWER_DIALOG) ?: false
+        }
+
+        fun lockScreenOrSleep(): Boolean {
+            return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                instance?.performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN) ?: false
+            } else {
+                showGlobalPowerDialog()
+            }
+        }
+    }
+
+    override fun onServiceConnected() {
+        super.onServiceConnected()
+        instance = this
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (instance == this) instance = null
+    }
+
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         // Window state changes observer (passive)
     }

@@ -1,0 +1,26 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <!-- White background card -->
+    <path
+        android:fillColor="#F8F9FA"
+        android:pathData="M8,4h32c4.4,0 8,3.6 8,8v24c0,4.4 -3.6,8 -8,8H8c-4.4,0 -8,-3.6 -8,-8V12c0,-4.4 3.6,-8 8,-8z" />
+    <!-- Blue Dot (Large) -->
+    <path
+        android:fillColor="#4285F4"
+        android:pathData="M16,24m-6,0a6,6 0,1 1,12 0a6,6 0,1 1,-12 0" />
+    <!-- Red Dot (Medium) -->
+    <path
+        android:fillColor="#EA4335"
+        android:pathData="M26,20m-4.5,0a4.5,4.5 0,1 1,9 0a4.5,4.5 0,1 1,-9 0" />
+    <!-- Yellow Dot (Small) -->
+    <path
+        android:fillColor="#FBBC05"
+        android:pathData="M34,22m-3.5,0a3.5,3.5 0,1 1,7 0a3.5,3.5 0,1 1,-7 0" />
+    <!-- Green Dot (Smallest) -->
+    <path
+        android:fillColor="#34A853"
+        android:pathData="M40,26m-2.5,0a2.5,2.5 0,1 1,5 0a2.5,2.5 0,1 1,-5 0" />
+</vector>

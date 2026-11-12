@@ -23,6 +23,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
@@ -67,9 +69,9 @@
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
-        <!-- Gaming Arcade Activity -->
+        <!-- TV Optimizer & System Monitor Activity -->
         <activity
-            android:name=".ui.screens.GamesActivity"
+            android:name=".ui.screens.OptimizerActivity"
             android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:exported="false"
             android:screenOrientation="landscape"
@@ -117,6 +119,17 @@
             <meta-data
                 android:name="android.accessibilityservice"
                 android:resource="@xml/home_watcher_accessibility_config" />
+        </service>
+
+        <!-- Native Orbit TV VPN Service -->
+        <service
+            android:name=".features.vpn.service.OrbitTvVpnService"
+            android:description="@string/app_name"
+            android:exported="false"
+            android:permission="android.permission.BIND_VPN_SERVICE">
+            <intent-filter>
+                <action android:name="android.net.VpnService" />
+            </intent-filter>
         </service>
 
     </application>

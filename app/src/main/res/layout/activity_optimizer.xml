@@ -1,0 +1,762 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:background="@color/tv_dark_bg">
+
+    <ImageView
+        android:id="@+id/iv_backdrop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/backdrop_scenery" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/tv_dimmer" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingStart="@dimen/overscan_safe_margin_horizontal"
+        android:paddingTop="@dimen/overscan_safe_margin_vertical"
+        android:paddingEnd="@dimen/overscan_safe_margin_horizontal"
+        android:paddingBottom="@dimen/overscan_safe_margin_vertical">
+
+        <!-- Left Sidebar Navigation Rail -->
+        <LinearLayout
+            android:id="@+id/container_sidebar"
+            android:layout_width="@dimen/sidebar_width"
+            android:layout_height="0dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/btn_nav_media"
+                android:layout_width="@dimen/sidebar_button_size"
+                android:layout_height="@dimen/sidebar_button_size"
+                android:background="@drawable/bg_nav_tile"
+                android:contentDescription="@string/nav_media"
+                android:focusable="true"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_nav_home" />
+
+            <ImageButton
+                android:id="@+id/btn_nav_apps"
+                android:layout_width="@dimen/sidebar_button_size"
+                android:layout_height="@dimen/sidebar_button_size"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_nav_tile"
+                android:contentDescription="@string/nav_home_apps"
+                android:focusable="true"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_nav_apps" />
+
+            <ImageButton
+                android:id="@+id/btn_nav_iptv"
+                android:layout_width="@dimen/sidebar_button_size"
+                android:layout_height="@dimen/sidebar_button_size"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_nav_tile"
+                android:contentDescription="@string/nav_iptv"
+                android:focusable="true"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_nav_iptv" />
+
+            <ImageButton
+                android:id="@+id/btn_nav_games"
+                android:layout_width="@dimen/sidebar_button_size"
+                android:layout_height="@dimen/sidebar_button_size"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_nav_tile"
+                android:contentDescription="@string/nav_optimizer"
+                android:focusable="true"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_nav_speed" />
+
+            <ImageButton
+                android:id="@+id/btn_nav_cast"
+                android:layout_width="@dimen/sidebar_button_size"
+                android:layout_height="@dimen/sidebar_button_size"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_nav_tile"
+                android:contentDescription="@string/nav_cast"
+                android:focusable="true"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_nav_cast" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/btn_nav_power"
+                android:layout_width="@dimen/circle_button_size"
+                android:layout_height="@dimen/circle_button_size"
+                android:background="@drawable/bg_circle_button"
+                android:contentDescription="@string/nav_power"
+                android:focusable="true"
+                android:padding="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_nav_power" />
+
+        </LinearLayout>
+
+        <!-- Main Content Area -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_main_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="24dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/container_sidebar"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Top Bar -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/container_top_bar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/topbar_height"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/app_font"
+                        android:textStyle="bold"
+                        android:text="@string/optimizer_header_title"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/app_font"
+                        android:text="@string/optimizer_header_subtitle"
+                        android:textColor="@color/leanback_cyan"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_clock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/app_font"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="21:34" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 2-Column Split: Height balanced perfectly to match_parent -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                android:baselineAligned="false"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/container_top_bar">
+
+                <!-- Left Column: Memory & Storage -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="12dp"
+                    android:layout_weight="5"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:orientation="vertical">
+
+                    <!-- RAM Card -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_focus_app_card"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:orientation="vertical"
+                        android:padding="18dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/app_font"
+                                android:textStyle="bold"
+                                android:text="@string/optimizer_card_ram_title"
+                                android:textColor="@color/white"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/tv_ram_badge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_circle_button"
+                                android:fontFamily="@font/app_font"
+                                android:textStyle="bold"
+                                android:paddingStart="8dp"
+                                android:paddingTop="3dp"
+                                android:paddingEnd="8dp"
+                                android:paddingBottom="3dp"
+                                android:text="@string/optimizer_badge_normal"
+                                android:textColor="@color/leanback_cyan"
+                                android:textSize="10sp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_ram_main"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:fontFamily="@font/app_font"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            tools:text="0.9 ГБ из 1.9 ГБ (45%)" />
+
+                        <ProgressBar
+                            android:id="@+id/pb_ram"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="6dp"
+                            android:layout_marginTop="6dp"
+                            android:max="100"
+                            android:progress="45"
+                            android:progressTint="@color/leanback_cyan" />
+
+                        <TextView
+                            android:id="@+id/tv_ram_details"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/app_font"
+                            android:textColor="@color/white_60"
+                            android:textSize="11sp"
+                            tools:text="Свободно: 1076 МБ • Занято системой: 896 МБ" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <Button
+                            android:id="@+id/btn_boost_ram"
+                            android:layout_width="match_parent"
+                            android:layout_height="42dp"
+                            android:background="@drawable/bg_focus_app_card"
+                            android:focusable="true"
+                            android:fontFamily="@font/app_font"
+                            android:textStyle="bold"
+                            android:nextFocusLeft="@id/btn_nav_games"
+                            android:nextFocusRight="@id/btn_test_speed"
+                            android:nextFocusDown="@id/btn_storage_clean"
+                            android:stateListAnimator="@null"
+                            android:text="@string/optimizer_btn_boost"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <!-- Storage Card -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginTop="14dp"
+                        android:background="@drawable/bg_focus_app_card"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:orientation="vertical"
+                        android:padding="18dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/app_font"
+                                android:textStyle="bold"
+                                android:text="@string/optimizer_card_storage_title"
+                                android:textColor="@color/white"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/tv_storage_badge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_circle_button"
+                                android:fontFamily="@font/app_font"
+                                android:textStyle="bold"
+                                android:paddingStart="8dp"
+                                android:paddingTop="3dp"
+                                android:paddingEnd="8dp"
+                                android:paddingBottom="3dp"
+                                android:text="STORAGE"
+                                android:textColor="@color/white_60"
+                                android:textSize="10sp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_storage_main"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:fontFamily="@font/app_font"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            tools:text="0.7 ГБ из 5.8 ГБ (12%)" />
+
+                        <ProgressBar
+                            android:id="@+id/pb_storage"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="6dp"
+                            android:layout_marginTop="6dp"
+                            android:max="100"
+                            android:progress="12"
+                            android:progressTint="@color/leanback_cyan" />
+
+                        <TextView
+                            android:id="@+id/tv_storage_details"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/app_font"
+                            android:textColor="@color/white_60"
+                            android:textSize="11sp"
+                            tools:text="Доступно для записи: 5.1 ГБ" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <Button
+                            android:id="@+id/btn_storage_clean"
+                            android:layout_width="match_parent"
+                            android:layout_height="42dp"
+                            android:background="@drawable/bg_focus_app_card"
+                            android:focusable="true"
+                            android:fontFamily="@font/app_font"
+                            android:textStyle="bold"
+                            android:nextFocusLeft="@id/btn_nav_games"
+                            android:nextFocusUp="@id/btn_boost_ram"
+                            android:nextFocusRight="@id/btn_tweak_dev"
+                            android:stateListAnimator="@null"
+                            android:text="@string/optimizer_btn_storage"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Right Column: Network, Specs & Tweaks -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="7"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:orientation="vertical">
+
+                    <!-- Network & Speed Test Card -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_focus_app_card"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:orientation="vertical"
+                        android:padding="18dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/app_font"
+                                android:textStyle="bold"
+                                android:text="@string/optimizer_card_net_title"
+                                android:textColor="@color/white"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/tv_net_type"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_circle_button"
+                                android:fontFamily="@font/app_font"
+                                android:textStyle="bold"
+                                android:paddingStart="8dp"
+                                android:paddingTop="3dp"
+                                android:paddingEnd="8dp"
+                                android:paddingBottom="3dp"
+                                android:text="WI-FI"
+                                android:textColor="@color/leanback_cyan"
+                                android:textSize="10sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_net_info"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/app_font"
+                                android:textColor="@color/white_90"
+                                android:textSize="12sp"
+                                tools:text="Проводной кабель LAN подключен" />
+
+                            <TextView
+                                android:id="@+id/tv_net_ip"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/app_font"
+                                android:textColor="@color/white_60"
+                                android:textSize="12sp"
+                                tools:text="IP: 10.0.2.15" />
+
+                        </LinearLayout>
+
+                        <!-- Speed and Ping Result Pills -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_ping_result"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_circle_button"
+                                android:fontFamily="@font/app_font"
+                                android:textStyle="bold"
+                                android:paddingStart="12dp"
+                                android:paddingTop="5dp"
+                                android:paddingEnd="12dp"
+                                android:paddingBottom="5dp"
+                                android:text="Пинг: -- мс"
+                                android:textColor="@color/leanback_cyan"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tv_speed_result"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:background="@drawable/bg_circle_button"
+                                android:fontFamily="@font/app_font"
+                                android:textStyle="bold"
+                                android:paddingStart="12dp"
+                                android:paddingTop="5dp"
+                                android:paddingEnd="12dp"
+                                android:paddingBottom="5dp"
+                                android:text="Скорость: -- Мбит/с"
+                                android:textColor="@color/leanback_cyan"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <Button
+                            android:id="@+id/btn_test_speed"
+                            android:layout_width="match_parent"
+                            android:layout_height="42dp"
+                            android:background="@drawable/bg_focus_app_card"
+                            android:focusable="true"
+                            android:fontFamily="@font/app_font"
+                            android:textStyle="bold"
+                            android:nextFocusLeft="@id/btn_boost_ram"
+                            android:nextFocusDown="@id/btn_tweak_dev"
+                            android:stateListAnimator="@null"
+                            android:text="@string/optimizer_btn_speedtest"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <!-- Hardware Specs & Tweaks Card -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginTop="14dp"
+                        android:background="@drawable/bg_focus_app_card"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:orientation="vertical"
+                        android:padding="18dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/app_font"
+                                android:textStyle="bold"
+                                android:text="@string/optimizer_card_hw_title"
+                                android:textColor="@color/white"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/tv_uptime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/app_font"
+                                android:textColor="@color/white_60"
+                                android:textSize="11sp"
+                                tools:text="Аптайм: 1 ч 34 мин" />
+
+                        </LinearLayout>
+
+                        <!-- Hardware Details Grid -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tv_hw_model"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/app_font"
+                                    android:textColor="@color/white_90"
+                                    android:textSize="12sp"
+                                    tools:text="Модель: Google AOSP TV on x86" />
+
+                                <TextView
+                                    android:id="@+id/tv_hw_chip"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/app_font"
+                                    android:textColor="@color/white_90"
+                                    android:textSize="12sp"
+                                    tools:text="Чипсет: ranchu (goldfish_x86)" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tv_hw_android"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/app_font"
+                                    android:textColor="@color/white_90"
+                                    android:textSize="12sp"
+                                    tools:text="ОС: Android 14 (API 34)" />
+
+                                <TextView
+                                    android:id="@+id/tv_hw_display"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/app_font"
+                                    android:textColor="@color/white_90"
+                                    android:textSize="12sp"
+                                    tools:text="Экран: 1920x1080 @ 60 Гц" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <!-- Quick Tweaks Title -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/app_font"
+                            android:textStyle="bold"
+                            android:text="@string/optimizer_btn_settings"
+                            android:textColor="@color/white_60"
+                            android:textSize="11sp" />
+
+                        <!-- Tweaks Buttons Row -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:clipChildren="false"
+                            android:clipToPadding="false"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/btn_tweak_dev"
+                                android:layout_width="0dp"
+                                android:layout_height="38dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/bg_focus_app_card"
+                                android:focusable="true"
+                                android:fontFamily="@font/app_font"
+                                android:textStyle="bold"
+                                android:nextFocusUp="@id/btn_test_speed"
+                                android:nextFocusLeft="@id/btn_storage_clean"
+                                android:nextFocusRight="@id/btn_tweak_display"
+                                android:stateListAnimator="@null"
+                                android:text="@string/optimizer_quick_dev"
+                                android:textColor="@color/white"
+                                android:textSize="11sp" />
+
+                            <Button
+                                android:id="@+id/btn_tweak_display"
+                                android:layout_width="0dp"
+                                android:layout_height="38dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/bg_focus_app_card"
+                                android:focusable="true"
+                                android:fontFamily="@font/app_font"
+                                android:textStyle="bold"
+                                android:nextFocusUp="@id/btn_test_speed"
+                                android:nextFocusLeft="@id/btn_tweak_dev"
+                                android:nextFocusRight="@id/btn_tweak_sound"
+                                android:stateListAnimator="@null"
+                                android:text="@string/optimizer_quick_display"
+                                android:textColor="@color/white"
+                                android:textSize="11sp" />
+
+                            <Button
+                                android:id="@+id/btn_tweak_sound"
+                                android:layout_width="0dp"
+                                android:layout_height="38dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/bg_focus_app_card"
+                                android:focusable="true"
+                                android:fontFamily="@font/app_font"
+                                android:textStyle="bold"
+                                android:nextFocusUp="@id/btn_test_speed"
+                                android:nextFocusLeft="@id/btn_tweak_display"
+                                android:nextFocusRight="@id/btn_tweak_apps"
+                                android:stateListAnimator="@null"
+                                android:text="@string/optimizer_quick_audio"
+                                android:textColor="@color/white"
+                                android:textSize="11sp" />
+
+                            <Button
+                                android:id="@+id/btn_tweak_apps"
+                                android:layout_width="0dp"
+                                android:layout_height="38dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/bg_focus_app_card"
+                                android:focusable="true"
+                                android:fontFamily="@font/app_font"
+                                android:textStyle="bold"
+                                android:nextFocusUp="@id/btn_test_speed"
+                                android:nextFocusLeft="@id/btn_tweak_sound"
+                                android:stateListAnimator="@null"
+                                android:text="@string/optimizer_quick_apps"
+                                android:textColor="@color/white"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

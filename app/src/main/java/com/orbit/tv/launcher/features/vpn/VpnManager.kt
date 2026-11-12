@@ -24,9 +24,10 @@ import java.net.URL
 class VpnManager(private val context: Context) {
 
     val capabilityManager = VpnCapabilityManager(context)
-    val isVpnActive: StateFlow<Boolean> = capabilityManager.isVpnActive
+    private val _isVpnActive = MutableStateFlow(false)
+    val isVpnActive: StateFlow<Boolean> = _isVpnActive.asStateFlow()
 
-    private val _vpnCountryCode = MutableStateFlow("VPN")
+    private val _vpnCountryCode = MutableStateFlow("OFF")
     val vpnCountryCode: StateFlow<String> = _vpnCountryCode.asStateFlow()
 
     private val _vpnDetails = MutableStateFlow("Direct ISP connection")
@@ -35,7 +36,9 @@ class VpnManager(private val context: Context) {
     private val managerScope = CoroutineScope(Dispatchers.IO + Job())
 
     // Target OEM & Popular Android TV VPN clients
-    private val supportedVpnPackages = listOf(
+    val supportedVpnPackages = listOf(
+        "com.urbanvpn.android" to "Urban VPN",
+        "com.cloudflare.onedotonedotonedotone" to "Cloudflare 1.1.1.1 (WARP)",
         "com.wireguard.android" to "WireGuard",
         "org.amnezia.vpn" to "Amnezia VPN",
         "de.blinkt.openvpn" to "OpenVPN for Android",
@@ -49,9 +52,32 @@ class VpnManager(private val context: Context) {
 
     init {
         managerScope.launch {
-            isVpnActive.collect { active ->
+            kotlinx.coroutines.flow.combine(
+                capabilityManager.isVpnActive,
+                com.orbit.tv.launcher.features.vpn.service.OrbitTvVpnService.isServiceRunning,
+                com.orbit.tv.launcher.features.vpn.service.OrbitTvVpnService.currentLocation
+            ) { active, running, location ->
+                Triple(active || running, running, location)
+            }.collect { (active, isInternal, location) ->
+                _isVpnActive.value = active
                 if (active) {
-                    resolveVpnLocation()
+                    if (isInternal) {
+                        _vpnCountryCode.value = location
+                        val locName = when (location) {
+                            "US" -> "США"
+                            "DE" -> "Германия"
+                            "PL" -> "Польша"
+                            "UA" -> "Украина"
+                            "JP" -> "Япония"
+                            "GB" -> "Великобритания"
+                            "NL" -> "Нидерланды"
+                            "WARP" -> "Cloudflare WARP"
+                            else -> location
+                        }
+                        _vpnDetails.value = "Туннель: $locName • DNS 1.1.1.1 Защищен"
+                    } else {
+                        resolveVpnLocation()
+                    }
                 } else {
                     _vpnCountryCode.value = "OFF"
                     _vpnDetails.value = "Traffic unencrypted • Direct ISP"
@@ -120,6 +146,36 @@ class VpnManager(private val context: Context) {
             }
         }
         installedList
+    }
+
+    fun isAppInstalled(packageName: String): Boolean {
+        return try {
+            context.packageManager.getPackageInfo(packageName, 0)
+            true
+        } catch (_: PackageManager.NameNotFoundException) {
+            false
+        }
+    }
+
+    fun launchOrInstallVpnApp(packageName: String) {
+        val pm = context.packageManager
+        val launchIntent = pm.getLaunchIntentForPackage(packageName)
+        if (launchIntent != null) {
+            launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(launchIntent)
+        } else {
+            try {
+                val marketIntent = Intent(Intent.ACTION_VIEW, android.net.Uri.parse("market://details?id=$packageName")).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                context.startActivity(marketIntent)
+            } catch (_: Exception) {
+                val webIntent = Intent(Intent.ACTION_VIEW, android.net.Uri.parse("https://play.google.com/store/apps/details?id=$packageName")).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                context.startActivity(webIntent)
+            }
+        }
     }
 
     fun launchVpnApp(packageName: String): Boolean {

@@ -1,6 +1,7 @@
 package com.orbit.tv.launcher.features.home.repository
 
 import android.content.Context
+import com.orbit.tv.launcher.R
 import com.orbit.tv.launcher.features.home.model.MediaModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -22,8 +23,17 @@ class MediaRepository(private val context: Context) {
     private val seriesCacheFile = File(context.cacheDir, "cached_series.json")
 
     private fun isRussianLocale(): Boolean {
-        val lang = Locale.getDefault().language
-        return lang in listOf("ru", "uk", "be")
+        val lang = try {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                context.resources.configuration.locales[0].language
+            } else {
+                @Suppress("DEPRECATION")
+                context.resources.configuration.locale.language
+            }
+        } catch (_: Exception) {
+            Locale.getDefault().language
+        }
+        return lang in listOf("ru", "be")
     }
 
     suspend fun getTrendingMovies(): List<MediaModel> = withContext(Dispatchers.IO) {
@@ -94,29 +104,28 @@ class MediaRepository(private val context: Context) {
     }
 
     private fun translateGenres(genres: List<String>): String {
-        if (!isRussianLocale()) return genres.joinToString(", ")
         val genreMap = mapOf(
-            "Action" to "Боевик",
-            "Adventure" to "Приключения",
-            "Animation" to "Мультфильм",
-            "Biography" to "Биография",
-            "Comedy" to "Комедия",
-            "Crime" to "Криминал",
-            "Documentary" to "Документальный",
-            "Drama" to "Драма",
-            "Family" to "Семейный",
-            "Fantasy" to "Фэнтези",
-            "History" to "История",
-            "Horror" to "Ужасы",
-            "Music" to "Музыка",
-            "Musical" to "Мюзикл",
-            "Mystery" to "Детектив",
-            "Romance" to "Мелодрама",
-            "Sci-Fi" to "Фантастика",
-            "Sport" to "Спорт",
-            "Thriller" to "Триллер",
-            "War" to "Военный",
-            "Western" to "Вестерн"
+            "Action" to context.getString(R.string.genre_action),
+            "Adventure" to context.getString(R.string.genre_adventure),
+            "Animation" to context.getString(R.string.genre_animation),
+            "Biography" to context.getString(R.string.genre_biography),
+            "Comedy" to context.getString(R.string.genre_comedy),
+            "Crime" to context.getString(R.string.genre_crime),
+            "Documentary" to context.getString(R.string.genre_documentary),
+            "Drama" to context.getString(R.string.genre_drama),
+            "Family" to context.getString(R.string.genre_family),
+            "Fantasy" to context.getString(R.string.genre_fantasy),
+            "History" to context.getString(R.string.genre_history),
+            "Horror" to context.getString(R.string.genre_horror),
+            "Music" to context.getString(R.string.genre_music),
+            "Musical" to context.getString(R.string.genre_musical),
+            "Mystery" to context.getString(R.string.genre_mystery),
+            "Romance" to context.getString(R.string.genre_romance),
+            "Sci-Fi" to context.getString(R.string.genre_scifi),
+            "Sport" to context.getString(R.string.genre_sport),
+            "Thriller" to context.getString(R.string.genre_thriller),
+            "War" to context.getString(R.string.genre_war),
+            "Western" to context.getString(R.string.genre_western)
         )
         return genres.map { genreMap[it] ?: it }.joinToString(", ")
     }
@@ -160,7 +169,7 @@ class MediaRepository(private val context: Context) {
                 "Спустя 200 лет после ядерного апокалипсиса наивная жительница подземного бункера вынуждена выйти наружу в безжалостную и дикую Пустошь."
             t.contains("stranger things") ->
                 "В тихом городке 1980-х загадочно исчезает мальчик, а его друзья натыкаются на правительственный заговор и жутких монстров из параллельного измерения."
-            else -> originalDesc.ifBlank { "Описание доступно в детальном просмотре приложения." }
+            else -> originalDesc.ifBlank { context.getString(R.string.media_desc_unavailable) }
         }
     }
 
@@ -184,10 +193,10 @@ class MediaRepository(private val context: Context) {
                         genresList.add(genresArray.optString(g))
                     }
                 }
-                val rawGenre = if (genresList.isNotEmpty()) translateGenres(genresList) else if (isRussianLocale()) "Фильм" else "Feature"
+                val rawGenre = if (genresList.isNotEmpty()) translateGenres(genresList) else context.getString(R.string.genre_feature)
 
                 val rating = item.optString("imdbRating", "")
-                val badge = if (rating.isNotBlank()) "★ $rating" else if (isSeries) "TV SERIES" else "MOVIE"
+                val badge = if (rating.isNotBlank()) "★ $rating" else if (isSeries) context.getString(R.string.badge_series) else context.getString(R.string.badge_movie)
                 val rawDesc = item.optString("description", "")
                 val finalDesc = if (isRussianLocale()) getRussianDescription(name, rawDesc) else rawDesc
                 val year = item.optString("releaseInfo", "")
@@ -199,6 +208,7 @@ class MediaRepository(private val context: Context) {
                         posterUrl = poster,
                         badge = badge,
                         genre = rawGenre,
+                        rawGenres = genresList,
                         rating = rating,
                         description = finalDesc,
                         releaseYear = year,

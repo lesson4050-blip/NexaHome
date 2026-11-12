@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -17,11 +16,13 @@ import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.orbit.tv.launcher.R
 import com.orbit.tv.launcher.core.focus.TvFocusHelper
 import com.orbit.tv.launcher.databinding.ActivityIptvBinding
 import com.orbit.tv.launcher.features.iptv.IptvViewModel
 import com.orbit.tv.launcher.features.iptv.adapters.EpgChannelAdapter
 import com.orbit.tv.launcher.features.iptv.model.IptvChannel
+import com.orbit.tv.launcher.ui.overlays.TvPowerDialog
 import kotlinx.coroutines.launch
 
 class IptvActivity : AppCompatActivity() {
@@ -60,6 +61,7 @@ class IptvActivity : AppCompatActivity() {
         TvFocusHelper.bindFocusScale(binding.btnNavIptv, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnNavGames, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnNavCast, scaleRatio = 1.12f, elevationDp = 8f)
+        TvFocusHelper.bindFocusScale(binding.btnNavPower, scaleRatio = 1.12f, elevationDp = 8f)
 
         TvFocusHelper.bindFocusScale(binding.playerPreviewContainer, scaleRatio = 1.04f, elevationDp = 10f)
         TvFocusHelper.bindFocusScale(binding.btnCatAll, scaleRatio = 1.06f, elevationDp = 6f)
@@ -92,8 +94,11 @@ class IptvActivity : AppCompatActivity() {
             finish()
         }
         binding.btnNavGames.setOnClickListener {
-            startActivity(Intent(this, GamesActivity::class.java))
+            startActivity(Intent(this, OptimizerActivity::class.java))
             finish()
+        }
+        binding.btnNavPower.setOnClickListener {
+            TvPowerDialog.show(supportFragmentManager)
         }
 
         binding.playerPreviewContainer.setOnClickListener {
@@ -110,11 +115,7 @@ class IptvActivity : AppCompatActivity() {
         exoPlayer = ExoPlayer.Builder(this).build().apply {
             addListener(object : Player.Listener {
                 override fun onPlayerError(error: PlaybackException) {
-                    Toast.makeText(
-                        this@IptvActivity,
-                        "Stream error: ${error.errorCodeName}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    // Failover gracefully without intrusive toast dialogs on TV screen
                 }
             })
         }

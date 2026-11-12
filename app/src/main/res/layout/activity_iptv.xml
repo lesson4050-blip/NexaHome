@@ -86,11 +86,11 @@
                 android:layout_height="@dimen/sidebar_button_size"
                 android:layout_marginTop="14dp"
                 android:background="@drawable/bg_nav_tile"
-                android:contentDescription="@string/nav_games"
+                android:contentDescription="@string/nav_optimizer"
                 android:focusable="true"
                 android:padding="12dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_nav_games" />
+                android:src="@drawable/ic_nav_speed" />
 
             <ImageButton
                 android:id="@+id/btn_nav_cast"
@@ -127,6 +127,8 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="24dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/container_sidebar"
@@ -143,7 +145,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-black"
-                    android:text="Live TV &amp; EPG Guide"
+                    android:text="@string/iptv_screen_title"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -170,6 +172,8 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="16dp"
                 android:baselineAligned="false"
+                android:clipChildren="false"
+                android:clipToPadding="false"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/container_top_bar">
@@ -180,6 +184,11 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="16dp"
                     android:layout_weight="4"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingTop="4dp"
                     android:orientation="vertical">
 
                     <!-- Player Preview Container -->
@@ -213,7 +222,7 @@
                             android:paddingTop="3dp"
                             android:paddingEnd="8dp"
                             android:paddingBottom="3dp"
-                            android:text="LIVE"
+                            android:text="@string/iptv_live"
                             android:textColor="@color/white"
                             android:textSize="10sp" />
 
@@ -253,14 +262,20 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:fontFamily="sans-serif-bold"
-                        android:text="Categories"
+                        android:text="@string/iptv_categories"
                         android:textColor="@color/white_60"
                         android:textSize="12sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="6dp"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:paddingStart="4dp"
+                        android:paddingEnd="4dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
                         android:orientation="horizontal">
 
                         <Button
@@ -270,9 +285,10 @@
                             android:layout_marginEnd="6dp"
                             android:layout_weight="1"
                             android:background="@drawable/bg_focus_app_card"
+                            android:stateListAnimator="@null"
                             android:focusable="true"
                             android:fontFamily="sans-serif-bold"
-                            android:text="All (840)"
+                            android:text="@string/cat_all"
                             android:textColor="@color/white"
                             android:textSize="12sp" />
 
@@ -283,9 +299,10 @@
                             android:layout_marginStart="6dp"
                             android:layout_weight="1"
                             android:background="@drawable/bg_focus_app_card"
+                            android:stateListAnimator="@null"
                             android:focusable="true"
                             android:fontFamily="sans-serif-bold"
-                            android:text="Sports (48)"
+                            android:text="@string/cat_sports"
                             android:textColor="@color/white"
                             android:textSize="12sp" />
 
@@ -294,7 +311,13 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="4dp"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:paddingStart="4dp"
+                        android:paddingEnd="4dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
                         android:orientation="horizontal">
 
                         <Button
@@ -304,9 +327,10 @@
                             android:layout_marginEnd="6dp"
                             android:layout_weight="1"
                             android:background="@drawable/bg_focus_app_card"
+                            android:stateListAnimator="@null"
                             android:focusable="true"
                             android:fontFamily="sans-serif-bold"
-                            android:text="Cinema (124)"
+                            android:text="@string/cat_cinema"
                             android:textColor="@color/white"
                             android:textSize="12sp" />
 
@@ -317,9 +341,10 @@
                             android:layout_marginStart="6dp"
                             android:layout_weight="1"
                             android:background="@drawable/bg_focus_app_card"
+                            android:stateListAnimator="@null"
                             android:focusable="true"
                             android:fontFamily="sans-serif-bold"
-                            android:text="News (62)"
+                            android:text="@string/cat_news"
                             android:textColor="@color/white"
                             android:textSize="12sp" />
 
@@ -333,13 +358,15 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="16dp"
                     android:layout_weight="6"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-bold"
-                        android:text="EPG Live TV Guide"
+                        android:text="@string/iptv_epg_guide"
                         android:textColor="@color/leanback_cyan"
                         android:textSize="14sp" />
 
@@ -348,7 +375,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="10dp"
+                        android:clipChildren="false"
                         android:clipToPadding="false"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="12dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 </LinearLayout>
@@ -417,7 +449,7 @@
                 android:paddingTop="4dp"
                 android:paddingEnd="10dp"
                 android:paddingBottom="4dp"
-                android:text="LIVE"
+                android:text="@string/iptv_live"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
 

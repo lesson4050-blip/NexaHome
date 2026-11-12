@@ -56,7 +56,7 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:background="@drawable/bg_circle_button"
-            android:contentDescription="Close"
+            android:contentDescription="@string/close_action"
             android:focusable="true"
             android:padding="8dp"
             android:src="@drawable/ic_nav_power"
@@ -102,7 +102,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-bold"
-                android:text="Pin to Favorites Shelf"
+                android:text="@string/app_options_pin_title"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 
@@ -111,7 +111,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:text="Show in the Home screen quick access row"
+                android:text="@string/app_options_pin_desc"
                 android:textColor="@color/white_60"
                 android:textSize="11sp" />
 
@@ -151,7 +151,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-bold"
-                android:text="Hide App (Debloat)"
+                android:text="@string/app_options_hide_title"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 
@@ -160,7 +160,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:text="Remove bloatware from Home &amp; Apps shelf"
+                android:text="@string/app_options_hide_desc"
                 android:textColor="@color/white_60"
                 android:textSize="11sp" />
 
@@ -198,7 +198,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-bold"
-                android:text="App Details &amp; Permissions"
+                android:text="@string/app_options_info_title"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 
@@ -206,7 +206,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:text="Storage, clear cache, and force stop in system settings"
+                android:text="@string/app_options_info_desc"
                 android:textColor="@color/white_60"
                 android:textSize="11sp" />
 
@@ -244,7 +244,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-bold"
-                android:text="Uninstall Application"
+                android:text="@string/app_options_uninstall_title"
                 android:textColor="#F87171"
                 android:textSize="14sp" />
 
@@ -252,7 +252,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:text="Completely delete from device"
+                android:text="@string/app_options_uninstall_desc"
                 android:textColor="@color/white_60"
                 android:textSize="11sp" />
 

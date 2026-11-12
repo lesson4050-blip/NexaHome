@@ -18,6 +18,9 @@ interface IptvDao {
     @Query("SELECT * FROM channels WHERE id = :channelId LIMIT 1")
     suspend fun getChannelById(channelId: String): ChannelEntity?
 
+    @Query("DELETE FROM channels")
+    suspend fun clearAllChannels()
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertChannels(channels: List<ChannelEntity>)
 

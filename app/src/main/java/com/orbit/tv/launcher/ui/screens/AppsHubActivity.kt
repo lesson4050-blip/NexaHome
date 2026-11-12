@@ -1,10 +1,21 @@
 package com.orbit.tv.launcher.ui.screens
 
+import android.Manifest
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.speech.RecognitionListener
+import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
+import android.view.KeyEvent
 import android.view.View
-import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -17,22 +28,95 @@ import com.orbit.tv.launcher.core.focus.TvFocusHelper
 import com.orbit.tv.launcher.databinding.ActivityAppsHubBinding
 import com.orbit.tv.launcher.features.home.HomeViewModel
 import com.orbit.tv.launcher.features.home.adapters.AppsAdapter
+import com.orbit.tv.launcher.features.home.adapters.RecommendedAppsAdapter
 import com.orbit.tv.launcher.features.home.model.AppModel
-import android.speech.RecognizerIntent
+import com.orbit.tv.launcher.features.home.model.RecommendedAppModel
 import com.orbit.tv.launcher.ui.overlays.AppOptionsDialog
 import com.orbit.tv.launcher.ui.overlays.SearchDialogFragment
+import com.orbit.tv.launcher.ui.overlays.TvPowerDialog
 import com.orbit.tv.launcher.ui.overlays.VpnQuickDialog
 import kotlinx.coroutines.launch
 
 class AppsHubActivity : AppCompatActivity() {
 
-    enum class HubTab { ALL, FAVORITES, HIDDEN }
+    enum class HubTab { ALL, FAVORITES, RECOMMENDED, HIDDEN }
 
     private lateinit var binding: ActivityAppsHubBinding
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var appsGridAdapter: AppsAdapter
+    private lateinit var recommendedAppsAdapter: RecommendedAppsAdapter
     private var currentTab: HubTab = HubTab.ALL
     private var cachedApps: List<AppModel> = emptyList()
+
+    private var speechRecognizer: SpeechRecognizer? = null
+    private var isRecordingVoice: Boolean = false
+
+    private val audioPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) {
+            startInPlaceVoiceRecognition()
+        }
+    }
+
+    private val rawCuratedApps = listOf(
+        RecommendedAppModel(
+            packageName = "com.teamsmart.videomanager.tv",
+            name = "SmartTube",
+            category = "Медиа",
+            description = "YouTube без рекламы, 4K 60fps HDR, пропуск спонсорских вставок",
+            iconRes = R.drawable.ic_brand_smarttube
+        ),
+        RecommendedAppModel(
+            packageName = "org.videolan.vlc",
+            name = "VLC Player",
+            category = "Видеоплеер",
+            description = "Всеядный медиаплеер с поддержкой AC3/DTS и сетевых дисков (SMB/NFS)",
+            iconRes = R.drawable.ic_brand_vlc
+        ),
+        RecommendedAppModel(
+            packageName = "org.courville.nova",
+            name = "Nova Video Player",
+            category = "Кинозал",
+            description = "Плеер для Android TV с автоматической загрузкой постеров и описаний",
+            iconRes = R.drawable.ic_brand_nova
+        ),
+        RecommendedAppModel(
+            packageName = "com.ionitech.airscreen",
+            name = "AirScreen",
+            category = "Трансляция",
+            description = "Беспроводной приемник Apple AirPlay, Google Cast, Miracast и DLNA",
+            iconRes = R.drawable.ic_brand_airscreen
+        ),
+        RecommendedAppModel(
+            packageName = "com.google.android.katniss",
+            name = "Google Ассистент",
+            category = "Система",
+            description = "Голосовое управление и системный поиск для Android TV",
+            iconRes = R.drawable.ic_brand_google_assistant
+        ),
+        RecommendedAppModel(
+            packageName = "tv.lampa",
+            name = "Lampa TV",
+            category = "Каталог",
+            description = "Каталог фильмов и сериалов с трейлерами и онлайн-источниками",
+            iconRes = R.drawable.ic_brand_lampa
+        ),
+        RecommendedAppModel(
+            packageName = "ch.protonvpn.android",
+            name = "Proton VPN",
+            category = "VPN & Сеть",
+            description = "Официальный защищенный клиент с интерфейсом для Android TV",
+            iconRes = R.drawable.ic_brand_proton_vpn
+        ),
+        RecommendedAppModel(
+            packageName = "org.xbmc.kodi",
+            name = "Kodi Media Center",
+            category = "Медиацентр",
+            description = "Мощный открытый комбайн для видео, плагинов и домашней медиатеки",
+            iconRes = R.drawable.ic_brand_kodi
+        )
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +124,7 @@ class AppsHubActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupFocusControls()
-        setupGrid()
+        setupGrids()
         setupListeners()
         observeData()
     }
@@ -48,6 +132,21 @@ class AppsHubActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         viewModel.loadInstalledApps()
+        if (currentTab == HubTab.RECOMMENDED) {
+            renderRecommendedList()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopInPlaceVoiceRecognition()
+        animateVoiceMicActive(false)
+    }
+
+    override fun onDestroy() {
+        speechRecognizer?.destroy()
+        speechRecognizer = null
+        super.onDestroy()
     }
 
     private fun setupFocusControls() {
@@ -69,19 +168,17 @@ class AppsHubActivity : AppCompatActivity() {
         // Filter tabs
         TvFocusHelper.bindFocusScale(binding.btnTabAll, scaleRatio = 1.06f, elevationDp = 4f)
         TvFocusHelper.bindFocusScale(binding.btnTabFavorites, scaleRatio = 1.06f, elevationDp = 4f)
+        TvFocusHelper.bindFocusScale(binding.btnTabRecommended, scaleRatio = 1.06f, elevationDp = 4f)
         TvFocusHelper.bindFocusScale(binding.btnTabHidden, scaleRatio = 1.06f, elevationDp = 4f)
 
         binding.btnNavApps.isSelected = true
         updateTabSelectionUI()
     }
 
-    private fun setupGrid() {
+    private fun setupGrids() {
         appsGridAdapter = AppsAdapter(
             onAppClick = { app ->
-                val launched = viewModel.launchApp(app)
-                if (!launched) {
-                    Toast.makeText(this, "Cannot launch ${app.label}", Toast.LENGTH_SHORT).show()
-                }
+                viewModel.launchApp(app)
             },
             onAppLongClick = { app ->
                 showAppOptions(app)
@@ -92,6 +189,54 @@ class AppsHubActivity : AppCompatActivity() {
             layoutManager = GridLayoutManager(this@AppsHubActivity, 5)
             adapter = appsGridAdapter
         }
+
+        recommendedAppsAdapter = RecommendedAppsAdapter { app ->
+            onRecommendedAppAction(app)
+        }
+
+        binding.rvRecommendedApps.apply {
+            layoutManager = GridLayoutManager(this@AppsHubActivity, 3)
+            adapter = recommendedAppsAdapter
+        }
+    }
+
+    private fun onRecommendedAppAction(app: RecommendedAppModel) {
+        if (app.isInstalled) {
+            val launchIntent = packageManager.getLaunchIntentForPackage(app.packageName)
+            if (launchIntent != null) {
+                startActivity(launchIntent)
+            }
+            return
+        }
+
+        // Direct web portal for sideloaded/open-source TV apps not on Google Play
+        when (app.packageName) {
+            "com.teamsmart.videomanager.tv" -> {
+                openBrowserUrl("https://smarttubeapp.github.io")
+                return
+            }
+            "tv.lampa" -> {
+                openBrowserUrl("https://lampa.mx")
+                return
+            }
+        }
+
+        // 1-Click install via Google Play TV with web fallback
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=${app.packageName}")).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            })
+        } catch (e: Exception) {
+            openBrowserUrl("https://play.google.com/store/apps/details?id=${app.packageName}")
+        }
+    }
+
+    private fun openBrowserUrl(url: String) {
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            })
+        } catch (e: Exception) {}
     }
 
     private fun showAppOptions(app: AppModel) {
@@ -111,6 +256,20 @@ class AppsHubActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.btnNavGames.setOnClickListener {
+            startActivity(Intent(this, OptimizerActivity::class.java))
+            finish()
+        }
+
+        binding.btnNavCast.setOnClickListener {
+            startActivity(Intent(this, CastActivity::class.java))
+            finish()
+        }
+
+        binding.btnNavPower.setOnClickListener {
+            TvPowerDialog.show(supportFragmentManager)
+        }
+
         binding.btnTabAll.setOnClickListener {
             currentTab = HubTab.ALL
             updateTabSelectionUI()
@@ -121,6 +280,12 @@ class AppsHubActivity : AppCompatActivity() {
             currentTab = HubTab.FAVORITES
             updateTabSelectionUI()
             renderCurrentList()
+        }
+
+        binding.btnTabRecommended.setOnClickListener {
+            currentTab = HubTab.RECOMMENDED
+            updateTabSelectionUI()
+            renderRecommendedList()
         }
 
         binding.btnTabHidden.setOnClickListener {
@@ -140,51 +305,158 @@ class AppsHubActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 try {
                     startActivity(Intent(Settings.ACTION_WIRELESS_SETTINGS))
-                } catch (e2: Exception) {
-                    Toast.makeText(this, "Unable to open Wi-Fi Settings", Toast.LENGTH_SHORT).show()
-                }
+                } catch (e2: Exception) {}
             }
         }
 
         binding.btnSettings.setOnClickListener {
             try {
                 startActivity(Intent(Settings.ACTION_SETTINGS))
-            } catch (e: Exception) {
-                Toast.makeText(this, "Unable to open Settings", Toast.LENGTH_SHORT).show()
-            }
+            } catch (e: Exception) {}
         }
 
         binding.searchBar.setOnClickListener {
-            SearchDialogFragment.newInstance()
-                .show(supportFragmentManager, SearchDialogFragment.TAG)
+            openSearchDialog()
         }
 
         binding.btnVoiceSearch.setOnClickListener {
+            if (isRecordingVoice) {
+                stopInPlaceVoiceRecognition()
+            } else {
+                startInPlaceVoiceRecognition()
+            }
+        }
+    }
+
+    private fun animateVoiceMicActive(active: Boolean) {
+        if (active) {
+            binding.btnVoiceSearch.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#EA4335"))
+            binding.btnVoiceSearch.scaleX = 1.20f
+            binding.btnVoiceSearch.scaleY = 1.20f
+        } else {
+            binding.btnVoiceSearch.backgroundTintList = null
+            val targetScale = if (binding.btnVoiceSearch.isFocused) 1.12f else 1.0f
+            binding.btnVoiceSearch.animate()
+                .scaleX(targetScale)
+                .scaleY(targetScale)
+                .setDuration(200)
+                .start()
+        }
+    }
+
+    private fun startInPlaceVoiceRecognition() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            audioPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+            return
+        }
+
+        if (!SpeechRecognizer.isRecognitionAvailable(this)) {
+            openSearchDialog()
+            return
+        }
+
+        try {
+            speechRecognizer?.destroy()
+            speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this).apply {
+                setRecognitionListener(object : RecognitionListener {
+                    override fun onReadyForSpeech(params: Bundle?) {
+                        isRecordingVoice = true
+                        animateVoiceMicActive(true)
+                    }
+
+                    override fun onBeginningOfSpeech() {}
+
+                    override fun onRmsChanged(rmsdB: Float) {
+                        val norm = (rmsdB.coerceIn(0f, 10f) / 10f)
+                        val s = 1.18f + (norm * 0.16f)
+                        binding.btnVoiceSearch.scaleX = s
+                        binding.btnVoiceSearch.scaleY = s
+                    }
+
+                    override fun onBufferReceived(buffer: ByteArray?) {}
+
+                    override fun onEndOfSpeech() {}
+
+                    override fun onError(error: Int) {
+                        isRecordingVoice = false
+                        animateVoiceMicActive(false)
+                    }
+
+                    override fun onResults(results: Bundle?) {
+                        isRecordingVoice = false
+                        animateVoiceMicActive(false)
+                    }
+
+                    override fun onPartialResults(partialResults: Bundle?) {}
+
+                    override fun onEvent(eventType: Int, params: Bundle?) {}
+                })
+            }
+
             val speechIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
                 putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
+                putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
             }
-            if (packageManager.queryIntentActivities(speechIntent, 0).isNotEmpty()) {
-                try {
-                    startActivity(speechIntent)
-                    return@setOnClickListener
-                } catch (e: Exception) {}
-            }
-            SearchDialogFragment.newInstance()
-                .show(supportFragmentManager, SearchDialogFragment.TAG)
+            speechRecognizer?.startListening(speechIntent)
+        } catch (e: Exception) {
+            isRecordingVoice = false
+            animateVoiceMicActive(false)
+            openSearchDialog()
         }
+    }
+
+    private fun stopInPlaceVoiceRecognition() {
+        if (isRecordingVoice) {
+            speechRecognizer?.stopListening()
+        }
+    }
+
+    private fun openSearchDialog(prefill: String? = null) {
+        SearchDialogFragment.newInstance(prefill)
+            .show(supportFragmentManager, SearchDialogFragment.TAG)
+    }
+
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        when (event.keyCode) {
+            KeyEvent.KEYCODE_VOICE_ASSIST,
+            KeyEvent.KEYCODE_SEARCH,
+            KeyEvent.KEYCODE_ASSIST -> {
+                if (event.action == KeyEvent.ACTION_DOWN) {
+                    if (event.repeatCount == 0 && !isRecordingVoice) {
+                        startInPlaceVoiceRecognition()
+                    }
+                    return true
+                } else if (event.action == KeyEvent.ACTION_UP) {
+                    stopInPlaceVoiceRecognition()
+                    return true
+                }
+            }
+        }
+        return super.dispatchKeyEvent(event)
     }
 
     private fun updateTabSelectionUI() {
         binding.btnTabAll.isSelected = (currentTab == HubTab.ALL)
         binding.btnTabFavorites.isSelected = (currentTab == HubTab.FAVORITES)
+        binding.btnTabRecommended.isSelected = (currentTab == HubTab.RECOMMENDED)
         binding.btnTabHidden.isSelected = (currentTab == HubTab.HIDDEN)
     }
 
     private fun renderCurrentList() {
+        if (currentTab == HubTab.RECOMMENDED) {
+            renderRecommendedList()
+            return
+        }
+
+        binding.rvAllApps.visibility = View.VISIBLE
+        binding.rvRecommendedApps.visibility = View.GONE
+
         val filtered = when (currentTab) {
             HubTab.ALL -> cachedApps.filter { !it.isHidden }
             HubTab.FAVORITES -> cachedApps.filter { it.isPinned && !it.isHidden }
             HubTab.HIDDEN -> cachedApps.filter { it.isHidden }
+            HubTab.RECOMMENDED -> emptyList()
         }
 
         val freshList = ArrayList(filtered)
@@ -193,17 +465,44 @@ class AppsHubActivity : AppCompatActivity() {
                 binding.rvAllApps.requestLayout()
             }
         }
-        binding.tvAppCount.text = "${filtered.size} applications"
+        binding.tvAppCount.text = getString(R.string.apps_count_format, filtered.size)
 
         if (filtered.isEmpty()) {
             binding.tvEmptyState.visibility = View.VISIBLE
             binding.tvEmptyState.text = when (currentTab) {
-                HubTab.FAVORITES -> "No favorite apps pinned yet.\nHold [OK] or [MENU] on any app to pin it here."
-                HubTab.HIDDEN -> "No hidden apps.\nHold [OK] or [MENU] on bloatware apps to hide them."
-                HubTab.ALL -> "No applications found."
+                HubTab.FAVORITES -> getString(R.string.apps_empty_favorites)
+                HubTab.HIDDEN -> getString(R.string.apps_empty_hidden)
+                else -> getString(R.string.apps_empty_all)
             }
         } else {
             binding.tvEmptyState.visibility = View.GONE
+        }
+    }
+
+    private fun renderRecommendedList() {
+        binding.rvAllApps.visibility = View.GONE
+        binding.rvRecommendedApps.visibility = View.VISIBLE
+        binding.tvEmptyState.visibility = View.GONE
+
+        val pm = packageManager
+        val list = rawCuratedApps.map { item ->
+            var installed = false
+            var icon = item.installedIcon
+            try {
+                pm.getPackageInfo(item.packageName, 0)
+                installed = true
+                icon = pm.getApplicationIcon(item.packageName)
+            } catch (e: Exception) {
+                installed = false
+            }
+            item.copy(isInstalled = installed, installedIcon = icon)
+        }
+
+        binding.tvAppCount.text = getString(R.string.apps_count_recommended, list.size)
+        recommendedAppsAdapter.submitList(list) {
+            binding.rvRecommendedApps.post {
+                binding.rvRecommendedApps.requestLayout()
+            }
         }
     }
 
@@ -223,20 +522,24 @@ class AppsHubActivity : AppCompatActivity() {
                     }
                 }
 
-                // Wi-Fi / Network Status Indicator (Connected / Disconnected)
+                // Wi-Fi Status Indicator (Connected / Disconnected / Disabled)
                 launch {
-                    viewModel.networkStatus.collect { status ->
-                        when (status) {
-                            com.orbit.tv.launcher.platform.device_capabilities.NetworkStatus.WIFI_CONNECTED,
-                            com.orbit.tv.launcher.platform.device_capabilities.NetworkStatus.ETHERNET_CONNECTED -> {
+                    viewModel.wifiUiState.collect { state ->
+                        when (state) {
+                            com.orbit.tv.launcher.platform.device_capabilities.WifiUiState.DISABLED -> {
+                                binding.ivWifiStatus.setImageResource(R.drawable.ic_wifi_off)
+                                binding.ivWifiStatus.setColorFilter(null)
+                                binding.ivWifiStatus.alpha = 0.9f
+                            }
+                            com.orbit.tv.launcher.platform.device_capabilities.WifiUiState.CONNECTED -> {
                                 binding.ivWifiStatus.setImageResource(R.drawable.ic_wifi)
                                 binding.ivWifiStatus.setColorFilter(null)
                                 binding.ivWifiStatus.alpha = 1.0f
                             }
-                            com.orbit.tv.launcher.platform.device_capabilities.NetworkStatus.DISCONNECTED -> {
-                                binding.ivWifiStatus.setImageResource(R.drawable.ic_wifi_off)
+                            com.orbit.tv.launcher.platform.device_capabilities.WifiUiState.DISCONNECTED -> {
+                                binding.ivWifiStatus.setImageResource(R.drawable.ic_wifi)
                                 binding.ivWifiStatus.setColorFilter(null)
-                                binding.ivWifiStatus.alpha = 0.9f
+                                binding.ivWifiStatus.alpha = 0.55f
                             }
                         }
                     }

@@ -16,4 +16,6 @@ app/build/
 /extracted/
 /web_preview/
 *.zip
+*.png
+
 

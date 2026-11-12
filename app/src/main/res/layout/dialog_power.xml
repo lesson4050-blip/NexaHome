@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="460dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_focus_app_card"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <!-- Header -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/app_font"
+        android:textStyle="bold"
+        android:text="@string/power_dialog_title"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/app_font"
+        android:text="@string/power_dialog_subtitle"
+        android:textColor="@color/leanback_cyan"
+        android:textSize="12sp" />
+
+    <!-- Action Buttons List -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="vertical">
+
+        <!-- Sleep / Screen Off -->
+        <LinearLayout
+            android:id="@+id/btn_action_sleep"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_focus_app_card"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/app_font"
+                android:textStyle="bold"
+                android:text="@string/power_action_sleep"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/app_font"
+                android:text="@string/power_action_sleep_desc"
+                android:textColor="@color/white_60"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+
+        <!-- Reboot -->
+        <LinearLayout
+            android:id="@+id/btn_action_reboot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_focus_app_card"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/app_font"
+                android:textStyle="bold"
+                android:text="@string/power_action_reboot"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/app_font"
+                android:text="@string/power_action_reboot_desc"
+                android:textColor="@color/white_60"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+
+        <!-- Shutdown -->
+        <LinearLayout
+            android:id="@+id/btn_action_shutdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_focus_app_card"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/app_font"
+                android:textStyle="bold"
+                android:text="@string/power_action_shutdown"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/app_font"
+                android:text="@string/power_action_shutdown_desc"
+                android:textColor="@color/white_60"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+
+        <!-- Sleep Timer -->
+        <LinearLayout
+            android:id="@+id/btn_action_timer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_focus_app_card"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/tv_timer_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/app_font"
+                android:textStyle="bold"
+                android:text="@string/power_action_timer"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_timer_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/app_font"
+                android:text="@string/power_action_timer_desc"
+                android:textColor="@color/white_60"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

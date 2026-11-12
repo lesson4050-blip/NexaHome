@@ -21,13 +21,16 @@
     <dimen name="app_card_height">108dp</dimen>
     <dimen name="app_card_radius">18dp</dimen>
     <dimen name="app_card_icon_size">48dp</dimen>
+    <dimen name="shelf_apps_height">124dp</dimen>
 
     <!-- Media Poster Card Dimensions (2:3 aspect ratio) -->
     <dimen name="media_card_width">136dp</dimen>
     <dimen name="media_card_height">204dp</dimen>
     <dimen name="media_card_radius">14dp</dimen>
+    <dimen name="shelf_media_height">224dp</dimen>
 
-    <!-- Row Spacing -->
+    <!-- Row & Shelf Spacing -->
     <dimen name="shelf_spacing">16dp</dimen>
     <dimen name="card_spacing">14dp</dimen>
+    <dimen name="shelf_section_margin">20dp</dimen>
 </resources>

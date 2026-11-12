@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="460dp"
-    android:minWidth="460dp"
+    android:layout_width="520dp"
+    android:minWidth="520dp"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_focus_app_card"
     android:clipChildren="false"
@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-black"
-                android:text="VPN &amp; Network Shield"
+                android:text="@string/vpn_dialog_title"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
@@ -44,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:text="System VPN Status &amp; Client Dispatcher"
+                android:text="@string/vpn_dialog_desc"
                 android:textColor="@color/white_60"
                 android:textSize="11sp" />
 
@@ -55,11 +55,10 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:background="@drawable/bg_circle_button"
-            android:contentDescription="Close"
+            android:contentDescription="@string/close_action"
             android:focusable="true"
             android:padding="8dp"
-            android:src="@drawable/ic_nav_power"
-            app:tint="@color/white_60" />
+            android:src="@drawable/ic_close" />
 
     </LinearLayout>
 
@@ -68,7 +67,7 @@
         android:id="@+id/card_vpn_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/bg_focus_media_card"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -93,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-bold"
-                android:text="VPN CONNECTED"
+                android:text="@string/vpn_active_protected"
                 android:textColor="@color/vpn_emerald"
                 android:textSize="14sp" />
 
@@ -103,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:fontFamily="sans-serif"
-                android:text="Tunnel interface: tun0 • 10.14.0.2"
+                android:text="Orbit Secure Tunnel • Cloudflare DNS Encrypted"
                 android:textColor="@color/white_70"
                 android:textSize="11sp" />
 
@@ -111,47 +110,77 @@
 
     </LinearLayout>
 
-    <!-- Installed VPN Applications Section -->
+    <!-- Main Connect/Disconnect Button -->
+    <Button
+        android:id="@+id/btn_toggle_vpn"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/bg_nav_tile"
+        android:focusable="true"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center"
+        android:text="@string/vpn_btn_connect"
+        android:textColor="@color/vpn_emerald"
+        android:textSize="13sp" />
+
+    <!-- Location Selection Section Header -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="sans-serif-bold"
-        android:text="Installed VPN Clients"
+        android:text="@string/vpn_locations_title"
         android:textColor="@color/leanback_cyan"
         android:textSize="12sp" />
 
+    <!-- Vertical Scrolling Country Server List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_vpn_locations"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="8dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:scrollbars="vertical" />
+
+    <!-- Action Buttons: Recommended Apps & System Settings -->
     <LinearLayout
-        android:id="@+id/container_vpn_apps"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:orientation="vertical">
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_no_vpn_apps"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="12dp"
-            android:text="No third-party VPN apps detected (WireGuard, Amnezia, OpenVPN)"
-            android:textColor="@color/white_40"
-            android:textSize="11sp"
-            android:visibility="gone" />
+        <Button
+            android:id="@+id/btn_recommended_vpn"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="6dp"
+            android:background="@drawable/bg_nav_tile"
+            android:focusable="true"
+            android:fontFamily="sans-serif-bold"
+            android:gravity="center"
+            android:text="Рекомендуемые VPN"
+            android:textAllCaps="false"
+            android:textColor="@color/leanback_cyan"
+            android:textSize="11sp" />
+
+        <Button
+            android:id="@+id/btn_open_system_vpn"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:layout_marginStart="6dp"
+            android:background="@drawable/bg_tab_pill"
+            android:focusable="true"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="@string/vpn_btn_system_settings"
+            android:textAllCaps="false"
+            android:textColor="@color/white_60"
+            android:textSize="11sp" />
 
     </LinearLayout>
-
-    <!-- System VPN Settings Button -->
-    <Button
-        android:id="@+id/btn_open_system_vpn"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/bg_nav_tile"
-        android:focusable="true"
-        android:fontFamily="sans-serif-bold"
-        android:gravity="center"
-        android:text="System VPN Settings (Android)"
-        android:textColor="@color/white"
-        android:textSize="12sp" />
 
 </LinearLayout>

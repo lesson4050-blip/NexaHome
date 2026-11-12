@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App & General -->
+    <string name="app_name">Orbit TV</string>
+    <string name="search_hint">Поиск фильмов, сериалов, приложений...</string>
+    <string name="search_voice">Голосовой поиск</string>
+    <string name="settings_title">Настройки</string>
+    <string name="close_action">Закрыть</string>
+    <string name="game_close_action">Закрыть игру</string>
+    <string name="open_action">ОТКРЫТЬ</string>
+
+    <!-- Topbar & Status -->
+    <string name="vpn_status_connected">VPN</string>
+    <string name="vpn_status_disconnected">ОТКЛ</string>
+
+    <!-- Navigation Drawer / Sidebar -->
+    <string name="nav_media">Главная</string>
+    <string name="nav_home_apps">Приложения</string>
+    <string name="nav_iptv">ТВ каналы</string>
+    <string name="nav_games">Игры</string>
+    <string name="nav_optimizer">Оптимизация</string>
+    <string name="nav_cast">Трансляция</string>
+    <string name="nav_power">Питание</string>
+
+    <!-- Home Screen Shelves -->
+    <string name="title_movies">Фильмы</string>
+    <string name="subtitle_movies_trending">Популярно на этой неделе</string>
+    <string name="title_series">Сериалы</string>
+    <string name="subtitle_series_top">Лучшие сериалы</string>
+    <string name="see_all">Все</string>
+    <string name="badge_movie">ФИЛЬМ</string>
+    <string name="badge_series">СЕРИАЛ</string>
+    <string name="genre_feature">Фильм</string>
+
+    <!-- Apps Hub Grid -->
+    <string name="search_apps_hint">Поиск приложений и игр</string>
+    <string name="apps_hub_title">Каталог приложений</string>
+    <string name="apps_count_format">Установлено: %1$d</string>
+    <string name="tab_all">Все приложения</string>
+    <string name="tab_favorites">Избранное</string>
+    <string name="tab_hidden">Скрытые</string>
+    <string name="tab_recommended">Рекомендуемые</string>
+    <string name="apps_count_recommended">%1$d рекомендуемых сервисов</string>
+    <string name="recommended_install">УСТАНОВИТЬ</string>
+    <string name="recommended_open">ОТКРЫТЬ</string>
+    <string name="app_cant_launch">Не удалось запустить %1$s</string>
+    <string name="unable_open_wifi_settings">Не удалось открыть настройки Wi-Fi</string>
+    <string name="unable_open_settings">Не удалось открыть настройки</string>
+    <string name="apps_empty_favorites">В избранном пока нет приложений.\nЗажмите [OK] или [MENU] на карточке приложения, чтобы закрепить его.</string>
+    <string name="apps_empty_hidden">Скрытых приложений нет.\nЗажмите [OK] или [MENU] на ненужном приложении, чтобы скрыть его.</string>
+    <string name="apps_empty_all">Приложения не найдены.</string>
+
+    <!-- App Options Dialog -->
+    <string name="app_options_pin_title">В избранное на главном экране</string>
+    <string name="app_options_pin_desc">Закрепить на верхней полке быстрого доступа</string>
+    <string name="app_options_unpin_title">Убрать из избранного</string>
+    <string name="app_options_unpin_desc">Удалить с полки быстрого доступа на главном экране</string>
+    <string name="app_options_hide_title">Скрыть приложение</string>
+    <string name="app_options_hide_desc">Убрать ненужное приложение из списков лаунчера</string>
+    <string name="app_options_unhide_title">Восстановить приложение</string>
+    <string name="app_options_unhide_desc">Снова показывать приложение на главном экране и в сетке</string>
+    <string name="app_options_info_title">О приложении и разрешения</string>
+    <string name="app_options_info_desc">Память, очистка кэша и остановка в системных настройках</string>
+    <string name="app_options_uninstall_title">Удалить приложение</string>
+    <string name="app_options_uninstall_desc">Полное удаление программы с устройства</string>
+    <string name="app_options_toast_pinned">«%1$s» закреплено в Избранном</string>
+    <string name="app_options_toast_unpinned">«%1$s» удалено из Избранного</string>
+    <string name="app_options_toast_hidden">«%1$s» скрыто из лаунчера</string>
+    <string name="app_options_toast_restored">«%1$s» восстановлено в лаунчере</string>
+    <string name="app_options_toast_cant_open_settings">Не удалось открыть настройки для «%1$s»</string>
+    <string name="app_options_toast_cant_uninstall">Не удалось удалить «%1$s»</string>
+
+    <!-- IPTV Live TV Screen -->
+    <string name="iptv_screen_title">Прямой эфир и телепрограмма</string>
+    <string name="iptv_epg_guide">Телепрограмма EPG</string>
+    <string name="iptv_live">ЭФИР</string>
+    <string name="iptv_categories">Категории</string>
+    <string name="cat_all">Все</string>
+    <string name="cat_sports">Спорт</string>
+    <string name="cat_cinema">Кино</string>
+    <string name="cat_news">Новости</string>
+    <string name="iptv_stream_error">Ошибка воспроизведения: %1$s</string>
+    <string name="iptv_no_channels">Нет каналов в выбранной категории</string>
+    <string name="iptv_next_program_format">Далее: %1$s</string>
+
+    <!-- TV Power Dialog -->
+    <string name="power_dialog_title">Питание ТВ</string>
+    <string name="power_dialog_subtitle">Управление питанием и режимом сна приставки</string>
+    <string name="power_action_sleep">Спящий режим</string>
+    <string name="power_action_sleep_desc">Погасить экран и перевести ТВ-бокс в режим сна</string>
+    <string name="power_action_reboot">Перезагрузка</string>
+    <string name="power_action_reboot_desc">Перезапустить систему Android TV</string>
+    <string name="power_action_shutdown">Выключение</string>
+    <string name="power_action_shutdown_desc">Полное отключение питания устройства</string>
+    <string name="power_action_timer">Таймер сна (30 мин)</string>
+    <string name="power_action_timer_desc">Автоматически отправить в сон через 30 минут</string>
+    <string name="power_timer_toast">Таймер сна активирован: отключение через %1$d минут</string>
+    <string name="power_accessibility_sleep_prompt">Служба Orbit Home Guard не включена в Спец. возможностях. Включите ее для управления питанием.</string>
+    <string name="power_accessibility_reboot_prompt">Включите Orbit Home Guard в Спец. возможностях для вызова системного меню перезагрузки.</string>
+    <string name="power_accessibility_shutdown_prompt">Включите Orbit Home Guard в Спец. возможностях для выключения устройства.</string>
+
+    <!-- Optimizer & System Monitor Screen -->
+    <string name="optimizer_header_title">Монитор и оптимизация ТВ</string>
+    <string name="optimizer_header_subtitle">Статус системы, памяти и сетевого подключения</string>
+    <string name="optimizer_card_ram_title">Оперативная память (RAM)</string>
+    <string name="optimizer_badge_normal">НОРМА</string>
+    <string name="optimizer_badge_high">НАГРУЗКА</string>
+    <string name="optimizer_ram_format">%1$.1f ГБ из %2$.1f ГБ (%3$d%%)</string>
+    <string name="optimizer_ram_details">Свободно: %1$d МБ • Занято системой: %2$d МБ</string>
+    <string name="optimizer_btn_boost">Ускорить ТВ (Очистить RAM)</string>
+    <string name="optimizer_btn_boosting">Очистка процессов...</string>
+    <string name="optimizer_boost_freed">Освобождено %1$d МБ оперативной памяти</string>
+    <string name="optimizer_boost_done">Оперативная память оптимизирована</string>
+    <string name="optimizer_card_storage_title">Внутренний накопитель (Flash)</string>
+    <string name="optimizer_storage_format">%1$.1f ГБ из %2$.1f ГБ (%3$d%%)</string>
+    <string name="optimizer_storage_free">Доступно для записи: %1$.1f ГБ</string>
+    <string name="optimizer_storage_ready">Память доступна</string>
+    <string name="optimizer_btn_storage">Системный менеджер хранилища</string>
+    <string name="optimizer_card_net_title">Сеть и Интернет</string>
+    <string name="optimizer_net_badge_no">НЕТ СЕТИ</string>
+    <string name="optimizer_net_badge_connected">СЕТЬ</string>
+    <string name="optimizer_net_no_conn">Соединение отсутствует</string>
+    <string name="optimizer_net_lan">Проводной кабель LAN подключен</string>
+    <string name="optimizer_net_wifi">Беспроводная сеть Wi-Fi</string>
+    <string name="optimizer_net_vpn">Защищенный VPN-туннель активен</string>
+    <string name="optimizer_net_online">Интернет-соединение активно</string>
+    <string name="optimizer_ping_prefix">Пинг: </string>
+    <string name="optimizer_ping_testing">Пинг: замер...</string>
+    <string name="optimizer_ping_format">Пинг: %1$s мс</string>
+    <string name="optimizer_ping_unavailable">Пинг: недоступен</string>
+    <string name="optimizer_speed_prefix">Скорость: </string>
+    <string name="optimizer_speed_testing">Скорость: замер...</string>
+    <string name="optimizer_speed_format">Скорость: %1$.1f Мбит/с</string>
+    <string name="optimizer_speed_available">Скорость: доступно</string>
+    <string name="optimizer_btn_speedtest">Запустить тест скорости и пинга</string>
+    <string name="optimizer_speedtest_running">Проверка сети...</string>
+    <string name="optimizer_speedtest_retry">Повторить тест</string>
+    <string name="optimizer_card_hw_title">Аппаратная платформа</string>
+    <string name="optimizer_uptime_format">Аптайм: %1$d ч %2$d мин</string>
+    <string name="optimizer_model_format">Модель: %1$s</string>
+    <string name="optimizer_chip_format">Чипсет: %1$s (%2$d %3$s)</string>
+    <string name="optimizer_core_single">ядро</string>
+    <string name="optimizer_core_plural">ядер</string>
+    <string name="optimizer_os_format">ОС: Android %1$s (API %2$d)</string>
+    <string name="optimizer_display_format">Экран: %1$dx%2$d @ %3$d Гц</string>
+    <string name="optimizer_btn_settings">Системные настройки ТВ</string>
+    <string name="optimizer_quick_dev">ДЛЯ РАЗРАБ.</string>
+    <string name="optimizer_quick_display">ЭКРАН / AFR</string>
+    <string name="optimizer_quick_audio">ЗВУК / HDMI</string>
+    <string name="optimizer_quick_apps">СЛУЖБЫ</string>
+    <string name="toast_storage_unavailable">Раздел \'Хранилище\' недоступен</string>
+    <string name="toast_dev_options_hint">Включите режим разработчика в настройках (7 кликов по номеру сборки)</string>
+    <string name="toast_display_unavailable">Настройки экрана недоступны</string>
+    <string name="toast_audio_unavailable">Настройки звука недоступны</string>
+    <string name="toast_apps_unavailable">Диспетчер приложений недоступен</string>
+
+    <!-- Wireless Cast & Web Remote Screen -->
+    <string name="cast_header_title">Беспроводная трансляция и веб-пульт</string>
+    <string name="cast_network_info_format">Orbit TV • Wi-Fi (Готов к подключению)</string>
+    <string name="cast_refresh_pin">Обновить PIN</string>
+    <string name="cast_qr_hint">ОТСКАНИРУЙТЕ ДЛЯ ПОДКЛЮЧЕНИЯ</string>
+    <string name="cast_expiry_format">Действителен: %1$02d:%2$02d</string>
+    <string name="cast_pin_new_format">Новый PIN сгенерирован: %1$s</string>
+    <string name="cast_proto_airplay_title">Apple AirPlay</string>
+    <string name="cast_proto_airplay_desc">Трансляция экрана с iPhone, iPad, Mac</string>
+    <string name="cast_proto_chromecast_title">Google Cast / Chromecast</string>
+    <string name="cast_proto_chromecast_desc">Трансляция из приложений YouTube, Chrome, Android</string>
+    <string name="cast_proto_miracast_title">Miracast (Беспроводной экран)</string>
+    <string name="cast_proto_miracast_desc">Прямое дублирование экрана Android и Windows</string>
+    <string name="cast_badge_connect">Подключить</string>
+    <string name="cast_miracast_toast">Miracast активен. Откройте «Беспроводной экран» или Smart View на смартфоне или ПК</string>
+    <string name="cast_chromecast_toast">Chromecast готов к трансляции из YouTube, Chrome или Google Home</string>
+    <string name="cast_airscreen_toast">%1$s активен через AirScreen. Выберите Orbit TV на телефоне</string>
+    <string name="cast_airplay_dialog_title">Apple AirPlay</string>
+    <string name="cast_airplay_dialog_msg">Для трансляции с iPhone, iPad или Mac убедитесь, что устройство подключено к одной сети Wi-Fi.\n\nИмя ТВ: Orbit TV\nIP адрес: %1$s\n\nРекомендуется установить AirScreen из Google Play.</string>
+    <string name="cast_btn_install_airscreen">Установить AirScreen</string>
+    <string name="cast_btn_understood">Понятно</string>
+    <string name="cast_network_offline">Нет подключения к сети • Подключите ТВ к Wi-Fi</string>
+    <string name="cast_pin_offline">НЕТ СЕТИ</string>
+    <string name="cast_badge_open">ОТКРЫТЬ</string>
+    <string name="cast_badge_setup">НАСТРОЙКА</string>
+    <string name="cast_badge_launch">ЗАПУСК</string>
+    <string name="cast_tag_web">ВЕБ-ПУЛЬТ</string>
+    <string name="cast_tag_system">СИСТЕМНЫЕ ПРОТОКОЛЫ</string>
+    <string name="cast_pin_access_label">PIN-КОД ДОСТУПА К ПУЛЬТУ</string>
+    <string name="cast_pin_purpose_hint">PIN нужен только для веб-пульта • Не требуется для Miracast</string>
+    <string name="cast_btn_launch_airscreen">Запустить AirScreen (Приемник)</string>
+    <string name="cast_btn_display_settings">Настройки экрана Android</string>
+    <string name="cast_airplay_instructions">1. Подключите iPhone, iPad или Mac к той же сети Wi-Fi, что и ТВ.\n2. Откройте «Пункт управления» и нажмите «Повтор экрана».\n3. Выберите в списке приставку «Orbit TV».\n4. Orbit TV использует сертифицированный приемник AirScreen для приема AirPlay с аппаратным декодированием.</string>
+    <string name="cast_chromecast_instructions">1. Подключите телефон или ПК к той же сети Wi-Fi.\n2. Нажмите значок трансляции в YouTube, Chrome или Google Home.\n3. Orbit TV готов к приему видеопотока через AirScreen или встроенный сервис Google Cast.</string>
+    <string name="cast_miracast_instructions">1. Смартфоны Android: откройте шторку быстрых настроек и включите «Smart View», «Беспроводной дисплей» или «Трансляция».\n2. Windows 10/11: нажмите сочетание клавиш Win + K и выберите «Orbit TV».\n3. Внимание: ТВ-приставки на чистом Android TV не имеют встроенного Wi-Fi Direct чипа, поэтому сигнал принимает шлюз AirScreen.\n4. PIN-код со страницы трансляции НЕ требуется — он нужен только для веб-пульта слева.</string>
+    <string name="cast_section_web_title">ВЕБ-ПУЛЬТ И ПРЯМАЯ ТРАНСЛЯЦИЯ</string>
+    <string name="cast_section_web_subtitle">С любого смартфона без приложений</string>
+    <string name="cast_section_web_desc">Наведите камеру смартфона (iPhone или Android) на QR-код для отправки видео с YouTube, файлов и управления громкостью.</string>
+    <string name="cast_section_mirror_title">ДУБЛИРОВАНИЕ ЭКРАНА СМАРТФОНА / ПК (ЗЕРКАЛО)</string>
+    <string name="cast_section_mirror_subtitle">Прямое зеркалирование дисплея 1-в-1</string>
+    <string name="cast_miracast_guide">Для Android: откройте шторку и нажмите «Smart View» или «Трансляция». На ПК (Windows): нажмите сочетание Win + K.\n\nИмя ТВ: Orbit TV\nЕсли в телевизоре нет чипа Wi-Fi Direct, AirScreen работает универсальным приемником.</string>
+    <string name="cast_toast_yt_started">Трансляция YouTube запущена со смартфона</string>
+    <string name="cast_toast_video_started">Воспроизведение видео запущено</string>
+    <string name="cast_toast_media_failed">Не удалось открыть медиа</string>
+    <string name="cast_toast_file_opened">Медиафайл открыт на телевизоре</string>
+    <string name="cast_toast_file_received">Файл получен на ТВ (%1$d KB)</string>
+
+    <!-- Search Dialog -->
+    <string name="search_dialog_hint">Поиск фильмов, сериалов, приложений...</string>
+    <string name="search_btn_youtube">Искать в YouTube</string>
+    <string name="search_btn_google">Искать в Google</string>
+    <string name="search_empty_hint">Введите запрос для поиска по установленным приложениям, фильмам и видео</string>
+    <string name="search_section_apps">Найденные приложения</string>
+    <string name="search_section_media">Фильмы и сериалы</string>
+    <string name="search_no_results">Ничего не найдено по данному запросу</string>
+    <string name="search_voice_prompt">Произнесите название фильма или приложения</string>
+    <string name="search_voice_unavailable">Голосовой ввод недоступен на этом устройстве. Используйте клавиатуру.</string>
+    <string name="search_default_yt_query">Трейлеры кино</string>
+    <string name="search_default_web_query">Новости кино</string>
+    <string name="search_cant_open_yt">Не удалось открыть YouTube</string>
+    <string name="search_cant_open_browser">Не удалось открыть браузер</string>
+
+    <!-- Media Detail Dialog -->
+    <string name="media_genre_fallback">Художественный фильм</string>
+    <string name="media_desc_unavailable">Описание недоступно.</string>
+    <string name="media_btn_trailer">Трейлер</string>
+    <string name="media_btn_search_apps">Искать в приложениях</string>
+    <string name="media_search_toast">Поиск «%1$s»...</string>
+
+    <!-- Media Genres -->
+    <string name="genre_action">Боевик</string>
+    <string name="genre_adventure">Приключения</string>
+    <string name="genre_animation">Мультфильм</string>
+    <string name="genre_biography">Биография</string>
+    <string name="genre_comedy">Комедия</string>
+    <string name="genre_crime">Криминал</string>
+    <string name="genre_documentary">Документальный</string>
+    <string name="genre_drama">Драма</string>
+    <string name="genre_family">Семейный</string>
+    <string name="genre_fantasy">Фэнтези</string>
+    <string name="genre_history">История</string>
+    <string name="genre_horror">Ужасы</string>
+    <string name="genre_music">Музыка</string>
+    <string name="genre_musical">Мюзикл</string>
+    <string name="genre_mystery">Детектив</string>
+    <string name="genre_romance">Мелодрама</string>
+    <string name="genre_scifi">Фантастика</string>
+    <string name="genre_sport">Спорт</string>
+    <string name="genre_thriller">Триллер</string>
+    <string name="genre_war">Военный</string>
+    <string name="genre_western">Вестерн</string>
+
+    <!-- VPN Dialog -->
+    <string name="vpn_dialog_title">Статус сети VPN</string>
+    <string name="vpn_dialog_desc">Мониторинг и управление защищенным туннелем</string>
+    <string name="vpn_active_protected">VPN АКТИВЕН (Защищено)</string>
+    <string name="vpn_active_country">VPN АКТИВЕН • %1$s</string>
+    <string name="vpn_disconnected">VPN ОТКЛЮЧЕН</string>
+    <string name="vpn_traffic_unencrypted">Прямое подключение • Трафик не шифруется</string>
+    <string name="vpn_clients_title">Установленные клиенты VPN</string>
+    <string name="vpn_no_clients">Сторонние клиенты VPN не обнаружены (WireGuard, Amnezia, OpenVPN)</string>
+    <string name="vpn_btn_system_settings">Системные настройки VPN (Android)</string>
+
+    <!-- Accessibility Service -->
+    <string name="accessibility_home_service_label">Orbit TV Home Guard</string>
+    <string name="accessibility_home_service_desc">Обеспечивает приоритетный возврат на домашний экран Orbit TV при нажатии кнопки Home на пультах ТВ-боксов.</string>
+
+    <!-- Cast Web Remote (Served to mobile browsers) -->
+    <string name="cast_web_connected">Подключено к ТВ (PIN: %1$s)</string>
+    <string name="cast_web_tab_youtube">YouTube / Ссылка</string>
+    <string name="cast_web_tab_files">Файлы</string>
+    <string name="cast_web_tab_remote">Пульт</string>
+    <string name="cast_web_label_url">Ссылка на YouTube или видеопоток (MP4/HLS):</string>
+    <string name="cast_web_placeholder_url">https://youtu.be/... или https://.../video.mp4</string>
+    <string name="cast_web_btn_play">▶ Воспроизвести на ТВ</string>
+    <string name="cast_web_label_files">Выберите видео или фото из галереи:</string>
+    <string name="cast_web_btn_upload">⬆ Отправить на экран ТВ</string>
+    <string name="cast_web_vol_up">🔊 Громкость +</string>
+    <string name="cast_web_vol_down">🔉 Громкость -</string>
+    <string name="cast_web_mute">🔇 Без звука</string>
+    <string name="cast_web_play_pause">⏯ Пауза / Плей</string>
+    <string name="cast_web_sent_toast">Отправлено на телевизор!</string>
+    <string name="cast_web_alert_enter_url">Пожалуйста, введите ссылку на видео</string>
+    <string name="cast_web_alert_conn_error">Ошибка соединения с ТВ</string>
+    <string name="cast_web_alert_select_file">Выберите файл для отправки</string>
+    <string name="cast_web_alert_uploading">Отправка на экран ТВ...</string>
+    <string name="cast_web_alert_file_opened">Файл открыт на телевизоре!</string>
+    <string name="cast_web_alert_upload_error">Ошибка загрузки на ТВ</string>
+    <string name="cast_web_cmd_done">Команда выполнена</string>
+    <string name="trailer_title_format">%1$s — Трейлер</string>
+    <string name="trailer_btn_open_yt">Открыть в YouTube</string>
+    <string name="trailer_loading">Загрузка трейлера…</string>
+    <string name="search_voice_listening">Слушаю…</string>
+    <string name="search_voice_processing">Распознавание…</string>
+    <string name="vpn_btn_connect">Подключить VPN</string>
+    <string name="vpn_btn_disconnect">Отключить VPN</string>
+    <string name="vpn_locations_title">Локация / Сервер</string>
+    <string name="vpn_loc_warp">⚡ Cloudflare WARP</string>
+    <string name="vpn_loc_us">🇺🇸 США</string>
+    <string name="vpn_loc_de">🇩🇪 Германия</string>
+    <string name="vpn_loc_pl">🇵🇱 Польша</string>
+</resources>

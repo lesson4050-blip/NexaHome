@@ -1,33 +1,295 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- App & General -->
     <string name="app_name">Orbit TV</string>
-    <string name="search_hint">Search Movies, Serial, Video</string>
+    <string name="search_hint">Search Movies, Series, Apps...</string>
     <string name="search_voice">Voice Search</string>
-    
-    <!-- Topbar Labels -->
+    <string name="settings_title">Settings</string>
+    <string name="close_action">Close</string>
+    <string name="game_close_action">Close Game</string>
+    <string name="open_action">OPEN</string>
+
+    <!-- Topbar & Status -->
     <string name="vpn_status_connected">VPN</string>
     <string name="vpn_status_disconnected">OFF</string>
-    <string name="settings_title">Settings</string>
-    
-    <!-- Row Section Titles -->
-    <string name="title_movies">Movies</string>
-    <string name="subtitle_movies_trending">Trending this week</string>
-    <string name="title_series">Serial</string>
-    <string name="subtitle_series_top">Top TV Shows</string>
-    <string name="see_all">See all</string>
-    
-    <!-- Nav Drawer Content Descriptions -->
-    <string name="nav_home_apps">Home Apps</string>
-    <string name="nav_media">Media &amp; Streaming</string>
-    <string name="nav_iptv">Live TV / IPTV</string>
+
+    <!-- Navigation Drawer / Sidebar -->
+    <string name="nav_media">Home</string>
+    <string name="nav_home_apps">Apps</string>
+    <string name="nav_iptv">TV Channels</string>
     <string name="nav_games">Gaming Arcade</string>
-    <string name="nav_cast">Wireless Display</string>
+    <string name="nav_optimizer">Optimizer</string>
+    <string name="nav_cast">Screen Cast</string>
     <string name="nav_power">System Power</string>
 
-    <!-- Error / Capability States -->
-    <string name="vpn_not_configured">No VPN client configured. Tap to open Settings.</string>
-    <string name="cast_not_supported">Screen Mirroring is managed by system settings.</string>
-    <!-- Accessibility Home Watcher -->
+    <!-- Home Screen Shelves -->
+    <string name="title_movies">Movies</string>
+    <string name="subtitle_movies_trending">Trending this week</string>
+    <string name="title_series">Series</string>
+    <string name="subtitle_series_top">Top TV Shows</string>
+    <string name="see_all">See all</string>
+    <string name="badge_movie">MOVIE</string>
+    <string name="badge_series">TV SERIES</string>
+    <string name="genre_feature">Feature</string>
+
+    <!-- Apps Hub Grid -->
+    <string name="search_apps_hint">Search Apps &amp; Games</string>
+    <string name="apps_hub_title">Apps &amp; Games Hub</string>
+    <string name="apps_count_format">%1$d installed</string>
+    <string name="tab_all">All Apps</string>
+    <string name="tab_favorites">Favorites</string>
+    <string name="tab_hidden">Hidden</string>
+    <string name="tab_recommended">Recommended</string>
+    <string name="apps_count_recommended">%1$d recommended services</string>
+    <string name="recommended_install">INSTALL</string>
+    <string name="recommended_open">OPEN</string>
+    <string name="app_cant_launch">Cannot launch %1$s</string>
+    <string name="unable_open_wifi_settings">Unable to open Wi-Fi settings</string>
+    <string name="unable_open_settings">Unable to open Settings</string>
+    <string name="apps_empty_favorites">No favorite apps pinned yet.\nHold [OK] or [MENU] on any app to pin it here.</string>
+    <string name="apps_empty_hidden">No hidden apps.\nHold [OK] or [MENU] on bloatware apps to hide them.</string>
+    <string name="apps_empty_all">No applications found.</string>
+
+    <!-- App Options Dialog -->
+    <string name="app_options_pin_title">Pin to Favorites Shelf</string>
+    <string name="app_options_pin_desc">Show on Home screen quick access shelf</string>
+    <string name="app_options_unpin_title">Unpin from Favorites Shelf</string>
+    <string name="app_options_unpin_desc">Remove from Home screen quick access shelf</string>
+    <string name="app_options_hide_title">Hide App (Debloat)</string>
+    <string name="app_options_hide_desc">Remove bloatware from Home &amp; Apps shelf</string>
+    <string name="app_options_unhide_title">Unhide App (Restore)</string>
+    <string name="app_options_unhide_desc">Restore back to Home and main application grid</string>
+    <string name="app_options_info_title">App Details &amp; Permissions</string>
+    <string name="app_options_info_desc">Storage, clear cache, and force stop in system settings</string>
+    <string name="app_options_uninstall_title">Uninstall Application</string>
+    <string name="app_options_uninstall_desc">Completely delete from device</string>
+    <string name="app_options_toast_pinned">Pinned %1$s to Favorites</string>
+    <string name="app_options_toast_unpinned">Unpinned %1$s</string>
+    <string name="app_options_toast_hidden">Hidden %1$s from Launcher</string>
+    <string name="app_options_toast_restored">Restored %1$s</string>
+    <string name="app_options_toast_cant_open_settings">Cannot open settings for %1$s</string>
+    <string name="app_options_toast_cant_uninstall">Cannot uninstall %1$s</string>
+
+    <!-- IPTV Live TV Screen -->
+    <string name="iptv_screen_title">Live TV &amp; EPG Guide</string>
+    <string name="iptv_epg_guide">EPG Live TV Guide</string>
+    <string name="iptv_live">LIVE</string>
+    <string name="iptv_categories">Categories</string>
+    <string name="cat_all">All</string>
+    <string name="cat_sports">Sports</string>
+    <string name="cat_cinema">Cinema</string>
+    <string name="cat_news">News</string>
+    <string name="iptv_stream_error">Stream error: %1$s</string>
+    <string name="iptv_no_channels">No channels in this category</string>
+    <string name="iptv_next_program_format">Next: %1$s</string>
+
+    <!-- TV Power Dialog -->
+    <string name="power_dialog_title">TV Power</string>
+    <string name="power_dialog_subtitle">Manage power and sleep modes</string>
+    <string name="power_action_sleep">Sleep Mode</string>
+    <string name="power_action_sleep_desc">Turn off display and put TV box to sleep</string>
+    <string name="power_action_reboot">Restart</string>
+    <string name="power_action_reboot_desc">Restart Android TV system</string>
+    <string name="power_action_shutdown">Power Off</string>
+    <string name="power_action_shutdown_desc">Completely turn off the device</string>
+    <string name="power_action_timer">Sleep Timer (30 min)</string>
+    <string name="power_action_timer_desc">Automatically put TV to sleep in 30 minutes</string>
+    <string name="power_timer_toast">Sleep timer set: turning off in %1$d minutes</string>
+    <string name="power_accessibility_sleep_prompt">Orbit Home Guard is not enabled in Accessibility Settings. Enable it to manage TV power.</string>
+    <string name="power_accessibility_reboot_prompt">Enable Orbit Home Guard in Accessibility Settings to trigger the system restart menu.</string>
+    <string name="power_accessibility_shutdown_prompt">Enable Orbit Home Guard in Accessibility Settings to power off device.</string>
+
+    <!-- Optimizer & System Monitor Screen -->
+    <string name="optimizer_header_title">TV Monitor &amp; Optimization</string>
+    <string name="optimizer_header_subtitle">System health, RAM status and network speed</string>
+    <string name="optimizer_card_ram_title">Memory (RAM)</string>
+    <string name="optimizer_badge_normal">NORMAL</string>
+    <string name="optimizer_badge_high">HIGH</string>
+    <string name="optimizer_ram_format">%1$.1f GB of %2$.1f GB (%3$d%%)</string>
+    <string name="optimizer_ram_details">Free: %1$d MB • System: %2$d MB</string>
+    <string name="optimizer_btn_boost">Boost TV (Clear RAM)</string>
+    <string name="optimizer_btn_boosting">Cleaning processes...</string>
+    <string name="optimizer_boost_freed">Freed %1$d MB of RAM</string>
+    <string name="optimizer_boost_done">RAM is already optimized</string>
+    <string name="optimizer_card_storage_title">Internal Storage (Flash)</string>
+    <string name="optimizer_storage_format">%1$.1f GB of %2$.1f GB (%3$d%%)</string>
+    <string name="optimizer_storage_free">Available for storage: %1$.1f GB</string>
+    <string name="optimizer_storage_ready">Storage ready</string>
+    <string name="optimizer_btn_storage">System Storage Manager</string>
+    <string name="optimizer_card_net_title">Network &amp; Internet</string>
+    <string name="optimizer_net_badge_no">OFFLINE</string>
+    <string name="optimizer_net_badge_connected">ONLINE</string>
+    <string name="optimizer_net_no_conn">No active connection</string>
+    <string name="optimizer_net_lan">Wired LAN cable connected</string>
+    <string name="optimizer_net_wifi">Wi-Fi network connected</string>
+    <string name="optimizer_net_vpn">Secure VPN tunnel active</string>
+    <string name="optimizer_net_online">Internet connection active</string>
+    <string name="optimizer_ping_prefix">Ping: </string>
+    <string name="optimizer_ping_testing">Ping: testing...</string>
+    <string name="optimizer_ping_format">Ping: %1$s ms</string>
+    <string name="optimizer_ping_unavailable">Ping: unavailable</string>
+    <string name="optimizer_speed_prefix">Speed: </string>
+    <string name="optimizer_speed_testing">Speed: testing...</string>
+    <string name="optimizer_speed_format">Speed: %1$.1f Mbps</string>
+    <string name="optimizer_speed_available">Speed: available</string>
+    <string name="optimizer_btn_speedtest">Run Speed &amp; Ping Test</string>
+    <string name="optimizer_speedtest_running">Checking network...</string>
+    <string name="optimizer_speedtest_retry">Repeat Test</string>
+    <string name="optimizer_card_hw_title">Hardware Platform</string>
+    <string name="optimizer_uptime_format">Uptime: %1$d h %2$d min</string>
+    <string name="optimizer_model_format">Model: %1$s</string>
+    <string name="optimizer_chip_format">Chipset: %1$s (%2$d %3$s)</string>
+    <string name="optimizer_core_single">core</string>
+    <string name="optimizer_core_plural">cores</string>
+    <string name="optimizer_os_format">OS: Android %1$s (API %2$d)</string>
+    <string name="optimizer_display_format">Display: %1$dx%2$d @ %3$d Hz</string>
+    <string name="optimizer_btn_settings">Android TV Settings</string>
+    <string name="optimizer_quick_dev">DEV OPTIONS</string>
+    <string name="optimizer_quick_display">DISPLAY / AFR</string>
+    <string name="optimizer_quick_audio">AUDIO / HDMI</string>
+    <string name="optimizer_quick_apps">APPS</string>
+    <string name="toast_storage_unavailable">Storage section is unavailable</string>
+    <string name="toast_dev_options_hint">Enable Developer Options in Settings (7 taps on Build number)</string>
+    <string name="toast_display_unavailable">Display settings unavailable</string>
+    <string name="toast_audio_unavailable">Audio settings unavailable</string>
+    <string name="toast_apps_unavailable">Application manager unavailable</string>
+
+    <!-- Wireless Cast & Web Remote Screen -->
+    <string name="cast_header_title">Wireless Cast &amp; Web Remote</string>
+    <string name="cast_network_info_format">Orbit TV • Wi-Fi (Ready to connect)</string>
+    <string name="cast_refresh_pin">Refresh PIN</string>
+    <string name="cast_qr_hint">SCAN TO CONNECT</string>
+    <string name="cast_expiry_format">Expires in: %1$02d:%2$02d</string>
+    <string name="cast_pin_new_format">New PIN generated: %1$s</string>
+    <string name="cast_proto_airplay_title">Apple AirPlay</string>
+    <string name="cast_proto_airplay_desc">iPhone / iPad Control Center -&gt; Screen Mirroring</string>
+    <string name="cast_proto_chromecast_title">Google Cast / Chromecast</string>
+    <string name="cast_proto_chromecast_desc">Cast icon in YouTube, Chrome browser, Google Home</string>
+    <string name="cast_proto_miracast_title">Miracast (Wi-Fi Display)</string>
+    <string name="cast_proto_miracast_desc">Android Smart View, Quick Settings Cast, Win + K</string>
+    <string name="cast_badge_connect">Connect</string>
+    <string name="cast_miracast_toast">Miracast ready. Open \"Wireless display\" or \"Smart View\" on phone/PC</string>
+    <string name="cast_chromecast_toast">Chromecast ready to cast from YouTube, Chrome, or Google Home</string>
+    <string name="cast_btn_install_airscreen">Install AirScreen</string>
+    <string name="cast_btn_understood">Got it</string>
+    <string name="cast_network_offline">No network connection • Connect TV to Wi-Fi</string>
+    <string name="cast_pin_offline">OFFLINE</string>
+    <string name="cast_badge_open">OPEN</string>
+    <string name="cast_badge_setup">SETUP</string>
+    <string name="cast_badge_launch">LAUNCH</string>
+    <string name="cast_tag_web">WEB REMOTE</string>
+    <string name="cast_tag_system">SYSTEM MIRRORING</string>
+    <string name="cast_pin_access_label">REMOTE ACCESS PIN</string>
+    <string name="cast_pin_purpose_hint">PIN is only for web remote • Not needed for Miracast</string>
+    <string name="cast_btn_launch_airscreen">Launch AirScreen (Receiver)</string>
+    <string name="cast_btn_display_settings">Android Display Settings</string>
+    <string name="cast_airplay_instructions">1. Connect iPhone, iPad or Mac to the same Wi-Fi network as TV.\n2. Open Control Center and tap \'Screen Mirroring\'.\n3. Orbit TV uses AirScreen to receive AirPlay with full hardware acceleration.</string>
+    <string name="cast_chromecast_instructions">1. Connect your phone or PC to the same Wi-Fi.\n2. Tap the Cast icon in YouTube, Chrome, or Google Home.\n3. Orbit TV is ready to receive stream via AirScreen or native Cast.</string>
+    <string name="cast_miracast_instructions">1. Open \'Smart View\' (Samsung) or \'Wireless Display\' (Android/Windows).\n2. Select Orbit TV to mirror your screen directly.\n3. If your TV lacks hardware Wi-Fi Direct sink, AirScreen provides software Miracast receiver.\n4. PIN on screen is NOT needed for Miracast — it is strictly for the web remote on the left.</string>
+    <string name="cast_section_web_title">WEB REMOTE &amp; DIRECT STREAM</string>
+    <string name="cast_section_web_subtitle">From any phone without installing apps</string>
+    <string name="cast_section_web_desc">Point phone camera (iPhone or Android) at the QR code to stream YouTube, photos and videos directly to TV.</string>
+    <string name="cast_section_mirror_title">SCREEN MIRRORING (PHONE / PC)</string>
+    <string name="cast_section_mirror_subtitle">Direct 1:1 wireless display mirroring</string>
+    <string name="cast_miracast_guide">To mirror from Android: open quick settings and tap \"Smart View\" or \"Cast\". On Windows PC: press Win + K.\n\nTV Name: Orbit TV\nIf your TV lacks native Wi-Fi Direct hardware, AirScreen acts as the universal receiver.</string>
+    <string name="cast_toast_yt_started">YouTube playback started from phone</string>
+    <string name="cast_toast_video_started">Video playback started</string>
+    <string name="cast_toast_media_failed">Unable to open media</string>
+    <string name="cast_toast_file_opened">Media file opened on TV</string>
+    <string name="cast_toast_file_received">File received on TV (%1$d KB)</string>
+
+    <!-- Search Dialog -->
+    <string name="search_dialog_hint">Search movies, series, or apps...</string>
+    <string name="search_btn_youtube">Search YouTube</string>
+    <string name="search_btn_google">Search Google</string>
+    <string name="search_empty_hint">Enter query to search installed apps, movies, and videos</string>
+    <string name="search_section_apps">Matching Apps</string>
+    <string name="search_section_media">Movies &amp; Series</string>
+    <string name="search_no_results">Nothing found for this query</string>
+    <string name="search_voice_prompt">Speak movie or application name</string>
+    <string name="search_voice_unavailable">Voice input unavailable on this device. Use keyboard.</string>
+    <string name="search_default_yt_query">Movie trailers</string>
+    <string name="search_default_web_query">Movie news</string>
+    <string name="search_cant_open_yt">Unable to open YouTube</string>
+    <string name="search_cant_open_browser">Unable to open browser</string>
+
+    <!-- Media Detail Dialog -->
+    <string name="media_genre_fallback">Feature Film</string>
+    <string name="media_desc_unavailable">Description unavailable.</string>
+    <string name="media_btn_trailer">Trailer</string>
+    <string name="media_btn_search_apps">Open in Apps</string>
+    <string name="media_search_toast">Searching for %1$s...</string>
+
+    <!-- Media Genres -->
+    <string name="genre_action">Action</string>
+    <string name="genre_adventure">Adventure</string>
+    <string name="genre_animation">Animation</string>
+    <string name="genre_biography">Biography</string>
+    <string name="genre_comedy">Comedy</string>
+    <string name="genre_crime">Crime</string>
+    <string name="genre_documentary">Documentary</string>
+    <string name="genre_drama">Drama</string>
+    <string name="genre_family">Family</string>
+    <string name="genre_fantasy">Fantasy</string>
+    <string name="genre_history">History</string>
+    <string name="genre_horror">Horror</string>
+    <string name="genre_music">Music</string>
+    <string name="genre_musical">Musical</string>
+    <string name="genre_mystery">Mystery</string>
+    <string name="genre_romance">Romance</string>
+    <string name="genre_scifi">Sci-Fi</string>
+    <string name="genre_sport">Sport</string>
+    <string name="genre_thriller">Thriller</string>
+    <string name="genre_war">War</string>
+    <string name="genre_western">Western</string>
+
+    <!-- VPN Dialog -->
+    <string name="vpn_dialog_title">VPN &amp; Network Shield</string>
+    <string name="vpn_dialog_desc">System VPN Status &amp; Client Dispatcher</string>
+    <string name="vpn_active_protected">VPN ACTIVE &amp; PROTECTED</string>
+    <string name="vpn_active_country">VPN ACTIVE • %1$s</string>
+    <string name="vpn_disconnected">VPN DISCONNECTED</string>
+    <string name="vpn_traffic_unencrypted">All TV traffic unencrypted • Direct connection</string>
+    <string name="vpn_clients_title">Installed VPN Clients</string>
+    <string name="vpn_no_clients">No third-party VPN apps detected (WireGuard, Amnezia, OpenVPN)</string>
+    <string name="vpn_btn_system_settings">System VPN Settings (Android)</string>
+
+    <!-- Accessibility Service -->
     <string name="accessibility_home_service_label">Orbit TV Home Guard</string>
-    <string name="accessibility_home_service_desc">Обеспечивает приоритетный возврат на домашний экран Orbit TV при нажатии кнопки Home на пультах ТВ-боксов.</string>
+    <string name="accessibility_home_service_desc">Ensures priority return to Orbit TV home screen when pressing Home on TV remotes.</string>
+
+    <!-- Cast Web Remote (Served to mobile browsers) -->
+    <string name="cast_web_connected">Connected to TV (PIN: %1$s)</string>
+    <string name="cast_web_tab_youtube">YouTube / Stream</string>
+    <string name="cast_web_tab_files">Files</string>
+    <string name="cast_web_tab_remote">Remote</string>
+    <string name="cast_web_label_url">YouTube link or direct stream (MP4/HLS):</string>
+    <string name="cast_web_placeholder_url">https://youtu.be/... or https://.../video.mp4</string>
+    <string name="cast_web_btn_play">▶ Play on TV</string>
+    <string name="cast_web_label_files">Select video or photo from gallery:</string>
+    <string name="cast_web_btn_upload">⬆ Send to TV screen</string>
+    <string name="cast_web_vol_up">🔊 Volume +</string>
+    <string name="cast_web_vol_down">🔉 Volume -</string>
+    <string name="cast_web_mute">🔇 Mute</string>
+    <string name="cast_web_play_pause">⏯ Play / Pause</string>
+    <string name="cast_web_sent_toast">Sent to TV!</string>
+    <string name="cast_web_alert_enter_url">Please enter video link</string>
+    <string name="cast_web_alert_conn_error">Connection error with TV</string>
+    <string name="cast_web_alert_select_file">Select file to send</string>
+    <string name="cast_web_alert_uploading">Sending to TV screen...</string>
+    <string name="cast_web_alert_file_opened">File opened on TV!</string>
+    <string name="cast_web_alert_upload_error">Upload error on TV</string>
+    <string name="cast_web_cmd_done">Command executed</string>
+    <string name="trailer_title_format">%1$s — Trailer</string>
+    <string name="trailer_btn_open_yt">Open in YouTube</string>
+    <string name="trailer_loading">Loading trailer…</string>
+    <string name="search_voice_listening">Listening…</string>
+    <string name="search_voice_processing">Recognizing…</string>
+    <string name="vpn_btn_connect">Connect VPN</string>
+    <string name="vpn_btn_disconnect">Disconnect VPN</string>
+    <string name="vpn_locations_title">Server Location</string>
+    <string name="vpn_loc_warp">⚡ Cloudflare WARP</string>
+    <string name="vpn_loc_us">🇺🇸 United States</string>
+    <string name="vpn_loc_de">🇩🇪 Germany</string>
+    <string name="vpn_loc_pl">🇵🇱 Poland</string>
 </resources>

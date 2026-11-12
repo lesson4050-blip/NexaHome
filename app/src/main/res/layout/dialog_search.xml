@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:fontFamily="sans-serif-bold"
-                    android:text="Искать в YouTube"
+                    android:text="@string/search_btn_youtube"
                     android:textColor="@color/white"
                     android:textSize="13sp" />
 
@@ -171,7 +171,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:fontFamily="sans-serif-bold"
-                    android:text="Искать в Google"
+                    android:text="@string/search_btn_google"
                     android:textColor="@color/white"
                     android:textSize="13sp" />
 
@@ -184,7 +184,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_weight="1"
                 android:fontFamily="sans-serif"
-                android:text="Введите запрос для поиска по установленным приложениям, фильмам и видео"
+                android:text="@string/search_empty_hint"
                 android:textColor="@color/white_40"
                 android:textSize="12sp" />
 
@@ -223,7 +223,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-bold"
-                        android:text="Найденные приложения"
+                        android:text="@string/search_section_apps"
                         android:textColor="@color/leanback_cyan"
                         android:textSize="15sp" />
 
@@ -256,7 +256,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-bold"
-                        android:text="Фильмы и сериалы"
+                        android:text="@string/search_section_media"
                         android:textColor="@color/leanback_cyan"
                         android:textSize="15sp" />
 
@@ -281,7 +281,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="48dp"
                     android:gravity="center"
-                    android:text="Ничего не найдено по данному запросу"
+                    android:text="@string/search_no_results"
                     android:textColor="@color/white_40"
                     android:textSize="16sp"
                     android:visibility="gone" />

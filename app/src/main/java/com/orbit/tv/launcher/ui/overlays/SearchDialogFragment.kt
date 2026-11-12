@@ -1,12 +1,18 @@
 package com.orbit.tv.launcher.ui.overlays
 
+import android.Manifest
 import android.app.Dialog
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -16,8 +22,10 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
+import com.orbit.tv.launcher.R
 import com.orbit.tv.launcher.core.focus.TvFocusHelper
 import com.orbit.tv.launcher.databinding.DialogSearchBinding
 import com.orbit.tv.launcher.features.home.adapters.AppsAdapter
@@ -44,20 +52,36 @@ class SearchDialogFragment : DialogFragment() {
     private var allApps: List<AppModel> = emptyList()
     private var allMedia: List<MediaModel> = emptyList()
 
-    private val speechLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        val data = result.data
-        val spoken = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.firstOrNull()
-        if (!spoken.isNullOrBlank()) {
-            binding.etSearchQuery.setText(spoken)
-            binding.etSearchQuery.setSelection(spoken.length)
-            performSearch(spoken)
+    private var speechRecognizer: SpeechRecognizer? = null
+    private var isRecordingVoice: Boolean = false
+
+    private val audioPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) {
+            startInPlaceVoiceRecognition()
         }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return Dialog(requireContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+        val dialog = Dialog(requireContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+        dialog.setOnKeyListener { _, keyCode, event ->
+            if (keyCode == android.view.KeyEvent.KEYCODE_VOICE_ASSIST ||
+                keyCode == android.view.KeyEvent.KEYCODE_SEARCH ||
+                keyCode == android.view.KeyEvent.KEYCODE_ASSIST) {
+                if (event.action == android.view.KeyEvent.ACTION_DOWN) {
+                    if (event.repeatCount == 0 && !isRecordingVoice) {
+                        startInPlaceVoiceRecognition()
+                    }
+                    return@setOnKeyListener true
+                } else if (event.action == android.view.KeyEvent.ACTION_UP) {
+                    stopInPlaceVoiceRecognition()
+                    return@setOnKeyListener true
+                }
+            }
+            false
+        }
+        return dialog
     }
 
     override fun onCreateView(
@@ -79,14 +103,21 @@ class SearchDialogFragment : DialogFragment() {
         setupListeners()
         loadInitialData()
 
-        // Focus search edit text and summon on-screen keyboard
-        binding.etSearchQuery.postDelayed({
-            if (_binding != null) {
-                binding.etSearchQuery.requestFocus()
-                val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                imm?.showSoftInput(binding.etSearchQuery, InputMethodManager.SHOW_IMPLICIT)
-            }
-        }, 300)
+        val prefill = arguments?.getString("prefill_query")
+        if (!prefill.isNullOrBlank()) {
+            binding.etSearchQuery.setText(prefill)
+            binding.etSearchQuery.setSelection(prefill.length)
+            performSearch(prefill)
+        } else {
+            // Focus search edit text and summon on-screen keyboard
+            binding.etSearchQuery.postDelayed({
+                if (_binding != null) {
+                    binding.etSearchQuery.requestFocus()
+                    val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                    imm?.showSoftInput(binding.etSearchQuery, InputMethodManager.SHOW_IMPLICIT)
+                }
+            }, 300)
+        }
     }
 
     private fun setupAdapters() {
@@ -97,7 +128,7 @@ class SearchDialogFragment : DialogFragment() {
                     startActivity(intent)
                     dismiss()
                 } else {
-                    Toast.makeText(requireContext(), "Не удалось запустить ${app.label}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.app_cant_launch, app.label), Toast.LENGTH_SHORT).show()
                 }
             }
         )
@@ -174,9 +205,13 @@ class SearchDialogFragment : DialogFragment() {
             allApps = apps
             allMedia = movies + series
 
-            // Show default list
-            appsAdapter.submitList(allApps)
-            mediaAdapter.submitList(allMedia)
+            val currentQuery = _binding?.etSearchQuery?.text?.toString()?.trim().orEmpty()
+            if (currentQuery.isNotEmpty()) {
+                performSearch(currentQuery)
+            } else {
+                appsAdapter.submitList(allApps)
+                mediaAdapter.submitList(allMedia)
+            }
         }
     }
 
@@ -205,20 +240,118 @@ class SearchDialogFragment : DialogFragment() {
         binding.tvSearchEmpty.visibility = if (hasResults) View.GONE else View.VISIBLE
     }
 
-    private fun triggerVoiceRecognition() {
+    private fun animateVoiceMicActive(active: Boolean) {
+        if (active) {
+            binding.btnDialogVoice.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#EA4335"))
+            binding.btnDialogVoice.scaleX = 1.20f
+            binding.btnDialogVoice.scaleY = 1.20f
+        } else {
+            binding.btnDialogVoice.backgroundTintList = null
+            val targetScale = if (binding.btnDialogVoice.isFocused) 1.12f else 1.0f
+            binding.btnDialogVoice.animate()
+                .scaleX(targetScale)
+                .scaleY(targetScale)
+                .setDuration(200)
+                .start()
+        }
+    }
+
+    private fun startInPlaceVoiceRecognition() {
+        val ctx = context ?: return
+        if (ContextCompat.checkSelfPermission(ctx, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            audioPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+            return
+        }
+
+        if (!SpeechRecognizer.isRecognitionAvailable(ctx)) {
+            return
+        }
+
         try {
-            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-                putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-                putExtra(RecognizerIntent.EXTRA_PROMPT, "Произнесите название фильма или приложения")
+            speechRecognizer?.destroy()
+            speechRecognizer = SpeechRecognizer.createSpeechRecognizer(ctx).apply {
+                setRecognitionListener(object : RecognitionListener {
+                    override fun onReadyForSpeech(params: Bundle?) {
+                        isRecordingVoice = true
+                        animateVoiceMicActive(true)
+                        binding.etSearchQuery.hint = getString(R.string.search_voice_listening)
+                    }
+
+                    override fun onBeginningOfSpeech() {}
+
+                    override fun onRmsChanged(rmsdB: Float) {
+                        val norm = (rmsdB.coerceIn(0f, 10f) / 10f)
+                        val s = 1.18f + (norm * 0.16f)
+                        binding.btnDialogVoice.scaleX = s
+                        binding.btnDialogVoice.scaleY = s
+                    }
+
+                    override fun onBufferReceived(buffer: ByteArray?) {}
+
+                    override fun onEndOfSpeech() {
+                        binding.etSearchQuery.hint = getString(R.string.search_voice_processing)
+                    }
+
+                    override fun onError(error: Int) {
+                        isRecordingVoice = false
+                        animateVoiceMicActive(false)
+                        binding.etSearchQuery.hint = getString(R.string.search_hint)
+                    }
+
+                    override fun onResults(results: Bundle?) {
+                        isRecordingVoice = false
+                        animateVoiceMicActive(false)
+                        binding.etSearchQuery.hint = getString(R.string.search_hint)
+
+                        val spoken = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.firstOrNull()
+                        if (!spoken.isNullOrBlank()) {
+                            binding.etSearchQuery.setText(spoken)
+                            binding.etSearchQuery.setSelection(spoken.length)
+                            performSearch(spoken)
+                        }
+                    }
+
+                    override fun onPartialResults(partialResults: Bundle?) {
+                        val partial = partialResults?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.firstOrNull()
+                        if (!partial.isNullOrBlank()) {
+                            binding.etSearchQuery.setText(partial)
+                            binding.etSearchQuery.setSelection(partial.length)
+                            performSearch(partial)
+                        }
+                    }
+
+                    override fun onEvent(eventType: Int, params: Bundle?) {}
+                })
             }
-            speechLauncher.launch(intent)
+
+            val speechIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
+                putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
+            }
+            speechRecognizer?.startListening(speechIntent)
         } catch (e: Exception) {
-            Toast.makeText(requireContext(), "Голосовой ввод недоступен на этом устройстве. Используйте клавиатуру.", Toast.LENGTH_SHORT).show()
+            isRecordingVoice = false
+            animateVoiceMicActive(false)
+        }
+    }
+
+    private fun stopInPlaceVoiceRecognition() {
+        if (isRecordingVoice) {
+            speechRecognizer?.stopListening()
+        }
+    }
+
+    private fun triggerVoiceRecognition() {
+        if (isRecordingVoice) {
+            stopInPlaceVoiceRecognition()
+        } else {
+            startInPlaceVoiceRecognition()
         }
     }
 
     private fun launchYouTubeSearch(query: String) {
-        val q = query.ifBlank { "Трейлеры кино" }
+        val q = query.ifBlank { getString(R.string.search_default_yt_query) }
         try {
             val ytIntent = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube://results?search_query=${Uri.encode(q)}"))
             startActivity(ytIntent)
@@ -227,13 +360,13 @@ class SearchDialogFragment : DialogFragment() {
                 val webYt = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/results?search_query=${Uri.encode(q)}"))
                 startActivity(webYt)
             } catch (e2: Exception) {
-                Toast.makeText(requireContext(), "Не удалось открыть YouTube", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.search_cant_open_yt), Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     private fun launchWebSearch(query: String) {
-        val q = query.ifBlank { "Новости кино" }
+        val q = query.ifBlank { getString(R.string.search_default_web_query) }
         try {
             val searchIntent = Intent(Intent.ACTION_WEB_SEARCH).apply {
                 putExtra(SearchManager.QUERY, q)
@@ -244,12 +377,14 @@ class SearchDialogFragment : DialogFragment() {
                 val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?q=${Uri.encode(q)}"))
                 startActivity(browserIntent)
             } catch (e2: Exception) {
-                Toast.makeText(requireContext(), "Не удалось открыть браузер", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.search_cant_open_browser), Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     override fun onDestroyView() {
+        speechRecognizer?.destroy()
+        speechRecognizer = null
         super.onDestroyView()
         _binding = null
     }

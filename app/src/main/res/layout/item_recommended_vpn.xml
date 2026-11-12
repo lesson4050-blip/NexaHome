@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/bg_focus_media_card"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="16dp"
+    android:paddingTop="12dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="12dp">
+
+    <!-- Shield / App Icon -->
+    <ImageView
+        android:id="@+id/iv_vpn_app_icon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/ic_shield"
+        tools:tint="@color/leanback_cyan" />
+
+    <!-- Name & Subtitle -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_vpn_app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-bold"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            tools:text="Urban VPN" />
+
+        <TextView
+            android:id="@+id/tv_vpn_app_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/white_60"
+            android:textSize="11sp"
+            tools:text="Бесплатный VPN с серверами в 80+ странах мира" />
+
+    </LinearLayout>
+
+    <!-- Action Badge / Button: "Открыть" or "Установить" -->
+    <TextView
+        android:id="@+id/tv_vpn_app_action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_tab_pill"
+        android:fontFamily="sans-serif-bold"
+        android:paddingStart="12dp"
+        android:paddingTop="6dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="6dp"
+        android:textColor="@color/leanback_cyan"
+        android:textSize="11sp"
+        tools:text="УСТАНОВИТЬ" />
+
+</LinearLayout>

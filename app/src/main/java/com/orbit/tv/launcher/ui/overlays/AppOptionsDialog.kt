@@ -86,22 +86,22 @@ class AppOptionsDialog : DialogFragment() {
 
         // Dynamic Pin status
         if (isPinned) {
-            binding.tvActionPinTitle.text = "Unpin from Favorites Shelf"
-            binding.tvActionPinDesc.text = "Remove from Home screen quick access shelf"
+            binding.tvActionPinTitle.text = getString(R.string.app_options_unpin_title)
+            binding.tvActionPinDesc.text = getString(R.string.app_options_unpin_desc)
         } else {
-            binding.tvActionPinTitle.text = "Pin to Favorites Shelf"
-            binding.tvActionPinDesc.text = "Show on Home screen quick access shelf"
+            binding.tvActionPinTitle.text = getString(R.string.app_options_pin_title)
+            binding.tvActionPinDesc.text = getString(R.string.app_options_pin_desc)
         }
 
         // Dynamic Hide status
         if (isHidden) {
-            binding.tvActionHideTitle.text = "Unhide App (Restore)"
-            binding.tvActionHideDesc.text = "Restore back to Home and main application grid"
+            binding.tvActionHideTitle.text = getString(R.string.app_options_unhide_title)
+            binding.tvActionHideDesc.text = getString(R.string.app_options_unhide_desc)
             binding.ivActionHideIcon.setImageResource(R.drawable.ic_eye)
             binding.ivActionHideIcon.setColorFilter(ContextCompat.getColor(requireContext(), R.color.vpn_emerald))
         } else {
-            binding.tvActionHideTitle.text = "Hide App (Debloat)"
-            binding.tvActionHideDesc.text = "Hide bloatware from Home & Apps shelf"
+            binding.tvActionHideTitle.text = getString(R.string.app_options_hide_title)
+            binding.tvActionHideDesc.text = getString(R.string.app_options_hide_desc)
             binding.ivActionHideIcon.setImageResource(R.drawable.ic_eye_off)
             binding.ivActionHideIcon.setColorFilter(Color.parseColor("#F87171"))
         }
@@ -117,7 +117,11 @@ class AppOptionsDialog : DialogFragment() {
         // 1. Toggle Pin
         binding.btnActionPin.setOnClickListener {
             val newlyPinned = appPrefsRepo.togglePin(app.packageName)
-            val msg = if (newlyPinned) "Pinned ${app.label} to Favorites" else "Unpinned ${app.label}"
+            val msg = if (newlyPinned) {
+                getString(R.string.app_options_toast_pinned, app.label)
+            } else {
+                getString(R.string.app_options_toast_unpinned, app.label)
+            }
             Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
             onPreferenceChangedListener?.invoke()
             dismiss()
@@ -126,7 +130,11 @@ class AppOptionsDialog : DialogFragment() {
         // 2. Toggle Hide
         binding.btnActionHide.setOnClickListener {
             val newlyHidden = appPrefsRepo.toggleHide(app.packageName)
-            val msg = if (newlyHidden) "Hidden ${app.label} from Launcher" else "Restored ${app.label}"
+            val msg = if (newlyHidden) {
+                getString(R.string.app_options_toast_hidden, app.label)
+            } else {
+                getString(R.string.app_options_toast_restored, app.label)
+            }
             Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
             onPreferenceChangedListener?.invoke()
             dismiss()
@@ -140,7 +148,7 @@ class AppOptionsDialog : DialogFragment() {
                 }
                 startActivity(intent)
             } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Cannot open settings for ${app.label}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.app_options_toast_cant_open_settings, app.label), Toast.LENGTH_SHORT).show()
             }
             dismiss()
         }
@@ -153,7 +161,7 @@ class AppOptionsDialog : DialogFragment() {
                 }
                 startActivity(uninstallIntent)
             } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Cannot uninstall ${app.label}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.app_options_toast_cant_uninstall, app.label), Toast.LENGTH_SHORT).show()
             }
             dismiss()
         }

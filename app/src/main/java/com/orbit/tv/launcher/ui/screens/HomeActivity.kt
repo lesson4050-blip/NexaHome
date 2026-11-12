@@ -1,10 +1,18 @@
 package com.orbit.tv.launcher.ui.screens
 
+import android.Manifest
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.provider.Settings
+import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
-import android.widget.Toast
+import android.speech.SpeechRecognizer
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -19,8 +27,12 @@ import com.orbit.tv.launcher.databinding.ActivityHomeBinding
 import com.orbit.tv.launcher.features.home.HomeViewModel
 import com.orbit.tv.launcher.features.home.adapters.AppsAdapter
 import com.orbit.tv.launcher.features.home.adapters.MediaAdapter
+import android.view.KeyEvent
+import android.view.View
+import android.view.ViewParent
 import com.orbit.tv.launcher.ui.overlays.MediaDetailDialog
 import com.orbit.tv.launcher.ui.overlays.SearchDialogFragment
+import com.orbit.tv.launcher.ui.overlays.TvPowerDialog
 import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {
@@ -35,6 +47,17 @@ class HomeActivity : AppCompatActivity() {
     // Shared ViewPool between media shelves to minimize RAM allocations on 1GB RAM devices
     private val sharedMediaPool = RecyclerView.RecycledViewPool()
 
+    private var speechRecognizer: SpeechRecognizer? = null
+    private var isRecordingVoice: Boolean = false
+
+    private val audioPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) {
+            startInPlaceVoiceRecognition()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
@@ -44,6 +67,7 @@ class HomeActivity : AppCompatActivity() {
         setupRecyclerViews()
         setupClickListeners()
         setupBackNavigation()
+        setupShelfScrollCoordination()
         observeViewModelState()
     }
 
@@ -59,8 +83,21 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        java.util.Locale.setDefault(viewModel.getActiveLocale())
         // Refresh apps list in case packages were uninstalled/installed while user was in another app
         viewModel.loadInstalledApps()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopInPlaceVoiceRecognition()
+        animateVoiceMicActive(false)
+    }
+
+    override fun onDestroy() {
+        speechRecognizer?.destroy()
+        speechRecognizer = null
+        super.onDestroy()
     }
 
     private fun setupFocusableControls() {
@@ -89,10 +126,7 @@ class HomeActivity : AppCompatActivity() {
         appsAdapter = AppsAdapter(
             showPinBadge = false,
             onAppClick = { app ->
-                val launched = viewModel.launchApp(app)
-                if (!launched) {
-                    Toast.makeText(this, "Cannot launch ${app.label}", Toast.LENGTH_SHORT).show()
-                }
+                viewModel.launchApp(app)
             },
             onAppLongClick = { app ->
                 val dialog = com.orbit.tv.launcher.ui.overlays.AppOptionsDialog.newInstance(app) {
@@ -139,7 +173,7 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, IptvActivity::class.java))
         }
         binding.btnNavGames.setOnClickListener {
-            startActivity(Intent(this, GamesActivity::class.java))
+            startActivity(Intent(this, OptimizerActivity::class.java))
         }
         binding.btnNavCast.setOnClickListener {
             startActivity(Intent(this, CastActivity::class.java))
@@ -158,9 +192,7 @@ class HomeActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 try {
                     startActivity(Intent(Settings.ACTION_WIRELESS_SETTINGS))
-                } catch (e2: Exception) {
-                    Toast.makeText(this, "Unable to open Wi-Fi Settings", Toast.LENGTH_SHORT).show()
-                }
+                } catch (e2: Exception) {}
             }
         }
 
@@ -168,9 +200,7 @@ class HomeActivity : AppCompatActivity() {
         binding.btnSettings.setOnClickListener {
             try {
                 startActivity(Intent(Settings.ACTION_SETTINGS))
-            } catch (e: Exception) {
-                Toast.makeText(this, "Unable to open Settings", Toast.LENGTH_SHORT).show()
-            }
+            } catch (e: Exception) {}
         }
 
         // Search Bar -> Open in-app search overlay
@@ -178,50 +208,122 @@ class HomeActivity : AppCompatActivity() {
             openSearchDialog()
         }
 
-        // Voice Search -> Try Google Assistant / Voice Search, or fallback to SearchDialog
+        // Voice Search -> In-place Speech Recognizer (no popups)
         binding.btnVoiceSearch.setOnClickListener {
-            handleVoiceSearch()
+            if (isRecordingVoice) {
+                stopInPlaceVoiceRecognition()
+            } else {
+                startInPlaceVoiceRecognition()
+            }
         }
 
         // Power Button
         binding.btnNavPower.setOnClickListener {
-            // Open system power menu dialog
-            try {
-                val intent = Intent(Intent.ACTION_POWER_USAGE_SUMMARY)
-                startActivity(intent)
-            } catch (e: Exception) {
-                Toast.makeText(this, "Sleep timer: press remote power key", Toast.LENGTH_SHORT).show()
+            TvPowerDialog.show(supportFragmentManager)
+        }
+    }
+
+    private fun animateVoiceMicActive(active: Boolean) {
+        if (active) {
+            binding.btnVoiceSearch.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#EA4335"))
+            binding.btnVoiceSearch.scaleX = 1.20f
+            binding.btnVoiceSearch.scaleY = 1.20f
+        } else {
+            binding.btnVoiceSearch.backgroundTintList = null
+            val targetScale = if (binding.btnVoiceSearch.isFocused) 1.12f else 1.0f
+            binding.btnVoiceSearch.animate()
+                .scaleX(targetScale)
+                .scaleY(targetScale)
+                .setDuration(200)
+                .start()
+        }
+    }
+
+    private fun startInPlaceVoiceRecognition() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            audioPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+            return
+        }
+
+        if (!SpeechRecognizer.isRecognitionAvailable(this)) {
+            openSearchDialog()
+            return
+        }
+
+        try {
+            speechRecognizer?.destroy()
+            speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this).apply {
+                setRecognitionListener(object : RecognitionListener {
+                    override fun onReadyForSpeech(params: Bundle?) {
+                        isRecordingVoice = true
+                        animateVoiceMicActive(true)
+                        binding.tvSearchInput.text = getString(R.string.search_voice_listening)
+                    }
+
+                    override fun onBeginningOfSpeech() {}
+
+                    override fun onRmsChanged(rmsdB: Float) {
+                        val norm = (rmsdB.coerceIn(0f, 10f) / 10f)
+                        val s = 1.18f + (norm * 0.16f)
+                        binding.btnVoiceSearch.scaleX = s
+                        binding.btnVoiceSearch.scaleY = s
+                    }
+
+                    override fun onBufferReceived(buffer: ByteArray?) {}
+
+                    override fun onEndOfSpeech() {
+                        binding.tvSearchInput.text = getString(R.string.search_voice_processing)
+                    }
+
+                    override fun onError(error: Int) {
+                        isRecordingVoice = false
+                        animateVoiceMicActive(false)
+                        binding.tvSearchInput.text = getString(R.string.search_hint)
+                    }
+
+                    override fun onResults(results: Bundle?) {
+                        isRecordingVoice = false
+                        animateVoiceMicActive(false)
+                        binding.tvSearchInput.text = getString(R.string.search_hint)
+
+                        val spoken = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.firstOrNull()
+                        if (!spoken.isNullOrBlank()) {
+                            openSearchDialog(spoken)
+                        }
+                    }
+
+                    override fun onPartialResults(partialResults: Bundle?) {
+                        val partial = partialResults?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.firstOrNull()
+                        if (!partial.isNullOrBlank()) {
+                            binding.tvSearchInput.text = partial
+                        }
+                    }
+
+                    override fun onEvent(eventType: Int, params: Bundle?) {}
+                })
             }
+
+            val speechIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
+                putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
+            }
+            speechRecognizer?.startListening(speechIntent)
+        } catch (e: Exception) {
+            isRecordingVoice = false
+            animateVoiceMicActive(false)
+            openSearchDialog()
         }
     }
 
-    private fun handleVoiceSearch() {
-        // 1. Try launching Google Assistant if installed on Android TV
-        val assistantIntent = Intent("android.intent.action.VOICE_ASSIST")
-        if (intentResolves(assistantIntent)) {
-            try {
-                startActivity(assistantIntent)
-                return
-            } catch (e: Exception) {}
+    private fun stopInPlaceVoiceRecognition() {
+        if (isRecordingVoice) {
+            speechRecognizer?.stopListening()
         }
-
-        // 2. Try Android Speech Recognizer intent
-        val speechIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-            putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-        }
-        if (intentResolves(speechIntent)) {
-            try {
-                startActivity(speechIntent)
-                return
-            } catch (e: Exception) {}
-        }
-
-        // 3. Fallback: Open in-app Search Dialog with keyboard focused
-        openSearchDialog()
     }
 
-    private fun openSearchDialog() {
-        SearchDialogFragment.newInstance()
+    private fun openSearchDialog(prefill: String? = null) {
+        SearchDialogFragment.newInstance(prefill)
             .show(supportFragmentManager, SearchDialogFragment.TAG)
     }
 
@@ -300,25 +402,95 @@ class HomeActivity : AppCompatActivity() {
                     }
                 }
 
-                // Wi-Fi / Network Status Indicator (Connected / Disconnected)
+                // Wi-Fi Status Indicator (Connected / Disconnected / Disabled)
                 launch {
-                    viewModel.networkStatus.collect { status ->
-                        when (status) {
-                            com.orbit.tv.launcher.platform.device_capabilities.NetworkStatus.WIFI_CONNECTED,
-                            com.orbit.tv.launcher.platform.device_capabilities.NetworkStatus.ETHERNET_CONNECTED -> {
+                    viewModel.wifiUiState.collect { state ->
+                        when (state) {
+                            com.orbit.tv.launcher.platform.device_capabilities.WifiUiState.DISABLED -> {
+                                binding.ivWifiStatus.setImageResource(R.drawable.ic_wifi_off)
+                                binding.ivWifiStatus.setColorFilter(null)
+                                binding.ivWifiStatus.alpha = 0.9f
+                            }
+                            com.orbit.tv.launcher.platform.device_capabilities.WifiUiState.CONNECTED -> {
                                 binding.ivWifiStatus.setImageResource(R.drawable.ic_wifi)
                                 binding.ivWifiStatus.setColorFilter(null)
                                 binding.ivWifiStatus.alpha = 1.0f
                             }
-                            com.orbit.tv.launcher.platform.device_capabilities.NetworkStatus.DISCONNECTED -> {
-                                binding.ivWifiStatus.setImageResource(R.drawable.ic_wifi_off)
+                            com.orbit.tv.launcher.platform.device_capabilities.WifiUiState.DISCONNECTED -> {
+                                binding.ivWifiStatus.setImageResource(R.drawable.ic_wifi)
                                 binding.ivWifiStatus.setColorFilter(null)
-                                binding.ivWifiStatus.alpha = 0.9f
+                                binding.ivWifiStatus.alpha = 0.55f
                             }
                         }
                     }
                 }
             }
         }
+    }
+
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        when (event.keyCode) {
+            KeyEvent.KEYCODE_VOICE_ASSIST,
+            KeyEvent.KEYCODE_SEARCH,
+            KeyEvent.KEYCODE_ASSIST -> {
+                if (event.action == KeyEvent.ACTION_DOWN) {
+                    if (event.repeatCount == 0 && !isRecordingVoice) {
+                        startInPlaceVoiceRecognition()
+                    }
+                    return true
+                } else if (event.action == KeyEvent.ACTION_UP) {
+                    stopInPlaceVoiceRecognition()
+                    return true
+                }
+            }
+            KeyEvent.KEYCODE_DPAD_DOWN -> {
+                if (event.action == KeyEvent.ACTION_DOWN) {
+                    val focused = currentFocus
+                    if (focused != null && isDescendantOf(focused, binding.rvSeries)) {
+                        // Already on the bottom shelf; consume DOWN so NestedScrollView never scrolls into empty void
+                        return true
+                    }
+                }
+            }
+        }
+        return super.dispatchKeyEvent(event)
+    }
+
+    private fun setupShelfScrollCoordination() {
+        // Hard-clamp maximum vertical scroll so content NEVER scrolls past Movies header
+        binding.scrollContainer.setOnScrollChangeListener { _, _, scrollY, _, _ ->
+            val maxY = (binding.headerMovies.top - binding.scrollContainer.paddingTop).coerceAtLeast(0)
+            if (scrollY > maxY) {
+                binding.scrollContainer.scrollTo(0, maxY)
+            }
+        }
+
+        binding.scrollContainer.viewTreeObserver.addOnGlobalFocusChangeListener { _, newFocus ->
+            if (newFocus == null) return@addOnGlobalFocusChangeListener
+
+            if (isDescendantOf(newFocus, binding.rvSeries) || isDescendantOf(newFocus, binding.headerSeries)) {
+                // Focus is on Series shelf: scroll down so Movies header sits cleanly at the top
+                val targetY = (binding.headerMovies.top - binding.scrollContainer.paddingTop).coerceAtLeast(0)
+                binding.scrollContainer.smoothScrollTo(0, targetY)
+            } else if (isDescendantOf(newFocus, binding.rvMovies) ||
+                isDescendantOf(newFocus, binding.headerMovies) ||
+                isDescendantOf(newFocus, binding.rvApps) ||
+                isDescendantOf(newFocus, binding.containerTopBar) ||
+                isDescendantOf(newFocus, binding.containerSidebar)
+            ) {
+                // Focus is on Movies, Apps, TopBar or Sidebar: return cleanly to top home view
+                binding.scrollContainer.smoothScrollTo(0, 0)
+            }
+        }
+    }
+
+    private fun isDescendantOf(child: View, target: View): Boolean {
+        if (child == target) return true
+        var current: ViewParent? = child.parent
+        while (current != null) {
+            if (current == target) return true
+            current = current.parent
+        }
+        return false
     }
 }

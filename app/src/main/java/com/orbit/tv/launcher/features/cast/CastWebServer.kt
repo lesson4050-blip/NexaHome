@@ -6,8 +6,8 @@ import android.media.AudioManager
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
-import android.widget.Toast
 import androidx.core.content.FileProvider
+import com.orbit.tv.launcher.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -221,14 +221,12 @@ class CastWebServer(
                         intent.setPackage(ytTv)
                     }
                     context.startActivity(intent)
-                    Toast.makeText(context, "Трансляция YouTube запущена со смартфона", Toast.LENGTH_LONG).show()
                 } else {
                     val intent = Intent(Intent.ACTION_VIEW).apply {
                         setDataAndType(Uri.parse(url), "video/*")
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     }
                     context.startActivity(intent)
-                    Toast.makeText(context, "Воспроизведение видео запущено", Toast.LENGTH_LONG).show()
                 }
             } catch (e: Exception) {
                 try {
@@ -236,7 +234,7 @@ class CastWebServer(
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     })
                 } catch (e2: Exception) {
-                    Toast.makeText(context, "Не удалось открыть медиа", Toast.LENGTH_SHORT).show()
+                    // Silent failover or log - no intrusive toasts on TV
                 }
             }
         }
@@ -252,9 +250,8 @@ class CastWebServer(
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
                 context.startActivity(intent)
-                Toast.makeText(context, "Медиафайл открыт на телевизоре", Toast.LENGTH_LONG).show()
             } catch (e: Exception) {
-                Toast.makeText(context, "Файл получен на ТВ (${file.length() / 1024} KB)", Toast.LENGTH_SHORT).show()
+                // Silent failover - no intrusive toasts on TV
             }
         }
     }
@@ -271,9 +268,32 @@ class CastWebServer(
     }
 
     private fun buildMobileWebHtml(pin: String): String {
+        val lang = context.resources.configuration.locales[0].language
+        val statusText = context.getString(R.string.cast_web_connected, pin)
+        val tabYt = context.getString(R.string.cast_web_tab_youtube)
+        val tabFiles = context.getString(R.string.cast_web_tab_files)
+        val tabRemote = context.getString(R.string.cast_web_tab_remote)
+        val labelUrl = context.getString(R.string.cast_web_label_url)
+        val phUrl = context.getString(R.string.cast_web_placeholder_url)
+        val btnPlay = context.getString(R.string.cast_web_btn_play)
+        val labelFiles = context.getString(R.string.cast_web_label_files)
+        val btnUpload = context.getString(R.string.cast_web_btn_upload)
+        val volUp = context.getString(R.string.cast_web_vol_up)
+        val volDown = context.getString(R.string.cast_web_vol_down)
+        val mute = context.getString(R.string.cast_web_mute)
+        val playPause = context.getString(R.string.cast_web_play_pause)
+        val sentToast = context.getString(R.string.cast_web_sent_toast)
+        val alertEnterUrl = context.getString(R.string.cast_web_alert_enter_url)
+        val alertConnError = context.getString(R.string.cast_web_alert_conn_error)
+        val alertSelectFile = context.getString(R.string.cast_web_alert_select_file)
+        val alertUploading = context.getString(R.string.cast_web_alert_uploading)
+        val alertFileOpened = context.getString(R.string.cast_web_alert_file_opened)
+        val alertUploadError = context.getString(R.string.cast_web_alert_upload_error)
+        val cmdDone = context.getString(R.string.cast_web_cmd_done)
+
         return """
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="$lang">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -311,45 +331,45 @@ class CastWebServer(
             <div class="logo">📡</div>
             <div>
                 <div class="title">Orbit TV Cast</div>
-                <div class="status-badge"><span class="dot"></span> Подключено к ТВ (PIN: $pin)</div>
+                <div class="status-badge"><span class="dot"></span> $statusText</div>
             </div>
         </div>
 
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('youtube')">YouTube / Ссылка</button>
-            <button class="tab-btn" onclick="switchTab('files')">Файлы</button>
-            <button class="tab-btn" onclick="switchTab('remote')">Пульт</button>
+            <button class="tab-btn active" onclick="switchTab('youtube')">$tabYt</button>
+            <button class="tab-btn" onclick="switchTab('files')">$tabFiles</button>
+            <button class="tab-btn" onclick="switchTab('remote')">$tabRemote</button>
         </div>
 
         <!-- Tab 1: Video URL & YouTube -->
         <div id="tab-youtube" class="section active">
             <div class="input-group">
-                <label>Ссылка на YouTube или видеопоток (MP4/HLS):</label>
-                <input type="url" id="mediaUrl" placeholder="https://youtu.be/... или https://.../video.mp4">
+                <label>$labelUrl</label>
+                <input type="url" id="mediaUrl" placeholder="$phUrl">
             </div>
-            <button class="btn" onclick="sendMediaUrl()">▶ Воспроизвести на ТВ</button>
+            <button class="btn" onclick="sendMediaUrl()">$btnPlay</button>
         </div>
 
         <!-- Tab 2: Photos & Videos Upload -->
         <div id="tab-files" class="section">
             <div class="input-group">
-                <label>Выберите видео или фото из галереи:</label>
+                <label>$labelFiles</label>
                 <input type="file" id="fileSelector" accept="image/*,video/*" style="display:block; width:100%; font-size:13px; color:#94A3B8;">
             </div>
-            <button class="btn" onclick="uploadSelectedFile()">⬆ Отправить на экран ТВ</button>
+            <button class="btn" onclick="uploadSelectedFile()">$btnUpload</button>
         </div>
 
         <!-- Tab 3: Remote Control -->
         <div id="tab-remote" class="section">
             <div class="remote-grid">
-                <button class="remote-btn" onclick="sendRemote('vol_up')">🔊 Громкость +</button>
-                <button class="remote-btn" onclick="sendRemote('vol_down')">🔉 Громкость -</button>
-                <button class="remote-btn" onclick="sendRemote('mute')">🔇 Без звука</button>
-                <button class="remote-btn" onclick="sendRemote('mute')">⏯ Пауза / Плей</button>
+                <button class="remote-btn" onclick="sendRemote('vol_up')">$volUp</button>
+                <button class="remote-btn" onclick="sendRemote('vol_down')">$volDown</button>
+                <button class="remote-btn" onclick="sendRemote('mute')">$mute</button>
+                <button class="remote-btn" onclick="sendRemote('mute')">$playPause</button>
             </div>
         </div>
 
-        <div id="toastMsg" class="toast">Отправлено на телевизор!</div>
+        <div id="toastMsg" class="toast">$sentToast</div>
     </div>
 
     <script>
@@ -377,28 +397,28 @@ class CastWebServer(
 
         function sendMediaUrl() {
             const url = document.getElementById('mediaUrl').value.trim();
-            if (!url) return alert('Пожалуйста, введите ссылку на видео');
+            if (!url) return alert('$alertEnterUrl');
             fetch('/api/play', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: 'url=' + encodeURIComponent(url)
             }).then(() => {
-                showNotification('Трансляция запущена на ТВ!');
+                showNotification('$sentToast');
                 document.getElementById('mediaUrl').value = '';
-            }).catch(e => alert('Ошибка соединения с ТВ'));
+            }).catch(e => alert('$alertConnError'));
         }
 
         function uploadSelectedFile() {
             const f = document.getElementById('fileSelector').files[0];
-            if (!f) return alert('Выберите файл для отправки');
-            showNotification('Отправка на экран ТВ...');
+            if (!f) return alert('$alertSelectFile');
+            showNotification('$alertUploading');
             fetch('/api/upload', {
                 method: 'POST',
                 headers: { 'Content-Type': f.type || 'application/octet-stream' },
                 body: f
             }).then(() => {
-                showNotification('Файл открыт на телевизоре!');
-            }).catch(e => alert('Ошибка загрузки на ТВ'));
+                showNotification('$alertFileOpened');
+            }).catch(e => alert('$alertUploadError'));
         }
 
         function sendRemote(key) {
@@ -407,7 +427,7 @@ class CastWebServer(
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: 'key=' + encodeURIComponent(key)
             }).then(() => {
-                showNotification('Команда выполнена');
+                showNotification('$cmdDone');
             });
         }
     </script>

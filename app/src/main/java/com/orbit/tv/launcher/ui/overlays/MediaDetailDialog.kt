@@ -50,7 +50,7 @@ class MediaDetailDialog : DialogFragment() {
         super.onStart()
         dialog?.window?.let { window ->
             val dm = resources.displayMetrics
-            val widthPx = (680 * dm.density).toInt()
+            val widthPx = (720 * dm.density).toInt()
             window.setLayout(widthPx, ViewGroup.LayoutParams.WRAP_CONTENT)
         }
     }
@@ -64,8 +64,8 @@ class MediaDetailDialog : DialogFragment() {
 
     private fun setupFocus() {
         TvFocusHelper.bindFocusScale(binding.btnDetailClose, scaleRatio = 1.15f, elevationDp = 8f)
-        TvFocusHelper.bindFocusScale(binding.btnActionTrailer, scaleRatio = 1.06f, elevationDp = 6f)
-        TvFocusHelper.bindFocusScale(binding.btnActionSearchApps, scaleRatio = 1.06f, elevationDp = 6f)
+        TvFocusHelper.bindFocusScale(binding.btnActionTrailer, scaleRatio = 1.04f, elevationDp = 4f)
+        TvFocusHelper.bindFocusScale(binding.btnActionSearchApps, scaleRatio = 1.04f, elevationDp = 4f)
 
         binding.btnActionTrailer.requestFocus()
     }
@@ -74,8 +74,8 @@ class MediaDetailDialog : DialogFragment() {
         val media = targetMedia ?: return
 
         binding.tvDetailTitle.text = media.title
-        binding.tvDetailGenre.text = if (media.genre.isNotBlank()) media.genre else "Feature Film"
-        binding.tvDetailDesc.text = if (media.description.isNotBlank()) media.description else "Описание недоступно."
+        binding.tvDetailGenre.text = media.getLocalizedGenre(requireContext())
+        binding.tvDetailDesc.text = if (media.description.isNotBlank()) media.description else getString(R.string.media_desc_unavailable)
         binding.tvDetailRating.text = if (media.rating.isNotBlank()) "★ ${media.rating}" else media.badge
         binding.tvDetailYear.text = if (media.releaseYear.isNotBlank()) media.releaseYear else "2024"
 
@@ -94,14 +94,8 @@ class MediaDetailDialog : DialogFragment() {
         }
 
         binding.btnActionTrailer.setOnClickListener {
-            try {
-                val query = URLEncoder.encode("${media.title} official trailer", "UTF-8")
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/results?search_query=$query"))
-                startActivity(intent)
-            } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Не удалось открыть YouTube", Toast.LENGTH_SHORT).show()
-            }
-            dismiss()
+            TvTrailerDialog.newInstance(media.title, media.id)
+                .show(parentFragmentManager, TvTrailerDialog.TAG)
         }
 
         binding.btnActionSearchApps.setOnClickListener {
@@ -110,7 +104,7 @@ class MediaDetailDialog : DialogFragment() {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?q=watch+online+$query"))
                 startActivity(intent)
             } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Поиск ${media.title}...", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.media_search_toast, media.title), Toast.LENGTH_SHORT).show()
             }
             dismiss()
         }
