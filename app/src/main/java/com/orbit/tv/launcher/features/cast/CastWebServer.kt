@@ -174,6 +174,33 @@ class CastWebServer(
                     sendJsonResponse(output, """{"status":"error","message":"${e.message}"}""")
                 }
             }
+            path.startsWith("/api/iptv/playlist") -> {
+                val body = CharArray(contentLength)
+                reader.read(body, 0, contentLength)
+                val bodyStr = String(body)
+                val params = parseQueryParams(bodyStr)
+                val playlistUrl = params["url"] ?: ""
+                if (playlistUrl.isNotBlank()) {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        try {
+                            val repo = com.orbit.tv.launcher.features.iptv.repository.IptvRepository(context)
+                            val res = if (playlistUrl.equals("default", ignoreCase = true)) {
+                                repo.resetToDefaultPlaylist()
+                            } else {
+                                repo.loadPlaylistFromUrl(playlistUrl)
+                            }
+                            if (res.isSuccess) {
+                                context.sendBroadcast(Intent("com.orbit.tv.launcher.ACTION_IPTV_PLAYLIST_UPDATED"))
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+                    sendJsonResponse(output, """{"status":"ok","message":"Playlist received"}""")
+                } else {
+                    sendJsonResponse(output, """{"status":"error","message":"Empty URL"}""")
+                }
+            }
             else -> {
                 sendJsonResponse(output, """{"status":"not_found"}""")
             }
@@ -328,7 +355,7 @@ class CastWebServer(
 <body>
     <div class="card">
         <div class="header">
-            <div class="logo">📡</div>
+            <div class="logo">TV</div>
             <div>
                 <div class="title">Orbit TV Cast</div>
                 <div class="status-badge"><span class="dot"></span> $statusText</div>
@@ -338,6 +365,7 @@ class CastWebServer(
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('youtube')">$tabYt</button>
             <button class="tab-btn" onclick="switchTab('files')">$tabFiles</button>
+            <button class="tab-btn" onclick="switchTab('iptv')">IPTV</button>
             <button class="tab-btn" onclick="switchTab('remote')">$tabRemote</button>
         </div>
 
@@ -359,7 +387,22 @@ class CastWebServer(
             <button class="btn" onclick="uploadSelectedFile()">$btnUpload</button>
         </div>
 
-        <!-- Tab 3: Remote Control -->
+        <!-- Tab 3: IPTV Playlist Importer -->
+        <div id="tab-iptv" class="section">
+            <div class="input-group">
+                <label>M3U / M3U8 Playlist URL</label>
+                <input type="url" id="iptvUrl" placeholder="https://example.com/playlist.m3u">
+            </div>
+            <button class="btn" style="margin-bottom: 16px;" onclick="sendIptvUrl()">Load Playlist to TV</button>
+            <label style="margin-bottom: 8px;">Presets</label>
+            <div class="remote-grid">
+                <button class="remote-btn" onclick="sendIptvPreset('default')">Orbit Live</button>
+                <button class="remote-btn" onclick="sendIptvPreset('https://iptv-org.github.io/iptv/countries/ua.m3u')">Ukraine Live</button>
+                <button class="remote-btn" onclick="sendIptvPreset('https://iptv-org.github.io/iptv/categories/news.m3u')">World News</button>
+            </div>
+        </div>
+
+        <!-- Tab 4: Remote Control -->
         <div id="tab-remote" class="section">
             <div class="remote-grid">
                 <button class="remote-btn" onclick="sendRemote('vol_up')">$volUp</button>
@@ -382,8 +425,11 @@ class CastWebServer(
             } else if (tabId === 'files') {
                 document.querySelectorAll('.tab-btn')[1].classList.add('active');
                 document.getElementById('tab-files').classList.add('active');
-            } else {
+            } else if (tabId === 'iptv') {
                 document.querySelectorAll('.tab-btn')[2].classList.add('active');
+                document.getElementById('tab-iptv').classList.add('active');
+            } else {
+                document.querySelectorAll('.tab-btn')[3].classList.add('active');
                 document.getElementById('tab-remote').classList.add('active');
             }
         }
@@ -419,6 +465,24 @@ class CastWebServer(
             }).then(() => {
                 showNotification('$alertFileOpened');
             }).catch(e => alert('$alertUploadError'));
+        }
+
+        function sendIptvUrl() {
+            const url = document.getElementById('iptvUrl').value.trim();
+            if (!url) return alert('Enter M3U playlist URL');
+            sendIptvPreset(url);
+        }
+
+        function sendIptvPreset(url) {
+            showNotification('Loading playlist to TV...');
+            fetch('/api/iptv/playlist', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'url=' + encodeURIComponent(url)
+            }).then(() => {
+                showNotification('Playlist sent to TV');
+                if (document.getElementById('iptvUrl')) document.getElementById('iptvUrl').value = '';
+            }).catch(e => alert('$alertConnError'));
         }
 
         function sendRemote(key) {

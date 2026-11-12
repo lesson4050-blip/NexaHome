@@ -259,4 +259,8 @@
     <string name="vpn_loc_pl">🇵🇱 Польща</string>
     <string name="google_assistant">Google Асистент</string>
     <string name="assistant_btn_search">Search</string>
+    <string name="cat_favorites">Обране</string>
+    <string name="osd_hint_navigation">[OK] — вибір • [НАЗАД] — закрити</string>
+    <string name="iptv_web_import_hint">Або відкрийте у браузері телефону: %1$s</string>
+    <string name="iptv_channels_count_format">%1$d каналів</string>
 </resources>

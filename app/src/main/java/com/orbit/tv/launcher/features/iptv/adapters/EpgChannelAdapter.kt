@@ -13,7 +13,8 @@ import com.orbit.tv.launcher.databinding.ItemEpgChannelBinding
 import com.orbit.tv.launcher.features.iptv.model.IptvChannel
 
 class EpgChannelAdapter(
-    private val onChannelClicked: (IptvChannel) -> Unit
+    private val onChannelClicked: (IptvChannel) -> Unit,
+    private val onChannelLongClicked: ((IptvChannel) -> Unit)? = null
 ) : ListAdapter<IptvChannel, EpgChannelAdapter.EpgViewHolder>(ChannelDiffCallback()) {
 
     var activeChannelId: String? = null
@@ -28,7 +29,7 @@ class EpgChannelAdapter(
             parent,
             false
         )
-        return EpgViewHolder(binding, onChannelClicked)
+        return EpgViewHolder(binding, onChannelClicked, onChannelLongClicked)
     }
 
     override fun onBindViewHolder(holder: EpgViewHolder, position: Int) {
@@ -38,7 +39,8 @@ class EpgChannelAdapter(
 
     class EpgViewHolder(
         private val binding: ItemEpgChannelBinding,
-        private val onChannelClicked: (IptvChannel) -> Unit
+        private val onChannelClicked: (IptvChannel) -> Unit,
+        private val onChannelLongClicked: ((IptvChannel) -> Unit)?
     ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
@@ -61,6 +63,7 @@ class EpgChannelAdapter(
             binding.pbEpgProgress.progress = channel.progressPercent
 
             binding.dotActiveIndicator.visibility = if (isActive) View.VISIBLE else View.GONE
+            binding.ivFavoriteStar.visibility = if (channel.isFavorite) View.VISIBLE else View.GONE
 
             if (!channel.logoUrl.isNullOrEmpty()) {
                 binding.ivChannelLogo.load(channel.logoUrl) {
@@ -74,6 +77,11 @@ class EpgChannelAdapter(
 
             binding.root.setOnClickListener {
                 onChannelClicked(channel)
+            }
+
+            binding.root.setOnLongClickListener {
+                onChannelLongClicked?.invoke(channel)
+                true
             }
         }
     }

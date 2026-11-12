@@ -301,4 +301,8 @@
     <string name="vpn_loc_pl">🇵🇱 Польша</string>
     <string name="google_assistant">Google Ассистент</string>
     <string name="assistant_btn_search">Search</string>
+    <string name="cat_favorites">Избранное</string>
+    <string name="osd_hint_navigation">[OK] — выбор • [НАЗАД] — закрыть</string>
+    <string name="iptv_web_import_hint">Или откройте в браузере телефона: %1$s</string>
+    <string name="iptv_channels_count_format">%1$d каналов</string>
 </resources>

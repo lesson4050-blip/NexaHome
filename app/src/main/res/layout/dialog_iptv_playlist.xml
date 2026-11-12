@@ -207,6 +207,18 @@
             android:textColorHint="@color/white_40"
             android:textSize="13sp" />
 
+        <TextView
+            android:id="@+id/tv_web_import_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/leanback_cyan"
+            android:textSize="12sp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            tools:text="Или откройте в браузере телефона: http://192.168.1.100:8080" />
+
         <!-- Status and Progress Bar -->
         <LinearLayout
             android:id="@+id/container_status"

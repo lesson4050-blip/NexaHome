@@ -3,6 +3,8 @@ package com.orbit.tv.launcher.features.iptv
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.orbit.tv.launcher.R
+import com.orbit.tv.launcher.features.iptv.model.IptvCategory
 import com.orbit.tv.launcher.features.iptv.model.IptvChannel
 import com.orbit.tv.launcher.features.iptv.repository.IptvRepository
 import kotlinx.coroutines.delay
@@ -28,6 +30,9 @@ class IptvViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _selectedCategory = MutableStateFlow("All")
     val selectedCategory: StateFlow<String> = _selectedCategory.asStateFlow()
+
+    private val _categories = MutableStateFlow<List<IptvCategory>>(emptyList())
+    val categories: StateFlow<List<IptvCategory>> = _categories.asStateFlow()
 
     private val _isFullscreen = MutableStateFlow(false)
     val isFullscreen: StateFlow<Boolean> = _isFullscreen.asStateFlow()
@@ -58,12 +63,30 @@ class IptvViewModel(application: Application) : AndroidViewModel(application) {
             _isLoading.value = true
             val channels = repository.loadDefaultChannels(forceRefresh)
             _allChannels.value = channels
+            updateCategories(channels)
             applyFilter(_selectedCategory.value)
             if (channels.isNotEmpty() && _activeChannel.value == null) {
                 _activeChannel.value = channels.first()
             }
             _isLoading.value = false
         }
+    }
+
+    private fun updateCategories(channels: List<IptvChannel>) {
+        val app = getApplication<Application>()
+        val list = mutableListOf<IptvCategory>()
+        list.add(IptvCategory(id = "All", name = app.getString(R.string.cat_all), count = channels.size))
+        val favCount = channels.count { it.isFavorite }
+        list.add(IptvCategory(id = "Favorites", name = app.getString(R.string.cat_favorites), count = favCount))
+
+        val groups = channels.map { it.group.trim() }
+            .filter { it.isNotBlank() && !it.equals("All", ignoreCase = true) && !it.equals("Favorites", ignoreCase = true) }
+            .distinct()
+        for (g in groups) {
+            val count = channels.count { it.group.equals(g, ignoreCase = true) }
+            list.add(IptvCategory(id = g, name = g, count = count))
+        }
+        _categories.value = list
     }
 
     fun selectCategory(category: String) {
@@ -107,7 +130,12 @@ class IptvViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             val newFav = !channel.isFavorite
             repository.toggleFavorite(channel.id, newFav)
-            loadChannels(forceRefresh = true)
+            val updated = _allChannels.value.map {
+                if (it.id == channel.id) it.copy(isFavorite = newFav) else it
+            }
+            _allChannels.value = updated
+            updateCategories(updated)
+            applyFilter(_selectedCategory.value)
         }
     }
 

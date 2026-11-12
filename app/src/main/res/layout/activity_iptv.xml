@@ -345,131 +345,15 @@
                         android:textColor="@color/white_60"
                         android:textSize="12sp" />
 
-                    <LinearLayout
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_iptv_categories"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_weight="1"
                         android:clipChildren="false"
                         android:clipToPadding="false"
-                        android:paddingStart="4dp"
-                        android:paddingEnd="4dp"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
-                        android:orientation="horizontal">
-
-                        <Button
-                            android:id="@+id/btn_cat_all"
-                            android:layout_width="0dp"
-                            android:layout_height="44dp"
-                            android:layout_marginEnd="6dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/bg_focus_app_card"
-                            android:stateListAnimator="@null"
-                            android:focusable="true"
-                            android:fontFamily="sans-serif-bold"
-                            android:text="@string/cat_all"
-                            android:textColor="@color/white"
-                            android:textSize="12sp" />
-
-                        <Button
-                            android:id="@+id/btn_cat_ukraine"
-                            android:layout_width="0dp"
-                            android:layout_height="44dp"
-                            android:layout_marginStart="6dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/bg_focus_app_card"
-                            android:stateListAnimator="@null"
-                            android:focusable="true"
-                            android:fontFamily="sans-serif-bold"
-                            android:text="@string/cat_ukraine"
-                            android:textColor="@color/white"
-                            android:textSize="12sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:clipChildren="false"
-                        android:clipToPadding="false"
-                        android:paddingStart="4dp"
-                        android:paddingEnd="4dp"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
-                        android:orientation="horizontal">
-
-                        <Button
-                            android:id="@+id/btn_cat_cis"
-                            android:layout_width="0dp"
-                            android:layout_height="44dp"
-                            android:layout_marginEnd="6dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/bg_focus_app_card"
-                            android:stateListAnimator="@null"
-                            android:focusable="true"
-                            android:fontFamily="sans-serif-bold"
-                            android:text="@string/cat_cis"
-                            android:textColor="@color/white"
-                            android:textSize="12sp" />
-
-                        <Button
-                            android:id="@+id/btn_cat_movies"
-                            android:layout_width="0dp"
-                            android:layout_height="44dp"
-                            android:layout_marginStart="6dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/bg_focus_app_card"
-                            android:stateListAnimator="@null"
-                            android:focusable="true"
-                            android:fontFamily="sans-serif-bold"
-                            android:text="@string/cat_movies"
-                            android:textColor="@color/white"
-                            android:textSize="12sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:clipChildren="false"
-                        android:clipToPadding="false"
-                        android:paddingStart="4dp"
-                        android:paddingEnd="4dp"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
-                        android:orientation="horizontal">
-
-                        <Button
-                            android:id="@+id/btn_cat_sports"
-                            android:layout_width="0dp"
-                            android:layout_height="44dp"
-                            android:layout_marginEnd="6dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/bg_focus_app_card"
-                            android:stateListAnimator="@null"
-                            android:focusable="true"
-                            android:fontFamily="sans-serif-bold"
-                            android:text="@string/cat_sports"
-                            android:textColor="@color/white"
-                            android:textSize="12sp" />
-
-                        <Button
-                            android:id="@+id/btn_cat_news"
-                            android:layout_width="0dp"
-                            android:layout_height="44dp"
-                            android:layout_marginStart="6dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/bg_focus_app_card"
-                            android:stateListAnimator="@null"
-                            android:focusable="true"
-                            android:fontFamily="sans-serif-bold"
-                            android:text="@string/cat_news"
-                            android:textColor="@color/white"
-                            android:textSize="12sp" />
-
-                    </LinearLayout>
+                        android:padding="2dp" />
 
                 </LinearLayout>
 
@@ -630,6 +514,60 @@
                 android:textSize="12sp" />
 
         </LinearLayout>
+
+        <!-- Fullscreen Quick OSD Channel List Sidebar -->
+        <FrameLayout
+            android:id="@+id/osd_channel_sidebar"
+            android:layout_width="380dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="#EB0A101C"
+            android:clickable="true"
+            android:elevation="16dp"
+            android:focusable="true"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingStart="24dp"
+                android:paddingTop="28dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="24dp">
+
+                <TextView
+                    android:id="@+id/tv_osd_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-black"
+                    android:text="@string/iptv_screen_title"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_osd_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/osd_hint_navigation"
+                    android:textColor="@color/white_60"
+                    android:textSize="11sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_osd_channels"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    android:clipChildren="false"
+                    android:clipToPadding="false" />
+
+            </LinearLayout>
+
+        </FrameLayout>
 
     </FrameLayout>
 

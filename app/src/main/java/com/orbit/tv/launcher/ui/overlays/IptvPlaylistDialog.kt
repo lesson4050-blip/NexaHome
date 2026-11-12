@@ -79,6 +79,32 @@ class IptvPlaylistDialog : DialogFragment() {
         } else {
             showStatus("Используется стандартный плейлист Orbit Live HD", isError = false)
         }
+
+        val ip = getLocalIpAddress()
+        if (ip != null) {
+            binding.tvWebImportHint.text = getString(R.string.iptv_web_import_hint, "http://$ip:8080")
+            binding.tvWebImportHint.visibility = View.VISIBLE
+        } else {
+            binding.tvWebImportHint.visibility = View.GONE
+        }
+    }
+
+    private fun getLocalIpAddress(): String? {
+        try {
+            val interfaces = java.net.NetworkInterface.getNetworkInterfaces() ?: return null
+            for (intf in interfaces) {
+                val addrs = intf.inetAddresses ?: continue
+                for (addr in addrs) {
+                    if (!addr.isLoopbackAddress && addr is java.net.Inet4Address) {
+                        val host = addr.hostAddress ?: continue
+                        if (host.startsWith("192.168.") || host.startsWith("10.") || host.startsWith("172.")) {
+                            return host
+                        }
+                    }
+                }
+            }
+        } catch (e: Exception) {}
+        return null
     }
 
     private fun setupListeners() {

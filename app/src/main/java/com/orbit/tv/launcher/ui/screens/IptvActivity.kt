@@ -34,6 +34,8 @@ class IptvActivity : AppCompatActivity() {
 
     private var exoPlayer: ExoPlayer? = null
     private lateinit var epgAdapter: EpgChannelAdapter
+    private lateinit var categoryAdapter: com.orbit.tv.launcher.features.iptv.adapters.IptvCategoryAdapter
+    private lateinit var osdAdapter: EpgChannelAdapter
 
     private val bannerHandler = Handler(Looper.getMainLooper())
     private val hideBannerRunnable = Runnable {
@@ -42,6 +44,15 @@ class IptvActivity : AppCompatActivity() {
             .setDuration(400)
             .withEndAction { binding.bannerFullscreenInfo.visibility = View.GONE }
             .start()
+    }
+
+    private val osdHandler = Handler(Looper.getMainLooper())
+    private val hideOsdRunnable = Runnable { hideOsdSidebar() }
+
+    private val playlistReceiver = object : android.content.BroadcastReceiver() {
+        override fun onReceive(context: android.content.Context?, intent: android.content.Intent?) {
+            viewModel.loadChannels(forceRefresh = true)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +66,16 @@ class IptvActivity : AppCompatActivity() {
         initExoPlayer()
         setupBackNavigation()
         observeViewModel()
+        registerPlaylistReceiver()
+    }
+
+    private fun registerPlaylistReceiver() {
+        val filter = android.content.IntentFilter(ACTION_IPTV_UPDATED)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(playlistReceiver, filter, RECEIVER_NOT_EXPORTED)
+        } else {
+            registerReceiver(playlistReceiver, filter)
+        }
     }
 
     private fun setupFocus() {
@@ -68,13 +89,6 @@ class IptvActivity : AppCompatActivity() {
         TvFocusHelper.bindFocusScale(binding.btnManagePlaylist, scaleRatio = 1.08f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.playerPreviewContainer, scaleRatio = 1.04f, elevationDp = 10f)
 
-        TvFocusHelper.bindFocusScale(binding.btnCatAll, scaleRatio = 1.06f, elevationDp = 6f)
-        TvFocusHelper.bindFocusScale(binding.btnCatUkraine, scaleRatio = 1.06f, elevationDp = 6f)
-        TvFocusHelper.bindFocusScale(binding.btnCatCis, scaleRatio = 1.06f, elevationDp = 6f)
-        TvFocusHelper.bindFocusScale(binding.btnCatMovies, scaleRatio = 1.06f, elevationDp = 6f)
-        TvFocusHelper.bindFocusScale(binding.btnCatSports, scaleRatio = 1.06f, elevationDp = 6f)
-        TvFocusHelper.bindFocusScale(binding.btnCatNews, scaleRatio = 1.06f, elevationDp = 6f)
-
         TvFocusHelper.bindFocusScale(binding.btnRetryPlayback, scaleRatio = 1.08f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.btnFullscreenRetry, scaleRatio = 1.08f, elevationDp = 8f)
 
@@ -82,12 +96,37 @@ class IptvActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        epgAdapter = EpgChannelAdapter { channel ->
-            viewModel.selectChannel(channel)
+        categoryAdapter = com.orbit.tv.launcher.features.iptv.adapters.IptvCategoryAdapter { category ->
+            viewModel.selectCategory(category.id)
         }
+        binding.rvIptvCategories.apply {
+            layoutManager = androidx.recyclerview.widget.GridLayoutManager(this@IptvActivity, 2)
+            adapter = categoryAdapter
+            setHasFixedSize(true)
+        }
+
+        epgAdapter = EpgChannelAdapter(
+            onChannelClicked = { channel -> viewModel.selectChannel(channel) },
+            onChannelLongClicked = { channel -> viewModel.toggleFavorite(channel) }
+        )
         binding.rvEpgChannels.apply {
             layoutManager = LinearLayoutManager(this@IptvActivity)
             adapter = epgAdapter
+            setHasFixedSize(true)
+        }
+
+        osdAdapter = EpgChannelAdapter(
+            onChannelClicked = { channel ->
+                viewModel.selectChannel(channel)
+                hideOsdSidebar()
+            },
+            onChannelLongClicked = { channel ->
+                viewModel.toggleFavorite(channel)
+            }
+        )
+        binding.rvOsdChannels.apply {
+            layoutManager = LinearLayoutManager(this@IptvActivity)
+            adapter = osdAdapter
             setHasFixedSize(true)
         }
     }
@@ -117,13 +156,6 @@ class IptvActivity : AppCompatActivity() {
         binding.playerPreviewContainer.setOnClickListener {
             viewModel.toggleFullscreen()
         }
-
-        binding.btnCatAll.setOnClickListener { viewModel.selectCategory("All") }
-        binding.btnCatUkraine.setOnClickListener { viewModel.selectCategory("Ukraine") }
-        binding.btnCatCis.setOnClickListener { viewModel.selectCategory("CIS") }
-        binding.btnCatMovies.setOnClickListener { viewModel.selectCategory("Movies") }
-        binding.btnCatSports.setOnClickListener { viewModel.selectCategory("Sports") }
-        binding.btnCatNews.setOnClickListener { viewModel.selectCategory("News") }
 
         binding.btnRetryPlayback.setOnClickListener {
             retryActiveChannel()
@@ -185,7 +217,9 @@ class IptvActivity : AppCompatActivity() {
     private fun setupBackNavigation() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (viewModel.isFullscreen.value) {
+                if (binding.osdChannelSidebar.visibility == View.VISIBLE) {
+                    hideOsdSidebar()
+                } else if (viewModel.isFullscreen.value) {
                     viewModel.exitFullscreen()
                 } else {
                     isEnabled = false
@@ -205,10 +239,25 @@ class IptvActivity : AppCompatActivity() {
                     }
                 }
 
+                // Dynamic Categories
+                launch {
+                    viewModel.categories.collect { categories ->
+                        categoryAdapter.submitList(categories)
+                    }
+                }
+
+                // Selected Category
+                launch {
+                    viewModel.selectedCategory.collect { category ->
+                        categoryAdapter.selectedCategoryId = category
+                    }
+                }
+
                 // Filtered Channels
                 launch {
                     viewModel.filteredChannels.collect { channels ->
                         epgAdapter.submitList(channels)
+                        osdAdapter.submitList(channels)
                     }
                 }
 
@@ -216,18 +265,6 @@ class IptvActivity : AppCompatActivity() {
                 launch {
                     viewModel.activeChannel.collect { channel ->
                         channel?.let { playChannel(it) }
-                    }
-                }
-
-                // Selected Category UI indicator
-                launch {
-                    viewModel.selectedCategory.collect { category ->
-                        binding.btnCatAll.isSelected = category.equals("All", ignoreCase = true)
-                        binding.btnCatUkraine.isSelected = category.equals("Ukraine", ignoreCase = true)
-                        binding.btnCatCis.isSelected = category.equals("CIS", ignoreCase = true)
-                        binding.btnCatMovies.isSelected = category.equals("Movies", ignoreCase = true)
-                        binding.btnCatSports.isSelected = category.equals("Sports", ignoreCase = true)
-                        binding.btnCatNews.isSelected = category.equals("News", ignoreCase = true)
                     }
                 }
 
@@ -246,6 +283,7 @@ class IptvActivity : AppCompatActivity() {
         binding.overlayFullscreenError.visibility = View.GONE
 
         epgAdapter.activeChannelId = channel.id
+        osdAdapter.activeChannelId = channel.id
         binding.tvPreviewChannel.text = channel.name
         binding.tvPreviewProgram.text = channel.currentProgram
 
@@ -273,6 +311,7 @@ class IptvActivity : AppCompatActivity() {
             binding.fullscreenPlayerView.requestFocus()
             showFullscreenBanner()
         } else {
+            hideOsdSidebar()
             bannerHandler.removeCallbacks(hideBannerRunnable)
             binding.containerFullscreenMode.visibility = View.GONE
             binding.fullscreenPlayerView.player = null
@@ -288,9 +327,68 @@ class IptvActivity : AppCompatActivity() {
         bannerHandler.postDelayed(hideBannerRunnable, 3500)
     }
 
+    private fun showOsdSidebar() {
+        osdHandler.removeCallbacks(hideOsdRunnable)
+        binding.osdChannelSidebar.visibility = View.VISIBLE
+        binding.osdChannelSidebar.alpha = 0f
+        binding.osdChannelSidebar.animate()
+            .alpha(1f)
+            .setDuration(200)
+            .start()
+
+        val activeId = viewModel.activeChannel.value?.id
+        val list = viewModel.filteredChannels.value
+        val idx = list.indexOfFirst { it.id == activeId }
+        if (idx >= 0) {
+            binding.rvOsdChannels.scrollToPosition(idx)
+            binding.rvOsdChannels.postDelayed({
+                binding.rvOsdChannels.findViewHolderForAdapterPosition(idx)?.itemView?.requestFocus()
+                    ?: binding.rvOsdChannels.requestFocus()
+            }, 80)
+        } else {
+            binding.rvOsdChannels.requestFocus()
+        }
+
+        osdHandler.postDelayed(hideOsdRunnable, 6000)
+    }
+
+    private fun hideOsdSidebar() {
+        osdHandler.removeCallbacks(hideOsdRunnable)
+        if (binding.osdChannelSidebar.visibility == View.VISIBLE) {
+            binding.osdChannelSidebar.animate()
+                .alpha(0f)
+                .setDuration(180)
+                .withEndAction {
+                    binding.osdChannelSidebar.visibility = View.GONE
+                    if (viewModel.isFullscreen.value) {
+                        binding.fullscreenPlayerView.requestFocus()
+                    }
+                }
+                .start()
+        }
+    }
+
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         if (viewModel.isFullscreen.value && event.action == KeyEvent.ACTION_DOWN) {
+            if (binding.osdChannelSidebar.visibility == View.VISIBLE) {
+                if (event.keyCode == KeyEvent.KEYCODE_BACK || event.keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+                    hideOsdSidebar()
+                    return true
+                }
+                osdHandler.removeCallbacks(hideOsdRunnable)
+                osdHandler.postDelayed(hideOsdRunnable, 6000)
+                return super.dispatchKeyEvent(event)
+            }
+
             when (event.keyCode) {
+                KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER, KeyEvent.KEYCODE_DPAD_LEFT -> {
+                    if (binding.overlayFullscreenError.visibility == View.VISIBLE && event.keyCode != KeyEvent.KEYCODE_DPAD_LEFT) {
+                        retryActiveChannel()
+                    } else {
+                        showOsdSidebar()
+                    }
+                    return true
+                }
                 KeyEvent.KEYCODE_DPAD_UP, KeyEvent.KEYCODE_CHANNEL_UP -> {
                     viewModel.previousChannel()
                     return true
@@ -299,12 +397,8 @@ class IptvActivity : AppCompatActivity() {
                     viewModel.nextChannel()
                     return true
                 }
-                KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER -> {
-                    if (binding.overlayFullscreenError.visibility == View.VISIBLE) {
-                        retryActiveChannel()
-                    } else {
-                        showFullscreenBanner()
-                    }
+                KeyEvent.KEYCODE_MENU -> {
+                    viewModel.activeChannel.value?.let { viewModel.toggleFavorite(it) }
                     return true
                 }
                 KeyEvent.KEYCODE_BACK -> {
@@ -328,8 +422,16 @@ class IptvActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        try {
+            unregisterReceiver(playlistReceiver)
+        } catch (e: Exception) {}
         bannerHandler.removeCallbacks(hideBannerRunnable)
+        osdHandler.removeCallbacks(hideOsdRunnable)
         exoPlayer?.release()
         exoPlayer = null
+    }
+
+    companion object {
+        const val ACTION_IPTV_UPDATED = "com.orbit.tv.launcher.ACTION_IPTV_PLAYLIST_UPDATED"
     }
 }

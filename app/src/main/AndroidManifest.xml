@@ -57,7 +57,7 @@
         <activity
             android:name=".ui.screens.AppsHubActivity"
             android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            android:exported="false"
+            android:exported="true"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
@@ -65,7 +65,7 @@
         <activity
             android:name=".ui.screens.IptvActivity"
             android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            android:exported="false"
+            android:exported="true"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
@@ -73,7 +73,7 @@
         <activity
             android:name=".ui.screens.OptimizerActivity"
             android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            android:exported="false"
+            android:exported="true"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
@@ -81,7 +81,7 @@
         <activity
             android:name=".ui.screens.CastActivity"
             android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            android:exported="false"
+            android:exported="true"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
