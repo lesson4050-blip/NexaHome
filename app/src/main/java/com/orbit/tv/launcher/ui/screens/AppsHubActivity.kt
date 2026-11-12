@@ -163,7 +163,7 @@ class AppsHubActivity : AppCompatActivity() {
         // Top bar
         TvFocusHelper.bindFocusScale(binding.searchBar, scaleRatio = 1.04f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.btnVoiceSearch, scaleRatio = 1.12f, elevationDp = 8f)
-        TvFocusHelper.bindFocusScale(binding.btnGoogleAssistant, scaleRatio = 1.12f, elevationDp = 8f)
+        TvFocusHelper.bindFocusScale(binding.btnGoogleAssistant, scaleRatio = 1.08f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.btnSystemVpn, scaleRatio = 1.08f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.ivWifiStatus, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnSettings, scaleRatio = 1.12f, elevationDp = 8f)

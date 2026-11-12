@@ -300,4 +300,5 @@
     <string name="vpn_loc_de">🇩🇪 Germany</string>
     <string name="vpn_loc_pl">🇵🇱 Poland</string>
     <string name="google_assistant">Google Assistant</string>
+    <string name="assistant_btn_search">Search</string>
 </resources>

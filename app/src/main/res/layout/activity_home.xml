@@ -207,21 +207,40 @@
                     app:layout_constraintStart_toEndOf="@id/search_bar"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageButton
+                <LinearLayout
                     android:id="@+id/btn_google_assistant"
-                    android:layout_width="@dimen/circle_button_size"
-                    android:layout_height="@dimen/circle_button_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_marginStart="8dp"
-                    android:background="@drawable/bg_circle_button"
-                    android:contentDescription="@string/google_assistant"
+                    android:background="@drawable/bg_assistant_pill"
+                    android:clickable="true"
                     android:focusable="true"
-                    android:padding="7dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_brand_google_assistant"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="16dp"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/btn_voice_search"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_brand_google_assistant" />
+
+                    <TextView
+                        android:id="@+id/tv_assistant_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/assistant_btn_search"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
 
                 <!-- TV Status / Metrics Cluster -->
                 <LinearLayout
