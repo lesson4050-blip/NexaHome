@@ -28,6 +28,11 @@ class RecommendedAppsAdapter(
         holder.bind(getItem(position))
     }
 
+    override fun onViewRecycled(holder: ViewHolder) {
+        super.onViewRecycled(holder)
+        holder.resetTransform()
+    }
+
     class ViewHolder(
         private val binding: ItemRecommendedAppCardBinding,
         private val onAppAction: (RecommendedAppModel) -> Unit
@@ -37,7 +42,21 @@ class RecommendedAppsAdapter(
             TvFocusHelper.bindFocusScale(binding.cardContainer, scaleRatio = 1.05f, elevationDp = 8f)
         }
 
+        fun resetTransform() {
+            binding.cardContainer.animate().cancel()
+            val hasFocus = binding.cardContainer.isFocused
+            val density = binding.root.resources.displayMetrics.density
+            val targetScale = if (hasFocus) 1.05f else 1.0f
+            val targetElevation = if (hasFocus) 8f * density else 0f
+            binding.cardContainer.scaleX = targetScale
+            binding.cardContainer.scaleY = targetScale
+            binding.cardContainer.translationZ = targetElevation
+            binding.cardContainer.translationX = 0f
+            binding.cardContainer.translationY = 0f
+        }
+
         fun bind(item: RecommendedAppModel) {
+            resetTransform()
             val ctx = binding.root.context
             binding.tvAppName.text = item.name
             binding.tvCategoryTag.text = item.category

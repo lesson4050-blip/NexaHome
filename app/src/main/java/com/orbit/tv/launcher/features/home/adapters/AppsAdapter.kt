@@ -36,6 +36,11 @@ class AppsAdapter(
         holder.bind(getItem(position))
     }
 
+    override fun onViewRecycled(holder: AppViewHolder) {
+        super.onViewRecycled(holder)
+        holder.resetTransform()
+    }
+
     class AppViewHolder(
         private val binding: ItemAppCardBinding,
         private val showPinBadge: Boolean,
@@ -47,7 +52,21 @@ class AppsAdapter(
             TvFocusHelper.bindFocusScale(binding.cardContainer, scaleRatio = 1.06f, elevationDp = 8f)
         }
 
+        fun resetTransform() {
+            binding.cardContainer.animate().cancel()
+            val hasFocus = binding.cardContainer.isFocused
+            val density = binding.root.resources.displayMetrics.density
+            val targetScale = if (hasFocus) 1.06f else 1.0f
+            val targetElevation = if (hasFocus) 8f * density else 0f
+            binding.cardContainer.scaleX = targetScale
+            binding.cardContainer.scaleY = targetScale
+            binding.cardContainer.translationZ = targetElevation
+            binding.cardContainer.translationX = 0f
+            binding.cardContainer.translationY = 0f
+        }
+
         fun bind(app: AppModel) {
+            resetTransform()
             binding.tvAppLabel.text = app.label
             if (app.iconDrawable != null) {
                 binding.ivAppIcon.setImageDrawable(app.iconDrawable)

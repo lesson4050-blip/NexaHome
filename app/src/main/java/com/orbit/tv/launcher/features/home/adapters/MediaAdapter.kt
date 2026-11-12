@@ -28,6 +28,11 @@ class MediaAdapter(
         holder.bind(getItem(position))
     }
 
+    override fun onViewRecycled(holder: MediaViewHolder) {
+        super.onViewRecycled(holder)
+        holder.resetTransform()
+    }
+
     class MediaViewHolder(
         private val binding: ItemMediaCardBinding,
         private val onMediaClick: (MediaModel) -> Unit
@@ -37,7 +42,21 @@ class MediaAdapter(
             TvFocusHelper.bindFocusScale(binding.cardContainer, scaleRatio = 1.05f, elevationDp = 10f)
         }
 
+        fun resetTransform() {
+            binding.cardContainer.animate().cancel()
+            val hasFocus = binding.cardContainer.isFocused
+            val density = binding.root.resources.displayMetrics.density
+            val targetScale = if (hasFocus) 1.05f else 1.0f
+            val targetElevation = if (hasFocus) 10f * density else 0f
+            binding.cardContainer.scaleX = targetScale
+            binding.cardContainer.scaleY = targetScale
+            binding.cardContainer.translationZ = targetElevation
+            binding.cardContainer.translationX = 0f
+            binding.cardContainer.translationY = 0f
+        }
+
         fun bind(media: MediaModel) {
+            resetTransform()
             binding.tvTitle.text = media.title
             binding.tvBadge.text = media.badge
 
