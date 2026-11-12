@@ -68,6 +68,8 @@
     <string name="cat_cinema">Кіно</string>
     <string name="cat_news">Новини</string>
     <string name="cat_ukraine">Україна</string>
+    <string name="cat_cis">СНД</string>
+    <string name="cat_movies">Кіно</string>
     <string name="iptv_manage_playlists">Плейлисти M3U</string>
     <string name="iptv_stream_error">Помилка потоку: %1$s</string>
     <string name="iptv_no_channels">У цій категорії немає каналів</string>

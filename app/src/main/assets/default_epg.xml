@@ -1,168 +1,2872 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tv generator-info-name="OrbitLeanbackEPG">
-  <!-- Channel Definitions -->
-  <channel id="redbull.tv">
-    <display-name>Red Bull TV HD</display-name>
-  </channel>
-  <channel id="dw.news">
-    <display-name>Deutsche Welle News HD</display-name>
-  </channel>
-  <channel id="skynews">
-    <display-name>Sky News HD</display-name>
-  </channel>
-  <channel id="euronews">
-    <display-name>Euronews English HD</display-name>
-  </channel>
-  <channel id="aljazeera">
-    <display-name>Al Jazeera English HD</display-name>
+  <channel id="1plus1.int">
+    <display-name>1+1 International HD</display-name>
   </channel>
   <channel id="1plus1.marafon">
     <display-name>1+1 Марафон HD</display-name>
   </channel>
-  <channel id="1plus1.int">
-    <display-name>1+1 International HD</display-name>
+  <channel id="100NEWS.ua@SD">
+    <display-name>100% NEWS</display-name>
+  </channel>
+  <channel id="24Kanal.ua@SD">
+    <display-name>24 Kanal</display-name>
   </channel>
   <channel id="24tv.ua">
     <display-name>24 Канал HD</display-name>
   </channel>
-
-  <!-- 1. Red Bull TV -->
-  <programme start="20261112000000 +0000" stop="20261112040000 +0000" channel="redbull.tv">
-    <title lang="en">Red Bull Rampage: Greatest Moments</title>
-    <desc lang="en">Freeride mountain biking highlights from Utah cliffs.</desc>
+  <channel id="366TV.ua@SD">
+    <display-name>36.6 TV</display-name>
+  </channel>
+  <channel id="4everDrama.ua@SD">
+    <display-name>4ever Drama</display-name>
+  </channel>
+  <channel id="4everMusic.ua@SD">
+    <display-name>4ever Music</display-name>
+  </channel>
+  <channel id="4everTheater.ua@SD">
+    <display-name>4ever Theater</display-name>
+  </channel>
+  <channel id="6sotok.ua@SD">
+    <display-name>6 sotok</display-name>
+  </channel>
+  <channel id="ATR.ua@SD">
+    <display-name>ATR</display-name>
+  </channel>
+  <channel id="ArmyTV.ua@SD">
+    <display-name>Army TV</display-name>
+  </channel>
+  <channel id="Avers.ua@SD">
+    <display-name>Avers</display-name>
+  </channel>
+  <channel id="Bigudi.ua@SD">
+    <display-name>Bigudi</display-name>
+  </channel>
+  <channel id="Black.ua@SD">
+    <display-name>Black</display-name>
+  </channel>
+  <channel id="Bolt.ua@SD">
+    <display-name>Bolt</display-name>
+  </channel>
+  <channel id="CartoonNetworkCEE.uk@Ukraine">
+    <display-name>Cartoon Network CEE Ukraine</display-name>
+  </channel>
+  <channel id="Channel5.ua@SD">
+    <display-name>Channel 5 (Ukraine)</display-name>
+  </channel>
+  <channel id="freedom.ua">
+    <display-name>FREEДОМ HD</display-name>
+  </channel>
+  <channel id="VivaLatino.ua@SD">
+    <display-name>¡Viva Latino!</display-name>
+  </channel>
+  <channel id="31Kanal.kz@SD">
+    <display-name>31 Kanal</display-name>
+  </channel>
+  <channel id="AbaiTV.kz@SD">
+    <display-name>Abai TV</display-name>
+  </channel>
+  <channel id="AstanaTV.kz@SD">
+    <display-name>Astana TV</display-name>
+  </channel>
+  <channel id="Balapan.kz@HD">
+    <display-name>Balapan HD</display-name>
+  </channel>
+  <channel id="Channel7.kz@SD">
+    <display-name>Channel 7 (Kazakhstan)</display-name>
+  </channel>
+  <channel id="DisneyChannel.hu@SD">
+    <display-name>Disney Channel (Hungary)</display-name>
+  </channel>
+  <channel id="HitFM.md@SD">
+    <display-name>Hit FM</display-name>
+  </channel>
+  <channel id="JibekJoly.kz@HD">
+    <display-name>Jibek Joly HD</display-name>
+  </channel>
+  <channel id="KTK.kz@SD">
+    <display-name>KTK</display-name>
+  </channel>
+  <channel id="KTK.kz@HD">
+    <display-name>KTK HD [Not 24/7]</display-name>
+  </channel>
+  <channel id="Moldova1.md@SD">
+    <display-name>Moldova 1</display-name>
+  </channel>
+  <channel id="Moldova2.md@SD">
+    <display-name>Moldova 2</display-name>
+  </channel>
+  <channel id="MoldovaTV.md@SD">
+    <display-name>Moldova TV</display-name>
+  </channel>
+  <channel id="NorocTV.md@SD">
+    <display-name>Noroc TV</display-name>
+  </channel>
+  <channel id="PartyMix.ro@HD">
+    <display-name>Party Mix HD</display-name>
+  </channel>
+  <channel id="PrivescEuTV.md@SD">
+    <display-name>Privesc.Eu TV</display-name>
+  </channel>
+  <channel id="RadioChisinau.md@SD">
+    <display-name>Radio Chisinau</display-name>
+  </channel>
+  <channel id="RadioMoldova.md@SD">
+    <display-name>Radio Moldova</display-name>
+  </channel>
+  <channel id="RadioMoldovaMuzical.md@SD">
+    <display-name>Radio Moldova Muzical</display-name>
+  </channel>
+  <channel id="RadioMoldovaTineret.md@SD">
+    <display-name>Radio Moldova Tineret</display-name>
+  </channel>
+  <channel id="RealitateaTV.md@SD">
+    <display-name>Realitatea TV</display-name>
+  </channel>
+  <channel id="SorTV.md@SD">
+    <display-name>Sor TV</display-name>
+  </channel>
+  <channel id="TSV.md@SD">
+    <display-name>TSV</display-name>
+  </channel>
+  <channel id="TVRMoldova.md@HD">
+    <display-name>TVR Moldova HD</display-name>
+  </channel>
+  <channel id="TezaurTV.md@SD">
+    <display-name>Tezaur TV (576i)</display-name>
+  </channel>
+  <channel id="VoceaBasarabieiTV.md@SD">
+    <display-name>Vocea Basarabiei TV</display-name>
+  </channel>
+  <channel id="10TV.in@SD">
+    <display-name>10 TV</display-name>
+  </channel>
+  <channel id="13SiamThai.th@SD">
+    <display-name>13 Siam Thai</display-name>
+  </channel>
+  <channel id="22ScopeNews.in@SD">
+    <display-name>22Scope News</display-name>
+  </channel>
+  <channel id="24Horas.es@SD">
+    <display-name>24 Horas</display-name>
+  </channel>
+  <channel id="24HorasCatalunya.es@SD">
+    <display-name>24 Horas Catalunya</display-name>
+  </channel>
+  <channel id="24News.in@SD">
+    <display-name>24 News</display-name>
+  </channel>
+  <channel id="24NewsHD.pk@SD">
+    <display-name>24 News HD</display-name>
+  </channel>
+  <channel id="24TV.tr@SD">
+    <display-name>24 TV</display-name>
+  </channel>
+  <channel id="247CanaldeNoticias.ar@SD">
+    <display-name>24/7 Canal de Noticias</display-name>
+  </channel>
+  <channel id="2GB.au@SD">
+    <display-name>2GB</display-name>
+  </channel>
+  <channel id="30AGeorgiaHollywoodReview.us@SD">
+    <display-name>30A Georgia Hollywood Review</display-name>
+  </channel>
+  <channel id="30ALionelNation.us@SD">
+    <display-name>30A Lionel Nation</display-name>
+  </channel>
+  <channel id="3AW.au@SD">
+    <display-name>3AW</display-name>
+  </channel>
+  <channel id="3CatInfo.es@SD">
+    <display-name>3CatInfo</display-name>
+  </channel>
+  <channel id="4DmasNoticiasTV.py@SD">
+    <display-name>4Dmas Noticias TV [Not 24/7]</display-name>
+  </channel>
+  <channel id="4TVNews.in@SD">
+    <display-name>4TV News</display-name>
+  </channel>
+  <channel id="6TVTelugu.in@SD">
+    <display-name>6 TV Telugu</display-name>
+  </channel>
+  <channel id="6PR.au@SD">
+    <display-name>6PR</display-name>
+  </channel>
+  <channel id="7Info.ci@SD">
+    <display-name>7 Info</display-name>
+  </channel>
+  <channel id="aljazeera.en">
+    <display-name>Al Jazeera English HD</display-name>
+  </channel>
+  <channel id="dw.news">
+    <display-name>DW News English HD</display-name>
+  </channel>
+  <channel id="euronews.en">
+    <display-name>Euronews English HD</display-name>
+  </channel>
+  <channel id="skynews">
+    <display-name>Sky News UK HD</display-name>
+  </channel>
+  <channel id="30AGolfKingdom.us@SD">
+    <display-name>30A Golf Kingdom</display-name>
+  </channel>
+  <channel id="ASpor.tr@SD">
+    <display-name>A Spor SD</display-name>
+  </channel>
+  <channel id="ACCDigitalNetwork.us@SD">
+    <display-name>ACC Digital Network</display-name>
+  </channel>
+  <channel id="ACISportTV.it@SD">
+    <display-name>ACI Sport TV SD</display-name>
+  </channel>
+  <channel id="ADOTV.bj@SD">
+    <display-name>ADO TV</display-name>
+  </channel>
+  <channel id="AS3SportTV.ve@SD">
+    <display-name>AS3 Sport TV</display-name>
+  </channel>
+  <channel id="Africa24Sport.fr@SD">
+    <display-name>Africa 24 Sport</display-name>
+  </channel>
+  <channel id="AlIraqiaSport.iq@SD">
+    <display-name>Al Iraqia Sport</display-name>
+  </channel>
+  <channel id="AmericanNinjaWarrior.us@SD">
+    <display-name>American Ninja Warrior</display-name>
+  </channel>
+  <channel id="AntenaPlayEvents.ro@SD">
+    <display-name>AntenaPlay Events (576i) [Not 24/7]</display-name>
+  </channel>
+  <channel id="AntenaSport.ro@SD">
+    <display-name>AntenaSport</display-name>
+  </channel>
+  <channel id="ArenaSport1.sk@SD">
+    <display-name>Arena Sport 1</display-name>
+  </channel>
+  <channel id="ArenaSport2.sk@SD">
+    <display-name>Arena Sport 2</display-name>
+  </channel>
+  <channel id="Arena4.hu@SD">
+    <display-name>Arena4</display-name>
+  </channel>
+  <channel id="Arryadia.ma@SD">
+    <display-name>Arryadia</display-name>
+  </channel>
+  <channel id="redbull.tv">
+    <display-name>Red Bull TV HD</display-name>
+  </channel>
+  <channel id="00sReplay.us@SD">
+    <display-name>00s Replay</display-name>
+  </channel>
+  <channel id="30ATVClassicMovies.us@SD">
+    <display-name>30A TV Classic Movies</display-name>
+  </channel>
+  <channel id="312Kino.kg@SD">
+    <display-name>312 Kino</display-name>
+  </channel>
+  <channel id="50CentAction.us@SD">
+    <display-name>50 Cent Action</display-name>
+  </channel>
+  <channel id="70sCinema.us@SD">
+    <display-name>70s Cinema</display-name>
+  </channel>
+  <channel id="80sRewind.us@SD">
+    <display-name>80s Rewind</display-name>
+  </channel>
+  <channel id="90sThrowback.us@SD">
+    <display-name>90s Throwback</display-name>
+  </channel>
+  <channel id="ABNBibleMoviesChannel.us@SD">
+    <display-name>ABN Bible Movies Channel</display-name>
+  </channel>
+  <channel id="AMCEurope.uk@CzechRepublic">
+    <display-name>AMC Europe Czech Republic</display-name>
+  </channel>
+  <channel id="Action24.gr@SD">
+    <display-name>Action 24 [Not 24/7]</display-name>
+  </channel>
+  <channel id="AdrenalinaPuraTV.us@SD">
+    <display-name>Adrenalina Pura TV</display-name>
+  </channel>
+  <channel id="AdrenalinaPuraTV.us@Brazil">
+    <display-name>Adrenalina Pura TV Brazil</display-name>
+  </channel>
+  <channel id="Aflam.sa@SD">
+    <display-name>Aflam</display-name>
+  </channel>
+  <channel id="AfraFilm.ir@SD">
+    <display-name>Afra Film</display-name>
+  </channel>
+  <channel id="AlankarTV.in@SD">
+    <display-name>Alankar TV</display-name>
+  </channel>
+  <channel id="AllTimeMovies.in@SD">
+    <display-name>All Time Movies</display-name>
+  </channel>
+  <channel id="AlloCine.cm@SD">
+    <display-name>Allo Cine</display-name>
+  </channel>
+  <channel id="AlternaTV.ar@SD">
+    <display-name>AlternaTV [Not 24/7]</display-name>
+  </channel>
+  <channel id="PlusMaisUm.br@HD">
+    <display-name>+MaisUm</display-name>
+  </channel>
+  <channel id="13Festival.cl@SD">
+    <display-name>13 Festival</display-name>
+  </channel>
+  <channel id="1HDMusicTelevision.ru@HD">
+    <display-name>1HD Music Television</display-name>
+  </channel>
+  <channel id="30AMusic.us@SD">
+    <display-name>30A Music</display-name>
+  </channel>
+  <channel id="360TuneBox.nl@SD">
+    <display-name>360TuneBox</display-name>
+  </channel>
+  <channel id="4FunDance.pl@SD">
+    <display-name>4 Fun Dance</display-name>
+  </channel>
+  <channel id="4FunTV.pl@SD">
+    <display-name>4 Fun TV</display-name>
+  </channel>
+  <channel id="4Music.fr@SD">
+    <display-name>4 Music</display-name>
+  </channel>
+  <channel id="4Kurd.fr@SD">
+    <display-name>4Kurd</display-name>
+  </channel>
+  <channel id="7080TV.it@SD">
+    <display-name>70-80 TV</display-name>
+  </channel>
+  <channel id="7SMusic.in@SD">
+    <display-name>7S Music</display-name>
+  </channel>
+  <channel id="7XMusic.in@SD">
+    <display-name>7X Music</display-name>
+  </channel>
+  <channel id="8XM.pk@HD">
+    <display-name>8XM</display-name>
+  </channel>
+  <channel id="981PearlFM.sx@SD">
+    <display-name>98.1 Pearl FM</display-name>
+  </channel>
+  <channel id="9XJalwa.in@SD">
+    <display-name>9X Jalwa</display-name>
+  </channel>
+  <channel id="ADNTVPlus.fr@SD">
+    <display-name>ADN TV+</display-name>
+  </channel>
+  <channel id="AnimexHIDIVE.us@SD">
+    <display-name>Anime x HIDIVE</display-name>
+  </channel>
+  <channel id="Avatar.de@GB">
+    <display-name>Avatar (Germany)</display-name>
+  </channel>
+  <channel id="Avatar.se@DK">
+    <display-name>Avatar (Sweden)</display-name>
+  </channel>
+  <channel id="BotflixTV.us@HD">
+    <display-name>Botflix TV</display-name>
+  </channel>
+  <channel id="CartoonNetwork.it@SD">
+    <display-name>Cartoon Network (Italy)</display-name>
+  </channel>
+  <channel id="CartoonNetwork.pk@SD">
+    <display-name>Cartoon Network (Pakistan)</display-name>
+  </channel>
+  <channel id="CartoonNetwork.tr@SD">
+    <display-name>Cartoon Network (Turkiye)</display-name>
+  </channel>
+  <channel id="CartoonNetworkArabic.ae@SD">
+    <display-name>Cartoon Network Arabic</display-name>
+  </channel>
+  <channel id="CartoonNetworkAsia.sg@SD">
+    <display-name>Cartoon Network Asia</display-name>
+  </channel>
+  <channel id="CartoonNetworkAsia.sg@Thailand">
+    <display-name>Cartoon Network Asia Thailand</display-name>
+  </channel>
+  <channel id="CartoonNetworkCEE.uk@CzechRepublic">
+    <display-name>Cartoon Network CEE Czech Republic</display-name>
+  </channel>
+  <channel id="CartoonNetworkCEE.uk@Germany">
+    <display-name>Cartoon Network CEE Germany</display-name>
+  </channel>
+  <channel id="30ALoomeredTV.us@SD">
+    <display-name>30A Loomered TV</display-name>
+  </channel>
+  <channel id="AdventureEarth.de@SD">
+    <display-name>Adventure Earth</display-name>
+  </channel>
+  <channel id="AlArabiyaPrograms.ae@SD">
+    <display-name>Al Arabiya Programs</display-name>
+  </channel>
+  <channel id="AmericanHeroesChannel.us@SD">
+    <display-name>American Heroes Channel</display-name>
+  </channel>
+  <channel id="AnimalPlanet.ru@SD">
+    <display-name>Animal Planet (Russia)</display-name>
+  </channel>
+  <channel id="AnimalPlanet.us@East">
+    <display-name>Animal Planet (United States)</display-name>
+  </channel>
+  <channel id="AnimalPlanetLatinAmerica.us@SD">
+    <display-name>Animal Planet Latin America</display-name>
+  </channel>
+  <channel id="ArchivosForenses.us@Spain">
+    <display-name>Archivos Forenses</display-name>
+  </channel>
+  <channel id="Arsenal.ru@SD">
+    <display-name>Arsenal</display-name>
+  </channel>
+  <channel id="AsharqDiscovery.sa@SD">
+    <display-name>Asharq Discovery</display-name>
+  </channel>
+  <channel id="AsharqDocumentary.sa@SD">
+    <display-name>Asharq Documentary</display-name>
+  </channel>
+  <channel id="Atlas.us@SD">
+    <display-name>Atlas</display-name>
+  </channel>
+  <channel id="AutenticHistory.de@SD">
+    <display-name>Autentic History</display-name>
+  </channel>
+  <channel id="BBCEarth.uk@Czechia">
+    <display-name>BBC Earth Czechia</display-name>
+  </channel>
+  <channel id="BBCEarth.uk@Hungary">
+    <display-name>BBC Earth Hungary</display-name>
+  </channel>
+  <channel id="BBCEarth.uk@US">
+    <display-name>BBC Earth US</display-name>
+  </channel>
+  <channel id="Backstage.us@SD">
+    <display-name>Backstage</display-name>
+  </channel>
+  <channel id="BloombergOriginals.us@US">
+    <display-name>Bloomberg Originals</display-name>
+  </channel>
+  <channel id="BritBoxMysteries.us@SD">
+    <display-name>BritBox Mysteries</display-name>
+  </channel>
+  <channel id="nasa.live">
+    <display-name>NASA TV Space</display-name>
+  </channel>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="1plus1.int">
+    <title lang="ru">1+1 International HD • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 1+1 International HD</desc>
   </programme>
-  <programme start="20261112040000 +0000" stop="20261112080000 +0000" channel="redbull.tv">
-    <title lang="en">Formula 1: Behind the Bull Pit Wall</title>
-    <desc lang="en">Exclusive telemetry review and race strategies.</desc>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="1plus1.int">
+    <title lang="ru">1+1 International HD • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
   </programme>
-  <programme start="20261112080000 +0000" stop="20261112120000 +0000" channel="redbull.tv">
-    <title lang="en">Cliff Diving World Series Highlights</title>
-    <desc lang="en">High-altitude diving in Polignano a Mare.</desc>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="1plus1.int">
+    <title lang="ru">1+1 International HD • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
   </programme>
-  <programme start="20261112120000 +0000" stop="20261112160000 +0000" channel="redbull.tv">
-    <title lang="en">Downhill World Cup Championship</title>
-    <desc lang="en">Live run timing and rider speed comparisons.</desc>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="1plus1.int">
+    <title lang="ru">1+1 International HD • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
   </programme>
-  <programme start="20261112160000 +0000" stop="20261112200000 +0000" channel="redbull.tv">
-    <title lang="en">Red Bull BC One World Final Battle</title>
-    <desc lang="en">Top breakers competing on the world stage.</desc>
-  </programme>
-  <programme start="20261112200000 +0000" stop="20261112235959 +0000" channel="redbull.tv">
-    <title lang="en">Chasing the Shot: Big Wave Surfing</title>
-    <desc lang="en">Surfers tackling 80-foot waves at Nazare.</desc>
-  </programme>
-
-  <!-- 2. DW News -->
-  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="dw.news">
-    <title lang="en">DW News Global Overnight</title>
-    <desc lang="en">Continuous world news and market reports.</desc>
-  </programme>
-  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="dw.news">
-    <title lang="en">DW News Europe Morning Edition</title>
-    <desc lang="en">European geopolitics, tech innovations, and climate briefs.</desc>
-  </programme>
-  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="dw.news">
-    <title lang="en">The Day: Focus on Global Affairs</title>
-    <desc lang="en">In-depth investigative reports and political interviews.</desc>
-  </programme>
-  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="dw.news">
-    <title lang="en">DW News Prime &amp; Business Special</title>
-    <desc lang="en">Evening global news analysis and stock market closing recap.</desc>
-  </programme>
-
-  <!-- 3. Sky News -->
-  <programme start="20261112000000 +0000" stop="20261112070000 +0000" channel="skynews">
-    <title lang="en">Sky World News Live</title>
-    <desc lang="en">Breaking news and headlines from across the globe.</desc>
-  </programme>
-  <programme start="20261112070000 +0000" stop="20261112120000 +0000" channel="skynews">
-    <title lang="en">Sky News Breakfast with Kay Burley</title>
-    <desc lang="en">Interviews with politicians and breaking news stories.</desc>
-  </programme>
-  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="skynews">
-    <title lang="en">Sky News at One &amp; Afternoon Live</title>
-    <desc lang="en">Detailed coverage of the top stories and world events.</desc>
-  </programme>
-  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="skynews">
-    <title lang="en">The UK Tonight with Sarah-Jane Mee</title>
-    <desc lang="en">In-depth discussion and the day's major issues.</desc>
-  </programme>
-
-  <!-- 4. Euronews -->
-  <programme start="20261112000000 +0000" stop="20261112080000 +0000" channel="euronews">
-    <title lang="en">Euronews Morning Edition</title>
-    <desc lang="en">Comprehensive pan-European news coverage.</desc>
-  </programme>
-  <programme start="20261112080000 +0000" stop="20261112160000 +0000" channel="euronews">
-    <title lang="en">Euronews Now: Live Europe</title>
-    <desc lang="en">Live reports from Brussels, Paris, Berlin, and Kiev.</desc>
-  </programme>
-  <programme start="20261112160000 +0000" stop="20261112235959 +0000" channel="euronews">
-    <title lang="en">Euronews Tonight &amp; The Global Conversation</title>
-    <desc lang="en">Interviews with international world leaders.</desc>
-  </programme>
-
-  <!-- 5. Al Jazeera English -->
-  <programme start="20261112000000 +0000" stop="20261112080000 +0000" channel="aljazeera">
-    <title lang="en">Al Jazeera News Hour Overnight</title>
-    <desc lang="en">Unfiltered global coverage and ground reports.</desc>
-  </programme>
-  <programme start="20261112080000 +0000" stop="20261112160000 +0000" channel="aljazeera">
-    <title lang="en">Inside Story &amp; Live News Hour</title>
-    <desc lang="en">Critical debate and analysis on international affairs.</desc>
-  </programme>
-  <programme start="20261112160000 +0000" stop="20261112235959 +0000" channel="aljazeera">
-    <title lang="en">The Stream &amp; Newshour Prime</title>
-    <desc lang="en">Social community voices and investigative journalism.</desc>
-  </programme>
-
-  <!-- 6. 1+1 Марафон -->
   <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="1plus1.marafon">
-    <title lang="uk">Єдині новини • Нічний телемарафон</title>
-    <desc lang="uk">Цілодобовий інформаційний блок та аналітика подій.</desc>
+    <title lang="ru">1+1 Марафон HD • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 1+1 Марафон HD</desc>
   </programme>
   <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="1plus1.marafon">
-    <title lang="uk">Єдині новини • Ранок</title>
-    <desc lang="uk">Ранковий брифінг, зведення з фронту, економіка.</desc>
+    <title lang="ru">1+1 Марафон HD • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
   </programme>
   <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="1plus1.marafon">
-    <title lang="uk">Єдині новини • День</title>
-    <desc lang="uk">Прямі включення кореспондентів та ексклюзивні репортажі.</desc>
+    <title lang="ru">1+1 Марафон HD • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
   </programme>
   <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="1plus1.marafon">
-    <title lang="uk">ТСН • Вечірній підсумок дня</title>
-    <desc lang="uk">Головні події країни та світу з коментарями експертів.</desc>
+    <title lang="ru">1+1 Марафон HD • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
   </programme>
-
-  <!-- 7. 1+1 International -->
-  <programme start="20261112000000 +0000" stop="20261112080000 +0000" channel="1plus1.int">
-    <title lang="uk">Світ навиворіт з Дмитром Комаровим</title>
-    <desc lang="uk">Експедиції у найвіддаленіші куточки планети.</desc>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="100NEWS.ua@SD">
+    <title lang="ru">100% NEWS • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 100% NEWS</desc>
   </programme>
-  <programme start="20261112080000 +0000" stop="20261112160000 +0000" channel="1plus1.int">
-    <title lang="uk">Українські сенсації та хроніки</title>
-    <desc lang="uk">Документальні розслідування та історичні факти.</desc>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="100NEWS.ua@SD">
+    <title lang="ru">100% NEWS • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
   </programme>
-  <programme start="20261112160000 +0000" stop="20261112235959 +0000" channel="1plus1.int">
-    <title lang="uk">Вечірній Прайм • 1+1 International</title>
-    <desc lang="uk">Кращі шоу, авторські програми та новини для діаспори.</desc>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="100NEWS.ua@SD">
+    <title lang="ru">100% NEWS • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
   </programme>
-
-  <!-- 8. 24 Канал -->
-  <programme start="20261112000000 +0000" stop="20261112070000 +0000" channel="24tv.ua">
-    <title lang="uk">Новини 24 • Нічна студія</title>
-    <desc lang="uk">Оперативні новини без цензури та аналітика.</desc>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="100NEWS.ua@SD">
+    <title lang="ru">100% NEWS • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
   </programme>
-  <programme start="20261112070000 +0000" stop="20261112130000 +0000" channel="24tv.ua">
-    <title lang="uk">Ранок на 24 Каналі</title>
-    <desc lang="uk">Інтерв'ю з військовими аналітиками та політиками.</desc>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="24Kanal.ua@SD">
+    <title lang="ru">24 Kanal • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 24 Kanal</desc>
   </programme>
-  <programme start="20261112130000 +0000" stop="20261112190000 +0000" channel="24tv.ua">
-    <title lang="uk">Інформаційний марафон • Студія 24</title>
-    <desc lang="uk">Актуальні коментарі та карти бойових дій.</desc>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="24Kanal.ua@SD">
+    <title lang="ru">24 Kanal • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
   </programme>
-  <programme start="20261112190000 +0000" stop="20261112235959 +0000" channel="24tv.ua">
-    <title lang="uk">Підсумки дня з Романом Цимбалюком</title>
-    <desc lang="uk">Головний політичний розбір ключових подій доби.</desc>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="24Kanal.ua@SD">
+    <title lang="ru">24 Kanal • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="24Kanal.ua@SD">
+    <title lang="ru">24 Kanal • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="24tv.ua">
+    <title lang="ru">24 Канал HD • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 24 Канал HD</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="24tv.ua">
+    <title lang="ru">24 Канал HD • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="24tv.ua">
+    <title lang="ru">24 Канал HD • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="24tv.ua">
+    <title lang="ru">24 Канал HD • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="366TV.ua@SD">
+    <title lang="ru">36.6 TV • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 36.6 TV</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="366TV.ua@SD">
+    <title lang="ru">36.6 TV • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="366TV.ua@SD">
+    <title lang="ru">36.6 TV • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="366TV.ua@SD">
+    <title lang="ru">36.6 TV • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="4everDrama.ua@SD">
+    <title lang="ru">4ever Drama • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 4ever Drama</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="4everDrama.ua@SD">
+    <title lang="ru">4ever Drama • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="4everDrama.ua@SD">
+    <title lang="ru">4ever Drama • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="4everDrama.ua@SD">
+    <title lang="ru">4ever Drama • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="4everMusic.ua@SD">
+    <title lang="ru">4ever Music • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 4ever Music</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="4everMusic.ua@SD">
+    <title lang="ru">4ever Music • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="4everMusic.ua@SD">
+    <title lang="ru">4ever Music • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="4everMusic.ua@SD">
+    <title lang="ru">4ever Music • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="4everTheater.ua@SD">
+    <title lang="ru">4ever Theater • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 4ever Theater</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="4everTheater.ua@SD">
+    <title lang="ru">4ever Theater • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="4everTheater.ua@SD">
+    <title lang="ru">4ever Theater • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="4everTheater.ua@SD">
+    <title lang="ru">4ever Theater • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="6sotok.ua@SD">
+    <title lang="ru">6 sotok • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 6 sotok</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="6sotok.ua@SD">
+    <title lang="ru">6 sotok • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="6sotok.ua@SD">
+    <title lang="ru">6 sotok • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="6sotok.ua@SD">
+    <title lang="ru">6 sotok • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="ATR.ua@SD">
+    <title lang="ru">ATR • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала ATR</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="ATR.ua@SD">
+    <title lang="ru">ATR • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="ATR.ua@SD">
+    <title lang="ru">ATR • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="ATR.ua@SD">
+    <title lang="ru">ATR • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="ArmyTV.ua@SD">
+    <title lang="ru">Army TV • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Army TV</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="ArmyTV.ua@SD">
+    <title lang="ru">Army TV • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="ArmyTV.ua@SD">
+    <title lang="ru">Army TV • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="ArmyTV.ua@SD">
+    <title lang="ru">Army TV • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="Avers.ua@SD">
+    <title lang="ru">Avers • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Avers</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="Avers.ua@SD">
+    <title lang="ru">Avers • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="Avers.ua@SD">
+    <title lang="ru">Avers • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="Avers.ua@SD">
+    <title lang="ru">Avers • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="Bigudi.ua@SD">
+    <title lang="ru">Bigudi • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Bigudi</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="Bigudi.ua@SD">
+    <title lang="ru">Bigudi • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="Bigudi.ua@SD">
+    <title lang="ru">Bigudi • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="Bigudi.ua@SD">
+    <title lang="ru">Bigudi • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="Black.ua@SD">
+    <title lang="ru">Black • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Black</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="Black.ua@SD">
+    <title lang="ru">Black • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="Black.ua@SD">
+    <title lang="ru">Black • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="Black.ua@SD">
+    <title lang="ru">Black • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="Bolt.ua@SD">
+    <title lang="ru">Bolt • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Bolt</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="Bolt.ua@SD">
+    <title lang="ru">Bolt • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="Bolt.ua@SD">
+    <title lang="ru">Bolt • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="Bolt.ua@SD">
+    <title lang="ru">Bolt • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="CartoonNetworkCEE.uk@Ukraine">
+    <title lang="ru">Cartoon Network CEE Ukraine • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Cartoon Network CEE Ukraine</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="CartoonNetworkCEE.uk@Ukraine">
+    <title lang="ru">Cartoon Network CEE Ukraine • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="CartoonNetworkCEE.uk@Ukraine">
+    <title lang="ru">Cartoon Network CEE Ukraine • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="CartoonNetworkCEE.uk@Ukraine">
+    <title lang="ru">Cartoon Network CEE Ukraine • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="Channel5.ua@SD">
+    <title lang="ru">Channel 5 (Ukraine) • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Channel 5 (Ukraine)</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="Channel5.ua@SD">
+    <title lang="ru">Channel 5 (Ukraine) • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="Channel5.ua@SD">
+    <title lang="ru">Channel 5 (Ukraine) • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="Channel5.ua@SD">
+    <title lang="ru">Channel 5 (Ukraine) • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="freedom.ua">
+    <title lang="ru">FREEДОМ HD • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала FREEДОМ HD</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="freedom.ua">
+    <title lang="ru">FREEДОМ HD • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="freedom.ua">
+    <title lang="ru">FREEДОМ HD • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="freedom.ua">
+    <title lang="ru">FREEДОМ HD • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="VivaLatino.ua@SD">
+    <title lang="ru">¡Viva Latino! • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала ¡Viva Latino!</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="VivaLatino.ua@SD">
+    <title lang="ru">¡Viva Latino! • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="VivaLatino.ua@SD">
+    <title lang="ru">¡Viva Latino! • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="VivaLatino.ua@SD">
+    <title lang="ru">¡Viva Latino! • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="31Kanal.kz@SD">
+    <title lang="ru">31 Kanal • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 31 Kanal</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="31Kanal.kz@SD">
+    <title lang="ru">31 Kanal • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="31Kanal.kz@SD">
+    <title lang="ru">31 Kanal • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="31Kanal.kz@SD">
+    <title lang="ru">31 Kanal • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="AbaiTV.kz@SD">
+    <title lang="ru">Abai TV • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Abai TV</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="AbaiTV.kz@SD">
+    <title lang="ru">Abai TV • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="AbaiTV.kz@SD">
+    <title lang="ru">Abai TV • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="AbaiTV.kz@SD">
+    <title lang="ru">Abai TV • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="AstanaTV.kz@SD">
+    <title lang="ru">Astana TV • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Astana TV</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="AstanaTV.kz@SD">
+    <title lang="ru">Astana TV • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="AstanaTV.kz@SD">
+    <title lang="ru">Astana TV • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="AstanaTV.kz@SD">
+    <title lang="ru">Astana TV • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="Balapan.kz@HD">
+    <title lang="ru">Balapan HD • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Balapan HD</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="Balapan.kz@HD">
+    <title lang="ru">Balapan HD • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="Balapan.kz@HD">
+    <title lang="ru">Balapan HD • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="Balapan.kz@HD">
+    <title lang="ru">Balapan HD • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="Channel7.kz@SD">
+    <title lang="ru">Channel 7 (Kazakhstan) • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Channel 7 (Kazakhstan)</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="Channel7.kz@SD">
+    <title lang="ru">Channel 7 (Kazakhstan) • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="Channel7.kz@SD">
+    <title lang="ru">Channel 7 (Kazakhstan) • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="Channel7.kz@SD">
+    <title lang="ru">Channel 7 (Kazakhstan) • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="DisneyChannel.hu@SD">
+    <title lang="ru">Disney Channel (Hungary) • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Disney Channel (Hungary)</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="DisneyChannel.hu@SD">
+    <title lang="ru">Disney Channel (Hungary) • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="DisneyChannel.hu@SD">
+    <title lang="ru">Disney Channel (Hungary) • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="DisneyChannel.hu@SD">
+    <title lang="ru">Disney Channel (Hungary) • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="HitFM.md@SD">
+    <title lang="ru">Hit FM • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Hit FM</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="HitFM.md@SD">
+    <title lang="ru">Hit FM • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="HitFM.md@SD">
+    <title lang="ru">Hit FM • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="HitFM.md@SD">
+    <title lang="ru">Hit FM • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="JibekJoly.kz@HD">
+    <title lang="ru">Jibek Joly HD • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Jibek Joly HD</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="JibekJoly.kz@HD">
+    <title lang="ru">Jibek Joly HD • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="JibekJoly.kz@HD">
+    <title lang="ru">Jibek Joly HD • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="JibekJoly.kz@HD">
+    <title lang="ru">Jibek Joly HD • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="KTK.kz@SD">
+    <title lang="ru">KTK • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала KTK</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="KTK.kz@SD">
+    <title lang="ru">KTK • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="KTK.kz@SD">
+    <title lang="ru">KTK • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="KTK.kz@SD">
+    <title lang="ru">KTK • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="KTK.kz@HD">
+    <title lang="ru">KTK HD [Not 24/7] • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала KTK HD [Not 24/7]</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="KTK.kz@HD">
+    <title lang="ru">KTK HD [Not 24/7] • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="KTK.kz@HD">
+    <title lang="ru">KTK HD [Not 24/7] • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="KTK.kz@HD">
+    <title lang="ru">KTK HD [Not 24/7] • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="Moldova1.md@SD">
+    <title lang="ru">Moldova 1 • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Moldova 1</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="Moldova1.md@SD">
+    <title lang="ru">Moldova 1 • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="Moldova1.md@SD">
+    <title lang="ru">Moldova 1 • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="Moldova1.md@SD">
+    <title lang="ru">Moldova 1 • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="Moldova2.md@SD">
+    <title lang="ru">Moldova 2 • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Moldova 2</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="Moldova2.md@SD">
+    <title lang="ru">Moldova 2 • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="Moldova2.md@SD">
+    <title lang="ru">Moldova 2 • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="Moldova2.md@SD">
+    <title lang="ru">Moldova 2 • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="MoldovaTV.md@SD">
+    <title lang="ru">Moldova TV • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Moldova TV</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="MoldovaTV.md@SD">
+    <title lang="ru">Moldova TV • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="MoldovaTV.md@SD">
+    <title lang="ru">Moldova TV • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="MoldovaTV.md@SD">
+    <title lang="ru">Moldova TV • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="NorocTV.md@SD">
+    <title lang="ru">Noroc TV • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Noroc TV</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="NorocTV.md@SD">
+    <title lang="ru">Noroc TV • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="NorocTV.md@SD">
+    <title lang="ru">Noroc TV • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="NorocTV.md@SD">
+    <title lang="ru">Noroc TV • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="PartyMix.ro@HD">
+    <title lang="ru">Party Mix HD • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Party Mix HD</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="PartyMix.ro@HD">
+    <title lang="ru">Party Mix HD • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="PartyMix.ro@HD">
+    <title lang="ru">Party Mix HD • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="PartyMix.ro@HD">
+    <title lang="ru">Party Mix HD • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="PrivescEuTV.md@SD">
+    <title lang="ru">Privesc.Eu TV • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Privesc.Eu TV</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="PrivescEuTV.md@SD">
+    <title lang="ru">Privesc.Eu TV • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="PrivescEuTV.md@SD">
+    <title lang="ru">Privesc.Eu TV • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="PrivescEuTV.md@SD">
+    <title lang="ru">Privesc.Eu TV • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="RadioChisinau.md@SD">
+    <title lang="ru">Radio Chisinau • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Radio Chisinau</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="RadioChisinau.md@SD">
+    <title lang="ru">Radio Chisinau • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="RadioChisinau.md@SD">
+    <title lang="ru">Radio Chisinau • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="RadioChisinau.md@SD">
+    <title lang="ru">Radio Chisinau • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="RadioMoldova.md@SD">
+    <title lang="ru">Radio Moldova • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Radio Moldova</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="RadioMoldova.md@SD">
+    <title lang="ru">Radio Moldova • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="RadioMoldova.md@SD">
+    <title lang="ru">Radio Moldova • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="RadioMoldova.md@SD">
+    <title lang="ru">Radio Moldova • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="RadioMoldovaMuzical.md@SD">
+    <title lang="ru">Radio Moldova Muzical • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Radio Moldova Muzical</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="RadioMoldovaMuzical.md@SD">
+    <title lang="ru">Radio Moldova Muzical • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="RadioMoldovaMuzical.md@SD">
+    <title lang="ru">Radio Moldova Muzical • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="RadioMoldovaMuzical.md@SD">
+    <title lang="ru">Radio Moldova Muzical • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="RadioMoldovaTineret.md@SD">
+    <title lang="ru">Radio Moldova Tineret • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Radio Moldova Tineret</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="RadioMoldovaTineret.md@SD">
+    <title lang="ru">Radio Moldova Tineret • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="RadioMoldovaTineret.md@SD">
+    <title lang="ru">Radio Moldova Tineret • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="RadioMoldovaTineret.md@SD">
+    <title lang="ru">Radio Moldova Tineret • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="RealitateaTV.md@SD">
+    <title lang="ru">Realitatea TV • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Realitatea TV</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="RealitateaTV.md@SD">
+    <title lang="ru">Realitatea TV • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="RealitateaTV.md@SD">
+    <title lang="ru">Realitatea TV • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="RealitateaTV.md@SD">
+    <title lang="ru">Realitatea TV • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="SorTV.md@SD">
+    <title lang="ru">Sor TV • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Sor TV</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="SorTV.md@SD">
+    <title lang="ru">Sor TV • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="SorTV.md@SD">
+    <title lang="ru">Sor TV • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="SorTV.md@SD">
+    <title lang="ru">Sor TV • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="TSV.md@SD">
+    <title lang="ru">TSV • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала TSV</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="TSV.md@SD">
+    <title lang="ru">TSV • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="TSV.md@SD">
+    <title lang="ru">TSV • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="TSV.md@SD">
+    <title lang="ru">TSV • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="TVRMoldova.md@HD">
+    <title lang="ru">TVR Moldova HD • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала TVR Moldova HD</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="TVRMoldova.md@HD">
+    <title lang="ru">TVR Moldova HD • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="TVRMoldova.md@HD">
+    <title lang="ru">TVR Moldova HD • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="TVRMoldova.md@HD">
+    <title lang="ru">TVR Moldova HD • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="TezaurTV.md@SD">
+    <title lang="ru">Tezaur TV (576i) • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Tezaur TV (576i)</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="TezaurTV.md@SD">
+    <title lang="ru">Tezaur TV (576i) • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="TezaurTV.md@SD">
+    <title lang="ru">Tezaur TV (576i) • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="TezaurTV.md@SD">
+    <title lang="ru">Tezaur TV (576i) • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="VoceaBasarabieiTV.md@SD">
+    <title lang="ru">Vocea Basarabiei TV • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Vocea Basarabiei TV</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="VoceaBasarabieiTV.md@SD">
+    <title lang="ru">Vocea Basarabiei TV • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="VoceaBasarabieiTV.md@SD">
+    <title lang="ru">Vocea Basarabiei TV • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="VoceaBasarabieiTV.md@SD">
+    <title lang="ru">Vocea Basarabiei TV • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="10TV.in@SD">
+    <title lang="ru">10 TV • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 10 TV</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="10TV.in@SD">
+    <title lang="ru">10 TV • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="10TV.in@SD">
+    <title lang="ru">10 TV • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="10TV.in@SD">
+    <title lang="ru">10 TV • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="13SiamThai.th@SD">
+    <title lang="ru">13 Siam Thai • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 13 Siam Thai</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="13SiamThai.th@SD">
+    <title lang="ru">13 Siam Thai • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="13SiamThai.th@SD">
+    <title lang="ru">13 Siam Thai • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="13SiamThai.th@SD">
+    <title lang="ru">13 Siam Thai • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="22ScopeNews.in@SD">
+    <title lang="ru">22Scope News • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 22Scope News</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="22ScopeNews.in@SD">
+    <title lang="ru">22Scope News • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="22ScopeNews.in@SD">
+    <title lang="ru">22Scope News • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="22ScopeNews.in@SD">
+    <title lang="ru">22Scope News • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="24Horas.es@SD">
+    <title lang="ru">24 Horas • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 24 Horas</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="24Horas.es@SD">
+    <title lang="ru">24 Horas • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="24Horas.es@SD">
+    <title lang="ru">24 Horas • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="24Horas.es@SD">
+    <title lang="ru">24 Horas • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="24HorasCatalunya.es@SD">
+    <title lang="ru">24 Horas Catalunya • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 24 Horas Catalunya</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="24HorasCatalunya.es@SD">
+    <title lang="ru">24 Horas Catalunya • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="24HorasCatalunya.es@SD">
+    <title lang="ru">24 Horas Catalunya • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="24HorasCatalunya.es@SD">
+    <title lang="ru">24 Horas Catalunya • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="24News.in@SD">
+    <title lang="ru">24 News • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 24 News</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="24News.in@SD">
+    <title lang="ru">24 News • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="24News.in@SD">
+    <title lang="ru">24 News • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="24News.in@SD">
+    <title lang="ru">24 News • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="24NewsHD.pk@SD">
+    <title lang="ru">24 News HD • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 24 News HD</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="24NewsHD.pk@SD">
+    <title lang="ru">24 News HD • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="24NewsHD.pk@SD">
+    <title lang="ru">24 News HD • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="24NewsHD.pk@SD">
+    <title lang="ru">24 News HD • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="24TV.tr@SD">
+    <title lang="ru">24 TV • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 24 TV</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="24TV.tr@SD">
+    <title lang="ru">24 TV • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="24TV.tr@SD">
+    <title lang="ru">24 TV • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="24TV.tr@SD">
+    <title lang="ru">24 TV • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="247CanaldeNoticias.ar@SD">
+    <title lang="ru">24/7 Canal de Noticias • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 24/7 Canal de Noticias</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="247CanaldeNoticias.ar@SD">
+    <title lang="ru">24/7 Canal de Noticias • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="247CanaldeNoticias.ar@SD">
+    <title lang="ru">24/7 Canal de Noticias • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="247CanaldeNoticias.ar@SD">
+    <title lang="ru">24/7 Canal de Noticias • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="2GB.au@SD">
+    <title lang="ru">2GB • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 2GB</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="2GB.au@SD">
+    <title lang="ru">2GB • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="2GB.au@SD">
+    <title lang="ru">2GB • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="2GB.au@SD">
+    <title lang="ru">2GB • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="30AGeorgiaHollywoodReview.us@SD">
+    <title lang="ru">30A Georgia Hollywood Review • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 30A Georgia Hollywood Review</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="30AGeorgiaHollywoodReview.us@SD">
+    <title lang="ru">30A Georgia Hollywood Review • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="30AGeorgiaHollywoodReview.us@SD">
+    <title lang="ru">30A Georgia Hollywood Review • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="30AGeorgiaHollywoodReview.us@SD">
+    <title lang="ru">30A Georgia Hollywood Review • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="30ALionelNation.us@SD">
+    <title lang="ru">30A Lionel Nation • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 30A Lionel Nation</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="30ALionelNation.us@SD">
+    <title lang="ru">30A Lionel Nation • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="30ALionelNation.us@SD">
+    <title lang="ru">30A Lionel Nation • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="30ALionelNation.us@SD">
+    <title lang="ru">30A Lionel Nation • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="3AW.au@SD">
+    <title lang="ru">3AW • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 3AW</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="3AW.au@SD">
+    <title lang="ru">3AW • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="3AW.au@SD">
+    <title lang="ru">3AW • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="3AW.au@SD">
+    <title lang="ru">3AW • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="3CatInfo.es@SD">
+    <title lang="ru">3CatInfo • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 3CatInfo</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="3CatInfo.es@SD">
+    <title lang="ru">3CatInfo • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="3CatInfo.es@SD">
+    <title lang="ru">3CatInfo • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="3CatInfo.es@SD">
+    <title lang="ru">3CatInfo • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="4DmasNoticiasTV.py@SD">
+    <title lang="ru">4Dmas Noticias TV [Not 24/7] • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 4Dmas Noticias TV [Not 24/7]</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="4DmasNoticiasTV.py@SD">
+    <title lang="ru">4Dmas Noticias TV [Not 24/7] • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="4DmasNoticiasTV.py@SD">
+    <title lang="ru">4Dmas Noticias TV [Not 24/7] • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="4DmasNoticiasTV.py@SD">
+    <title lang="ru">4Dmas Noticias TV [Not 24/7] • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="4TVNews.in@SD">
+    <title lang="ru">4TV News • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 4TV News</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="4TVNews.in@SD">
+    <title lang="ru">4TV News • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="4TVNews.in@SD">
+    <title lang="ru">4TV News • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="4TVNews.in@SD">
+    <title lang="ru">4TV News • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="6TVTelugu.in@SD">
+    <title lang="ru">6 TV Telugu • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 6 TV Telugu</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="6TVTelugu.in@SD">
+    <title lang="ru">6 TV Telugu • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="6TVTelugu.in@SD">
+    <title lang="ru">6 TV Telugu • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="6TVTelugu.in@SD">
+    <title lang="ru">6 TV Telugu • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="6PR.au@SD">
+    <title lang="ru">6PR • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 6PR</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="6PR.au@SD">
+    <title lang="ru">6PR • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="6PR.au@SD">
+    <title lang="ru">6PR • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="6PR.au@SD">
+    <title lang="ru">6PR • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="7Info.ci@SD">
+    <title lang="ru">7 Info • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 7 Info</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="7Info.ci@SD">
+    <title lang="ru">7 Info • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="7Info.ci@SD">
+    <title lang="ru">7 Info • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="7Info.ci@SD">
+    <title lang="ru">7 Info • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="aljazeera.en">
+    <title lang="ru">Al Jazeera English HD • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Al Jazeera English HD</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="aljazeera.en">
+    <title lang="ru">Al Jazeera English HD • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="aljazeera.en">
+    <title lang="ru">Al Jazeera English HD • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="aljazeera.en">
+    <title lang="ru">Al Jazeera English HD • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="dw.news">
+    <title lang="ru">DW News English HD • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала DW News English HD</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="dw.news">
+    <title lang="ru">DW News English HD • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="dw.news">
+    <title lang="ru">DW News English HD • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="dw.news">
+    <title lang="ru">DW News English HD • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="euronews.en">
+    <title lang="ru">Euronews English HD • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Euronews English HD</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="euronews.en">
+    <title lang="ru">Euronews English HD • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="euronews.en">
+    <title lang="ru">Euronews English HD • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="euronews.en">
+    <title lang="ru">Euronews English HD • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="skynews">
+    <title lang="ru">Sky News UK HD • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Sky News UK HD</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="skynews">
+    <title lang="ru">Sky News UK HD • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="skynews">
+    <title lang="ru">Sky News UK HD • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="skynews">
+    <title lang="ru">Sky News UK HD • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="30AGolfKingdom.us@SD">
+    <title lang="ru">30A Golf Kingdom • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 30A Golf Kingdom</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="30AGolfKingdom.us@SD">
+    <title lang="ru">30A Golf Kingdom • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="30AGolfKingdom.us@SD">
+    <title lang="ru">30A Golf Kingdom • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="30AGolfKingdom.us@SD">
+    <title lang="ru">30A Golf Kingdom • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="ASpor.tr@SD">
+    <title lang="ru">A Spor SD • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала A Spor SD</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="ASpor.tr@SD">
+    <title lang="ru">A Spor SD • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="ASpor.tr@SD">
+    <title lang="ru">A Spor SD • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="ASpor.tr@SD">
+    <title lang="ru">A Spor SD • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="ACCDigitalNetwork.us@SD">
+    <title lang="ru">ACC Digital Network • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала ACC Digital Network</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="ACCDigitalNetwork.us@SD">
+    <title lang="ru">ACC Digital Network • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="ACCDigitalNetwork.us@SD">
+    <title lang="ru">ACC Digital Network • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="ACCDigitalNetwork.us@SD">
+    <title lang="ru">ACC Digital Network • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="ACISportTV.it@SD">
+    <title lang="ru">ACI Sport TV SD • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала ACI Sport TV SD</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="ACISportTV.it@SD">
+    <title lang="ru">ACI Sport TV SD • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="ACISportTV.it@SD">
+    <title lang="ru">ACI Sport TV SD • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="ACISportTV.it@SD">
+    <title lang="ru">ACI Sport TV SD • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="ADOTV.bj@SD">
+    <title lang="ru">ADO TV • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала ADO TV</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="ADOTV.bj@SD">
+    <title lang="ru">ADO TV • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="ADOTV.bj@SD">
+    <title lang="ru">ADO TV • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="ADOTV.bj@SD">
+    <title lang="ru">ADO TV • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="AS3SportTV.ve@SD">
+    <title lang="ru">AS3 Sport TV • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала AS3 Sport TV</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="AS3SportTV.ve@SD">
+    <title lang="ru">AS3 Sport TV • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="AS3SportTV.ve@SD">
+    <title lang="ru">AS3 Sport TV • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="AS3SportTV.ve@SD">
+    <title lang="ru">AS3 Sport TV • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="Africa24Sport.fr@SD">
+    <title lang="ru">Africa 24 Sport • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Africa 24 Sport</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="Africa24Sport.fr@SD">
+    <title lang="ru">Africa 24 Sport • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="Africa24Sport.fr@SD">
+    <title lang="ru">Africa 24 Sport • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="Africa24Sport.fr@SD">
+    <title lang="ru">Africa 24 Sport • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="AlIraqiaSport.iq@SD">
+    <title lang="ru">Al Iraqia Sport • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Al Iraqia Sport</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="AlIraqiaSport.iq@SD">
+    <title lang="ru">Al Iraqia Sport • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="AlIraqiaSport.iq@SD">
+    <title lang="ru">Al Iraqia Sport • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="AlIraqiaSport.iq@SD">
+    <title lang="ru">Al Iraqia Sport • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="AmericanNinjaWarrior.us@SD">
+    <title lang="ru">American Ninja Warrior • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала American Ninja Warrior</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="AmericanNinjaWarrior.us@SD">
+    <title lang="ru">American Ninja Warrior • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="AmericanNinjaWarrior.us@SD">
+    <title lang="ru">American Ninja Warrior • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="AmericanNinjaWarrior.us@SD">
+    <title lang="ru">American Ninja Warrior • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="AntenaPlayEvents.ro@SD">
+    <title lang="ru">AntenaPlay Events (576i) [Not 24/7] • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала AntenaPlay Events (576i) [Not 24/7]</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="AntenaPlayEvents.ro@SD">
+    <title lang="ru">AntenaPlay Events (576i) [Not 24/7] • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="AntenaPlayEvents.ro@SD">
+    <title lang="ru">AntenaPlay Events (576i) [Not 24/7] • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="AntenaPlayEvents.ro@SD">
+    <title lang="ru">AntenaPlay Events (576i) [Not 24/7] • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="AntenaSport.ro@SD">
+    <title lang="ru">AntenaSport • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала AntenaSport</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="AntenaSport.ro@SD">
+    <title lang="ru">AntenaSport • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="AntenaSport.ro@SD">
+    <title lang="ru">AntenaSport • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="AntenaSport.ro@SD">
+    <title lang="ru">AntenaSport • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="ArenaSport1.sk@SD">
+    <title lang="ru">Arena Sport 1 • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Arena Sport 1</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="ArenaSport1.sk@SD">
+    <title lang="ru">Arena Sport 1 • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="ArenaSport1.sk@SD">
+    <title lang="ru">Arena Sport 1 • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="ArenaSport1.sk@SD">
+    <title lang="ru">Arena Sport 1 • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="ArenaSport2.sk@SD">
+    <title lang="ru">Arena Sport 2 • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Arena Sport 2</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="ArenaSport2.sk@SD">
+    <title lang="ru">Arena Sport 2 • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="ArenaSport2.sk@SD">
+    <title lang="ru">Arena Sport 2 • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="ArenaSport2.sk@SD">
+    <title lang="ru">Arena Sport 2 • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="Arena4.hu@SD">
+    <title lang="ru">Arena4 • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Arena4</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="Arena4.hu@SD">
+    <title lang="ru">Arena4 • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="Arena4.hu@SD">
+    <title lang="ru">Arena4 • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="Arena4.hu@SD">
+    <title lang="ru">Arena4 • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="Arryadia.ma@SD">
+    <title lang="ru">Arryadia • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Arryadia</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="Arryadia.ma@SD">
+    <title lang="ru">Arryadia • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="Arryadia.ma@SD">
+    <title lang="ru">Arryadia • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="Arryadia.ma@SD">
+    <title lang="ru">Arryadia • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="redbull.tv">
+    <title lang="ru">Red Bull TV HD • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Red Bull TV HD</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="redbull.tv">
+    <title lang="ru">Red Bull TV HD • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="redbull.tv">
+    <title lang="ru">Red Bull TV HD • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="redbull.tv">
+    <title lang="ru">Red Bull TV HD • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="00sReplay.us@SD">
+    <title lang="ru">00s Replay • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 00s Replay</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="00sReplay.us@SD">
+    <title lang="ru">00s Replay • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="00sReplay.us@SD">
+    <title lang="ru">00s Replay • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="00sReplay.us@SD">
+    <title lang="ru">00s Replay • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="30ATVClassicMovies.us@SD">
+    <title lang="ru">30A TV Classic Movies • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 30A TV Classic Movies</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="30ATVClassicMovies.us@SD">
+    <title lang="ru">30A TV Classic Movies • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="30ATVClassicMovies.us@SD">
+    <title lang="ru">30A TV Classic Movies • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="30ATVClassicMovies.us@SD">
+    <title lang="ru">30A TV Classic Movies • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="312Kino.kg@SD">
+    <title lang="ru">312 Kino • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 312 Kino</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="312Kino.kg@SD">
+    <title lang="ru">312 Kino • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="312Kino.kg@SD">
+    <title lang="ru">312 Kino • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="312Kino.kg@SD">
+    <title lang="ru">312 Kino • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="50CentAction.us@SD">
+    <title lang="ru">50 Cent Action • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 50 Cent Action</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="50CentAction.us@SD">
+    <title lang="ru">50 Cent Action • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="50CentAction.us@SD">
+    <title lang="ru">50 Cent Action • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="50CentAction.us@SD">
+    <title lang="ru">50 Cent Action • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="70sCinema.us@SD">
+    <title lang="ru">70s Cinema • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 70s Cinema</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="70sCinema.us@SD">
+    <title lang="ru">70s Cinema • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="70sCinema.us@SD">
+    <title lang="ru">70s Cinema • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="70sCinema.us@SD">
+    <title lang="ru">70s Cinema • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="80sRewind.us@SD">
+    <title lang="ru">80s Rewind • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 80s Rewind</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="80sRewind.us@SD">
+    <title lang="ru">80s Rewind • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="80sRewind.us@SD">
+    <title lang="ru">80s Rewind • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="80sRewind.us@SD">
+    <title lang="ru">80s Rewind • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="90sThrowback.us@SD">
+    <title lang="ru">90s Throwback • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 90s Throwback</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="90sThrowback.us@SD">
+    <title lang="ru">90s Throwback • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="90sThrowback.us@SD">
+    <title lang="ru">90s Throwback • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="90sThrowback.us@SD">
+    <title lang="ru">90s Throwback • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="ABNBibleMoviesChannel.us@SD">
+    <title lang="ru">ABN Bible Movies Channel • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала ABN Bible Movies Channel</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="ABNBibleMoviesChannel.us@SD">
+    <title lang="ru">ABN Bible Movies Channel • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="ABNBibleMoviesChannel.us@SD">
+    <title lang="ru">ABN Bible Movies Channel • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="ABNBibleMoviesChannel.us@SD">
+    <title lang="ru">ABN Bible Movies Channel • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="AMCEurope.uk@CzechRepublic">
+    <title lang="ru">AMC Europe Czech Republic • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала AMC Europe Czech Republic</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="AMCEurope.uk@CzechRepublic">
+    <title lang="ru">AMC Europe Czech Republic • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="AMCEurope.uk@CzechRepublic">
+    <title lang="ru">AMC Europe Czech Republic • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="AMCEurope.uk@CzechRepublic">
+    <title lang="ru">AMC Europe Czech Republic • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="Action24.gr@SD">
+    <title lang="ru">Action 24 [Not 24/7] • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Action 24 [Not 24/7]</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="Action24.gr@SD">
+    <title lang="ru">Action 24 [Not 24/7] • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="Action24.gr@SD">
+    <title lang="ru">Action 24 [Not 24/7] • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="Action24.gr@SD">
+    <title lang="ru">Action 24 [Not 24/7] • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="AdrenalinaPuraTV.us@SD">
+    <title lang="ru">Adrenalina Pura TV • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Adrenalina Pura TV</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="AdrenalinaPuraTV.us@SD">
+    <title lang="ru">Adrenalina Pura TV • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="AdrenalinaPuraTV.us@SD">
+    <title lang="ru">Adrenalina Pura TV • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="AdrenalinaPuraTV.us@SD">
+    <title lang="ru">Adrenalina Pura TV • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="AdrenalinaPuraTV.us@Brazil">
+    <title lang="ru">Adrenalina Pura TV Brazil • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Adrenalina Pura TV Brazil</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="AdrenalinaPuraTV.us@Brazil">
+    <title lang="ru">Adrenalina Pura TV Brazil • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="AdrenalinaPuraTV.us@Brazil">
+    <title lang="ru">Adrenalina Pura TV Brazil • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="AdrenalinaPuraTV.us@Brazil">
+    <title lang="ru">Adrenalina Pura TV Brazil • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="Aflam.sa@SD">
+    <title lang="ru">Aflam • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Aflam</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="Aflam.sa@SD">
+    <title lang="ru">Aflam • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="Aflam.sa@SD">
+    <title lang="ru">Aflam • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="Aflam.sa@SD">
+    <title lang="ru">Aflam • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="AfraFilm.ir@SD">
+    <title lang="ru">Afra Film • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Afra Film</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="AfraFilm.ir@SD">
+    <title lang="ru">Afra Film • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="AfraFilm.ir@SD">
+    <title lang="ru">Afra Film • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="AfraFilm.ir@SD">
+    <title lang="ru">Afra Film • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="AlankarTV.in@SD">
+    <title lang="ru">Alankar TV • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Alankar TV</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="AlankarTV.in@SD">
+    <title lang="ru">Alankar TV • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="AlankarTV.in@SD">
+    <title lang="ru">Alankar TV • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="AlankarTV.in@SD">
+    <title lang="ru">Alankar TV • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="AllTimeMovies.in@SD">
+    <title lang="ru">All Time Movies • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала All Time Movies</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="AllTimeMovies.in@SD">
+    <title lang="ru">All Time Movies • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="AllTimeMovies.in@SD">
+    <title lang="ru">All Time Movies • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="AllTimeMovies.in@SD">
+    <title lang="ru">All Time Movies • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="AlloCine.cm@SD">
+    <title lang="ru">Allo Cine • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Allo Cine</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="AlloCine.cm@SD">
+    <title lang="ru">Allo Cine • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="AlloCine.cm@SD">
+    <title lang="ru">Allo Cine • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="AlloCine.cm@SD">
+    <title lang="ru">Allo Cine • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="AlternaTV.ar@SD">
+    <title lang="ru">AlternaTV [Not 24/7] • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала AlternaTV [Not 24/7]</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="AlternaTV.ar@SD">
+    <title lang="ru">AlternaTV [Not 24/7] • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="AlternaTV.ar@SD">
+    <title lang="ru">AlternaTV [Not 24/7] • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="AlternaTV.ar@SD">
+    <title lang="ru">AlternaTV [Not 24/7] • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="PlusMaisUm.br@HD">
+    <title lang="ru">+MaisUm • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала +MaisUm</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="PlusMaisUm.br@HD">
+    <title lang="ru">+MaisUm • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="PlusMaisUm.br@HD">
+    <title lang="ru">+MaisUm • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="PlusMaisUm.br@HD">
+    <title lang="ru">+MaisUm • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="13Festival.cl@SD">
+    <title lang="ru">13 Festival • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 13 Festival</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="13Festival.cl@SD">
+    <title lang="ru">13 Festival • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="13Festival.cl@SD">
+    <title lang="ru">13 Festival • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="13Festival.cl@SD">
+    <title lang="ru">13 Festival • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="1HDMusicTelevision.ru@HD">
+    <title lang="ru">1HD Music Television • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 1HD Music Television</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="1HDMusicTelevision.ru@HD">
+    <title lang="ru">1HD Music Television • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="1HDMusicTelevision.ru@HD">
+    <title lang="ru">1HD Music Television • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="1HDMusicTelevision.ru@HD">
+    <title lang="ru">1HD Music Television • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="30AMusic.us@SD">
+    <title lang="ru">30A Music • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 30A Music</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="30AMusic.us@SD">
+    <title lang="ru">30A Music • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="30AMusic.us@SD">
+    <title lang="ru">30A Music • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="30AMusic.us@SD">
+    <title lang="ru">30A Music • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="360TuneBox.nl@SD">
+    <title lang="ru">360TuneBox • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 360TuneBox</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="360TuneBox.nl@SD">
+    <title lang="ru">360TuneBox • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="360TuneBox.nl@SD">
+    <title lang="ru">360TuneBox • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="360TuneBox.nl@SD">
+    <title lang="ru">360TuneBox • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="4FunDance.pl@SD">
+    <title lang="ru">4 Fun Dance • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 4 Fun Dance</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="4FunDance.pl@SD">
+    <title lang="ru">4 Fun Dance • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="4FunDance.pl@SD">
+    <title lang="ru">4 Fun Dance • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="4FunDance.pl@SD">
+    <title lang="ru">4 Fun Dance • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="4FunTV.pl@SD">
+    <title lang="ru">4 Fun TV • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 4 Fun TV</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="4FunTV.pl@SD">
+    <title lang="ru">4 Fun TV • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="4FunTV.pl@SD">
+    <title lang="ru">4 Fun TV • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="4FunTV.pl@SD">
+    <title lang="ru">4 Fun TV • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="4Music.fr@SD">
+    <title lang="ru">4 Music • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 4 Music</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="4Music.fr@SD">
+    <title lang="ru">4 Music • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="4Music.fr@SD">
+    <title lang="ru">4 Music • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="4Music.fr@SD">
+    <title lang="ru">4 Music • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="4Kurd.fr@SD">
+    <title lang="ru">4Kurd • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 4Kurd</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="4Kurd.fr@SD">
+    <title lang="ru">4Kurd • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="4Kurd.fr@SD">
+    <title lang="ru">4Kurd • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="4Kurd.fr@SD">
+    <title lang="ru">4Kurd • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="7080TV.it@SD">
+    <title lang="ru">70-80 TV • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 70-80 TV</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="7080TV.it@SD">
+    <title lang="ru">70-80 TV • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="7080TV.it@SD">
+    <title lang="ru">70-80 TV • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="7080TV.it@SD">
+    <title lang="ru">70-80 TV • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="7SMusic.in@SD">
+    <title lang="ru">7S Music • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 7S Music</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="7SMusic.in@SD">
+    <title lang="ru">7S Music • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="7SMusic.in@SD">
+    <title lang="ru">7S Music • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="7SMusic.in@SD">
+    <title lang="ru">7S Music • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="7XMusic.in@SD">
+    <title lang="ru">7X Music • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 7X Music</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="7XMusic.in@SD">
+    <title lang="ru">7X Music • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="7XMusic.in@SD">
+    <title lang="ru">7X Music • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="7XMusic.in@SD">
+    <title lang="ru">7X Music • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="8XM.pk@HD">
+    <title lang="ru">8XM • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 8XM</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="8XM.pk@HD">
+    <title lang="ru">8XM • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="8XM.pk@HD">
+    <title lang="ru">8XM • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="8XM.pk@HD">
+    <title lang="ru">8XM • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="981PearlFM.sx@SD">
+    <title lang="ru">98.1 Pearl FM • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 98.1 Pearl FM</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="981PearlFM.sx@SD">
+    <title lang="ru">98.1 Pearl FM • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="981PearlFM.sx@SD">
+    <title lang="ru">98.1 Pearl FM • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="981PearlFM.sx@SD">
+    <title lang="ru">98.1 Pearl FM • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="9XJalwa.in@SD">
+    <title lang="ru">9X Jalwa • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 9X Jalwa</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="9XJalwa.in@SD">
+    <title lang="ru">9X Jalwa • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="9XJalwa.in@SD">
+    <title lang="ru">9X Jalwa • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="9XJalwa.in@SD">
+    <title lang="ru">9X Jalwa • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="ADNTVPlus.fr@SD">
+    <title lang="ru">ADN TV+ • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала ADN TV+</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="ADNTVPlus.fr@SD">
+    <title lang="ru">ADN TV+ • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="ADNTVPlus.fr@SD">
+    <title lang="ru">ADN TV+ • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="ADNTVPlus.fr@SD">
+    <title lang="ru">ADN TV+ • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="AnimexHIDIVE.us@SD">
+    <title lang="ru">Anime x HIDIVE • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Anime x HIDIVE</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="AnimexHIDIVE.us@SD">
+    <title lang="ru">Anime x HIDIVE • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="AnimexHIDIVE.us@SD">
+    <title lang="ru">Anime x HIDIVE • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="AnimexHIDIVE.us@SD">
+    <title lang="ru">Anime x HIDIVE • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="Avatar.de@GB">
+    <title lang="ru">Avatar (Germany) • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Avatar (Germany)</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="Avatar.de@GB">
+    <title lang="ru">Avatar (Germany) • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="Avatar.de@GB">
+    <title lang="ru">Avatar (Germany) • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="Avatar.de@GB">
+    <title lang="ru">Avatar (Germany) • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="Avatar.se@DK">
+    <title lang="ru">Avatar (Sweden) • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Avatar (Sweden)</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="Avatar.se@DK">
+    <title lang="ru">Avatar (Sweden) • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="Avatar.se@DK">
+    <title lang="ru">Avatar (Sweden) • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="Avatar.se@DK">
+    <title lang="ru">Avatar (Sweden) • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="BotflixTV.us@HD">
+    <title lang="ru">Botflix TV • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Botflix TV</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="BotflixTV.us@HD">
+    <title lang="ru">Botflix TV • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="BotflixTV.us@HD">
+    <title lang="ru">Botflix TV • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="BotflixTV.us@HD">
+    <title lang="ru">Botflix TV • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="CartoonNetwork.it@SD">
+    <title lang="ru">Cartoon Network (Italy) • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Cartoon Network (Italy)</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="CartoonNetwork.it@SD">
+    <title lang="ru">Cartoon Network (Italy) • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="CartoonNetwork.it@SD">
+    <title lang="ru">Cartoon Network (Italy) • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="CartoonNetwork.it@SD">
+    <title lang="ru">Cartoon Network (Italy) • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="CartoonNetwork.pk@SD">
+    <title lang="ru">Cartoon Network (Pakistan) • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Cartoon Network (Pakistan)</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="CartoonNetwork.pk@SD">
+    <title lang="ru">Cartoon Network (Pakistan) • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="CartoonNetwork.pk@SD">
+    <title lang="ru">Cartoon Network (Pakistan) • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="CartoonNetwork.pk@SD">
+    <title lang="ru">Cartoon Network (Pakistan) • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="CartoonNetwork.tr@SD">
+    <title lang="ru">Cartoon Network (Turkiye) • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Cartoon Network (Turkiye)</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="CartoonNetwork.tr@SD">
+    <title lang="ru">Cartoon Network (Turkiye) • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="CartoonNetwork.tr@SD">
+    <title lang="ru">Cartoon Network (Turkiye) • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="CartoonNetwork.tr@SD">
+    <title lang="ru">Cartoon Network (Turkiye) • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="CartoonNetworkArabic.ae@SD">
+    <title lang="ru">Cartoon Network Arabic • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Cartoon Network Arabic</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="CartoonNetworkArabic.ae@SD">
+    <title lang="ru">Cartoon Network Arabic • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="CartoonNetworkArabic.ae@SD">
+    <title lang="ru">Cartoon Network Arabic • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="CartoonNetworkArabic.ae@SD">
+    <title lang="ru">Cartoon Network Arabic • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="CartoonNetworkAsia.sg@SD">
+    <title lang="ru">Cartoon Network Asia • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Cartoon Network Asia</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="CartoonNetworkAsia.sg@SD">
+    <title lang="ru">Cartoon Network Asia • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="CartoonNetworkAsia.sg@SD">
+    <title lang="ru">Cartoon Network Asia • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="CartoonNetworkAsia.sg@SD">
+    <title lang="ru">Cartoon Network Asia • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="CartoonNetworkAsia.sg@Thailand">
+    <title lang="ru">Cartoon Network Asia Thailand • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Cartoon Network Asia Thailand</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="CartoonNetworkAsia.sg@Thailand">
+    <title lang="ru">Cartoon Network Asia Thailand • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="CartoonNetworkAsia.sg@Thailand">
+    <title lang="ru">Cartoon Network Asia Thailand • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="CartoonNetworkAsia.sg@Thailand">
+    <title lang="ru">Cartoon Network Asia Thailand • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="CartoonNetworkCEE.uk@CzechRepublic">
+    <title lang="ru">Cartoon Network CEE Czech Republic • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Cartoon Network CEE Czech Republic</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="CartoonNetworkCEE.uk@CzechRepublic">
+    <title lang="ru">Cartoon Network CEE Czech Republic • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="CartoonNetworkCEE.uk@CzechRepublic">
+    <title lang="ru">Cartoon Network CEE Czech Republic • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="CartoonNetworkCEE.uk@CzechRepublic">
+    <title lang="ru">Cartoon Network CEE Czech Republic • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="CartoonNetworkCEE.uk@Germany">
+    <title lang="ru">Cartoon Network CEE Germany • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Cartoon Network CEE Germany</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="CartoonNetworkCEE.uk@Germany">
+    <title lang="ru">Cartoon Network CEE Germany • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="CartoonNetworkCEE.uk@Germany">
+    <title lang="ru">Cartoon Network CEE Germany • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="CartoonNetworkCEE.uk@Germany">
+    <title lang="ru">Cartoon Network CEE Germany • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="30ALoomeredTV.us@SD">
+    <title lang="ru">30A Loomered TV • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала 30A Loomered TV</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="30ALoomeredTV.us@SD">
+    <title lang="ru">30A Loomered TV • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="30ALoomeredTV.us@SD">
+    <title lang="ru">30A Loomered TV • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="30ALoomeredTV.us@SD">
+    <title lang="ru">30A Loomered TV • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="AdventureEarth.de@SD">
+    <title lang="ru">Adventure Earth • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Adventure Earth</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="AdventureEarth.de@SD">
+    <title lang="ru">Adventure Earth • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="AdventureEarth.de@SD">
+    <title lang="ru">Adventure Earth • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="AdventureEarth.de@SD">
+    <title lang="ru">Adventure Earth • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="AlArabiyaPrograms.ae@SD">
+    <title lang="ru">Al Arabiya Programs • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Al Arabiya Programs</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="AlArabiyaPrograms.ae@SD">
+    <title lang="ru">Al Arabiya Programs • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="AlArabiyaPrograms.ae@SD">
+    <title lang="ru">Al Arabiya Programs • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="AlArabiyaPrograms.ae@SD">
+    <title lang="ru">Al Arabiya Programs • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="AmericanHeroesChannel.us@SD">
+    <title lang="ru">American Heroes Channel • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала American Heroes Channel</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="AmericanHeroesChannel.us@SD">
+    <title lang="ru">American Heroes Channel • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="AmericanHeroesChannel.us@SD">
+    <title lang="ru">American Heroes Channel • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="AmericanHeroesChannel.us@SD">
+    <title lang="ru">American Heroes Channel • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="AnimalPlanet.ru@SD">
+    <title lang="ru">Animal Planet (Russia) • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Animal Planet (Russia)</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="AnimalPlanet.ru@SD">
+    <title lang="ru">Animal Planet (Russia) • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="AnimalPlanet.ru@SD">
+    <title lang="ru">Animal Planet (Russia) • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="AnimalPlanet.ru@SD">
+    <title lang="ru">Animal Planet (Russia) • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="AnimalPlanet.us@East">
+    <title lang="ru">Animal Planet (United States) • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Animal Planet (United States)</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="AnimalPlanet.us@East">
+    <title lang="ru">Animal Planet (United States) • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="AnimalPlanet.us@East">
+    <title lang="ru">Animal Planet (United States) • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="AnimalPlanet.us@East">
+    <title lang="ru">Animal Planet (United States) • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="AnimalPlanetLatinAmerica.us@SD">
+    <title lang="ru">Animal Planet Latin America • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Animal Planet Latin America</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="AnimalPlanetLatinAmerica.us@SD">
+    <title lang="ru">Animal Planet Latin America • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="AnimalPlanetLatinAmerica.us@SD">
+    <title lang="ru">Animal Planet Latin America • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="AnimalPlanetLatinAmerica.us@SD">
+    <title lang="ru">Animal Planet Latin America • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="ArchivosForenses.us@Spain">
+    <title lang="ru">Archivos Forenses • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Archivos Forenses</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="ArchivosForenses.us@Spain">
+    <title lang="ru">Archivos Forenses • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="ArchivosForenses.us@Spain">
+    <title lang="ru">Archivos Forenses • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="ArchivosForenses.us@Spain">
+    <title lang="ru">Archivos Forenses • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="Arsenal.ru@SD">
+    <title lang="ru">Arsenal • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Arsenal</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="Arsenal.ru@SD">
+    <title lang="ru">Arsenal • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="Arsenal.ru@SD">
+    <title lang="ru">Arsenal • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="Arsenal.ru@SD">
+    <title lang="ru">Arsenal • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="AsharqDiscovery.sa@SD">
+    <title lang="ru">Asharq Discovery • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Asharq Discovery</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="AsharqDiscovery.sa@SD">
+    <title lang="ru">Asharq Discovery • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="AsharqDiscovery.sa@SD">
+    <title lang="ru">Asharq Discovery • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="AsharqDiscovery.sa@SD">
+    <title lang="ru">Asharq Discovery • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="AsharqDocumentary.sa@SD">
+    <title lang="ru">Asharq Documentary • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Asharq Documentary</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="AsharqDocumentary.sa@SD">
+    <title lang="ru">Asharq Documentary • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="AsharqDocumentary.sa@SD">
+    <title lang="ru">Asharq Documentary • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="AsharqDocumentary.sa@SD">
+    <title lang="ru">Asharq Documentary • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="Atlas.us@SD">
+    <title lang="ru">Atlas • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Atlas</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="Atlas.us@SD">
+    <title lang="ru">Atlas • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="Atlas.us@SD">
+    <title lang="ru">Atlas • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="Atlas.us@SD">
+    <title lang="ru">Atlas • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="AutenticHistory.de@SD">
+    <title lang="ru">Autentic History • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Autentic History</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="AutenticHistory.de@SD">
+    <title lang="ru">Autentic History • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="AutenticHistory.de@SD">
+    <title lang="ru">Autentic History • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="AutenticHistory.de@SD">
+    <title lang="ru">Autentic History • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="BBCEarth.uk@Czechia">
+    <title lang="ru">BBC Earth Czechia • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала BBC Earth Czechia</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="BBCEarth.uk@Czechia">
+    <title lang="ru">BBC Earth Czechia • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="BBCEarth.uk@Czechia">
+    <title lang="ru">BBC Earth Czechia • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="BBCEarth.uk@Czechia">
+    <title lang="ru">BBC Earth Czechia • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="BBCEarth.uk@Hungary">
+    <title lang="ru">BBC Earth Hungary • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала BBC Earth Hungary</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="BBCEarth.uk@Hungary">
+    <title lang="ru">BBC Earth Hungary • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="BBCEarth.uk@Hungary">
+    <title lang="ru">BBC Earth Hungary • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="BBCEarth.uk@Hungary">
+    <title lang="ru">BBC Earth Hungary • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="BBCEarth.uk@US">
+    <title lang="ru">BBC Earth US • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала BBC Earth US</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="BBCEarth.uk@US">
+    <title lang="ru">BBC Earth US • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="BBCEarth.uk@US">
+    <title lang="ru">BBC Earth US • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="BBCEarth.uk@US">
+    <title lang="ru">BBC Earth US • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="Backstage.us@SD">
+    <title lang="ru">Backstage • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Backstage</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="Backstage.us@SD">
+    <title lang="ru">Backstage • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="Backstage.us@SD">
+    <title lang="ru">Backstage • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="Backstage.us@SD">
+    <title lang="ru">Backstage • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="BloombergOriginals.us@US">
+    <title lang="ru">Bloomberg Originals • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала Bloomberg Originals</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="BloombergOriginals.us@US">
+    <title lang="ru">Bloomberg Originals • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="BloombergOriginals.us@US">
+    <title lang="ru">Bloomberg Originals • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="BloombergOriginals.us@US">
+    <title lang="ru">Bloomberg Originals • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="BritBoxMysteries.us@SD">
+    <title lang="ru">BritBox Mysteries • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала BritBox Mysteries</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="BritBoxMysteries.us@SD">
+    <title lang="ru">BritBox Mysteries • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="BritBoxMysteries.us@SD">
+    <title lang="ru">BritBox Mysteries • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="BritBoxMysteries.us@SD">
+    <title lang="ru">BritBox Mysteries • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
+  </programme>
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="nasa.live">
+    <title lang="ru">NASA TV Space • Ночной эфир</title>
+    <desc lang="ru">Прямая трансляция канала NASA TV Space</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="nasa.live">
+    <title lang="ru">NASA TV Space • Утренний блок</title>
+    <desc lang="ru">Тематические передачи и новости</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="nasa.live">
+    <title lang="ru">NASA TV Space • Дневной эфир</title>
+    <desc lang="ru">Главные программы и актуальные события</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="nasa.live">
+    <title lang="ru">NASA TV Space • Вечерний прайм</title>
+    <desc lang="ru">Вечерние премьеры и специальный эфир</desc>
   </programme>
 </tv>

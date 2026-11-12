@@ -46,9 +46,7 @@ class IptvPlaylistDialog : DialogFragment() {
     override fun onStart() {
         super.onStart()
         dialog?.window?.let { win ->
-            val dm = resources.displayMetrics
-            val width = (740 * dm.density).toInt().coerceAtMost((dm.widthPixels * 0.90).toInt())
-            win.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
+            win.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
             win.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
     }

@@ -30,7 +30,8 @@ class IptvRepository(private val context: Context) {
         try {
             // 1. Check offline Room DB cache
             val cachedEntities = iptvDao.getAllChannels()
-            if (!forceRefresh && cachedEntities.isNotEmpty()) {
+            val hasCustomUrl = !getCustomPlaylistUrl().isNullOrBlank()
+            if (!forceRefresh && cachedEntities.isNotEmpty() && (hasCustomUrl || cachedEntities.size >= 50)) {
                 return@withContext mapEntitiesToDomain(cachedEntities)
             }
 

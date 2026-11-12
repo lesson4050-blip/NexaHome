@@ -400,6 +400,48 @@
                         android:orientation="horizontal">
 
                         <Button
+                            android:id="@+id/btn_cat_cis"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_marginEnd="6dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_focus_app_card"
+                            android:stateListAnimator="@null"
+                            android:focusable="true"
+                            android:fontFamily="sans-serif-bold"
+                            android:text="@string/cat_cis"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+
+                        <Button
+                            android:id="@+id/btn_cat_movies"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_focus_app_card"
+                            android:stateListAnimator="@null"
+                            android:focusable="true"
+                            android:fontFamily="sans-serif-bold"
+                            android:text="@string/cat_movies"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:paddingStart="4dp"
+                        android:paddingEnd="4dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:orientation="horizontal">
+
+                        <Button
                             android:id="@+id/btn_cat_sports"
                             android:layout_width="0dp"
                             android:layout_height="44dp"

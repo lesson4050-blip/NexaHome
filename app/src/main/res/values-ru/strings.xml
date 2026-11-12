@@ -80,6 +80,8 @@
     <string name="cat_cinema">Кино</string>
     <string name="cat_news">Новости</string>
     <string name="cat_ukraine">Украина</string>
+    <string name="cat_cis">СНГ</string>
+    <string name="cat_movies">Кино</string>
     <string name="iptv_manage_playlists">Плейлисты M3U</string>
     <string name="iptv_stream_error">Ошибка воспроизведения: %1$s</string>
     <string name="iptv_no_channels">Нет каналов в выбранной категории</string>

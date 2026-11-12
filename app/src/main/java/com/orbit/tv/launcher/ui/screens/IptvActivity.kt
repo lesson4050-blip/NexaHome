@@ -70,6 +70,8 @@ class IptvActivity : AppCompatActivity() {
 
         TvFocusHelper.bindFocusScale(binding.btnCatAll, scaleRatio = 1.06f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.btnCatUkraine, scaleRatio = 1.06f, elevationDp = 6f)
+        TvFocusHelper.bindFocusScale(binding.btnCatCis, scaleRatio = 1.06f, elevationDp = 6f)
+        TvFocusHelper.bindFocusScale(binding.btnCatMovies, scaleRatio = 1.06f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.btnCatSports, scaleRatio = 1.06f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.btnCatNews, scaleRatio = 1.06f, elevationDp = 6f)
 
@@ -118,6 +120,8 @@ class IptvActivity : AppCompatActivity() {
 
         binding.btnCatAll.setOnClickListener { viewModel.selectCategory("All") }
         binding.btnCatUkraine.setOnClickListener { viewModel.selectCategory("Ukraine") }
+        binding.btnCatCis.setOnClickListener { viewModel.selectCategory("CIS") }
+        binding.btnCatMovies.setOnClickListener { viewModel.selectCategory("Movies") }
         binding.btnCatSports.setOnClickListener { viewModel.selectCategory("Sports") }
         binding.btnCatNews.setOnClickListener { viewModel.selectCategory("News") }
 
@@ -130,7 +134,19 @@ class IptvActivity : AppCompatActivity() {
     }
 
     private fun initExoPlayer() {
-        exoPlayer = ExoPlayer.Builder(this).build().apply {
+        val httpDataSourceFactory = androidx.media3.datasource.DefaultHttpDataSource.Factory()
+            .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+            .setAllowCrossProtocolRedirects(true)
+            .setConnectTimeoutMs(15000)
+            .setReadTimeoutMs(15000)
+
+        val mediaSourceFactory = androidx.media3.exoplayer.source.DefaultMediaSourceFactory(this)
+            .setDataSourceFactory(httpDataSourceFactory)
+
+        exoPlayer = ExoPlayer.Builder(this)
+            .setMediaSourceFactory(mediaSourceFactory)
+            .build()
+            .apply {
             addListener(object : Player.Listener {
                 override fun onPlaybackStateChanged(playbackState: Int) {
                     if (playbackState == Player.STATE_READY) {
@@ -208,6 +224,8 @@ class IptvActivity : AppCompatActivity() {
                     viewModel.selectedCategory.collect { category ->
                         binding.btnCatAll.isSelected = category.equals("All", ignoreCase = true)
                         binding.btnCatUkraine.isSelected = category.equals("Ukraine", ignoreCase = true)
+                        binding.btnCatCis.isSelected = category.equals("CIS", ignoreCase = true)
+                        binding.btnCatMovies.isSelected = category.equals("Movies", ignoreCase = true)
                         binding.btnCatSports.isSelected = category.equals("Sports", ignoreCase = true)
                         binding.btnCatNews.isSelected = category.equals("News", ignoreCase = true)
                     }
