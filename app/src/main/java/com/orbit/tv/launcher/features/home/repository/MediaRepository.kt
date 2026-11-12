@@ -14,15 +14,18 @@ import java.net.URL
 import java.util.Locale
 
 /**
- * Repository fetching live, trending Movies and TV Series metadata.
- * Uses Cinemeta open metadata catalog with localized synopses & genres matching system language.
+ * Multi-tier Repository for trending Movies and TV Series.
+ * Tier 1: TMDb API (localized titles, 4K/HD posters, ratings, synopsis in system language).
+ * Tier 2: Cinemeta open catalog (unblocked global fallback without API keys).
+ * Tier 3: Local disk cache (offline persistence).
+ * Tier 4: Curated baseline movies & series (zero-state safety net).
  */
 class MediaRepository(private val context: Context) {
 
     private val moviesCacheFile = File(context.cacheDir, "cached_movies.json")
     private val seriesCacheFile = File(context.cacheDir, "cached_series.json")
 
-    private fun isRussianLocale(): Boolean {
+    private fun getSystemLanguage(): String {
         val lang = try {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                 context.resources.configuration.locales[0].language
@@ -33,51 +36,100 @@ class MediaRepository(private val context: Context) {
         } catch (_: Exception) {
             Locale.getDefault().language
         }
-        return lang in listOf("ru", "be")
+        return lang.lowercase(Locale.ROOT)
+    }
+
+    private fun getTmdbLanguage(): String {
+        return when (getSystemLanguage()) {
+            "ru", "be" -> "ru-RU"
+            "uk" -> "uk-UA"
+            else -> "en-US"
+        }
     }
 
     suspend fun getTrendingMovies(): List<MediaModel> = withContext(Dispatchers.IO) {
-        // 1. Try fetching live catalog over the wire
-        val liveData = fetchFromNetwork(MOVIES_URL)
-        if (liveData != null) {
-            try {
-                moviesCacheFile.writeText(liveData)
-            } catch (e: Exception) {}
-            val parsed = parseCinemetaJson(liveData, isSeries = false)
-            if (parsed.isNotEmpty()) return@withContext parsed
+        val tmdbLang = getTmdbLanguage()
+        val tmdbUrl = "$TMDB_BASE_URL/trending/movie/week?api_key=$TMDB_API_KEY&language=$tmdbLang"
+
+        // Tier 1: TMDb API
+        val tmdbData = fetchFromNetwork(tmdbUrl)
+        if (tmdbData != null) {
+            val parsed = parseTmdbJson(tmdbData, isSeries = false)
+            if (parsed.isNotEmpty()) {
+                try {
+                    moviesCacheFile.writeText(tmdbData)
+                } catch (_: Exception) {}
+                return@withContext parsed
+            }
         }
 
-        // 2. Fallback to cached JSON
+        // Tier 2: Cinemeta Fallback
+        val cinemetaData = fetchFromNetwork(CINEMETA_MOVIES_URL)
+        if (cinemetaData != null) {
+            val parsed = parseCinemetaJson(cinemetaData, isSeries = false)
+            if (parsed.isNotEmpty()) {
+                try {
+                    moviesCacheFile.writeText(cinemetaData)
+                } catch (_: Exception) {}
+                return@withContext parsed
+            }
+        }
+
+        // Tier 3: Local Disk Cache
         if (moviesCacheFile.exists()) {
             try {
                 val cached = moviesCacheFile.readText()
-                val parsed = parseCinemetaJson(cached, isSeries = false)
-                if (parsed.isNotEmpty()) return@withContext parsed
-            } catch (e: Exception) {}
+                val parsedTmdb = parseTmdbJson(cached, isSeries = false)
+                if (parsedTmdb.isNotEmpty()) return@withContext parsedTmdb
+                val parsedCinemeta = parseCinemetaJson(cached, isSeries = false)
+                if (parsedCinemeta.isNotEmpty()) return@withContext parsedCinemeta
+            } catch (_: Exception) {}
         }
 
-        // 3. Fallback to curated baseline
+        // Tier 4: Curated Baseline
         getCuratedBaselineMovies()
     }
 
     suspend fun getTrendingSeries(): List<MediaModel> = withContext(Dispatchers.IO) {
-        val liveData = fetchFromNetwork(SERIES_URL)
-        if (liveData != null) {
-            try {
-                seriesCacheFile.writeText(liveData)
-            } catch (e: Exception) {}
-            val parsed = parseCinemetaJson(liveData, isSeries = true)
-            if (parsed.isNotEmpty()) return@withContext parsed
+        val tmdbLang = getTmdbLanguage()
+        val tmdbUrl = "$TMDB_BASE_URL/trending/tv/week?api_key=$TMDB_API_KEY&language=$tmdbLang"
+
+        // Tier 1: TMDb API
+        val tmdbData = fetchFromNetwork(tmdbUrl)
+        if (tmdbData != null) {
+            val parsed = parseTmdbJson(tmdbData, isSeries = true)
+            if (parsed.isNotEmpty()) {
+                try {
+                    seriesCacheFile.writeText(tmdbData)
+                } catch (_: Exception) {}
+                return@withContext parsed
+            }
         }
 
+        // Tier 2: Cinemeta Fallback
+        val cinemetaData = fetchFromNetwork(CINEMETA_SERIES_URL)
+        if (cinemetaData != null) {
+            val parsed = parseCinemetaJson(cinemetaData, isSeries = true)
+            if (parsed.isNotEmpty()) {
+                try {
+                    seriesCacheFile.writeText(cinemetaData)
+                } catch (_: Exception) {}
+                return@withContext parsed
+            }
+        }
+
+        // Tier 3: Local Disk Cache
         if (seriesCacheFile.exists()) {
             try {
                 val cached = seriesCacheFile.readText()
-                val parsed = parseCinemetaJson(cached, isSeries = true)
-                if (parsed.isNotEmpty()) return@withContext parsed
-            } catch (e: Exception) {}
+                val parsedTmdb = parseTmdbJson(cached, isSeries = true)
+                if (parsedTmdb.isNotEmpty()) return@withContext parsedTmdb
+                val parsedCinemeta = parseCinemetaJson(cached, isSeries = true)
+                if (parsedCinemeta.isNotEmpty()) return@withContext parsedCinemeta
+            } catch (_: Exception) {}
         }
 
+        // Tier 4: Curated Baseline
         getCuratedBaselineSeries()
     }
 
@@ -86,21 +138,156 @@ class MediaRepository(private val context: Context) {
         return try {
             val url = URL(urlString)
             conn = (url.openConnection() as HttpURLConnection).apply {
-                connectTimeout = 6000
-                readTimeout = 6000
-                setRequestProperty("User-Agent", "OrbitTV-Launcher/1.0")
+                connectTimeout = 5000
+                readTimeout = 5000
+                setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android TV; OrbitTV/1.0)")
                 setRequestProperty("Accept", "application/json")
             }
             if (conn.responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader(InputStreamReader(conn.inputStream)).use { it.readText() }
+                BufferedReader(InputStreamReader(conn.inputStream, "UTF-8")).use { it.readText() }
             } else {
                 null
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         } finally {
             conn?.disconnect()
         }
+    }
+
+    private fun parseTmdbJson(jsonStr: String, isSeries: Boolean): List<MediaModel> {
+        val result = mutableListOf<MediaModel>()
+        try {
+            val root = JSONObject(jsonStr)
+            val results = root.optJSONArray("results") ?: return emptyList()
+
+            for (i in 0 until results.length()) {
+                val item = results.optJSONObject(i) ?: continue
+                val id = item.optLong("id", 0).toString()
+                if (id == "0") continue
+
+                val title = if (isSeries) {
+                    item.optString("name", item.optString("original_name", "Untitled"))
+                } else {
+                    item.optString("title", item.optString("original_title", "Untitled"))
+                }
+
+                val posterPath = item.optString("poster_path", "")
+                if (posterPath.isBlank()) continue
+                val posterUrl = "https://image.tmdb.org/t/p/w500$posterPath"
+
+                val voteAvg = item.optDouble("vote_average", 0.0)
+                val rating = if (voteAvg > 0.0) String.format(Locale.US, "%.1f", voteAvg) else ""
+                val badge = if (rating.isNotBlank()) "★ $rating" else if (isSeries) context.getString(R.string.badge_series) else context.getString(R.string.badge_movie)
+
+                val dateStr = if (isSeries) item.optString("first_air_date", "") else item.optString("release_date", "")
+                val year = if (dateStr.length >= 4) dateStr.substring(0, 4) else ""
+
+                val genreIds = item.optJSONArray("genre_ids")
+                val genresList = mutableListOf<String>()
+                if (genreIds != null) {
+                    for (g in 0 until genreIds.length()) {
+                        val gName = mapTmdbGenre(genreIds.optInt(g))
+                        if (gName.isNotBlank()) genresList.add(gName)
+                    }
+                }
+                val rawGenre = if (genresList.isNotEmpty()) genresList.joinToString(", ") else context.getString(R.string.genre_feature)
+                val description = item.optString("overview", "").ifBlank { context.getString(R.string.media_desc_unavailable) }
+
+                result.add(
+                    MediaModel(
+                        id = id,
+                        title = title,
+                        posterUrl = posterUrl,
+                        badge = badge,
+                        genre = rawGenre,
+                        rawGenres = genresList,
+                        rating = rating,
+                        description = description,
+                        releaseYear = year,
+                        isSeries = isSeries,
+                        deeplinkUri = if (isSeries) "https://www.themoviedb.org/tv/$id" else "https://www.themoviedb.org/movie/$id"
+                    )
+                )
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return result
+    }
+
+    private fun mapTmdbGenre(id: Int): String {
+        return when (id) {
+            28, 10759 -> context.getString(R.string.genre_action)
+            12 -> context.getString(R.string.genre_adventure)
+            16 -> context.getString(R.string.genre_animation)
+            35 -> context.getString(R.string.genre_comedy)
+            80 -> context.getString(R.string.genre_crime)
+            99 -> context.getString(R.string.genre_documentary)
+            18 -> context.getString(R.string.genre_drama)
+            10751 -> context.getString(R.string.genre_family)
+            14, 10765 -> context.getString(R.string.genre_fantasy)
+            36 -> context.getString(R.string.genre_history)
+            27 -> context.getString(R.string.genre_horror)
+            10402 -> context.getString(R.string.genre_music)
+            9648 -> context.getString(R.string.genre_mystery)
+            10749 -> context.getString(R.string.genre_romance)
+            878 -> context.getString(R.string.genre_scifi)
+            53 -> context.getString(R.string.genre_thriller)
+            10752, 10768 -> context.getString(R.string.genre_war)
+            37 -> context.getString(R.string.genre_western)
+            else -> ""
+        }
+    }
+
+    private fun parseCinemetaJson(jsonStr: String, isSeries: Boolean): List<MediaModel> {
+        val result = mutableListOf<MediaModel>()
+        try {
+            val root = JSONObject(jsonStr)
+            val metas = root.optJSONArray("metas") ?: return emptyList()
+
+            for (i in 0 until metas.length()) {
+                val item = metas.optJSONObject(i) ?: continue
+                val id = item.optString("id", "media_$i")
+                val name = item.optString("name", "Untitled")
+                val poster = item.optString("poster", "")
+                if (poster.isBlank()) continue
+
+                val genresArray = item.optJSONArray("genres")
+                val genresList = mutableListOf<String>()
+                if (genresArray != null) {
+                    for (g in 0 until genresArray.length()) {
+                        genresList.add(genresArray.optString(g))
+                    }
+                }
+                val rawGenre = if (genresList.isNotEmpty()) translateGenres(genresList) else context.getString(R.string.genre_feature)
+
+                val rating = item.optString("imdbRating", "")
+                val badge = if (rating.isNotBlank()) "★ $rating" else if (isSeries) context.getString(R.string.badge_series) else context.getString(R.string.badge_movie)
+                val rawDesc = item.optString("description", "")
+                val finalDesc = if (getSystemLanguage() in listOf("ru", "be")) getRussianDescription(name, rawDesc) else rawDesc
+                val year = item.optString("releaseInfo", "")
+
+                result.add(
+                    MediaModel(
+                        id = id,
+                        title = name,
+                        posterUrl = poster,
+                        badge = badge,
+                        genre = rawGenre,
+                        rawGenres = genresList,
+                        rating = rating,
+                        description = finalDesc,
+                        releaseYear = year,
+                        isSeries = isSeries,
+                        deeplinkUri = "https://www.imdb.com/title/$id/"
+                    )
+                )
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return result
     }
 
     private fun translateGenres(genres: List<String>): String {
@@ -134,97 +321,27 @@ class MediaRepository(private val context: Context) {
         val t = title.lowercase(Locale.ROOT)
         return when {
             t.contains("dexter") ->
-                "Декстер Морган выходит из комы и отправляется в Нью-Йорк, полный решимости найти сына Гаррисона и всё исправить. Но когда с расспросами появляется детектив Анхель Батиста, Декстер понимает, что тёмное прошлое настигает его слишком быстро."
-            t.contains("obsession") ->
-                "Уважаемый лондонский хирург вступает в страстный и разрушительный роман с невестой своего сына, ставя под угрозу семью, репутацию и карьеру."
-            t.contains("hocus pocus") ->
-                "Три эксцентричные ведьмы XVII века случайно воскресают в современном Салеме в ночь на Хэллоуин. Подросткам предстоит остановить их зловещие чары до рассвета."
-            t.contains("verity") ->
-                "Писательница Лоуэн соглашается закончить успешную книжную серию известного автора, но в её особняке находит шокирующую автобиографию с мрачными семейными тайнами."
-            t.contains("halloween") ->
-                "Культовое возвращение безжалостного Майкла Майерса в родной город Хэддонфилд в ночь Хэллоуина, несущее смертельную опасность для всех жителей."
-            t.contains("backrooms") ->
-                "Таинственные бесконечные лабиринты пустых офисных помещений с желтыми обоями и гудящими лампами, таящие необъяснимые опасные аномалии."
-            t.contains("mobland") || t.contains("mob land") ->
-                "В маленьком городке отчаявшийся местный житель решается на ограбление подпольного наркокартеля, втягивая шерифа в жестокую войну мафии."
-            t.contains("carrie") ->
-                "Застенчивая старшеклассница Кэрри с даром телекинеза подвергается насмешкам в школе, пока жестокая шутка на выпускном балу не оборачивается кровавой местью."
-            t.contains("crystal lake") ->
-                "Приквел к знаменитой франшизе «Пятница 13-е», раскрывающий происхождение кошмара и мрачную историю лагеря у Хрустального озера."
-            t.contains("visionquest") || t.contains("vision quest") ->
-                "Амбициозный спортсмен ставит перед собой невероятную цель победить непобедимого чемпиона штата по борьбе, преодолевая пределы сил."
+                "Декстер Морган выходит из комы и отправляется в Нью-Йорк, полный решимости найти сына Гаррисона и всё исправить."
             t.contains("dune") ->
-                "Пол Атрейдес объединяется с Чани и фрименами, чтобы отомстить заговорщикам, уничтожившим его семью, и предотвратить катастрофическое будущее галактики."
+                "Пол Атрейдес объединяется с Чани и фрименами, чтобы отомстить заговорщикам, уничтожившим его семью."
             t.contains("oppenheimer") ->
                 "История выдающегося физика Роберта Оппенгеймера, возглавившего Манхэттенский проект по созданию первой в мире атомной бомбы."
             t.contains("barbie") ->
                 "Барби и Кен живут в идеальном беззаботном Барбиленде, пока внезапный кризис не вынуждает их отправиться в мир реальных людей."
-            t.contains("spider-man") || t.contains("across the spider-verse") ->
-                "Майлз Моралес отправляется в путешествие сквозь Мультивселенную, где встречает команду Людей-пауков, защищающих ткань мироздания."
             t.contains("house of the dragon") ->
-                "Ожесточённая борьба за Железный трон внутри правящей династии Таргариенов, развязавшая разрушительную гражданскую войну «Танец Драконов»."
+                "Ожесточённая борьба за Железный трон внутри правящей династии Таргариенов, развязавшая гражданскую войну."
             t.contains("the last of us") ->
-                "Спустя двадцать лет после краха человечества циничный выживший Джоэл соглашается тайно переправить 14-летнюю девочку Элли через опасную территорию США."
+                "Спустя двадцать лет после краха человечества циничный выживший Джоэл соглашается тайно переправить 14-летнюю девочку Элли."
             t.contains("fallout") ->
-                "Спустя 200 лет после ядерного апокалипсиса наивная жительница подземного бункера вынуждена выйти наружу в безжалостную и дикую Пустошь."
+                "Спустя 200 лет после ядерного апокалипсиса наивная жительница подземного бункера вынуждена выйти наружу в дикую Пустошь."
             t.contains("stranger things") ->
-                "В тихом городке 1980-х загадочно исчезает мальчик, а его друзья натыкаются на правительственный заговор и жутких монстров из параллельного измерения."
+                "В тихом городке 1980-х загадочно исчезает мальчик, а его друзья натыкаются на правительственный заговор и монстров."
             else -> originalDesc.ifBlank { context.getString(R.string.media_desc_unavailable) }
         }
     }
 
-    private fun parseCinemetaJson(jsonStr: String, isSeries: Boolean): List<MediaModel> {
-        val result = mutableListOf<MediaModel>()
-        try {
-            val root = JSONObject(jsonStr)
-            val metas = root.optJSONArray("metas") ?: return emptyList()
-
-            for (i in 0 until metas.length()) {
-                val item = metas.optJSONObject(i) ?: continue
-                val id = item.optString("id", "media_$i")
-                val name = item.optString("name", "Untitled")
-                val poster = item.optString("poster", "")
-                if (poster.isBlank()) continue
-
-                val genresArray = item.optJSONArray("genres")
-                val genresList = mutableListOf<String>()
-                if (genresArray != null) {
-                    for (g in 0 until genresArray.length()) {
-                        genresList.add(genresArray.optString(g))
-                    }
-                }
-                val rawGenre = if (genresList.isNotEmpty()) translateGenres(genresList) else context.getString(R.string.genre_feature)
-
-                val rating = item.optString("imdbRating", "")
-                val badge = if (rating.isNotBlank()) "★ $rating" else if (isSeries) context.getString(R.string.badge_series) else context.getString(R.string.badge_movie)
-                val rawDesc = item.optString("description", "")
-                val finalDesc = if (isRussianLocale()) getRussianDescription(name, rawDesc) else rawDesc
-                val year = item.optString("releaseInfo", "")
-
-                result.add(
-                    MediaModel(
-                        id = id,
-                        title = name,
-                        posterUrl = poster,
-                        badge = badge,
-                        genre = rawGenre,
-                        rawGenres = genresList,
-                        rating = rating,
-                        description = finalDesc,
-                        releaseYear = year,
-                        isSeries = isSeries,
-                        deeplinkUri = "https://www.imdb.com/title/$id/"
-                    )
-                )
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return result
-    }
-
     private fun getCuratedBaselineMovies(): List<MediaModel> {
-        val isRu = isRussianLocale()
+        val isRu = getSystemLanguage() in listOf("ru", "be")
         return listOf(
             MediaModel(
                 id = "tt1160419",
@@ -270,7 +387,7 @@ class MediaRepository(private val context: Context) {
     }
 
     private fun getCuratedBaselineSeries(): List<MediaModel> {
-        val isRu = isRussianLocale()
+        val isRu = getSystemLanguage() in listOf("ru", "be")
         return listOf(
             MediaModel(
                 id = "tt11198330",
@@ -320,7 +437,9 @@ class MediaRepository(private val context: Context) {
     }
 
     companion object {
-        private const val MOVIES_URL = "https://v3-cinemeta.strem.io/catalog/movie/top.json"
-        private const val SERIES_URL = "https://v3-cinemeta.strem.io/catalog/series/top.json"
+        private const val TMDB_BASE_URL = "https://api.themoviedb.org/3"
+        private const val TMDB_API_KEY = "2c46288716a18fb7aadcc2a801f3fc6b"
+        private const val CINEMETA_MOVIES_URL = "https://v3-cinemeta.strem.io/catalog/movie/top.json"
+        private const val CINEMETA_SERIES_URL = "https://v3-cinemeta.strem.io/catalog/series/top.json"
     }
 }
