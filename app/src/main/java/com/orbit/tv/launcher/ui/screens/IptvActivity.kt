@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.KeyEvent
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
@@ -22,6 +23,7 @@ import com.orbit.tv.launcher.databinding.ActivityIptvBinding
 import com.orbit.tv.launcher.features.iptv.IptvViewModel
 import com.orbit.tv.launcher.features.iptv.adapters.EpgChannelAdapter
 import com.orbit.tv.launcher.features.iptv.model.IptvChannel
+import com.orbit.tv.launcher.ui.overlays.IptvPlaylistDialog
 import com.orbit.tv.launcher.ui.overlays.TvPowerDialog
 import kotlinx.coroutines.launch
 
@@ -63,11 +65,16 @@ class IptvActivity : AppCompatActivity() {
         TvFocusHelper.bindFocusScale(binding.btnNavCast, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnNavPower, scaleRatio = 1.12f, elevationDp = 8f)
 
+        TvFocusHelper.bindFocusScale(binding.btnManagePlaylist, scaleRatio = 1.08f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.playerPreviewContainer, scaleRatio = 1.04f, elevationDp = 10f)
+
         TvFocusHelper.bindFocusScale(binding.btnCatAll, scaleRatio = 1.06f, elevationDp = 6f)
+        TvFocusHelper.bindFocusScale(binding.btnCatUkraine, scaleRatio = 1.06f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.btnCatSports, scaleRatio = 1.06f, elevationDp = 6f)
-        TvFocusHelper.bindFocusScale(binding.btnCatCinema, scaleRatio = 1.06f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.btnCatNews, scaleRatio = 1.06f, elevationDp = 6f)
+
+        TvFocusHelper.bindFocusScale(binding.btnRetryPlayback, scaleRatio = 1.08f, elevationDp = 6f)
+        TvFocusHelper.bindFocusScale(binding.btnFullscreenRetry, scaleRatio = 1.08f, elevationDp = 8f)
 
         binding.btnNavIptv.isSelected = true
     }
@@ -101,25 +108,62 @@ class IptvActivity : AppCompatActivity() {
             TvPowerDialog.show(supportFragmentManager)
         }
 
+        binding.btnManagePlaylist.setOnClickListener {
+            IptvPlaylistDialog.show(supportFragmentManager)
+        }
+
         binding.playerPreviewContainer.setOnClickListener {
             viewModel.toggleFullscreen()
         }
 
         binding.btnCatAll.setOnClickListener { viewModel.selectCategory("All") }
+        binding.btnCatUkraine.setOnClickListener { viewModel.selectCategory("Ukraine") }
         binding.btnCatSports.setOnClickListener { viewModel.selectCategory("Sports") }
-        binding.btnCatCinema.setOnClickListener { viewModel.selectCategory("Cinema") }
         binding.btnCatNews.setOnClickListener { viewModel.selectCategory("News") }
+
+        binding.btnRetryPlayback.setOnClickListener {
+            retryActiveChannel()
+        }
+        binding.btnFullscreenRetry.setOnClickListener {
+            retryActiveChannel()
+        }
     }
 
     private fun initExoPlayer() {
         exoPlayer = ExoPlayer.Builder(this).build().apply {
             addListener(object : Player.Listener {
+                override fun onPlaybackStateChanged(playbackState: Int) {
+                    if (playbackState == Player.STATE_READY) {
+                        binding.overlayPlayerError.visibility = View.GONE
+                        binding.overlayFullscreenError.visibility = View.GONE
+                    }
+                }
+
                 override fun onPlayerError(error: PlaybackException) {
-                    // Failover gracefully without intrusive toast dialogs on TV screen
+                    handlePlayerError(error)
                 }
             })
         }
         binding.playerView.player = exoPlayer
+    }
+
+    private fun handlePlayerError(error: PlaybackException) {
+        val errorMessage = error.localizedMessage?.take(60) ?: "Ошибка подключения к потоку"
+        if (viewModel.isFullscreen.value) {
+            binding.overlayFullscreenError.visibility = View.VISIBLE
+            binding.tvFullscreenErrorDesc.text = "Канал временно недоступен • ВВЕРХ/ВНИЗ для переключения"
+            binding.btnFullscreenRetry.requestFocus()
+        } else {
+            binding.overlayPlayerError.visibility = View.VISIBLE
+            binding.tvErrorMessage.text = "Поток недоступен ($errorMessage)"
+            binding.btnRetryPlayback.requestFocus()
+        }
+    }
+
+    private fun retryActiveChannel() {
+        binding.overlayPlayerError.visibility = View.GONE
+        binding.overlayFullscreenError.visibility = View.GONE
+        viewModel.activeChannel.value?.let { playChannel(it) }
     }
 
     private fun setupBackNavigation() {
@@ -138,6 +182,13 @@ class IptvActivity : AppCompatActivity() {
     private fun observeViewModel() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
+                // Real-time Clock
+                launch {
+                    viewModel.currentTime.collect { time ->
+                        binding.tvClock.text = time
+                    }
+                }
+
                 // Filtered Channels
                 launch {
                     viewModel.filteredChannels.collect { channels ->
@@ -156,8 +207,8 @@ class IptvActivity : AppCompatActivity() {
                 launch {
                     viewModel.selectedCategory.collect { category ->
                         binding.btnCatAll.isSelected = category.equals("All", ignoreCase = true)
+                        binding.btnCatUkraine.isSelected = category.equals("Ukraine", ignoreCase = true)
                         binding.btnCatSports.isSelected = category.equals("Sports", ignoreCase = true)
-                        binding.btnCatCinema.isSelected = category.equals("Cinema", ignoreCase = true)
                         binding.btnCatNews.isSelected = category.equals("News", ignoreCase = true)
                     }
                 }
@@ -173,6 +224,9 @@ class IptvActivity : AppCompatActivity() {
     }
 
     private fun playChannel(channel: IptvChannel) {
+        binding.overlayPlayerError.visibility = View.GONE
+        binding.overlayFullscreenError.visibility = View.GONE
+
         epgAdapter.activeChannelId = channel.id
         binding.tvPreviewChannel.text = channel.name
         binding.tvPreviewProgram.text = channel.currentProgram
@@ -213,7 +267,35 @@ class IptvActivity : AppCompatActivity() {
         bannerHandler.removeCallbacks(hideBannerRunnable)
         binding.bannerFullscreenInfo.alpha = 1f
         binding.bannerFullscreenInfo.visibility = View.VISIBLE
-        bannerHandler.postDelayed(hideBannerRunnable, 4000)
+        bannerHandler.postDelayed(hideBannerRunnable, 3500)
+    }
+
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        if (viewModel.isFullscreen.value && event.action == KeyEvent.ACTION_DOWN) {
+            when (event.keyCode) {
+                KeyEvent.KEYCODE_DPAD_UP, KeyEvent.KEYCODE_CHANNEL_UP -> {
+                    viewModel.previousChannel()
+                    return true
+                }
+                KeyEvent.KEYCODE_DPAD_DOWN, KeyEvent.KEYCODE_CHANNEL_DOWN -> {
+                    viewModel.nextChannel()
+                    return true
+                }
+                KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER -> {
+                    if (binding.overlayFullscreenError.visibility == View.VISIBLE) {
+                        retryActiveChannel()
+                    } else {
+                        showFullscreenBanner()
+                    }
+                    return true
+                }
+                KeyEvent.KEYCODE_BACK -> {
+                    viewModel.exitFullscreen()
+                    return true
+                }
+            }
+        }
+        return super.dispatchKeyEvent(event)
     }
 
     override fun onResume() {

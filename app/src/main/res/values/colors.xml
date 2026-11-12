@@ -37,4 +37,9 @@
     <color name="search_bg">#FFFFFFFF</color>
     <color name="search_text">#1E293B</color>
     <color name="search_hint">#64748B</color>
+
+    <!-- Dialog & Accent Palette -->
+    <color name="dialog_dimmer">#B3080E18</color>
+    <color name="dialog_surface">#182334</color>
+    <color name="tv_red_accent">#EF4444</color>
 </resources>

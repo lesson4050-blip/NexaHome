@@ -79,6 +79,8 @@
     <string name="cat_sports">Спорт</string>
     <string name="cat_cinema">Кино</string>
     <string name="cat_news">Новости</string>
+    <string name="cat_ukraine">Украина</string>
+    <string name="iptv_manage_playlists">Плейлисты M3U</string>
     <string name="iptv_stream_error">Ошибка воспроизведения: %1$s</string>
     <string name="iptv_no_channels">Нет каналов в выбранной категории</string>
     <string name="iptv_next_program_format">Далее: %1$s</string>

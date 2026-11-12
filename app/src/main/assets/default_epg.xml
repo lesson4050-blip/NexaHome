@@ -4,156 +4,165 @@
   <channel id="redbull.tv">
     <display-name>Red Bull TV HD</display-name>
   </channel>
-  <channel id="mux.sports">
-    <display-name>Mux Sports Live</display-name>
-  </channel>
-  <channel id="nasa.tv">
-    <display-name>NASA TV Deep Space HD</display-name>
-  </channel>
-  <channel id="cinema.apple">
-    <display-name>Apple Cinema Showcase</display-name>
-  </channel>
-  <channel id="ocean.wildlife">
-    <display-name>Ocean &amp; Nature 4K</display-name>
-  </channel>
   <channel id="dw.news">
     <display-name>Deutsche Welle News HD</display-name>
   </channel>
-  <channel id="bloomberg.us">
-    <display-name>Bloomberg Markets Live</display-name>
+  <channel id="skynews">
+    <display-name>Sky News HD</display-name>
+  </channel>
+  <channel id="euronews">
+    <display-name>Euronews English HD</display-name>
+  </channel>
+  <channel id="aljazeera">
+    <display-name>Al Jazeera English HD</display-name>
+  </channel>
+  <channel id="1plus1.marafon">
+    <display-name>1+1 Марафон HD</display-name>
+  </channel>
+  <channel id="1plus1.int">
+    <display-name>1+1 International HD</display-name>
+  </channel>
+  <channel id="24tv.ua">
+    <display-name>24 Канал HD</display-name>
   </channel>
 
-  <!-- 1. Red Bull TV Programs -->
-  <programme start="20261106000000 +0000" stop="20261106040000 +0000" channel="redbull.tv">
+  <!-- 1. Red Bull TV -->
+  <programme start="20261112000000 +0000" stop="20261112040000 +0000" channel="redbull.tv">
     <title lang="en">Red Bull Rampage: Greatest Moments</title>
     <desc lang="en">Freeride mountain biking highlights from Utah cliffs.</desc>
   </programme>
-  <programme start="20261106040000 +0000" stop="20261106080000 +0000" channel="redbull.tv">
+  <programme start="20261112040000 +0000" stop="20261112080000 +0000" channel="redbull.tv">
     <title lang="en">Formula 1: Behind the Bull Pit Wall</title>
     <desc lang="en">Exclusive telemetry review and race strategies.</desc>
   </programme>
-  <programme start="20261106080000 +0000" stop="20261106120000 +0000" channel="redbull.tv">
+  <programme start="20261112080000 +0000" stop="20261112120000 +0000" channel="redbull.tv">
     <title lang="en">Cliff Diving World Series Highlights</title>
     <desc lang="en">High-altitude diving in Polignano a Mare.</desc>
   </programme>
-  <programme start="20261106120000 +0000" stop="20261106160000 +0000" channel="redbull.tv">
+  <programme start="20261112120000 +0000" stop="20261112160000 +0000" channel="redbull.tv">
     <title lang="en">Downhill World Cup Championship</title>
     <desc lang="en">Live run timing and rider speed comparisons.</desc>
   </programme>
-  <programme start="20261106160000 +0000" stop="20261106200000 +0000" channel="redbull.tv">
+  <programme start="20261112160000 +0000" stop="20261112200000 +0000" channel="redbull.tv">
     <title lang="en">Red Bull BC One World Final Battle</title>
     <desc lang="en">Top breakers competing on the world stage.</desc>
   </programme>
-  <programme start="20261106200000 +0000" stop="20261106235959 +0000" channel="redbull.tv">
+  <programme start="20261112200000 +0000" stop="20261112235959 +0000" channel="redbull.tv">
     <title lang="en">Chasing the Shot: Big Wave Surfing</title>
     <desc lang="en">Surfers tackling 80-foot waves at Nazare.</desc>
   </programme>
 
-  <!-- 2. Mux Sports Arena -->
-  <programme start="20261106000000 +0000" stop="20261106060000 +0000" channel="mux.sports">
-    <title lang="en">Pro Basketball Showcase • 1st Half</title>
-    <desc lang="en">League matches and live replay coverage.</desc>
+  <!-- 2. DW News -->
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="dw.news">
+    <title lang="en">DW News Global Overnight</title>
+    <desc lang="en">Continuous world news and market reports.</desc>
   </programme>
-  <programme start="20261106060000 +0000" stop="20261106120000 +0000" channel="mux.sports">
-    <title lang="en">European Football Championship Live</title>
-    <desc lang="en">Matchday coverage with live commentary.</desc>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="dw.news">
+    <title lang="en">DW News Europe Morning Edition</title>
+    <desc lang="en">European geopolitics, tech innovations, and climate briefs.</desc>
   </programme>
-  <programme start="20261106120000 +0000" stop="20261106180000 +0000" channel="mux.sports">
-    <title lang="en">Grand Slam Tennis Final • Set 3</title>
-    <desc lang="en">Center court championship showdown.</desc>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="dw.news">
+    <title lang="en">The Day: Focus on Global Affairs</title>
+    <desc lang="en">In-depth investigative reports and political interviews.</desc>
   </programme>
-  <programme start="20261106180000 +0000" stop="20261106235959 +0000" channel="mux.sports">
-    <title lang="en">Motorsport Super Cup • Race Day</title>
-    <desc lang="en">Pit stops, tire strategy, and checkered flag action.</desc>
-  </programme>
-
-  <!-- 3. NASA TV Deep Space -->
-  <programme start="20261106000000 +0000" stop="20261106060000 +0000" channel="nasa.tv">
-    <title lang="en">ISS Live Stream: Earth from Space 4K</title>
-    <desc lang="en">High-definition external camera views from the ISS.</desc>
-  </programme>
-  <programme start="20261106060000 +0000" stop="20261106120000 +0000" channel="nasa.tv">
-    <title lang="en">Artemis Moon Mission Telemetry &amp; Prep</title>
-    <desc lang="en">Space Launch System updates and lunar orbital path.</desc>
-  </programme>
-  <programme start="20261106120000 +0000" stop="20261106180000 +0000" channel="nasa.tv">
-    <title lang="en">James Webb Space Telescope Discoveries</title>
-    <desc lang="en">Deep field infrared analysis of early galaxies.</desc>
-  </programme>
-  <programme start="20261106180000 +0000" stop="20261106235959 +0000" channel="nasa.tv">
-    <title lang="en">Spacewalk Mission Operations Live</title>
-    <desc lang="en">Astronauts conducting external solar array upgrades.</desc>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="dw.news">
+    <title lang="en">DW News Prime &amp; Business Special</title>
+    <desc lang="en">Evening global news analysis and stock market closing recap.</desc>
   </programme>
 
-  <!-- 4. Apple Cinema Showcase -->
-  <programme start="20261106000000 +0000" stop="20261106060000 +0000" channel="cinema.apple">
-    <title lang="en">Cinema Pioneer: Masters of Light [4K HDR]</title>
-    <desc lang="en">Cinematography masterclass and anamorphic lenses.</desc>
+  <!-- 3. Sky News -->
+  <programme start="20261112000000 +0000" stop="20261112070000 +0000" channel="skynews">
+    <title lang="en">Sky World News Live</title>
+    <desc lang="en">Breaking news and headlines from across the globe.</desc>
   </programme>
-  <programme start="20261106060000 +0000" stop="20261106120000 +0000" channel="cinema.apple">
-    <title lang="en">The Horizon of Tomorrow: Sci-Fi Premiere</title>
-    <desc lang="en">Feature presentation with Dolby Atmos soundtrack.</desc>
+  <programme start="20261112070000 +0000" stop="20261112120000 +0000" channel="skynews">
+    <title lang="en">Sky News Breakfast with Kay Burley</title>
+    <desc lang="en">Interviews with politicians and breaking news stories.</desc>
   </programme>
-  <programme start="20261106120000 +0000" stop="20261106180000 +0000" channel="cinema.apple">
-    <title lang="en">Classic Noir Restored: Midnight in Paris</title>
-    <desc lang="en">Digital 4K transfer from original 35mm negative.</desc>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="skynews">
+    <title lang="en">Sky News at One &amp; Afternoon Live</title>
+    <desc lang="en">Detailed coverage of the top stories and world events.</desc>
   </programme>
-  <programme start="20261106180000 +0000" stop="20261106235959 +0000" channel="cinema.apple">
-    <title lang="en">Director's Cut: Beyond the Galaxy</title>
-    <desc lang="en">Uncut extended edition with commentary.</desc>
-  </programme>
-
-  <!-- 5. Ocean & Nature 4K -->
-  <programme start="20261106000000 +0000" stop="20261106060000 +0000" channel="ocean.wildlife">
-    <title lang="en">Abyssal Depths: Mariana Trench Exploration</title>
-    <desc lang="en">Submersible footage of bioluminescent deep sea life.</desc>
-  </programme>
-  <programme start="20261106060000 +0000" stop="20261106120000 +0000" channel="ocean.wildlife">
-    <title lang="en">Coral Reef Symphonies: Great Barrier Reef</title>
-    <desc lang="en">Macro 4K cinematography of reef ecosystems.</desc>
-  </programme>
-  <programme start="20261106120000 +0000" stop="20261106180000 +0000" channel="ocean.wildlife">
-    <title lang="en">Arctic Migration: Belugas and Orcas</title>
-    <desc lang="en">Hunting strategies and ice shelf navigation.</desc>
-  </programme>
-  <programme start="20261106180000 +0000" stop="20261106235959 +0000" channel="ocean.wildlife">
-    <title lang="en">Volcanic Islands: Galapagos Wildlife</title>
-    <desc lang="en">Marine iguanas and giant tortoises in their habitat.</desc>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="skynews">
+    <title lang="en">The UK Tonight with Sarah-Jane Mee</title>
+    <desc lang="en">In-depth discussion and the day's major issues.</desc>
   </programme>
 
-  <!-- 6. Deutsche Welle News HD -->
-  <programme start="20261106000000 +0000" stop="20261106060000 +0000" channel="dw.news">
-    <title lang="en">DW News: Global 24-Hour Live Coverage</title>
-    <desc lang="en">Headlines and reports from correspondents worldwide.</desc>
+  <!-- 4. Euronews -->
+  <programme start="20261112000000 +0000" stop="20261112080000 +0000" channel="euronews">
+    <title lang="en">Euronews Morning Edition</title>
+    <desc lang="en">Comprehensive pan-European news coverage.</desc>
   </programme>
-  <programme start="20261106060000 +0000" stop="20261106120000 +0000" channel="dw.news">
-    <title lang="en">Conflict Zone: High-Stakes Geopolitics</title>
-    <desc lang="en">Interviews with world leaders on pressing global crises.</desc>
+  <programme start="20261112080000 +0000" stop="20261112160000 +0000" channel="euronews">
+    <title lang="en">Euronews Now: Live Europe</title>
+    <desc lang="en">Live reports from Brussels, Paris, Berlin, and Kiev.</desc>
   </programme>
-  <programme start="20261106120000 +0000" stop="20261106180000 +0000" channel="dw.news">
-    <title lang="en">Eco Africa: Solutions for the Environment</title>
-    <desc lang="en">Renewable energy and conservation across the continent.</desc>
-  </programme>
-  <programme start="20261106180000 +0000" stop="20261106235959 +0000" channel="dw.news">
-    <title lang="en">The Day: In-Depth European Analysis</title>
-    <desc lang="en">Comprehensive daily wrap-up and economic forecasts.</desc>
+  <programme start="20261112160000 +0000" stop="20261112235959 +0000" channel="euronews">
+    <title lang="en">Euronews Tonight &amp; The Global Conversation</title>
+    <desc lang="en">Interviews with international world leaders.</desc>
   </programme>
 
-  <!-- 7. Bloomberg Markets Live -->
-  <programme start="20261106000000 +0000" stop="20261106060000 +0000" channel="bloomberg.us">
-    <title lang="en">Bloomberg Daybreak: Asia &amp; Global Markets</title>
-    <desc lang="en">Nikkei, Hang Seng, and global overnight futures.</desc>
+  <!-- 5. Al Jazeera English -->
+  <programme start="20261112000000 +0000" stop="20261112080000 +0000" channel="aljazeera">
+    <title lang="en">Al Jazeera News Hour Overnight</title>
+    <desc lang="en">Unfiltered global coverage and ground reports.</desc>
   </programme>
-  <programme start="20261106060000 +0000" stop="20261106120000 +0000" channel="bloomberg.us">
-    <title lang="en">Bloomberg Surveillance: Central Banks &amp; Bonds</title>
-    <desc lang="en">Interest rate decisions, yield curves, and inflation data.</desc>
+  <programme start="20261112080000 +0000" stop="20261112160000 +0000" channel="aljazeera">
+    <title lang="en">Inside Story &amp; Live News Hour</title>
+    <desc lang="en">Critical debate and analysis on international affairs.</desc>
   </programme>
-  <programme start="20261106120000 +0000" stop="20261106180000 +0000" channel="bloomberg.us">
-    <title lang="en">Bloomberg Technology: AI &amp; Cloud Giants</title>
-    <desc lang="en">Venture capital deals, chip manufacturing, and earnings.</desc>
+  <programme start="20261112160000 +0000" stop="20261112235959 +0000" channel="aljazeera">
+    <title lang="en">The Stream &amp; Newshour Prime</title>
+    <desc lang="en">Social community voices and investigative journalism.</desc>
   </programme>
-  <programme start="20261106180000 +0000" stop="20261106235959 +0000" channel="bloomberg.us">
-    <title lang="en">The Close: Wall Street Bell &amp; S&amp;P 500 Review</title>
-    <desc lang="en">Final market trades, earnings beats, and sector moves.</desc>
+
+  <!-- 6. 1+1 Марафон -->
+  <programme start="20261112000000 +0000" stop="20261112060000 +0000" channel="1plus1.marafon">
+    <title lang="uk">Єдині новини • Нічний телемарафон</title>
+    <desc lang="uk">Цілодобовий інформаційний блок та аналітика подій.</desc>
+  </programme>
+  <programme start="20261112060000 +0000" stop="20261112120000 +0000" channel="1plus1.marafon">
+    <title lang="uk">Єдині новини • Ранок</title>
+    <desc lang="uk">Ранковий брифінг, зведення з фронту, економіка.</desc>
+  </programme>
+  <programme start="20261112120000 +0000" stop="20261112180000 +0000" channel="1plus1.marafon">
+    <title lang="uk">Єдині новини • День</title>
+    <desc lang="uk">Прямі включення кореспондентів та ексклюзивні репортажі.</desc>
+  </programme>
+  <programme start="20261112180000 +0000" stop="20261112235959 +0000" channel="1plus1.marafon">
+    <title lang="uk">ТСН • Вечірній підсумок дня</title>
+    <desc lang="uk">Головні події країни та світу з коментарями експертів.</desc>
+  </programme>
+
+  <!-- 7. 1+1 International -->
+  <programme start="20261112000000 +0000" stop="20261112080000 +0000" channel="1plus1.int">
+    <title lang="uk">Світ навиворіт з Дмитром Комаровим</title>
+    <desc lang="uk">Експедиції у найвіддаленіші куточки планети.</desc>
+  </programme>
+  <programme start="20261112080000 +0000" stop="20261112160000 +0000" channel="1plus1.int">
+    <title lang="uk">Українські сенсації та хроніки</title>
+    <desc lang="uk">Документальні розслідування та історичні факти.</desc>
+  </programme>
+  <programme start="20261112160000 +0000" stop="20261112235959 +0000" channel="1plus1.int">
+    <title lang="uk">Вечірній Прайм • 1+1 International</title>
+    <desc lang="uk">Кращі шоу, авторські програми та новини для діаспори.</desc>
+  </programme>
+
+  <!-- 8. 24 Канал -->
+  <programme start="20261112000000 +0000" stop="20261112070000 +0000" channel="24tv.ua">
+    <title lang="uk">Новини 24 • Нічна студія</title>
+    <desc lang="uk">Оперативні новини без цензури та аналітика.</desc>
+  </programme>
+  <programme start="20261112070000 +0000" stop="20261112130000 +0000" channel="24tv.ua">
+    <title lang="uk">Ранок на 24 Каналі</title>
+    <desc lang="uk">Інтерв'ю з військовими аналітиками та політиками.</desc>
+  </programme>
+  <programme start="20261112130000 +0000" stop="20261112190000 +0000" channel="24tv.ua">
+    <title lang="uk">Інформаційний марафон • Студія 24</title>
+    <desc lang="uk">Актуальні коментарі та карти бойових дій.</desc>
+  </programme>
+  <programme start="20261112190000 +0000" stop="20261112235959 +0000" channel="24tv.ua">
+    <title lang="uk">Підсумки дня з Романом Цимбалюком</title>
+    <desc lang="uk">Головний політичний розбір ключових подій доби.</desc>
   </programme>
 </tv>

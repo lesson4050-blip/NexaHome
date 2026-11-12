@@ -79,6 +79,8 @@
     <string name="cat_sports">Sports</string>
     <string name="cat_cinema">Cinema</string>
     <string name="cat_news">News</string>
+    <string name="cat_ukraine">Ukraine</string>
+    <string name="iptv_manage_playlists">M3U Playlists</string>
     <string name="iptv_stream_error">Stream error: %1$s</string>
     <string name="iptv_no_channels">No channels in this category</string>
     <string name="iptv_next_program_format">Next: %1$s</string>
@@ -170,6 +172,9 @@
     <string name="cast_badge_connect">Connect</string>
     <string name="cast_miracast_toast">Miracast ready. Open \"Wireless display\" or \"Smart View\" on phone/PC</string>
     <string name="cast_chromecast_toast">Chromecast ready to cast from YouTube, Chrome, or Google Home</string>
+    <string name="cast_airscreen_toast">Opening AirScreen receiver</string>
+    <string name="cast_airplay_dialog_title">Apple AirPlay</string>
+    <string name="cast_airplay_dialog_msg">To stream from iPhone, iPad or Mac, make sure your device is connected to the same Wi-Fi.\n\nTV Name: Orbit TV\nIP Address: %1$s\n\nRecommended: install AirScreen from Google Play.</string>
     <string name="cast_btn_install_airscreen">Install AirScreen</string>
     <string name="cast_btn_understood">Got it</string>
     <string name="cast_network_offline">No network connection • Connect TV to Wi-Fi</string>

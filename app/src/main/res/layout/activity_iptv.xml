@@ -152,6 +152,39 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <LinearLayout
+                    android:id="@+id/btn_manage_playlist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/bg_vpn_widget"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tv_clock"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_nav_iptv"
+                        app:tint="@color/leanback_cyan" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:fontFamily="sans-serif-bold"
+                        android:text="@string/iptv_manage_playlists"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
                 <TextView
                     android:id="@+id/tv_clock"
                     android:layout_width="wrap_content"
@@ -254,6 +287,52 @@
 
                         </LinearLayout>
 
+                        <!-- Error / Retry Overlay -->
+                        <LinearLayout
+                            android:id="@+id/overlay_player_error"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#D80C101A"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="16dp"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:src="@drawable/ic_close"
+                                app:tint="@color/tv_red_accent" />
+
+                            <TextView
+                                android:id="@+id/tv_error_message"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:fontFamily="sans-serif-bold"
+                                android:gravity="center"
+                                android:text="Поток временно недоступен"
+                                android:textColor="@color/white"
+                                android:textSize="12sp" />
+
+                            <Button
+                                android:id="@+id/btn_retry_playback"
+                                android:layout_width="wrap_content"
+                                android:layout_height="34dp"
+                                android:layout_marginTop="8dp"
+                                android:background="@drawable/bg_focus_app_card"
+                                android:backgroundTint="@color/leanback_cyan"
+                                android:focusable="true"
+                                android:fontFamily="sans-serif-bold"
+                                android:paddingStart="16dp"
+                                android:paddingEnd="16dp"
+                                android:stateListAnimator="@null"
+                                android:text="Повторить"
+                                android:textColor="@color/black"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
                     </FrameLayout>
 
                     <!-- Categories Grid -->
@@ -293,7 +372,7 @@
                             android:textSize="12sp" />
 
                         <Button
-                            android:id="@+id/btn_cat_sports"
+                            android:id="@+id/btn_cat_ukraine"
                             android:layout_width="0dp"
                             android:layout_height="44dp"
                             android:layout_marginStart="6dp"
@@ -302,7 +381,7 @@
                             android:stateListAnimator="@null"
                             android:focusable="true"
                             android:fontFamily="sans-serif-bold"
-                            android:text="@string/cat_sports"
+                            android:text="@string/cat_ukraine"
                             android:textColor="@color/white"
                             android:textSize="12sp" />
 
@@ -321,7 +400,7 @@
                         android:orientation="horizontal">
 
                         <Button
-                            android:id="@+id/btn_cat_cinema"
+                            android:id="@+id/btn_cat_sports"
                             android:layout_width="0dp"
                             android:layout_height="44dp"
                             android:layout_marginEnd="6dp"
@@ -330,7 +409,7 @@
                             android:stateListAnimator="@null"
                             android:focusable="true"
                             android:fontFamily="sans-serif-bold"
-                            android:text="@string/cat_cinema"
+                            android:text="@string/cat_sports"
                             android:textColor="@color/white"
                             android:textSize="12sp" />
 
@@ -451,6 +530,61 @@
                 android:paddingBottom="4dp"
                 android:text="@string/iptv_live"
                 android:textColor="@color/white"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <!-- Overlay Error / Channel Switch Hint in Fullscreen -->
+        <LinearLayout
+            android:id="@+id/overlay_fullscreen_error"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#E0080B11"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="32dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_close"
+                app:tint="@color/tv_red_accent" />
+
+            <TextView
+                android:id="@+id/tv_fullscreen_error_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:fontFamily="sans-serif-black"
+                android:text="Поток недоступен"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_fullscreen_error_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:fontFamily="sans-serif"
+                android:text="Нажмите ВВЕРХ или ВНИЗ на пульте для переключения канала"
+                android:textColor="@color/white_60"
+                android:textSize="13sp" />
+
+            <Button
+                android:id="@+id/btn_fullscreen_retry"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_focus_app_card"
+                android:backgroundTint="@color/leanback_cyan"
+                android:focusable="true"
+                android:fontFamily="sans-serif-bold"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:stateListAnimator="@null"
+                android:text="Повторить подключение"
+                android:textColor="@color/black"
                 android:textSize="12sp" />
 
         </LinearLayout>
