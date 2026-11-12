@@ -493,4 +493,16 @@ class HomeActivity : AppCompatActivity() {
         }
         return false
     }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_VOICE_ASSIST || keyCode == KeyEvent.KEYCODE_SEARCH) {
+            if (isRecordingVoice) {
+                stopInPlaceVoiceRecognition()
+            } else {
+                startInPlaceVoiceRecognition()
+            }
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
+    }
 }

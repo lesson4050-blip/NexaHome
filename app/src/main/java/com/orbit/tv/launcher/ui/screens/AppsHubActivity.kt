@@ -204,6 +204,27 @@ class AppsHubActivity : AppCompatActivity() {
 
     private fun onRecommendedAppAction(app: RecommendedAppModel) {
         if (app.isInstalled) {
+            if (app.packageName == "com.google.android.katniss") {
+                try {
+                    val assistIntent = Intent("android.intent.action.VOICE_ASSIST").apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
+                    startActivity(assistIntent)
+                    return
+                } catch (_: Exception) {
+                    try {
+                        val assistIntent = Intent(Intent.ACTION_ASSIST).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        }
+                        startActivity(assistIntent)
+                        return
+                    } catch (_: Exception) {
+                        startInPlaceVoiceRecognition()
+                        return
+                    }
+                }
+            }
+
             val launchIntent = packageManager.getLaunchIntentForPackage(app.packageName)
             if (launchIntent != null) {
                 startActivity(launchIntent)
@@ -571,5 +592,17 @@ class AppsHubActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_VOICE_ASSIST || keyCode == KeyEvent.KEYCODE_SEARCH) {
+            if (isRecordingVoice) {
+                stopInPlaceVoiceRecognition()
+            } else {
+                startInPlaceVoiceRecognition()
+            }
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
     }
 }
