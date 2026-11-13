@@ -99,9 +99,9 @@
     <string name="power_action_timer">Таймер сна (30 мин)</string>
     <string name="power_action_timer_desc">Автоматически отправить в сон через 30 минут</string>
     <string name="power_timer_toast">Таймер сна активирован: отключение через %1$d минут</string>
-    <string name="power_accessibility_sleep_prompt">Служба Orbit Home Guard не включена в Спец. возможностях. Включите ее для управления питанием.</string>
-    <string name="power_accessibility_reboot_prompt">Включите Orbit Home Guard в Спец. возможностях для вызова системного меню перезагрузки.</string>
-    <string name="power_accessibility_shutdown_prompt">Включите Orbit Home Guard в Спец. возможностях для выключения устройства.</string>
+    <string name="power_accessibility_sleep_prompt">Служба Home Guard не включена в Спец. возможностях. Включите ее для управления питанием.</string>
+    <string name="power_accessibility_reboot_prompt">Включите Home Guard в Спец. возможностях для вызова системного меню перезагрузки.</string>
+    <string name="power_accessibility_shutdown_prompt">Включите Home Guard в Спец. возможностях для выключения устройства.</string>
 
     <!-- Optimizer & System Monitor Screen -->
     <string name="optimizer_header_title">Монитор и оптимизация ТВ</string>
@@ -160,11 +160,15 @@
 
     <!-- Wireless Cast & Web Remote Screen -->
     <string name="cast_header_title">Беспроводная трансляция и веб-пульт</string>
-    <string name="cast_network_info_format">Orbit TV • Wi-Fi (Готов к подключению)</string>
+    <string name="cast_network_info_format">Smart TV • Wi-Fi (Готов к подключению)</string>
     <string name="cast_refresh_pin">Обновить PIN</string>
     <string name="cast_qr_hint">ОТСКАНИРУЙТЕ ДЛЯ ПОДКЛЮЧЕНИЯ</string>
     <string name="cast_expiry_format">Действителен: %1$02d:%2$02d</string>
     <string name="cast_pin_new_format">Новый PIN сгенерирован: %1$s</string>
+    <string name="cast_proto_dlna_title">DLNA / UPnP (Медиаплеер)</string>
+    <string name="cast_proto_dlna_desc">Windows Cast, VLC, BubbleUPnP, Галерея Samsung / Xiaomi</string>
+    <string name="cast_proto_dlna_badge">АКТИВЕН</string>
+    <string name="cast_dlna_dialog_msg">Встроенный приемник DLNA / UPnP активен.\n\nИмя устройства: %1$s\nIP-адрес: %2$s\n\nДля воспроизведения выберите этот телевизор в меню «Передать на устройство» на ПК Windows или в медиаплеере (VLC, BubbleUPnP, Web Video Caster, Галерея смартфона).</string>
     <string name="cast_proto_airplay_title">Apple AirPlay</string>
     <string name="cast_proto_airplay_desc">Трансляция экрана с iPhone, iPad, Mac</string>
     <string name="cast_proto_chromecast_title">Google Cast / Chromecast</string>
@@ -174,9 +178,9 @@
     <string name="cast_badge_connect">Подключить</string>
     <string name="cast_miracast_toast">Miracast активен. Откройте «Беспроводной экран» или Smart View на смартфоне или ПК</string>
     <string name="cast_chromecast_toast">Chromecast готов к трансляции из YouTube, Chrome или Google Home</string>
-    <string name="cast_airscreen_toast">%1$s активен через AirScreen. Выберите Orbit TV на телефоне</string>
+    <string name="cast_airscreen_toast">%1$s активен через AirScreen. Выберите Smart TV на телефоне</string>
     <string name="cast_airplay_dialog_title">Apple AirPlay</string>
-    <string name="cast_airplay_dialog_msg">Для трансляции с iPhone, iPad или Mac убедитесь, что устройство подключено к одной сети Wi-Fi.\n\nИмя ТВ: Orbit TV\nIP адрес: %1$s\n\nРекомендуется установить AirScreen из Google Play.</string>
+    <string name="cast_airplay_dialog_msg">Для трансляции с iPhone, iPad или Mac убедитесь, что устройство подключено к одной сети Wi-Fi.\n\nИмя устройства: Smart TV\nIP адрес: %1$s\n\nРекомендуется установить AirScreen из Google Play.</string>
     <string name="cast_btn_install_airscreen">Установить AirScreen</string>
     <string name="cast_btn_understood">Понятно</string>
     <string name="cast_network_offline">Нет подключения к сети • Подключите ТВ к Wi-Fi</string>
@@ -187,18 +191,18 @@
     <string name="cast_tag_web">ВЕБ-ПУЛЬТ</string>
     <string name="cast_tag_system">СИСТЕМНЫЕ ПРОТОКОЛЫ</string>
     <string name="cast_pin_access_label">PIN-КОД ДОСТУПА К ПУЛЬТУ</string>
-    <string name="cast_pin_purpose_hint">PIN нужен только для веб-пульта • Не требуется для Miracast</string>
+    <string name="cast_pin_purpose_hint">PIN нужен только для веб-пульта • Не требуется для Miracast / DLNA</string>
     <string name="cast_btn_launch_airscreen">Запустить AirScreen (Приемник)</string>
     <string name="cast_btn_display_settings">Настройки экрана Android</string>
-    <string name="cast_airplay_instructions">1. Подключите iPhone, iPad или Mac к той же сети Wi-Fi, что и ТВ.\n2. Откройте «Пункт управления» и нажмите «Повтор экрана».\n3. Выберите в списке приставку «Orbit TV».\n4. Orbit TV использует сертифицированный приемник AirScreen для приема AirPlay с аппаратным декодированием.</string>
-    <string name="cast_chromecast_instructions">1. Подключите телефон или ПК к той же сети Wi-Fi.\n2. Нажмите значок трансляции в YouTube, Chrome или Google Home.\n3. Orbit TV готов к приему видеопотока через AirScreen или встроенный сервис Google Cast.</string>
-    <string name="cast_miracast_instructions">1. Смартфоны Android: откройте шторку быстрых настроек и включите «Smart View», «Беспроводной дисплей» или «Трансляция».\n2. Windows 10/11: нажмите сочетание клавиш Win + K и выберите «Orbit TV».\n3. Внимание: ТВ-приставки на чистом Android TV не имеют встроенного Wi-Fi Direct чипа, поэтому сигнал принимает шлюз AirScreen.\n4. PIN-код со страницы трансляции НЕ требуется — он нужен только для веб-пульта слева.</string>
+    <string name="cast_airplay_instructions">1. Подключите iPhone, iPad или Mac к той же сети Wi-Fi, что и ТВ.\n2. Откройте «Пункт управления» и нажмите «Повтор экрана».\n3. Выберите в списке приставку «Smart TV».\n4. Использует сертифицированный приемник AirScreen для приема AirPlay с аппаратным декодированием.</string>
+    <string name="cast_chromecast_instructions">1. Подключите телефон или ПК к той же сети Wi-Fi.\n2. Нажмите значок трансляции в YouTube, Chrome или Google Home.\n3. ТВ готов к приему видеопотока через встроенный DLNA, AirScreen или сервис Google Cast.</string>
+    <string name="cast_miracast_instructions">1. Смартфоны Android: откройте шторку быстрых настроек и включите «Smart View», «Беспроводной дисплей» или «Трансляция».\n2. Windows 10/11: нажмите сочетание клавиш Win + K и выберите «Smart TV».\n3. Внимание: ТВ-приставки на чистом Android TV не имеют встроенного Wi-Fi Direct чипа, поэтому сигнал принимает шлюз AirScreen.\n4. PIN-код со страницы трансляции НЕ требуется — он нужен только для веб-пульта слева.</string>
     <string name="cast_section_web_title">ВЕБ-ПУЛЬТ И ПРЯМАЯ ТРАНСЛЯЦИЯ</string>
     <string name="cast_section_web_subtitle">С любого смартфона без приложений</string>
     <string name="cast_section_web_desc">Наведите камеру смартфона (iPhone или Android) на QR-код для отправки видео с YouTube, файлов и управления громкостью.</string>
-    <string name="cast_section_mirror_title">ДУБЛИРОВАНИЕ ЭКРАНА СМАРТФОНА / ПК (ЗЕРКАЛО)</string>
-    <string name="cast_section_mirror_subtitle">Прямое зеркалирование дисплея 1-в-1</string>
-    <string name="cast_miracast_guide">Для Android: откройте шторку и нажмите «Smart View» или «Трансляция». На ПК (Windows): нажмите сочетание Win + K.\n\nИмя ТВ: Orbit TV\nЕсли в телевизоре нет чипа Wi-Fi Direct, AirScreen работает универсальным приемником.</string>
+    <string name="cast_section_mirror_title">ДУБЛИРОВАНИЕ ЭКРАНА И DLNA</string>
+    <string name="cast_section_mirror_subtitle">Прямое беспроводное вещание и дублирование</string>
+    <string name="cast_miracast_guide">Для Android: откройте шторку и нажмите «Smart View» или «Трансляция». На ПК (Windows): нажмите сочетание Win + K.\n\nИмя ТВ: Smart TV\nЕсли в телевизоре нет чипа Wi-Fi Direct, AirScreen работает универсальным приемником.</string>
     <string name="cast_toast_yt_started">Трансляция YouTube запущена со смартфона</string>
     <string name="cast_toast_video_started">Воспроизведение видео запущено</string>
     <string name="cast_toast_media_failed">Не удалось открыть медиа</string>
@@ -262,8 +266,8 @@
     <string name="vpn_btn_system_settings">Системные настройки VPN (Android)</string>
 
     <!-- Accessibility Service -->
-    <string name="accessibility_home_service_label">Orbit TV Home Guard</string>
-    <string name="accessibility_home_service_desc">Обеспечивает приоритетный возврат на домашний экран Orbit TV при нажатии кнопки Home на пультах ТВ-боксов.</string>
+    <string name="accessibility_home_service_label">Home Guard</string>
+    <string name="accessibility_home_service_desc">Обеспечивает приоритетный возврат на домашний экран при нажатии кнопки Home на пультах ТВ-боксов.</string>
 
     <!-- Cast Web Remote (Served to mobile browsers) -->
     <string name="cast_web_connected">Подключено к ТВ (PIN: %1$s)</string>

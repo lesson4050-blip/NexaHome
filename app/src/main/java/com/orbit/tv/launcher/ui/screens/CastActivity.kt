@@ -60,12 +60,13 @@ class CastActivity : AppCompatActivity() {
         TvFocusHelper.bindFocusScale(binding.btnNavPower, scaleRatio = 1.12f, elevationDp = 8f)
 
         TvFocusHelper.bindFocusScale(binding.btnRefreshPin, scaleRatio = 1.08f, elevationDp = 6f)
+        TvFocusHelper.bindFocusScale(binding.btnProtoDlna, scaleRatio = 1.04f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnProtoMiracast, scaleRatio = 1.04f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnProtoChromecast, scaleRatio = 1.04f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnProtoAirplay, scaleRatio = 1.04f, elevationDp = 8f)
 
         binding.btnNavCast.isSelected = true
-        binding.btnProtoMiracast.requestFocus()
+        binding.btnProtoDlna.requestFocus()
     }
 
     private fun setupListeners() {
@@ -88,6 +89,23 @@ class CastActivity : AppCompatActivity() {
 
         binding.btnRefreshPin.setOnClickListener {
             refreshPinAndQr(animatePin = true)
+        }
+
+        // 0. DLNA / UPnP Media Renderer (Built-in)
+        binding.btnProtoDlna.setOnClickListener {
+            val ip = getLocalIpAddress() ?: "127.0.0.1"
+            val model = android.os.Build.MODEL ?: "TV"
+            val friendlyName = if (model.contains("TV", ignoreCase = true)) model else "Smart TV ($model)"
+            val displayHost = if (ip.startsWith("10.0.2.")) "localhost:8080 (Emulator)" else "$ip:8080"
+            CastProtocolDialog.show(
+                fragmentManager = supportFragmentManager,
+                title = getString(R.string.cast_proto_dlna_title),
+                subtitle = getString(R.string.cast_proto_dlna_desc),
+                instructions = getString(R.string.cast_dlna_dialog_msg, friendlyName, displayHost),
+                iconRes = R.drawable.ic_cast_dlna,
+                primaryText = getString(R.string.cast_btn_understood),
+                localIp = ip
+            )
         }
 
         // 1. Miracast / Wi-Fi Display (Android Smart View & Windows)
@@ -178,7 +196,9 @@ class CastActivity : AppCompatActivity() {
         if (ip != null) {
             val isEmulator = ip.startsWith("10.0.2.")
             val displayHost = if (isEmulator) "localhost:8080 (Emulator)" else "$ip:8080"
-            binding.tvCastNetworkInfo.text = "Orbit TV • $displayHost"
+            val model = android.os.Build.MODEL ?: "TV"
+            val deviceName = if (model.contains("TV", ignoreCase = true)) model else "Smart TV ($model)"
+            binding.tvCastNetworkInfo.text = "$deviceName • $displayHost"
             binding.castPairingPin.text = "PIN: $currentPin"
             binding.tvCastExpiry.visibility = View.VISIBLE
             binding.imgCastQr.alpha = 1.0f

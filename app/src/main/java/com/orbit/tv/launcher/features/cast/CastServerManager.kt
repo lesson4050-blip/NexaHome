@@ -1,32 +1,41 @@
 package com.orbit.tv.launcher.features.cast
 
 import android.content.Context
+import com.orbit.tv.launcher.features.cast.dlna.SsdpServer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import java.security.SecureRandom
 
 /**
- * Singleton manager for CastWebServer.
+ * Singleton manager for CastWebServer and DLNA SSDP server.
  * Decouples the HTTP/Cast server lifecycle from CastActivity,
  * ensuring seamless casting and remote control across the entire launcher lifecycle.
  */
 object CastServerManager {
 
     private var server: CastWebServer? = null
+    private var ssdpServer: SsdpServer? = null
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private var currentPin: String = generatePin()
 
     @Synchronized
     fun start(context: Context) {
-        if (server != null) return
         val appContext = context.applicationContext
-        server = CastWebServer(appContext, 8080) { currentPin }
-        server?.start(scope)
+        if (server == null) {
+            server = CastWebServer(appContext, 8080) { currentPin }
+            server?.start(scope)
+        }
+        if (ssdpServer == null) {
+            ssdpServer = SsdpServer(appContext, 8080)
+            ssdpServer?.start(scope)
+        }
     }
 
     @Synchronized
     fun stop() {
+        ssdpServer?.stop()
+        ssdpServer = null
         server?.stop()
         server = null
     }

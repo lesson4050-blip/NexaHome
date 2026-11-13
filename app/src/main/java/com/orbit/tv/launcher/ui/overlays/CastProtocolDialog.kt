@@ -64,8 +64,10 @@ class CastProtocolDialog : DialogFragment() {
         binding.ivProtocolIcon.setImageResource(iconRes)
         binding.btnPrimaryAction.text = primaryText
 
+        val model = android.os.Build.MODEL ?: "TV"
+        val deviceName = if (model.contains("TV", ignoreCase = true)) model else "Smart TV ($model)"
         if (localIp != null) {
-            binding.tvDialogIpStatus.text = "IP: $localIp • Orbit TV"
+            binding.tvDialogIpStatus.text = "IP: $localIp • $deviceName"
         } else {
             binding.tvDialogIpStatus.text = getString(R.string.cast_network_offline)
         }
@@ -77,15 +79,22 @@ class CastProtocolDialog : DialogFragment() {
         binding.btnCloseDialog.setOnClickListener { dismiss() }
         binding.btnSecondaryAction.setOnClickListener { dismiss() }
 
-        binding.btnPrimaryAction.setOnClickListener {
-            val pm = requireContext().packageManager
-            val launchIntent = pm.getLaunchIntentForPackage(targetPackage)
-            if (launchIntent != null) {
-                startActivity(launchIntent)
-            } else {
-                openGooglePlay(targetPackage)
+        val isUnderstoodOnly = primaryText.equals(getString(R.string.cast_btn_understood), ignoreCase = true)
+        if (isUnderstoodOnly) {
+            binding.btnSecondaryAction.visibility = View.GONE
+            binding.btnPrimaryAction.setOnClickListener { dismiss() }
+        } else {
+            binding.btnSecondaryAction.visibility = View.VISIBLE
+            binding.btnPrimaryAction.setOnClickListener {
+                val pm = requireContext().packageManager
+                val launchIntent = pm.getLaunchIntentForPackage(targetPackage)
+                if (launchIntent != null) {
+                    startActivity(launchIntent)
+                } else {
+                    openGooglePlay(targetPackage)
+                }
+                dismiss()
             }
-            dismiss()
         }
 
         binding.btnPrimaryAction.requestFocus()

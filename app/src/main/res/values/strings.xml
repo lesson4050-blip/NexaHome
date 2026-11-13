@@ -160,11 +160,15 @@
 
     <!-- Wireless Cast & Web Remote Screen -->
     <string name="cast_header_title">Wireless Cast &amp; Web Remote</string>
-    <string name="cast_network_info_format">Orbit TV • Wi-Fi (Ready to connect)</string>
+    <string name="cast_network_info_format">Smart TV • Wi-Fi (Ready to connect)</string>
     <string name="cast_refresh_pin">Refresh PIN</string>
     <string name="cast_qr_hint">SCAN TO CONNECT</string>
     <string name="cast_expiry_format">Expires in: %1$02d:%2$02d</string>
     <string name="cast_pin_new_format">New PIN generated: %1$s</string>
+    <string name="cast_proto_dlna_title">DLNA / UPnP Media</string>
+    <string name="cast_proto_dlna_desc">Windows Cast to Device, VLC, BubbleUPnP, Samsung / Xiaomi Gallery</string>
+    <string name="cast_proto_dlna_badge">ACTIVE</string>
+    <string name="cast_dlna_dialog_msg">Built-in DLNA / UPnP Digital Media Renderer is active.\n\nDevice Name: %1$s\nIP Address: %2$s\n\nTo play media, select this TV in Windows \"Cast to Device\" or from any media app (VLC, BubbleUPnP, Web Video Caster, Phone Gallery).</string>
     <string name="cast_proto_airplay_title">Apple AirPlay</string>
     <string name="cast_proto_airplay_desc">iPhone / iPad Control Center -&gt; Screen Mirroring</string>
     <string name="cast_proto_chromecast_title">Google Cast / Chromecast</string>
@@ -176,7 +180,7 @@
     <string name="cast_chromecast_toast">Chromecast ready to cast from YouTube, Chrome, or Google Home</string>
     <string name="cast_airscreen_toast">Opening AirScreen receiver</string>
     <string name="cast_airplay_dialog_title">Apple AirPlay</string>
-    <string name="cast_airplay_dialog_msg">To stream from iPhone, iPad or Mac, make sure your device is connected to the same Wi-Fi.\n\nTV Name: Orbit TV\nIP Address: %1$s\n\nRecommended: install AirScreen from Google Play.</string>
+    <string name="cast_airplay_dialog_msg">To stream from iPhone, iPad or Mac, make sure your device is connected to the same Wi-Fi.\n\nDevice: Smart TV\nIP Address: %1$s\n\nRecommended: install AirScreen from Google Play.</string>
     <string name="cast_btn_install_airscreen">Install AirScreen</string>
     <string name="cast_btn_understood">Got it</string>
     <string name="cast_network_offline">No network connection • Connect TV to Wi-Fi</string>
@@ -187,18 +191,18 @@
     <string name="cast_tag_web">WEB REMOTE</string>
     <string name="cast_tag_system">SYSTEM MIRRORING</string>
     <string name="cast_pin_access_label">REMOTE ACCESS PIN</string>
-    <string name="cast_pin_purpose_hint">PIN is only for web remote • Not needed for Miracast</string>
+    <string name="cast_pin_purpose_hint">PIN is only for web remote • Not needed for Miracast / DLNA</string>
     <string name="cast_btn_launch_airscreen">Launch AirScreen (Receiver)</string>
     <string name="cast_btn_display_settings">Android Display Settings</string>
-    <string name="cast_airplay_instructions">1. Connect iPhone, iPad or Mac to the same Wi-Fi network as TV.\n2. Open Control Center and tap \'Screen Mirroring\'.\n3. Orbit TV uses AirScreen to receive AirPlay with full hardware acceleration.</string>
-    <string name="cast_chromecast_instructions">1. Connect your phone or PC to the same Wi-Fi.\n2. Tap the Cast icon in YouTube, Chrome, or Google Home.\n3. Orbit TV is ready to receive stream via AirScreen or native Cast.</string>
-    <string name="cast_miracast_instructions">1. Open \'Smart View\' (Samsung) or \'Wireless Display\' (Android/Windows).\n2. Select Orbit TV to mirror your screen directly.\n3. If your TV lacks hardware Wi-Fi Direct sink, AirScreen provides software Miracast receiver.\n4. PIN on screen is NOT needed for Miracast — it is strictly for the web remote on the left.</string>
+    <string name="cast_airplay_instructions">1. Connect iPhone, iPad or Mac to the same Wi-Fi network as TV.\n2. Open Control Center and tap \'Screen Mirroring\'.\n3. Select Smart TV to mirror your screen.\n4. Use AirScreen for hardware-accelerated AirPlay reception.</string>
+    <string name="cast_chromecast_instructions">1. Connect your phone or PC to the same Wi-Fi.\n2. Tap the Cast icon in YouTube, Chrome, or Google Home.\n3. The TV is ready to receive streams via built-in DLNA or Google Cast.</string>
+    <string name="cast_miracast_instructions">1. Open \'Smart View\' (Samsung) or \'Wireless Display\' (Android/Windows).\n2. Select Smart TV to mirror your screen directly.\n3. If your TV lacks hardware Wi-Fi Direct sink, AirScreen provides software Miracast receiver.\n4. PIN on screen is NOT needed for Miracast / DLNA — it is strictly for the web remote on the left.</string>
     <string name="cast_section_web_title">WEB REMOTE &amp; DIRECT STREAM</string>
     <string name="cast_section_web_subtitle">From any phone without installing apps</string>
     <string name="cast_section_web_desc">Point phone camera (iPhone or Android) at the QR code to stream YouTube, photos and videos directly to TV.</string>
-    <string name="cast_section_mirror_title">SCREEN MIRRORING (PHONE / PC)</string>
-    <string name="cast_section_mirror_subtitle">Direct 1:1 wireless display mirroring</string>
-    <string name="cast_miracast_guide">To mirror from Android: open quick settings and tap \"Smart View\" or \"Cast\". On Windows PC: press Win + K.\n\nTV Name: Orbit TV\nIf your TV lacks native Wi-Fi Direct hardware, AirScreen acts as the universal receiver.</string>
+    <string name="cast_section_mirror_title">SCREEN MIRRORING &amp; DLNA</string>
+    <string name="cast_section_mirror_subtitle">Direct wireless streaming and mirroring</string>
+    <string name="cast_miracast_guide">To mirror from Android: open quick settings and tap \"Smart View\" or \"Cast\". On Windows PC: press Win + K.\n\nDevice: Smart TV\nIf your TV lacks native Wi-Fi Direct hardware, AirScreen acts as the universal receiver.</string>
     <string name="cast_toast_yt_started">YouTube playback started from phone</string>
     <string name="cast_toast_video_started">Video playback started</string>
     <string name="cast_toast_media_failed">Unable to open media</string>

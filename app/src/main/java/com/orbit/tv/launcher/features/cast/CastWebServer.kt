@@ -32,6 +32,10 @@ class CastWebServer(
     private var serverJob: Job? = null
     private val mainHandler = Handler(Looper.getMainLooper())
 
+    private val dlnaRenderer = com.orbit.tv.launcher.features.cast.dlna.DlnaMediaRenderer(context, port) { url ->
+        playMediaOnTv(url)
+    }
+
     fun start(scope: CoroutineScope) {
         stop()
         serverJob = scope.launch(Dispatchers.IO) {
@@ -80,6 +84,7 @@ class CastWebServer(
 
             var contentLength = 0
             var contentType = ""
+            var soapAction = ""
             var headerLine = reader.readLine()
             while (!headerLine.isNullOrBlank()) {
                 if (headerLine.startsWith("Content-Length:", ignoreCase = true)) {
@@ -88,13 +93,16 @@ class CastWebServer(
                 if (headerLine.startsWith("Content-Type:", ignoreCase = true)) {
                     contentType = headerLine.substringAfter(":").trim()
                 }
+                if (headerLine.startsWith("SOAPACTION:", ignoreCase = true)) {
+                    soapAction = headerLine.substringAfter(":").trim().removeSurrounding("\"")
+                }
                 headerLine = reader.readLine()
             }
 
             if (method.equals("GET", ignoreCase = true)) {
                 handleGet(path, query, output)
             } else if (method.equals("POST", ignoreCase = true)) {
-                handlePost(path, query, contentType, contentLength, reader, input, output)
+                handlePost(path, query, contentType, soapAction, contentLength, reader, input, output)
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -106,6 +114,22 @@ class CastWebServer(
     }
 
     private fun handleGet(path: String, query: String, output: PrintWriter) {
+        if (path.startsWith("/upnp")) {
+            val upnpRes = dlnaRenderer.handleGet(path)
+            if (upnpRes != null) {
+                val (cType, xml) = upnpRes
+                val bytes = xml.toByteArray(Charsets.UTF_8)
+                output.print("HTTP/1.1 200 OK\r\n")
+                output.print("Content-Type: $cType\r\n")
+                output.print("Content-Length: ${bytes.size}\r\n")
+                output.print("Access-Control-Allow-Origin: *\r\n")
+                output.print("Connection: close\r\n\r\n")
+                output.print(xml)
+                output.flush()
+                return
+            }
+        }
+
         val currentPin = onPinRequested()
         val html = buildMobileWebHtml(currentPin)
         val bytes = html.toByteArray(Charsets.UTF_8)
@@ -125,12 +149,27 @@ class CastWebServer(
         path: String,
         query: String,
         contentType: String,
+        soapAction: String,
         contentLength: Int,
         reader: BufferedReader,
         rawInput: InputStream,
         output: PrintWriter
     ) {
         when {
+            path.startsWith("/upnp/control") -> {
+                val body = CharArray(contentLength)
+                reader.read(body, 0, contentLength)
+                val bodyStr = String(body)
+                val soapXml = dlnaRenderer.handleSoapPost(path, soapAction, bodyStr)
+                val bytes = soapXml.toByteArray(Charsets.UTF_8)
+                output.print("HTTP/1.1 200 OK\r\n")
+                output.print("Content-Type: text/xml; charset=utf-8\r\n")
+                output.print("Content-Length: ${bytes.size}\r\n")
+                output.print("Access-Control-Allow-Origin: *\r\n")
+                output.print("Connection: close\r\n\r\n")
+                output.print(soapXml)
+                output.flush()
+            }
             path.startsWith("/api/play") -> {
                 val body = CharArray(contentLength)
                 reader.read(body, 0, contentLength)
@@ -324,7 +363,7 @@ class CastWebServer(
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Orbit TV Cast</title>
+    <title>Smart TV Cast</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         body { background: #0B0F19; color: #FFFFFF; min-height: 100vh; padding: 20px; display: flex; flex-direction: column; align-items: center; }
@@ -357,7 +396,7 @@ class CastWebServer(
         <div class="header">
             <div class="logo">TV</div>
             <div>
-                <div class="title">Orbit TV Cast</div>
+                <div class="title">Smart TV Cast</div>
                 <div class="status-badge"><span class="dot"></span> $statusText</div>
             </div>
         </div>
@@ -396,7 +435,7 @@ class CastWebServer(
             <button class="btn" style="margin-bottom: 16px;" onclick="sendIptvUrl()">Load Playlist to TV</button>
             <label style="margin-bottom: 8px;">Presets</label>
             <div class="remote-grid">
-                <button class="remote-btn" onclick="sendIptvPreset('default')">Orbit Live</button>
+                <button class="remote-btn" onclick="sendIptvPreset('default')">Live TV</button>
                 <button class="remote-btn" onclick="sendIptvPreset('https://iptv-org.github.io/iptv/countries/ua.m3u')">Ukraine Live</button>
                 <button class="remote-btn" onclick="sendIptvPreset('https://iptv-org.github.io/iptv/categories/news.m3u')">World News</button>
             </div>
