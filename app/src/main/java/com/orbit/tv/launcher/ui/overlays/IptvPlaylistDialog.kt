@@ -82,7 +82,11 @@ class IptvPlaylistDialog : DialogFragment() {
 
         val ip = getLocalIpAddress()
         if (ip != null) {
-            binding.tvWebImportHint.text = getString(R.string.iptv_web_import_hint, "http://$ip:8080")
+            if (ip.startsWith("10.0.2.")) {
+                binding.tvWebImportHint.text = getString(R.string.iptv_web_import_emulator_hint)
+            } else {
+                binding.tvWebImportHint.text = getString(R.string.iptv_web_import_hint, "http://$ip:8080")
+            }
             binding.tvWebImportHint.visibility = View.VISIBLE
         } else {
             binding.tvWebImportHint.visibility = View.GONE

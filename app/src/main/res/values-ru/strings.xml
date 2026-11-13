@@ -272,13 +272,13 @@
     <string name="cast_web_tab_remote">Пульт</string>
     <string name="cast_web_label_url">Ссылка на YouTube или видеопоток (MP4/HLS):</string>
     <string name="cast_web_placeholder_url">https://youtu.be/... или https://.../video.mp4</string>
-    <string name="cast_web_btn_play">▶ Воспроизвести на ТВ</string>
+    <string name="cast_web_btn_play">Воспроизвести на ТВ</string>
     <string name="cast_web_label_files">Выберите видео или фото из галереи:</string>
-    <string name="cast_web_btn_upload">⬆ Отправить на экран ТВ</string>
-    <string name="cast_web_vol_up">🔊 Громкость +</string>
-    <string name="cast_web_vol_down">🔉 Громкость -</string>
-    <string name="cast_web_mute">🔇 Без звука</string>
-    <string name="cast_web_play_pause">⏯ Пауза / Плей</string>
+    <string name="cast_web_btn_upload">Отправить на экран ТВ</string>
+    <string name="cast_web_vol_up">Громкость +</string>
+    <string name="cast_web_vol_down">Громкость -</string>
+    <string name="cast_web_mute">Без звука</string>
+    <string name="cast_web_play_pause">Пауза / Плей</string>
     <string name="cast_web_sent_toast">Отправлено на телевизор!</string>
     <string name="cast_web_alert_enter_url">Пожалуйста, введите ссылку на видео</string>
     <string name="cast_web_alert_conn_error">Ошибка соединения с ТВ</string>
@@ -304,5 +304,6 @@
     <string name="cat_favorites">Избранное</string>
     <string name="osd_hint_navigation">[OK] — выбор • [НАЗАД] — закрыть</string>
     <string name="iptv_web_import_hint">Или откройте в браузере телефона: %1$s</string>
+    <string name="iptv_web_import_emulator_hint">Эмулятор: откройте в браузере ПК http://localhost:8080 (после adb forward)</string>
     <string name="iptv_channels_count_format">%1$d каналов</string>
 </resources>

@@ -176,12 +176,18 @@ class CastActivity : AppCompatActivity() {
 
         val ip = getLocalIpAddress()
         if (ip != null) {
-            binding.tvCastNetworkInfo.text = "Orbit TV • $ip:8080"
+            val isEmulator = ip.startsWith("10.0.2.")
+            val displayHost = if (isEmulator) "localhost:8080 (Emulator)" else "$ip:8080"
+            binding.tvCastNetworkInfo.text = "Orbit TV • $displayHost"
             binding.castPairingPin.text = "PIN: $currentPin"
             binding.tvCastExpiry.visibility = View.VISIBLE
             binding.imgCastQr.alpha = 1.0f
 
-            val qrUrl = "http://$ip:8080/cast?pin=$currentPin"
+            val qrUrl = if (isEmulator) {
+                "http://localhost:8080/cast?pin=$currentPin"
+            } else {
+                "http://$ip:8080/cast?pin=$currentPin"
+            }
             val qrBitmap = generateQrCodeBitmap(qrUrl, 400)
             if (qrBitmap != null) {
                 binding.imgCastQr.setImageBitmap(qrBitmap)

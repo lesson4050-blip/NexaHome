@@ -272,13 +272,13 @@
     <string name="cast_web_tab_remote">Remote</string>
     <string name="cast_web_label_url">YouTube link or direct stream (MP4/HLS):</string>
     <string name="cast_web_placeholder_url">https://youtu.be/... or https://.../video.mp4</string>
-    <string name="cast_web_btn_play">▶ Play on TV</string>
+    <string name="cast_web_btn_play">Play on TV</string>
     <string name="cast_web_label_files">Select video or photo from gallery:</string>
-    <string name="cast_web_btn_upload">⬆ Send to TV screen</string>
-    <string name="cast_web_vol_up">🔊 Volume +</string>
-    <string name="cast_web_vol_down">🔉 Volume -</string>
-    <string name="cast_web_mute">🔇 Mute</string>
-    <string name="cast_web_play_pause">⏯ Play / Pause</string>
+    <string name="cast_web_btn_upload">Send to TV screen</string>
+    <string name="cast_web_vol_up">Volume +</string>
+    <string name="cast_web_vol_down">Volume -</string>
+    <string name="cast_web_mute">Mute</string>
+    <string name="cast_web_play_pause">Play / Pause</string>
     <string name="cast_web_sent_toast">Sent to TV!</string>
     <string name="cast_web_alert_enter_url">Please enter video link</string>
     <string name="cast_web_alert_conn_error">Connection error with TV</string>
@@ -304,5 +304,6 @@
     <string name="cat_favorites">Favorites</string>
     <string name="osd_hint_navigation">[OK] Select • [BACK] Close</string>
     <string name="iptv_web_import_hint">Or open on phone: %1$s</string>
+    <string name="iptv_web_import_emulator_hint">Emulator: open in PC browser http://localhost:8080 (via adb forward)</string>
     <string name="iptv_channels_count_format">%1$d channels</string>
 </resources>
