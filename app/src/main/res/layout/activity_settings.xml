@@ -160,50 +160,11 @@
             app:layout_constraintStart_toEndOf="@id/container_sidebar"
             app:layout_constraintTop_toTopOf="parent">
 
-            <!-- Top Header -->
-            <LinearLayout
-                android:id="@+id/header_settings"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-black"
-                        android:text="@string/launcher_settings_title"
-                        android:textColor="@color/white"
-                        android:textSize="22sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:fontFamily="sans-serif"
-                        android:text="@string/launcher_settings_subtitle"
-                        android:textColor="@color/white_60"
-                        android:textSize="12sp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
             <!-- Scrollable Content Canvas -->
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/scroll_settings"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginTop="14dp"
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 android:paddingBottom="48dp"
@@ -211,7 +172,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/header_settings">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -219,6 +180,33 @@
                     android:clipChildren="false"
                     android:clipToPadding="false"
                     android:orientation="vertical">
+
+                    <!-- Top Header -->
+                    <LinearLayout
+                        android:id="@+id/header_settings"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="18dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-black"
+                            android:text="@string/launcher_settings_title"
+                            android:textColor="@color/white"
+                            android:textSize="22sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:fontFamily="sans-serif"
+                            android:text="@string/launcher_settings_subtitle"
+                            android:textColor="@color/white_60"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
 
                     <!-- SECTION 1: Storage & Cache -->
                     <TextView
