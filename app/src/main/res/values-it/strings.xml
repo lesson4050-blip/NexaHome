@@ -11,6 +11,11 @@
     <string name="vpn_status_connected">VPN</string>
     <string name="vpn_status_disconnected">SPENTO</string>
     <string name="nav_media">Home</string>
+    <string name="nav_history">Cronologia</string>
+    <string name="history_title">Cronologia visualizzazioni</string>
+    <string name="history_subtitle">Film e serie aperti di recente su questo dispositivo</string>
+    <string name="history_btn_clear">Cancella cronologia</string>
+    <string name="history_empty">La cronologia è vuota.\nApri film o serie dalla Home per riprenderli qui.</string>
     <string name="nav_home_apps">App</string>
     <string name="nav_iptv">Canali TV</string>
     <string name="nav_games">Giochi</string>

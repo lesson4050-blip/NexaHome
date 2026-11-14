@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App & General -->
+    <string name="app_name">Orbit TV</string>
+    <string name="search_hint">Пошук фільмаў, серыялаў, праграм...</string>
+    <string name="search_voice">Галасавы пошук</string>
+    <string name="settings_title">Налады</string>
+    <string name="close_action">Закрыць</string>
+    <string name="game_close_action">Закрыць гульню</string>
+    <string name="open_action">АДКРЫЦЬ</string>
+
+    <!-- Topbar & Status -->
+    <string name="vpn_status_connected">VPN</string>
+    <string name="vpn_status_disconnected">АДКЛ</string>
+
+    <!-- Navigation Drawer / Sidebar -->
+    <string name="nav_media">Галоўная</string>
+    <string name="nav_history">Гісторыя</string>
+    <string name="nav_home_apps">Праграмы</string>
+    <string name="nav_iptv">ТБ каналы</string>
+    <string name="nav_games">Гульні</string>
+    <string name="nav_optimizer">Аптымізацыя</string>
+    <string name="nav_cast">Трансляцыя</string>
+    <string name="nav_power">Сілкуючы рэжым</string>
+
+    <!-- Watch History Screen -->
+    <string name="history_title">Гісторыя праглядаў</string>
+    <string name="history_subtitle">Фільмы і серыялы, нядаўна адкрытыя на гэтай прыладзе</string>
+    <string name="history_btn_clear">Ачысціць гісторыю</string>
+    <string name="history_empty">Гісторыя праглядаў пустая.\nАдкрывайце фільмы або серыялы на Галоўнай, каб працягваць прагляд тут.</string>
+
+    <!-- Home Screen Shelves -->
+    <string name="title_recent">Працягнуць прагляд</string>
+    <string name="subtitle_recent">Нядаўна адкрытыя фільмы і серыялы</string>
+    <string name="badge_continue">ПРАГЛЯД</string>
+    <string name="title_movies">Фільмы</string>
+    <string name="subtitle_movies_trending">Папулярна на гэтым тыдні</string>
+    <string name="title_series">Серыялы</string>
+    <string name="subtitle_series_top">Лепшыя серыялы</string>
+    <string name="see_all">Усе</string>
+    <string name="badge_movie">ФІЛЬМ</string>
+    <string name="badge_series">СЕРЫЯЛ</string>
+    <string name="genre_feature">Фільм</string>
+
+    <!-- Apps Hub Grid -->
+    <string name="search_apps_hint">Пошук праграм і гульняў</string>
+    <string name="apps_hub_title">Каталог праграм</string>
+    <string name="apps_count_format">Усталявана: %1$d</string>
+    <string name="tab_all">Усе праграмы</string>
+    <string name="tab_favorites">Выбранае</string>
+    <string name="tab_hidden">Схаваныя</string>
+    <string name="tab_recommended">Рэкамендаваныя</string>
+    <string name="apps_count_recommended">%1$d рэкамендаваных сэрвісаў</string>
+    <string name="recommended_install">УСТАЛЯВАЦЬ</string>
+    <string name="recommended_open">АДКРЫЦЬ</string>
+    <string name="app_cant_launch">Не ўдалося запусціць %1$s</string>
+    <string name="unable_open_wifi_settings">Не ўдалося адкрыць налады Wi-Fi</string>
+    <string name="unable_open_settings">Не ўдалося адкрыць налады</string>
+    <string name="apps_empty_favorites">У выбраным пакуль няма праграм.\nЗацісніце [OK] або [MENU] на картцы праграмы, каб замацаваць яе.</string>
+    <string name="apps_empty_hidden">Схаваных праграм няма.\nЗацісніце [OK] або [MENU] на непатрэбнай праграме, каб схаваць яе.</string>
+    <string name="apps_empty_all">Праграмы не знойдзены.</string>
+
+    <!-- App Options Dialog -->
+    <string name="app_options_pin_title">У выбранае на галоўным экране</string>
+    <string name="app_options_pin_desc">Замацаваць на верхняй паліцы хуткага доступу</string>
+    <string name="app_options_unpin_title">Прыбраць з выбранага</string>
+    <string name="app_options_unpin_desc">Выдаліць з паліцы хуткага доступу на галоўным экране</string>
+    <string name="app_options_hide_title">Схаваць праграму</string>
+    <string name="app_options_hide_desc">Прыбраць непатрэбную праграму са спісаў лаўнчара</string>
+    <string name="app_options_unhide_title">Аднавіць праграму</string>
+    <string name="app_options_unhide_desc">Зноў паказваць праграму на галоўным экране і ў сетцы</string>
+    <string name="app_options_info_title">Пра праграму і дазволы</string>
+    <string name="app_options_info_desc">Памяць, ачыстка кэшу і спыненне ў сістэмных наладах</string>
+    <string name="app_options_uninstall_title">Выдаліць праграму</string>
+    <string name="app_options_uninstall_desc">Поўнае выдаленне праграмы з прылады</string>
+    <string name="app_options_toast_pinned">«%1$s» замацавана ў Выбраным</string>
+    <string name="app_options_toast_unpinned">«%1$s» выдалена з Выбранага</string>
+    <string name="app_options_toast_hidden">«%1$s» схавана з лаўнчара</string>
+    <string name="app_options_toast_restored">«%1$s» адноўлена ў лаўнчары</string>
+    <string name="app_options_toast_cant_open_settings">Не ўдалося адкрыць налады для «%1$s»</string>
+    <string name="app_options_toast_cant_uninstall">Не ўдалося выдаліць «%1$s»</string>
+
+    <!-- IPTV Live TV Screen -->
+    <string name="iptv_screen_title">Прамы эфір і тэлепраграма</string>
+    <string name="iptv_epg_guide">Тэлепраграма EPG</string>
+    <string name="iptv_live">ЭФІР</string>
+    <string name="iptv_categories">Катэгорыі</string>
+    <string name="cat_all">Усе</string>
+    <string name="cat_sports">Спорт</string>
+    <string name="cat_cinema">Кіно</string>
+    <string name="cat_news">Навіны</string>
+    <string name="cat_ukraine">Украіна</string>
+    <string name="cat_cis">СНД</string>
+    <string name="cat_movies">Кіно</string>
+    <string name="iptv_manage_playlists">Плэйлісты M3U</string>
+    <string name="iptv_stream_error">Памылка прайгравання: %1$s</string>
+    <string name="iptv_no_channels">Няма каналаў у абранай катэгорыі</string>
+    <string name="iptv_next_program_format">Далей: %1$s</string>
+
+    <!-- TV Power Dialog -->
+    <string name="power_dialog_title">Сілкаванне ТБ</string>
+    <string name="power_dialog_subtitle">Кіраванне сілкаваннем і рэжымам сну прыстаўкі</string>
+    <string name="power_action_sleep">Спячы рэжым</string>
+    <string name="power_action_sleep_desc">Пагасіць экран і перавесці ТБ-прыстаўку ў рэжым сну</string>
+    <string name="power_action_reboot">Перазагрузка</string>
+    <string name="power_action_reboot_desc">Перазапусціць сістэму Android TV</string>
+    <string name="power_action_shutdown">Выключэнне</string>
+    <string name="power_action_shutdown_desc">Поўнае адключэнне сілкавання прылады</string>
+    <string name="power_action_timer">Таймер сну (30 хв)</string>
+    <string name="power_action_timer_desc">Аўтаматычна адправіць у сон праз 30 хвілін</string>
+    <string name="power_timer_toast">Таймер сну актываваны: адключэнне праз %1$d хвілін</string>
+    <string name="power_accessibility_sleep_prompt">Служба Home Guard не ўключана ў Спец. магчымасцях. Уключыце яе для кіравання сілкаваннем.</string>
+    <string name="power_accessibility_reboot_prompt">Уключыце Home Guard у Спец. магчымасцях для выкліку сістэмнага меню перазагрузкі.</string>
+    <string name="power_accessibility_shutdown_prompt">Уключыце Home Guard у Спец. магчымасцях для выключэння прылады.</string>
+
+    <!-- Optimizer & System Monitor Screen -->
+    <string name="optimizer_header_title">Манітор і аптымізацыя ТБ</string>
+    <string name="optimizer_header_subtitle">Статус сістэмы, памяці і сеткавага злучэння</string>
+    <string name="optimizer_card_ram_title">Аператыўная памяць (RAM)</string>
+    <string name="optimizer_badge_normal">НОРМА</string>
+    <string name="optimizer_badge_high">НАГРУЗКА</string>
+    <string name="optimizer_ram_format">%1$.1f ГБ з %2$.1f ГБ (%3$d%%)</string>
+    <string name="optimizer_ram_details">Вольна: %1$d МБ • Занята сістэмай: %2$d МБ</string>
+    <string name="optimizer_btn_boost">Паскорыць ТБ (Ачысціць RAM)</string>
+    <string name="optimizer_btn_boosting">Ачыстка працэсаў...</string>
+    <string name="optimizer_boost_freed">Вызвалена %1$d МБ аператыўнай памяці</string>
+    <string name="optimizer_boost_done">Аператыўная памяць аптымізавана</string>
+    <string name="optimizer_card_storage_title">Унутраны назапашвальнік (Flash)</string>
+    <string name="optimizer_storage_format">%1$.1f ГБ з %2$.1f ГБ (%3$d%%)</string>
+    <string name="optimizer_storage_free">Даступна для запісу: %1$.1f ГБ</string>
+    <string name="optimizer_storage_ready">Памяць даступная</string>
+    <string name="optimizer_btn_storage">Сістэмны менеджар сховішча</string>
+    <string name="optimizer_card_net_title">Сетка і Інтэрнэт</string>
+    <string name="optimizer_net_badge_no">НЯМА СЕТКІ</string>
+    <string name="optimizer_net_badge_connected">СЕТКА</string>
+    <string name="optimizer_net_no_conn">Злучэнне адсутнічае</string>
+    <string name="optimizer_net_lan">Правадны кабель LAN падключаны</string>
+    <string name="optimizer_net_wifi">Бесправадная сетка Wi-Fi</string>
+    <string name="optimizer_net_vpn">Абаронены VPN-тунэль актыўны</string>
+    <string name="optimizer_net_online">Інтэрнэт-злучэнне актыўна</string>
+    <string name="optimizer_ping_prefix">Пінг: </string>
+    <string name="optimizer_ping_testing">Пінг: замер...</string>
+    <string name="optimizer_ping_format">Пінг: %1$s мс</string>
+    <string name="optimizer_ping_unavailable">Пінг: недаступны</string>
+    <string name="optimizer_speed_prefix">Хуткасць: </string>
+    <string name="optimizer_speed_testing">Хуткасць: замер...</string>
+    <string name="optimizer_speed_format">Хуткасць: %1$.1f Мбіт/с</string>
+    <string name="optimizer_speed_available">Хуткасць: даступна</string>
+    <string name="optimizer_btn_speedtest">Запусціць тэст хуткасці і пінгу</string>
+    <string name="optimizer_speedtest_running">Праверка сеткі...</string>
+    <string name="optimizer_speedtest_retry">Паўтарыць тэст</string>
+    <string name="optimizer_card_hw_title">Апаратная платформа</string>
+    <string name="optimizer_uptime_format">Аптайм: %1$d г %2$d хв</string>
+    <string name="optimizer_model_format">Мадэль: %1$s</string>
+    <string name="optimizer_chip_format">Чыпсэт: %1$s (%2$d %3$s)</string>
+    <string name="optimizer_core_single">ядро</string>
+    <string name="optimizer_core_plural">ядраў</string>
+    <string name="optimizer_os_format">АС: Android %1$s (API %2$d)</string>
+    <string name="optimizer_display_format">Экран: %1$dx%2$d @ %3$d Гц</string>
+    <string name="optimizer_btn_settings">Сістэмныя налады ТБ</string>
+    <string name="optimizer_quick_dev">ДЛЯ РАСПРАЦ.</string>
+    <string name="optimizer_quick_display">ЭКРАН / AFR</string>
+    <string name="optimizer_quick_audio">ГУК / HDMI</string>
+    <string name="optimizer_quick_apps">СЛУЖБЫ</string>
+    <string name="toast_storage_unavailable">Раздзел \'Сховішча\' недаступны</string>
+    <string name="toast_dev_options_hint">Уключыце рэжым распрацоўшчыка ў наладах (7 клікаў па нумары зборкі)</string>
+    <string name="toast_display_unavailable">Налады экрана недаступныя</string>
+    <string name="toast_audio_unavailable">Налады гуку недаступныя</string>
+    <string name="toast_apps_unavailable">Дыспетчар праграм недаступны</string>
+
+    <!-- Wireless Cast & Web Remote Screen -->
+    <string name="cast_header_title">Бесправадная трансляцыя і вэб-пульт</string>
+    <string name="cast_network_info_format">Smart TV • Wi-Fi (Гатовы да падключэння)</string>
+    <string name="cast_refresh_pin">Абнавіць PIN</string>
+    <string name="cast_qr_hint">АДСКАНУЙЦЕ ДЛЯ ПАДБОРУ</string>
+    <string name="cast_expiry_format">Дзейсны: %1$02d:%2$02d</string>
+    <string name="cast_pin_new_format">Новы PIN сфарміраваны: %1$s</string>
+    <string name="cast_proto_dlna_title">DLNA / UPnP (Медыяплэер)</string>
+    <string name="cast_proto_dlna_desc">Windows Cast, VLC, BubbleUPnP, Галерэя Samsung / Xiaomi</string>
+    <string name="cast_proto_dlna_badge">АКТЫЎНЫ</string>
+    <string name="cast_dlna_dialog_msg">Убудаваны прыёмнік DLNA / UPnP актыўны.\n\nІмя прылады: %1$s\nIP-адрас: %2$s\n\nДля прайгравання выберыце гэты тэлевізар у меню «Перадаць на прыладу» на ПК Windows або ў медыяплэеры (VLC, BubbleUPnP, Web Video Caster, Галерэя смартфона).</string>
+    <string name="cast_proto_airplay_title">Apple AirPlay</string>
+    <string name="cast_proto_airplay_desc">Трансляцыя экрана з iPhone, iPad, Mac</string>
+    <string name="cast_proto_chromecast_title">Google Cast / Chromecast</string>
+    <string name="cast_proto_chromecast_desc">Трансляцыя з праграм YouTube, Chrome, Android</string>
+    <string name="cast_proto_miracast_title">Miracast (Бесправадны экран)</string>
+    <string name="cast_proto_miracast_desc">Прамое дубліраванне экрана Android і Windows</string>
+    <string name="cast_badge_connect">Падключыць</string>
+    <string name="cast_miracast_toast">Miracast актыўны. Адкрыйце «Бесправадны экран» або Smart View на смартфоне альбо ПК</string>
+    <string name="cast_chromecast_toast">Chromecast гатовы да трансляцыі з YouTube, Chrome ці Google Home</string>
+    <string name="cast_airscreen_toast">%1$s актыўны праз AirScreen. Выберыце Smart TV на тэлефоне</string>
+    <string name="cast_airplay_dialog_title">Apple AirPlay</string>
+    <string name="cast_airplay_dialog_msg">Для трансляцыі з iPhone, iPad або Mac пераканайцеся, што прылада падключана да адной сеткі Wi-Fi.\n\nІмя прылады: Smart TV\nIP-адрас: %1$s\n\nРэкамендуецца ўсталяваць AirScreen з Google Play.</string>
+    <string name="cast_btn_install_airscreen">Усталяваць AirScreen</string>
+    <string name="cast_btn_understood">Зразумела</string>
+    <string name="cast_network_offline">Няма падключэння да сеткі • Падключыце ТБ да Wi-Fi</string>
+    <string name="cast_pin_offline">НЯМА СЕТКІ</string>
+    <string name="cast_badge_open">АДКРЫЦЬ</string>
+    <string name="cast_badge_setup">НАЛАДА</string>
+    <string name="cast_badge_launch">ЗАПУСК</string>
+    <string name="cast_tag_web">ВЭБ-ПУЛЬТ</string>
+    <string name="cast_tag_system">СІСТЭМНЫЯ ПРАТАКОЛЫ</string>
+    <string name="cast_pin_access_label">PIN-КОД ДОСТУПУ ДА ПУЛЬТА</string>
+    <string name="cast_pin_purpose_hint">PIN патрэбны толькі для вэб-пульта • Не патрабуецца для Miracast / DLNA</string>
+    <string name="cast_btn_launch_airscreen">Запусціць AirScreen (Прыёмнік)</string>
+    <string name="cast_btn_display_settings">Налады экрана Android</string>
+    <string name="cast_airplay_instructions">1. Падключыце iPhone, iPad або Mac да той жа сеткі Wi-Fi, што і ТБ.\n2. Адкрыйце «Пункт кіравання» і націсніце «Паўтор экрана».\n3. Выберыце ў спісе прыстаўку «Smart TV».\n4. Выкарыстоўвае сертыфікаваны прыёмнік AirScreen для прыёму AirPlay з апаратным дэкадаваннем.</string>
+    <string name="cast_chromecast_instructions">1. Падключыце тэлефон або ПК да той жа сеткі Wi-Fi.\n2. Націсніце значок трансляцыі ў YouTube, Chrome ці Google Home.\n3. ТБ гатовы да прыёму відэапатоку праз убудаваны DLNA, AirScreen альбо сэрвіс Google Cast.</string>
+    <string name="cast_miracast_instructions">1. Смартфоны Android: адкрыйце панэль хуткіх налад і ўключыце «Smart View», «Бесправадны дысплей» альбо «Трансляцыя».\n2. Windows 10/11: націсніце спалучэнне Win + K і выберыце «Smart TV».\n3. Увага: ТБ-прыстаўкі на чыстым Android TV не маюць убудаванага чыпа Wi-Fi Direct, таму сігнал прымае шлюз AirScreen.\n4. PIN-код са старонкі трансляцыі НЕ патрэбны — ён патрэбны толькі для вэб-пульта злева.</string>
+    <string name="cast_section_web_title">ВЭБ-ПУЛЬТ І ПРАМАЯ ТРАНСЛЯЦЫЯ</string>
+    <string name="cast_section_web_subtitle">З любога смартфона без дадатковых праграм</string>
+    <string name="cast_section_web_desc">Накіруйце камеру смартфона (iPhone ці Android) на QR-код для адпраўкі відэа з YouTube, файлаў і кіравання гучнасцю.</string>
+    <string name="cast_section_mirror_title">ДУБЛІРАВАННЕ ЭКРАНА І DLNA</string>
+    <string name="cast_section_mirror_subtitle">Прамое бесправадное вяшчанне і дубліраванне</string>
+    <string name="cast_miracast_guide">Для Android: адкрыйце панэль і націсніце «Smart View» ці «Трансляцыя». На ПК (Windows): націсніце спалучэнне Win + K.\n\nІмя ТБ: Smart TV\nКалі ў тэлевізары няма чыпа Wi-Fi Direct, AirScreen працуе ўніверсальным прыёмнікам.</string>
+    <string name="cast_toast_yt_started">Трансляцыя YouTube запушчана са смартфона</string>
+    <string name="cast_toast_video_started">Прайграванне відэа запушчана</string>
+    <string name="cast_toast_media_failed">Не ўдалося адкрыць медыя</string>
+    <string name="cast_toast_file_opened">Медыяфайл адкрыты на тэлевізары</string>
+    <string name="cast_toast_file_received">Файл атрыманы на ТБ (%1$d KB)</string>
+
+    <!-- Search Dialog -->
+    <string name="search_dialog_hint">Пошук фільмаў, серыялаў, праграм...</string>
+    <string name="search_btn_youtube">Шукаць у YouTube</string>
+    <string name="search_btn_google">Шукаць у Google</string>
+    <string name="search_empty_hint">Увядзіце запыт для пошуку па ўсталяваных праграмах, фільмах і відэа</string>
+    <string name="search_section_apps">Знойдзеныя праграмы</string>
+    <string name="search_section_media">Фільмы і серыялы</string>
+    <string name="search_no_results">Нічога не знойдзена па гэтым запыце</string>
+    <string name="search_voice_prompt">Вымавіце назву фільма ці праграмы</string>
+    <string name="search_voice_unavailable">Галасавы ўвод недаступны на гэтай прыладзе. Выкарыстоўвайце клавіятуру.</string>
+    <string name="search_default_yt_query">Трэйлеры кіно</string>
+    <string name="search_default_web_query">Навіны кіно</string>
+    <string name="search_cant_open_yt">Не ўдалося адкрыць YouTube</string>
+    <string name="search_cant_open_browser">Не ўдалося адкрыць браўзер</string>
+
+    <!-- Media Detail Dialog -->
+    <string name="media_genre_fallback">Мастацкі фільм</string>
+    <string name="media_desc_unavailable">Апісанне недаступнае.</string>
+    <string name="media_btn_trailer">Трэйлер</string>
+    <string name="media_btn_search_apps">Глядзець у сэрвісах</string>
+    <string name="media_search_toast">Пошук «%1$s»...</string>
+    <string name="watch_dialog_title">Глядзець фільм</string>
+    <string name="watch_dialog_section_hint">УСТАЛЯВАНЫЯ ПЛЭЕРЫ І КІНАТЭАТРЫ</string>
+    <string name="watch_badge_open">АДКРЫЦЬ</string>
+    <string name="watch_badge_search">ПОШУК</string>
+
+    <!-- Media Genres -->
+    <string name="genre_action">Баявік</string>
+    <string name="genre_adventure">Прыгоды</string>
+    <string name="genre_animation">Мультфільм</string>
+    <string name="genre_biography">Біяграфія</string>
+    <string name="genre_comedy">Камедыя</string>
+    <string name="genre_crime">Крымінал</string>
+    <string name="genre_documentary">Дакументальны</string>
+    <string name="genre_drama">Драма</string>
+    <string name="genre_family">Сямейны</string>
+    <string name="genre_fantasy">Фэнтэзі</string>
+    <string name="genre_history">Гісторыя</string>
+    <string name="genre_horror">Жахі</string>
+    <string name="genre_music">Музыка</string>
+    <string name="genre_musical">Мюзікл</string>
+    <string name="genre_mystery">Дэтэктыў</string>
+    <string name="genre_romance">Меладрама</string>
+    <string name="genre_scifi">Фантастыка</string>
+    <string name="genre_sport">Спорт</string>
+    <string name="genre_thriller">Трылер</string>
+    <string name="genre_war">Ваенны</string>
+    <string name="genre_western">Вестэрн</string>
+
+    <!-- VPN Dialog -->
+    <string name="vpn_dialog_title">Статус сеткі VPN</string>
+    <string name="vpn_dialog_desc">Маніторынг і кіраванне абароненым тунэлем</string>
+    <string name="vpn_active_protected">VPN АКТЫЎНЫ (Абаронена)</string>
+    <string name="vpn_active_country">VPN АКТЫЎНЫ • %1$s</string>
+    <string name="vpn_disconnected">VPN АДКЛЮЧАНЫ</string>
+    <string name="vpn_traffic_unencrypted">Прамое злучэнне • Трафік не шыфруецца</string>
+    <string name="vpn_clients_title">Усталяваныя кліенты VPN</string>
+    <string name="vpn_no_clients">Іншыя кліенты VPN не выяўлены (WireGuard, Amnezia, OpenVPN)</string>
+    <string name="vpn_btn_system_settings">Сістэмныя налады VPN (Android)</string>
+
+    <!-- Accessibility Service -->
+    <string name="accessibility_home_service_label">Home Guard</string>
+    <string name="accessibility_home_service_desc">Забяспечвае прыярытэтны зварот на хатні экран пры націску кнопкі Home на пультах ТБ-боксаў.</string>
+
+    <!-- Cast Web Remote (Served to mobile browsers) -->
+    <string name="cast_web_connected">Падключана да ТБ (PIN: %1$s)</string>
+    <string name="cast_web_tab_youtube">YouTube / Спасылка</string>
+    <string name="cast_web_tab_files">Файлы</string>
+    <string name="cast_web_tab_remote">Пульт</string>
+    <string name="cast_web_label_url">Спасылка на YouTube ці відэапаток (MP4/HLS):</string>
+    <string name="cast_web_placeholder_url">https://youtu.be/... ці https://.../video.mp4</string>
+    <string name="cast_web_btn_play">Прайграць на ТБ</string>
+    <string name="cast_web_label_files">Выберыце відэа ці фота з галерэі:</string>
+    <string name="cast_web_btn_upload">Адправіць на экран ТБ</string>
+    <string name="cast_web_vol_up">Гучнасць +</string>
+    <string name="cast_web_vol_down">Гучнасць -</string>
+    <string name="cast_web_mute">Без гуку</string>
+    <string name="cast_web_play_pause">Паўза / Плэй</string>
+    <string name="cast_web_sent_toast">Адпраўлена на тэлевізар!</string>
+    <string name="cast_web_alert_enter_url">Калі ласка, увядзіце спасылку на відэа</string>
+    <string name="cast_web_alert_conn_error">Памылка злучэння з ТБ</string>
+    <string name="cast_web_alert_select_file">Выберыце файл для адпраўкі</string>
+    <string name="cast_web_alert_uploading">Адпраўка на экран ТБ...</string>
+    <string name="cast_web_alert_file_opened">Файл адкрыты на тэлевізары!</string>
+    <string name="cast_web_alert_upload_error">Памылка загрузкі на ТБ</string>
+    <string name="cast_web_cmd_done">Каманда выканана</string>
+    <string name="trailer_title_format">%1$s — Трэйлер</string>
+    <string name="trailer_btn_open_yt">Адкрыць у YouTube</string>
+    <string name="trailer_loading">Загрузка трэйлера…</string>
+    <string name="search_voice_listening">Слухаю…</string>
+    <string name="search_voice_processing">Распазнаванне…</string>
+    <string name="vpn_btn_connect">Падключыць VPN</string>
+    <string name="vpn_btn_disconnect">Адключыць VPN</string>
+    <string name="vpn_locations_title">Лакацыя / Сервер</string>
+    <string name="vpn_loc_warp">⚡ Cloudflare WARP</string>
+    <string name="vpn_loc_us">🇺🇸 ЗША</string>
+    <string name="vpn_loc_de">🇩🇪 Германія</string>
+    <string name="vpn_loc_pl">🇵🇱 Польшча</string>
+    <string name="google_assistant">Google Асістэнт</string>
+    <string name="assistant_btn_search">Search</string>
+    <string name="cat_favorites">Выбранае</string>
+    <string name="osd_hint_navigation">[OK] — выбар • [НАЗАД] — закрыць</string>
+    <string name="iptv_web_import_hint">Або адкрыйце ў браўзеры тэлефона: %1$s</string>
+    <string name="iptv_web_import_emulator_hint">Эмулятар: адкрыйце ў браўзеры ПК http://localhost:8080 (пасля adb forward)</string>
+    <string name="iptv_channels_count_format">%1$d каналаў</string>
+</resources>

@@ -11,6 +11,11 @@
     <string name="vpn_status_connected">VPN</string>
     <string name="vpn_status_disconnected">끄다</string>
     <string name="nav_media">홈</string>
+    <string name="nav_history">시청 기록</string>
+    <string name="history_title">시청 기록</string>
+    <string name="history_subtitle">이 기기에서 최근에 열어본 영화 및 시리즈</string>
+    <string name="history_btn_clear">기록 삭제</string>
+    <string name="history_empty">시청 기록이 비어 있습니다.\n홈에서 영화나 시리즈를 열어 여기서 이어보세요.</string>
     <string name="nav_home_apps">앱</string>
     <string name="nav_iptv">TV 채널</string>
     <string name="nav_games">게임</string>

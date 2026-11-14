@@ -11,6 +11,11 @@
     <string name="vpn_status_connected">VPN</string>
     <string name="vpn_status_disconnected">KAPALI</string>
     <string name="nav_media">Ana Sayfa</string>
+    <string name="nav_history">Geçmiş</string>
+    <string name="history_title">İzleme Geçmişi</string>
+    <string name="history_subtitle">Bu cihazda yakın zamanda açılan filmler ve diziler</string>
+    <string name="history_btn_clear">Geçmişi temizle</string>
+    <string name="history_empty">İzleme geçmişi boş.\nBuradan devam etmek için Ana Sayfadan film veya dizi açın.</string>
     <string name="nav_home_apps">Uygulamalar</string>
     <string name="nav_iptv">TV Kanalları</string>
     <string name="nav_games">Oyunlar</string>

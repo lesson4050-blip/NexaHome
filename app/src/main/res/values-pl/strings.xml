@@ -11,6 +11,11 @@
     <string name="vpn_status_connected">VPN</string>
     <string name="vpn_status_disconnected">WYŁĄCZONY</string>
     <string name="nav_media">Start</string>
+    <string name="nav_history">Historia</string>
+    <string name="history_title">Historia oglądania</string>
+    <string name="history_subtitle">Filmy i seriale otwarte na tym urządzeniu</string>
+    <string name="history_btn_clear">Wyczyść historię</string>
+    <string name="history_empty">Historia oglądania jest pusta.\nOtwórz filmy lub seriale na stronie głównej, aby wznowić oglądanie tutaj.</string>
     <string name="nav_home_apps">Aplikacje</string>
     <string name="nav_iptv">Kanały TV</string>
     <string name="nav_games">Gry</string>

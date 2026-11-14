@@ -11,6 +11,11 @@
     <string name="vpn_status_connected">VPN</string>
     <string name="vpn_status_disconnected">AUS</string>
     <string name="nav_media">Start</string>
+    <string name="nav_history">Verlauf</string>
+    <string name="history_title">Wiedergabeverlauf</string>
+    <string name="history_subtitle">Kürzlich auf diesem Gerät geöffnete Filme und Serien</string>
+    <string name="history_btn_clear">Verlauf löschen</string>
+    <string name="history_empty">Wiedergabeverlauf ist leer.\nÖffnen Sie Filme oder Serien auf der Startseite, um sie hier fortzusetzen.</string>
     <string name="nav_home_apps">Apps</string>
     <string name="nav_iptv">TV-Kanäle</string>
     <string name="nav_games">Spiele</string>

@@ -11,6 +11,11 @@
     <string name="vpn_status_connected">VPN</string>
     <string name="vpn_status_disconnected">オフ</string>
     <string name="nav_media">ホーム</string>
+    <string name="nav_history">履歴</string>
+    <string name="history_title">視聴履歴</string>
+    <string name="history_subtitle">この端末で最近開いた映画やドラマ</string>
+    <string name="history_btn_clear">履歴を消去</string>
+    <string name="history_empty">視聴履歴はありません。\nホームから映画やドラマを開いてここで再開できます。</string>
     <string name="nav_home_apps">アプリ</string>
     <string name="nav_iptv">TVチャンネル</string>
     <string name="nav_games">ゲーム</string>

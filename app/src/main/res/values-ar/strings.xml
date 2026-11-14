@@ -11,6 +11,11 @@
     <string name="vpn_status_connected">VPN</string>
     <string name="vpn_status_disconnected">عن</string>
     <string name="nav_media">الرئيسية</string>
+    <string name="nav_history">السجل</string>
+    <string name="history_title">سجل المشاهدة</string>
+    <string name="history_subtitle">الأفلام والمسلسلات التي تم فتحها مؤخرًا على هذا الجهاز</string>
+    <string name="history_btn_clear">مسح السجل</string>
+    <string name="history_empty">سجل المشاهدة فارغ.\nافتح الأفلام أو المسلسلات من الصفحة الرئيسية لمتابعتها هنا.</string>
     <string name="nav_home_apps">التطبيقات</string>
     <string name="nav_iptv">قنوات التلفاز</string>
     <string name="nav_games">الألعاب</string>

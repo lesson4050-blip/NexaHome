@@ -11,6 +11,11 @@
     <string name="vpn_status_connected">VPN</string>
     <string name="vpn_status_disconnected">离开</string>
     <string name="nav_media">主页</string>
+    <string name="nav_history">历史记录</string>
+    <string name="history_title">观看历史</string>
+    <string name="history_subtitle">最近在此设备上打开的电影和电视剧</string>
+    <string name="history_btn_clear">清除历史</string>
+    <string name="history_empty">观看历史为空。\n从首页打开电影或电视剧即可在此继续观看。</string>
     <string name="nav_home_apps">应用</string>
     <string name="nav_iptv">电视频道</string>
     <string name="nav_games">游戏</string>

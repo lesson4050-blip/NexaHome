@@ -396,17 +396,19 @@ class MediaRepository(private val context: Context) {
     private fun getCuratedBaselineMovies(): List<MediaModel> {
         val lang = getEffectiveLanguage()
         val isUa = lang.startsWith("uk")
-        val isRu = lang in listOf("ru", "ru-ru", "be", "kk")
+        val isBe = lang.startsWith("be")
+        val isRu = lang in listOf("ru", "ru-ru", "kk")
         return listOf(
             MediaModel(
                 id = "tt1160419",
                 title = "Dune: Part Two",
                 posterUrl = "https://images.metahub.space/poster/small/tt1160419/img",
                 badge = "★ 8.6",
-                genre = if (isUa) "Фантастика, Пригоди" else if (isRu) "Фантастика, Приключения" else "Sci-Fi, Adventure",
+                genre = if (isUa) "Фантастика, Пригоди" else if (isBe) "Фантастыка, Прыгоды" else if (isRu) "Фантастика, Приключения" else "Sci-Fi, Adventure",
                 rating = "8.6",
                 description = when {
                     isUa -> "Пол Атрід об'єднується з Чані та фрименами, прагнучи помститися змовникам, які знищили його родину."
+                    isBe -> "Пол Атрэйдэс аб'ядноўваецца з Чані і фрыменамі, каб адпомсціць змоўшчыкам, якія знішчылі яго сям'ю."
                     isRu -> "Пол Атрейдес объединяется с Чани и фрименами, чтобы отомстить заговорщикам, уничтожившим его семью."
                     else -> "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family."
                 },
@@ -417,10 +419,11 @@ class MediaRepository(private val context: Context) {
                 title = "Oppenheimer",
                 posterUrl = "https://images.metahub.space/poster/small/tt15398776/img",
                 badge = "★ 8.9",
-                genre = if (isUa) "Біографія, Драма, Історія" else if (isRu) "Биография, Драма, История" else "Biography, Drama, History",
+                genre = if (isUa) "Біографія, Драма, Історія" else if (isBe) "Біяграфія, Драма, Гісторыя" else if (isRu) "Биография, Драма, История" else "Biography, Drama, History",
                 rating = "8.9",
                 description = when {
                     isUa -> "Історія видатного фізика Роберта Оппенгеймера, який очолив Мангеттенський проєкт зі створення першої атомної бомби."
+                    isBe -> "Гісторыя выбітнага фізіка Роберта Опенгеймера, які ўзначаліў Манхэтэнскі праект па стварэнні першай атамнай бомбы."
                     isRu -> "История выдающегося физика Роберта Оппенгеймера, возглавившего Манхэттенский проект по созданию первой в мире атомной бомбы."
                     else -> "The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb."
                 },
@@ -431,10 +434,11 @@ class MediaRepository(private val context: Context) {
                 title = "Barbie",
                 posterUrl = "https://images.metahub.space/poster/small/tt1517268/img",
                 badge = "★ 7.0",
-                genre = if (isUa) "Пригоди, Комедія" else if (isRu) "Приключения, Комедия" else "Adventure, Comedy",
+                genre = if (isUa) "Пригоди, Комедія" else if (isBe) "Прыгоды, Камедыя" else if (isRu) "Приключения, Комедия" else "Adventure, Comedy",
                 rating = "7.0",
                 description = when {
                     isUa -> "Барбі та Кен живуть в ідеальному світі Барбіленду, поки криза не змушує їх вирушити у світ реальних людей."
+                    isBe -> "Барбі і Кен жывуць у ідэальным свеце Барбілэнда, пакуль крызіс не вымушае іх выправіцца ў свет рэальных людзей."
                     isRu -> "Барби и Кен живут в идеальном беззаботном Барбиленде, пока внезапный кризис не вынуждает их отправиться в мир реальных людей."
                     else -> "Barbie and Ken are having the time of their lives in the colorful and seemingly perfect world of Barbie Land."
                 },
@@ -445,10 +449,11 @@ class MediaRepository(private val context: Context) {
                 title = "Spider-Man: Across the Spider-Verse",
                 posterUrl = "https://images.metahub.space/poster/small/tt9362722/img",
                 badge = "★ 8.7",
-                genre = if (isUa) "Анімація, Бойовик" else if (isRu) "Мультфильм, Боевик" else "Animation, Action",
+                genre = if (isUa) "Анімація, Бойовик" else if (isBe) "Мультфільм, Баявік" else if (isRu) "Мультфильм, Боевик" else "Animation, Action",
                 rating = "8.7",
                 description = when {
                     isUa -> "Майлз Моралес вирушає у подорож крізь Мультивсесвіт, де зустрічає команду Людей-павуків."
+                    isBe -> "Майлз Маралес выпраўляецца ў падарожжа праз Мульцісусвет, дзе сустракае каманду Людзей-павукоў."
                     isRu -> "Майлз Моралес отправляется в путешествие сквозь Мультивселенную, где встречает команду Людей-павуков."
                     else -> "Miles Morales catapults across the Multiverse, encountering a team of Spider-People charged with protecting its existence."
                 },
@@ -460,17 +465,19 @@ class MediaRepository(private val context: Context) {
     private fun getCuratedBaselineSeries(): List<MediaModel> {
         val lang = getEffectiveLanguage()
         val isUa = lang.startsWith("uk")
-        val isRu = lang in listOf("ru", "ru-ru", "be", "kk")
+        val isBe = lang.startsWith("be")
+        val isRu = lang in listOf("ru", "ru-ru", "kk")
         return listOf(
             MediaModel(
                 id = "tt11198330",
                 title = "House of the Dragon",
                 posterUrl = "https://images.metahub.space/poster/small/tt11198330/img",
                 badge = "★ 8.4",
-                genre = if (isUa) "Бойовик, Пригоди, Драма" else if (isRu) "Боевик, Приключения, Драма" else "Action, Adventure, Drama",
+                genre = if (isUa) "Бойовик, Пригоди, Драма" else if (isBe) "Баявік, Прыгоды, Драма" else if (isRu) "Боевик, Приключения, Драма" else "Action, Adventure, Drama",
                 rating = "8.4",
                 description = when {
                     isUa -> "Запекла боротьба за Залізний трон всередині правлячої династії Таргарієнів, що розпалила громадянську війну."
+                    isBe -> "Зацятая барацьба за Жалезны трон унутры дынастыі Таргарыенаў, якая развязала грамадзянскую вайну."
                     isRu -> "Ожесточённая борьба за Железный трон внутри правящей династии Таргариенов, развязавшая разрушительную гражданскую войну."
                     else -> "An internal succession contest within House Targaryen at the height of its power."
                 },
@@ -482,10 +489,11 @@ class MediaRepository(private val context: Context) {
                 title = "The Last of Us",
                 posterUrl = "https://images.metahub.space/poster/small/tt3581920/img",
                 badge = "★ 8.7",
-                genre = if (isUa) "Бойовик, Пригоди, Драма" else if (isRu) "Боевик, Приключения, Драма" else "Action, Adventure, Drama",
+                genre = if (isUa) "Бойовик, Пригоди, Драма" else if (isBe) "Баявік, Прыгоды, Драма" else if (isRu) "Боевик, Приключения, Драма" else "Action, Adventure, Drama",
                 rating = "8.7",
                 description = when {
                     isUa -> "Через двадцять років після краху цивілізації загартований Джоел погоджується таємно переправити 14-річну дівчинку Еллі."
+                    isBe -> "Праз дваццаць гадоў пасля краху цывілізацыі загартаваны Джоэл згаджаецца таемна пераправіць 14-гадовую дзяўчынку Элі."
                     isRu -> "Спустя двадцать лет после краха человечества циничный выживший Джоэл соглашается тайно переправить 14-летнюю девочку Элли."
                     else -> "After a global pandemic destroys civilization, a hardened survivor takes charge of a 14-year-old girl."
                 },
@@ -497,10 +505,11 @@ class MediaRepository(private val context: Context) {
                 title = "Fallout",
                 posterUrl = "https://images.metahub.space/poster/small/tt12637874/img",
                 badge = "★ 8.4",
-                genre = if (isUa) "Бойовик, Пригоди, Фантастика" else if (isRu) "Боевик, Приключения, Фантастика" else "Action, Adventure, Sci-Fi",
+                genre = if (isUa) "Бойовик, Пригоди, Фантастика" else if (isBe) "Баявік, Прыгоды, Фантастыка" else if (isRu) "Боевик, Приключения, Фантастика" else "Action, Adventure, Sci-Fi",
                 rating = "8.4",
                 description = when {
                     isUa -> "Через 200 років після ядерного апокаліпсису наївна жителька підземного притулку змушена вийти на поверхню в жорстоку Пустош."
+                    isBe -> "Праз 200 гадоў пасля ядзернага апакаліпсісу наіўная жыхарка падземнага бункера вымушана выйсці на бязлітасную Пустку."
                     isRu -> "Спустя 200 лет после ядерного апокалипсиса наивная жительница подземного бункера вынуждена выйти наружу в дикую Пустошь."
                     else -> "In a future, post-apocalyptic Los Angeles brought about by nuclear decimation, citizens must live in underground bunkers."
                 },
@@ -512,10 +521,11 @@ class MediaRepository(private val context: Context) {
                 title = "Stranger Things",
                 posterUrl = "https://images.metahub.space/poster/small/tt4574334/img",
                 badge = "★ 8.7",
-                genre = if (isUa) "Драма, Фентезі, Жахи" else if (isRu) "Драма, Фэнтези, Ужасы" else "Drama, Fantasy, Horror",
+                genre = if (isUa) "Драма, Фентезі, Жахи" else if (isBe) "Драма, Фэнтэзі, Жахі" else if (isRu) "Драма, Фэнтези, Ужасы" else "Drama, Fantasy, Horror",
                 rating = "8.7",
                 description = when {
                     isUa -> "У тихому містечку 1980-х таємниче зникає хлопчик, а його друзі стикаються з урядовою змовою та монстрами."
+                    isBe -> "У ціхім мястэчку 1980-х таямніча знікае хлопчык, а яго сябры сутыкаюцца з урадавай змовай і монстрамі."
                     isRu -> "В тихом городке 1980-х загадочно исчезает мальчик, а его друзья натыкаются на правительственный заговор и монстров."
                     else -> "When a young boy vanishes, a small town uncovers a mystery involving secret experiments and supernatural forces."
                 },
