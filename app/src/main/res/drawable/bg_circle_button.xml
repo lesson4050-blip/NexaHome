@@ -6,6 +6,11 @@
             <stroke android:width="2dp" android:color="@color/white" />
         </shape>
     </item>
+    <item android:state_selected="true">
+        <shape android:shape="oval">
+            <solid android:color="@color/leanback_cyan" />
+        </shape>
+    </item>
     <item>
         <shape android:shape="oval">
             <solid android:color="@color/white_10" />

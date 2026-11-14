@@ -9,26 +9,18 @@
     android:clipToPadding="false"
     android:background="@color/tv_dark_bg">
 
-    <!-- 1. Background Wallpaper Image (dynamically swappable) -->
+    <!-- Background Wallpaper Image -->
     <ImageView
         android:id="@+id/iv_backdrop"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/bg_wallpaper_focus" />
+        android:src="@drawable/backdrop_scenery" />
 
-    <!-- 2. Adaptive Dimmer Scrim (guarantees WCAG AAA contrast for ANY user wallpaper) -->
-    <View
-        android:id="@+id/dimmer_overlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#D0080E18" />
-
-    <!-- 3. Ambient Vignette Glow -->
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_poster_gradient" />
+        android:background="@color/tv_dimmer" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -417,27 +409,6 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_genre_chip" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:fontFamily="sans-serif-medium"
-                        android:text="@string/settings_section_dimmer"
-                        android:textColor="@color/white_60"
-                        android:textSize="12sp" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_dimmer_levels"
-                        android:layout_width="match_parent"
-                        android:layout_height="52dp"
-                        android:layout_marginTop="6dp"
-                        android:clipChildren="false"
-                        android:clipToPadding="false"
-                        android:orientation="horizontal"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_genre_chip" />
 
                     <!-- SECTION 3: Content Language -->
                     <TextView

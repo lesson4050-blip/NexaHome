@@ -29,7 +29,6 @@ class LauncherSettingsActivity : AppCompatActivity() {
 
     private lateinit var hiddenAppsAdapter: HiddenAppsAdapter
     private lateinit var wallpaperAdapter: SettingsChipAdapter
-    private lateinit var dimmerAdapter: SettingsChipAdapter
     private lateinit var languageAdapter: SettingsChipAdapter
     private lateinit var playerAdapter: SettingsChipAdapter
 
@@ -43,7 +42,6 @@ class LauncherSettingsActivity : AppCompatActivity() {
         cacheManager = CacheManager(this)
 
         applyWallpaper(appPrefs.getWallpaperTheme())
-        applyDimmer(appPrefs.getDimmerOpacity())
 
         setupFocus()
         setupSidebar()
@@ -68,9 +66,7 @@ class LauncherSettingsActivity : AppCompatActivity() {
         }
     }
 
-    private fun applyDimmer(opacity: Float) {
-        binding.dimmerOverlay.alpha = opacity.coerceIn(0.40f, 0.98f)
-    }
+
 
     private fun setupFocus() {
         TvFocusHelper.bindFocusScale(binding.btnNavMedia, scaleRatio = 1.12f, elevationDp = 8f)
@@ -183,23 +179,6 @@ class LauncherSettingsActivity : AppCompatActivity() {
         wallpaperAdapter.selectedId = appPrefs.getWallpaperTheme()
         binding.rvWallpaperThemes.adapter = wallpaperAdapter
 
-        val dimmerLevels = listOf(
-            SettingsChip("0.60", getString(R.string.settings_dimmer_light)),
-            SettingsChip("0.82", getString(R.string.settings_dimmer_medium)),
-            SettingsChip("0.95", getString(R.string.settings_dimmer_deep))
-        )
-
-        val currentDimmer = String.format(java.util.Locale.US, "%.2f", appPrefs.getDimmerOpacity())
-        dimmerAdapter = SettingsChipAdapter { chip ->
-            val opacity = chip.id.toFloatOrNull() ?: 0.82f
-            appPrefs.setDimmerOpacity(opacity)
-            dimmerAdapter.selectedId = chip.id
-            applyDimmer(opacity)
-        }
-
-        dimmerAdapter.submitList(dimmerLevels)
-        dimmerAdapter.selectedId = if (currentDimmer.startsWith("0.6")) "0.60" else if (currentDimmer.startsWith("0.9")) "0.95" else "0.82"
-        binding.rvDimmerLevels.adapter = dimmerAdapter
     }
 
     private fun setupLanguageSection() {
