@@ -22,8 +22,21 @@ import java.util.Locale
  */
 class MediaRepository(private val context: Context) {
 
-    private val moviesCacheFile = File(context.cacheDir, "cached_movies.json")
-    private val seriesCacheFile = File(context.cacheDir, "cached_series.json")
+    private val appPrefs = com.orbit.tv.launcher.features.apps.repository.AppPreferencesRepository(context)
+
+    private fun getMoviesCacheFile(lang: String): File =
+        File(context.cacheDir, "cached_movies_${lang.replace('-', '_')}.json")
+
+    private fun getSeriesCacheFile(lang: String): File =
+        File(context.cacheDir, "cached_series_${lang.replace('-', '_')}.json")
+
+    fun getEffectiveLanguage(): String {
+        val pref = appPrefs.getContentLanguage()
+        if (pref.isNotBlank() && pref != "SYSTEM") {
+            return pref.lowercase(Locale.ROOT)
+        }
+        return getSystemLanguage()
+    }
 
     private fun getSystemLanguage(): String {
         val lang = try {
@@ -39,46 +52,55 @@ class MediaRepository(private val context: Context) {
         return lang.lowercase(Locale.ROOT)
     }
 
-    private fun getTmdbLanguage(): String {
-        return when (getSystemLanguage()) {
-            "ru", "be" -> "ru-RU"
-            "uk" -> "uk-UA"
+    fun getTmdbLanguage(): String {
+        return when (getEffectiveLanguage()) {
+            "ru", "ru-ru", "be", "kk" -> "ru-RU"
+            "uk", "uk-ua" -> "uk-UA"
+            "pl", "pl-pl" -> "pl-PL"
+            "de", "de-de" -> "de-DE"
+            "fr", "fr-fr" -> "fr-FR"
+            "es", "es-es" -> "es-ES"
+            "it", "it-it" -> "it-IT"
+            "pt", "pt-pt", "pt-br" -> "pt-PT"
+            "tr", "tr-tr" -> "tr-TR"
+            "zh", "zh-cn" -> "zh-CN"
+            "ja", "ja-jp" -> "ja-JP"
+            "ko", "ko-kr" -> "ko-KR"
+            "ar" -> "ar-SA"
             else -> "en-US"
         }
     }
 
-    suspend fun getTrendingMovies(): List<MediaModel> = withContext(Dispatchers.IO) {
+    suspend fun getTrendingMovies(forceRefresh: Boolean = false): List<MediaModel> = withContext(Dispatchers.IO) {
         val tmdbLang = getTmdbLanguage()
+        val cacheFile = getMoviesCacheFile(tmdbLang)
         val tmdbUrl = "$TMDB_BASE_URL/trending/movie/week?api_key=$TMDB_API_KEY&language=$tmdbLang"
 
-        // Tier 1: TMDb API
+        // Tier 1: Instant load from disk cache if already cached for this language and not forcing refresh
+        if (!forceRefresh && cacheFile.exists()) {
+            try {
+                val cached = cacheFile.readText()
+                val parsedTmdb = parseTmdbJson(cached, isSeries = false)
+                if (parsedTmdb.isNotEmpty()) return@withContext parsedTmdb
+            } catch (_: Exception) {}
+        }
+
+        // Tier 2: TMDb API Network Fetch
         val tmdbData = fetchFromNetwork(tmdbUrl)
         if (tmdbData != null) {
             val parsed = parseTmdbJson(tmdbData, isSeries = false)
             if (parsed.isNotEmpty()) {
                 try {
-                    moviesCacheFile.writeText(tmdbData)
+                    cacheFile.writeText(tmdbData)
                 } catch (_: Exception) {}
                 return@withContext parsed
             }
         }
 
-        // Tier 2: Cinemeta Fallback
-        val cinemetaData = fetchFromNetwork(CINEMETA_MOVIES_URL)
-        if (cinemetaData != null) {
-            val parsed = parseCinemetaJson(cinemetaData, isSeries = false)
-            if (parsed.isNotEmpty()) {
-                try {
-                    moviesCacheFile.writeText(cinemetaData)
-                } catch (_: Exception) {}
-                return@withContext parsed
-            }
-        }
-
-        // Tier 3: Local Disk Cache
-        if (moviesCacheFile.exists()) {
+        // Tier 3: Local Disk Cache Fallback (if network failed during forceRefresh)
+        if (cacheFile.exists()) {
             try {
-                val cached = moviesCacheFile.readText()
+                val cached = cacheFile.readText()
                 val parsedTmdb = parseTmdbJson(cached, isSeries = false)
                 if (parsedTmdb.isNotEmpty()) return@withContext parsedTmdb
                 val parsedCinemeta = parseCinemetaJson(cached, isSeries = false)
@@ -86,42 +108,52 @@ class MediaRepository(private val context: Context) {
             } catch (_: Exception) {}
         }
 
-        // Tier 4: Curated Baseline
+        // Tier 4: Cinemeta Fallback (Global catalog)
+        val cinemetaData = fetchFromNetwork(CINEMETA_MOVIES_URL)
+        if (cinemetaData != null) {
+            val parsed = parseCinemetaJson(cinemetaData, isSeries = false)
+            if (parsed.isNotEmpty()) {
+                try {
+                    cacheFile.writeText(cinemetaData)
+                } catch (_: Exception) {}
+                return@withContext parsed
+            }
+        }
+
+        // Tier 5: Curated Baseline
         getCuratedBaselineMovies()
     }
 
-    suspend fun getTrendingSeries(): List<MediaModel> = withContext(Dispatchers.IO) {
+    suspend fun getTrendingSeries(forceRefresh: Boolean = false): List<MediaModel> = withContext(Dispatchers.IO) {
         val tmdbLang = getTmdbLanguage()
+        val cacheFile = getSeriesCacheFile(tmdbLang)
         val tmdbUrl = "$TMDB_BASE_URL/trending/tv/week?api_key=$TMDB_API_KEY&language=$tmdbLang"
 
-        // Tier 1: TMDb API
+        // Tier 1: Instant load from disk cache if already cached for this language and not forcing refresh
+        if (!forceRefresh && cacheFile.exists()) {
+            try {
+                val cached = cacheFile.readText()
+                val parsedTmdb = parseTmdbJson(cached, isSeries = true)
+                if (parsedTmdb.isNotEmpty()) return@withContext parsedTmdb
+            } catch (_: Exception) {}
+        }
+
+        // Tier 2: TMDb API Network Fetch
         val tmdbData = fetchFromNetwork(tmdbUrl)
         if (tmdbData != null) {
             val parsed = parseTmdbJson(tmdbData, isSeries = true)
             if (parsed.isNotEmpty()) {
                 try {
-                    seriesCacheFile.writeText(tmdbData)
+                    cacheFile.writeText(tmdbData)
                 } catch (_: Exception) {}
                 return@withContext parsed
             }
         }
 
-        // Tier 2: Cinemeta Fallback
-        val cinemetaData = fetchFromNetwork(CINEMETA_SERIES_URL)
-        if (cinemetaData != null) {
-            val parsed = parseCinemetaJson(cinemetaData, isSeries = true)
-            if (parsed.isNotEmpty()) {
-                try {
-                    seriesCacheFile.writeText(cinemetaData)
-                } catch (_: Exception) {}
-                return@withContext parsed
-            }
-        }
-
-        // Tier 3: Local Disk Cache
-        if (seriesCacheFile.exists()) {
+        // Tier 3: Local Disk Cache Fallback (if network failed during forceRefresh)
+        if (cacheFile.exists()) {
             try {
-                val cached = seriesCacheFile.readText()
+                val cached = cacheFile.readText()
                 val parsedTmdb = parseTmdbJson(cached, isSeries = true)
                 if (parsedTmdb.isNotEmpty()) return@withContext parsedTmdb
                 val parsedCinemeta = parseCinemetaJson(cached, isSeries = true)
@@ -129,7 +161,19 @@ class MediaRepository(private val context: Context) {
             } catch (_: Exception) {}
         }
 
-        // Tier 4: Curated Baseline
+        // Tier 4: Cinemeta Fallback
+        val cinemetaData = fetchFromNetwork(CINEMETA_SERIES_URL)
+        if (cinemetaData != null) {
+            val parsed = parseCinemetaJson(cinemetaData, isSeries = true)
+            if (parsed.isNotEmpty()) {
+                try {
+                    cacheFile.writeText(cinemetaData)
+                } catch (_: Exception) {}
+                return@withContext parsed
+            }
+        }
+
+        // Tier 5: Curated Baseline
         getCuratedBaselineSeries()
     }
 
@@ -167,13 +211,17 @@ class MediaRepository(private val context: Context) {
                 if (id == "0") continue
 
                 val title = if (isSeries) {
-                    item.optString("name", item.optString("original_name", "Untitled"))
+                    val name = item.optString("name", "").trim()
+                    val orig = item.optString("original_name", "").trim()
+                    if (name.isNotBlank()) name else if (orig.isNotBlank()) orig else "Untitled"
                 } else {
-                    item.optString("title", item.optString("original_title", "Untitled"))
+                    val t = item.optString("title", "").trim()
+                    val orig = item.optString("original_title", "").trim()
+                    if (t.isNotBlank()) t else if (orig.isNotBlank()) orig else "Untitled"
                 }
 
-                val posterPath = item.optString("poster_path", "")
-                if (posterPath.isBlank()) continue
+                val posterPath = item.optString("poster_path", "").trim()
+                if (posterPath.isBlank() || posterPath == "null") continue
                 val posterUrl = "https://image.tmdb.org/t/p/w500$posterPath"
 
                 val voteAvg = item.optDouble("vote_average", 0.0)
@@ -192,7 +240,12 @@ class MediaRepository(private val context: Context) {
                     }
                 }
                 val rawGenre = if (genresList.isNotEmpty()) genresList.joinToString(", ") else context.getString(R.string.genre_feature)
-                val description = item.optString("overview", "").ifBlank { context.getString(R.string.media_desc_unavailable) }
+                val rawOverview = item.optString("overview", "").trim()
+                val description = if (rawOverview.isNotBlank() && rawOverview != "null") {
+                    rawOverview
+                } else {
+                    context.getString(R.string.media_desc_unavailable)
+                }
 
                 result.add(
                     MediaModel(
@@ -341,16 +394,22 @@ class MediaRepository(private val context: Context) {
     }
 
     private fun getCuratedBaselineMovies(): List<MediaModel> {
-        val isRu = getSystemLanguage() in listOf("ru", "be")
+        val lang = getEffectiveLanguage()
+        val isUa = lang.startsWith("uk")
+        val isRu = lang in listOf("ru", "ru-ru", "be", "kk")
         return listOf(
             MediaModel(
                 id = "tt1160419",
                 title = "Dune: Part Two",
                 posterUrl = "https://images.metahub.space/poster/small/tt1160419/img",
                 badge = "★ 8.6",
-                genre = if (isRu) "Фантастика, Приключения" else "Sci-Fi, Adventure",
+                genre = if (isUa) "Фантастика, Пригоди" else if (isRu) "Фантастика, Приключения" else "Sci-Fi, Adventure",
                 rating = "8.6",
-                description = if (isRu) "Пол Атрейдес объединяется с Чани и фрименами, чтобы отомстить заговорщикам, уничтожившим его семью, и предотвратить катастрофическое будущее галактики." else "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.",
+                description = when {
+                    isUa -> "Пол Атрід об'єднується з Чані та фрименами, прагнучи помститися змовникам, які знищили його родину."
+                    isRu -> "Пол Атрейдес объединяется с Чани и фрименами, чтобы отомстить заговорщикам, уничтожившим его семью."
+                    else -> "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family."
+                },
                 releaseYear = "2024"
             ),
             MediaModel(
@@ -358,9 +417,13 @@ class MediaRepository(private val context: Context) {
                 title = "Oppenheimer",
                 posterUrl = "https://images.metahub.space/poster/small/tt15398776/img",
                 badge = "★ 8.9",
-                genre = if (isRu) "Биография, Драма, История" else "Biography, Drama, History",
+                genre = if (isUa) "Біографія, Драма, Історія" else if (isRu) "Биография, Драма, История" else "Biography, Drama, History",
                 rating = "8.9",
-                description = if (isRu) "История выдающегося физика Роберта Оппенгеймера, возглавившего Манхэттенский проект по созданию первой в мире атомной бомбы." else "The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb.",
+                description = when {
+                    isUa -> "Історія видатного фізика Роберта Оппенгеймера, який очолив Мангеттенський проєкт зі створення першої атомної бомби."
+                    isRu -> "История выдающегося физика Роберта Оппенгеймера, возглавившего Манхэттенский проект по созданию первой в мире атомной бомбы."
+                    else -> "The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb."
+                },
                 releaseYear = "2023"
             ),
             MediaModel(
@@ -368,9 +431,13 @@ class MediaRepository(private val context: Context) {
                 title = "Barbie",
                 posterUrl = "https://images.metahub.space/poster/small/tt1517268/img",
                 badge = "★ 7.0",
-                genre = if (isRu) "Приключения, Комедия" else "Adventure, Comedy",
+                genre = if (isUa) "Пригоди, Комедія" else if (isRu) "Приключения, Комедия" else "Adventure, Comedy",
                 rating = "7.0",
-                description = if (isRu) "Барби и Кен живут в идеальном беззаботном Барбиленде, пока внезапный кризис не вынуждает их отправиться в мир реальных людей." else "Barbie and Ken are having the time of their lives in the colorful and seemingly perfect world of Barbie Land.",
+                description = when {
+                    isUa -> "Барбі та Кен живуть в ідеальному світі Барбіленду, поки криза не змушує їх вирушити у світ реальних людей."
+                    isRu -> "Барби и Кен живут в идеальном беззаботном Барбиленде, пока внезапный кризис не вынуждает их отправиться в мир реальных людей."
+                    else -> "Barbie and Ken are having the time of their lives in the colorful and seemingly perfect world of Barbie Land."
+                },
                 releaseYear = "2023"
             ),
             MediaModel(
@@ -378,25 +445,35 @@ class MediaRepository(private val context: Context) {
                 title = "Spider-Man: Across the Spider-Verse",
                 posterUrl = "https://images.metahub.space/poster/small/tt9362722/img",
                 badge = "★ 8.7",
-                genre = if (isRu) "Мультфильм, Боевик" else "Animation, Action",
+                genre = if (isUa) "Анімація, Бойовик" else if (isRu) "Мультфильм, Боевик" else "Animation, Action",
                 rating = "8.7",
-                description = if (isRu) "Майлз Моралес отправляется в путешествие сквозь Мультивселенную, где встречает команду Людей-пауков, защищающих ткань мироздания." else "Miles Morales catapults across the Multiverse, encountering a team of Spider-People charged with protecting its existence.",
+                description = when {
+                    isUa -> "Майлз Моралес вирушає у подорож крізь Мультивсесвіт, де зустрічає команду Людей-павуків."
+                    isRu -> "Майлз Моралес отправляется в путешествие сквозь Мультивселенную, где встречает команду Людей-павуков."
+                    else -> "Miles Morales catapults across the Multiverse, encountering a team of Spider-People charged with protecting its existence."
+                },
                 releaseYear = "2023"
             )
         )
     }
 
     private fun getCuratedBaselineSeries(): List<MediaModel> {
-        val isRu = getSystemLanguage() in listOf("ru", "be")
+        val lang = getEffectiveLanguage()
+        val isUa = lang.startsWith("uk")
+        val isRu = lang in listOf("ru", "ru-ru", "be", "kk")
         return listOf(
             MediaModel(
                 id = "tt11198330",
                 title = "House of the Dragon",
                 posterUrl = "https://images.metahub.space/poster/small/tt11198330/img",
                 badge = "★ 8.4",
-                genre = if (isRu) "Боевик, Приключения, Драма" else "Action, Adventure, Drama",
+                genre = if (isUa) "Бойовик, Пригоди, Драма" else if (isRu) "Боевик, Приключения, Драма" else "Action, Adventure, Drama",
                 rating = "8.4",
-                description = if (isRu) "Ожесточённая борьба за Железный трон внутри правящей династии Таргариенов, развязавшая разрушительную гражданскую войну «Танец Драконов»." else "An internal succession contest within House Targaryen at the height of its power.",
+                description = when {
+                    isUa -> "Запекла боротьба за Залізний трон всередині правлячої династії Таргарієнів, що розпалила громадянську війну."
+                    isRu -> "Ожесточённая борьба за Железный трон внутри правящей династии Таргариенов, развязавшая разрушительную гражданскую войну."
+                    else -> "An internal succession contest within House Targaryen at the height of its power."
+                },
                 releaseYear = "2022",
                 isSeries = true
             ),
@@ -405,9 +482,13 @@ class MediaRepository(private val context: Context) {
                 title = "The Last of Us",
                 posterUrl = "https://images.metahub.space/poster/small/tt3581920/img",
                 badge = "★ 8.7",
-                genre = if (isRu) "Боевик, Приключения, Драма" else "Action, Adventure, Drama",
+                genre = if (isUa) "Бойовик, Пригоди, Драма" else if (isRu) "Боевик, Приключения, Драма" else "Action, Adventure, Drama",
                 rating = "8.7",
-                description = if (isRu) "Спустя двадцать лет после краха человечества циничный выживший Джоэл соглашается тайно переправить 14-летнюю девочку Элли через опасную территорию США." else "After a global pandemic destroys civilization, a hardened survivor takes charge of a 14-year-old girl.",
+                description = when {
+                    isUa -> "Через двадцять років після краху цивілізації загартований Джоел погоджується таємно переправити 14-річну дівчинку Еллі."
+                    isRu -> "Спустя двадцать лет после краха человечества циничный выживший Джоэл соглашается тайно переправить 14-летнюю девочку Элли."
+                    else -> "After a global pandemic destroys civilization, a hardened survivor takes charge of a 14-year-old girl."
+                },
                 releaseYear = "2023",
                 isSeries = true
             ),
@@ -416,9 +497,13 @@ class MediaRepository(private val context: Context) {
                 title = "Fallout",
                 posterUrl = "https://images.metahub.space/poster/small/tt12637874/img",
                 badge = "★ 8.4",
-                genre = if (isRu) "Боевик, Приключения, Фантастика" else "Action, Adventure, Sci-Fi",
+                genre = if (isUa) "Бойовик, Пригоди, Фантастика" else if (isRu) "Боевик, Приключения, Фантастика" else "Action, Adventure, Sci-Fi",
                 rating = "8.4",
-                description = if (isRu) "Спустя 200 лет после ядерного апокалипсиса наивная жительница подземного бункера вынуждена выйти наружу в безжалостную и дикую Пустошь." else "In a future, post-apocalyptic Los Angeles brought about by nuclear decimation, citizens must live in underground bunkers.",
+                description = when {
+                    isUa -> "Через 200 років після ядерного апокаліпсису наївна жителька підземного притулку змушена вийти на поверхню в жорстоку Пустош."
+                    isRu -> "Спустя 200 лет после ядерного апокалипсиса наивная жительница подземного бункера вынуждена выйти наружу в дикую Пустошь."
+                    else -> "In a future, post-apocalyptic Los Angeles brought about by nuclear decimation, citizens must live in underground bunkers."
+                },
                 releaseYear = "2024",
                 isSeries = true
             ),
@@ -427,9 +512,13 @@ class MediaRepository(private val context: Context) {
                 title = "Stranger Things",
                 posterUrl = "https://images.metahub.space/poster/small/tt4574334/img",
                 badge = "★ 8.7",
-                genre = if (isRu) "Драма, Фэнтези, Ужасы" else "Drama, Fantasy, Horror",
+                genre = if (isUa) "Драма, Фентезі, Жахи" else if (isRu) "Драма, Фэнтези, Ужасы" else "Drama, Fantasy, Horror",
                 rating = "8.7",
-                description = if (isRu) "В тихом городке 1980-х загадочно исчезает мальчик, а его друзья натыкаются на правительственный заговор и жутких монстров из параллельного измерения." else "When a young boy vanishes, a small town uncovers a mystery involving secret experiments and supernatural forces.",
+                description = when {
+                    isUa -> "У тихому містечку 1980-х таємниче зникає хлопчик, а його друзі стикаються з урядовою змовою та монстрами."
+                    isRu -> "В тихом городке 1980-х загадочно исчезает мальчик, а его друзья натыкаются на правительственный заговор и монстров."
+                    else -> "When a young boy vanishes, a small town uncovers a mystery involving secret experiments and supernatural forces."
+                },
                 releaseYear = "2016",
                 isSeries = true
             )

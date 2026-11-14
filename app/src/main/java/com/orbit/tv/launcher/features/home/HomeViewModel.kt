@@ -59,6 +59,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     val currentDay: StateFlow<String> = _currentDay.asStateFlow()
 
     val mediaRepository = com.orbit.tv.launcher.features.home.repository.MediaRepository(application)
+    private var lastLoadedLanguage: String = ""
 
     init {
         loadInstalledApps()
@@ -66,14 +67,22 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         startClockTicker()
     }
 
-    fun loadMediaShelves() {
+    fun loadMediaShelves(forceRefresh: Boolean = false) {
+        lastLoadedLanguage = mediaRepository.getTmdbLanguage()
         viewModelScope.launch {
-            val m = mediaRepository.getTrendingMovies()
+            val m = mediaRepository.getTrendingMovies(forceRefresh)
             _movies.value = m
         }
         viewModelScope.launch {
-            val s = mediaRepository.getTrendingSeries()
+            val s = mediaRepository.getTrendingSeries(forceRefresh)
             _series.value = s
+        }
+    }
+
+    fun checkAndReloadMediaIfNeeded() {
+        val currentLang = mediaRepository.getTmdbLanguage()
+        if (currentLang != lastLoadedLanguage || _movies.value.isEmpty() || _series.value.isEmpty()) {
+            loadMediaShelves(forceRefresh = true)
         }
     }
 

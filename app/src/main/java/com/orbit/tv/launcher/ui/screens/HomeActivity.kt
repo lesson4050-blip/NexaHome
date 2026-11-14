@@ -87,6 +87,7 @@ class HomeActivity : AppCompatActivity() {
         java.util.Locale.setDefault(viewModel.getActiveLocale())
         // Refresh apps list in case packages were uninstalled/installed while user was in another app
         viewModel.loadInstalledApps()
+        viewModel.checkAndReloadMediaIfNeeded()
         updateGoogleAssistantVisibility()
     }
 
@@ -513,6 +514,7 @@ class HomeActivity : AppCompatActivity() {
         }
         return false
     }
+
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_VOICE_ASSIST || keyCode == KeyEvent.KEYCODE_SEARCH) {

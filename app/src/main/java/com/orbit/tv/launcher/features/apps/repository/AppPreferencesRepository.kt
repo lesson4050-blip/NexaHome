@@ -85,9 +85,18 @@ class AppPreferencesRepository(context: Context) {
         }
     }
 
+    fun getContentLanguage(): String {
+        return prefs.getString(KEY_CONTENT_LANGUAGE, "SYSTEM") ?: "SYSTEM"
+    }
+
+    fun setContentLanguage(lang: String) {
+        prefs.edit().putString(KEY_CONTENT_LANGUAGE, lang).apply()
+    }
+
     companion object {
         private const val PREFS_NAME = "orbit_launcher_app_prefs"
         private const val KEY_PINNED_APPS = "key_pinned_packages"
         private const val KEY_HIDDEN_APPS = "key_hidden_packages"
+        private const val KEY_CONTENT_LANGUAGE = "key_content_language"
     }
 }
