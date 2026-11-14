@@ -42,6 +42,17 @@ class IptvActivity : AppCompatActivity() {
     private val reconnectHandler = Handler(Looper.getMainLooper())
     private val reconnectRunnable = Runnable { performAutoReconnect() }
 
+    private val bufferingWatchdogHandler = Handler(Looper.getMainLooper())
+    private val bufferingWatchdogRunnable = Runnable {
+        handlePlayerError(
+            PlaybackException(
+                "Таймаут буферизации (потеря пакетов)",
+                null,
+                PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_TIMEOUT
+            )
+        )
+    }
+
     private val bannerHandler = Handler(Looper.getMainLooper())
     private val hideBannerRunnable = Runnable {
         binding.bannerFullscreenInfo.animate()
@@ -203,13 +214,23 @@ class IptvActivity : AppCompatActivity() {
             .apply {
                 addListener(object : Player.Listener {
                     override fun onPlaybackStateChanged(playbackState: Int) {
-                        if (playbackState == Player.STATE_READY) {
-                            retryAttempt = 0
-                            reconnectHandler.removeCallbacks(reconnectRunnable)
-                            binding.overlayPlayerError.visibility = View.GONE
-                            binding.overlayFullscreenError.visibility = View.GONE
-                            binding.btnRetryPlayback.visibility = View.VISIBLE
-                            binding.btnFullscreenRetry.visibility = View.VISIBLE
+                        when (playbackState) {
+                            Player.STATE_READY -> {
+                                bufferingWatchdogHandler.removeCallbacks(bufferingWatchdogRunnable)
+                                retryAttempt = 0
+                                reconnectHandler.removeCallbacks(reconnectRunnable)
+                                binding.overlayPlayerError.visibility = View.GONE
+                                binding.overlayFullscreenError.visibility = View.GONE
+                                binding.btnRetryPlayback.visibility = View.VISIBLE
+                                binding.btnFullscreenRetry.visibility = View.VISIBLE
+                            }
+                            Player.STATE_BUFFERING -> {
+                                bufferingWatchdogHandler.removeCallbacks(bufferingWatchdogRunnable)
+                                bufferingWatchdogHandler.postDelayed(bufferingWatchdogRunnable, 5000L)
+                            }
+                            Player.STATE_ENDED, Player.STATE_IDLE -> {
+                                bufferingWatchdogHandler.removeCallbacks(bufferingWatchdogRunnable)
+                            }
                         }
                     }
 
@@ -222,6 +243,7 @@ class IptvActivity : AppCompatActivity() {
     }
 
     private fun handlePlayerError(error: PlaybackException) {
+        bufferingWatchdogHandler.removeCallbacks(bufferingWatchdogRunnable)
         if (retryAttempt < maxAutoRetries) {
             retryAttempt++
             // Exponential backoff: 1.5s, 3s, 6s, 12s, 15s
@@ -508,6 +530,7 @@ class IptvActivity : AppCompatActivity() {
         bannerHandler.removeCallbacks(hideBannerRunnable)
         osdHandler.removeCallbacks(hideOsdRunnable)
         reconnectHandler.removeCallbacks(reconnectRunnable)
+        bufferingWatchdogHandler.removeCallbacks(bufferingWatchdogRunnable)
         exoPlayer?.release()
         exoPlayer = null
     }
