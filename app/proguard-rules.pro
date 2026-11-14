@@ -13,6 +13,7 @@
 # Keep Room Database entities and DAOs
 -keep class androidx.room.** { *; }
 -keep class com.orbit.tv.launcher.features.iptv.data.** { *; }
+-keep class com.orbit.tv.launcher.features.home.data.** { *; }
 -dontwarn androidx.room.paging.**
 
 # Keep Media3 / ExoPlayer

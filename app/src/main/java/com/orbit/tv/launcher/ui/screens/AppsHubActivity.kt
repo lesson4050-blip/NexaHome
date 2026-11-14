@@ -540,11 +540,7 @@ class AppsHubActivity : AppCompatActivity() {
                         binding.rvAllApps.findViewHolderForAdapterPosition(targetIdx)?.itemView?.requestFocus()
                     }
                     lastLaunchedAppPackage = null
-                    return@submitList
                 }
-            }
-            binding.rvAllApps.post {
-                binding.rvAllApps.requestLayout()
             }
         }
         binding.tvAppCount.text = getString(R.string.apps_count_format, filtered.size)
@@ -581,11 +577,7 @@ class AppsHubActivity : AppCompatActivity() {
         }
 
         binding.tvAppCount.text = getString(R.string.apps_count_recommended, list.size)
-        recommendedAppsAdapter.submitList(list) {
-            binding.rvRecommendedApps.post {
-                binding.rvRecommendedApps.requestLayout()
-            }
-        }
+        recommendedAppsAdapter.submitList(list)
     }
 
     private fun observeData() {
