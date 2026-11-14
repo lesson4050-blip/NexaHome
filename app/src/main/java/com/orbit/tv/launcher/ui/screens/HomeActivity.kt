@@ -42,6 +42,7 @@ class HomeActivity : AppCompatActivity() {
     private val viewModel: HomeViewModel by viewModels()
 
     private lateinit var appsAdapter: AppsAdapter
+    private lateinit var recentAdapter: MediaAdapter
     private lateinit var moviesAdapter: MediaAdapter
     private lateinit var seriesAdapter: MediaAdapter
 
@@ -141,6 +142,16 @@ class HomeActivity : AppCompatActivity() {
         binding.rvApps.apply {
             layoutManager = LinearLayoutManager(this@HomeActivity, LinearLayoutManager.HORIZONTAL, false)
             adapter = appsAdapter
+        }
+
+        // 1.5. Continue Watching Shelf (Recent Media)
+        recentAdapter = MediaAdapter { media ->
+            MediaDetailDialog.newInstance(media).show(supportFragmentManager, MediaDetailDialog.TAG)
+        }
+        binding.rvRecent.apply {
+            layoutManager = LinearLayoutManager(this@HomeActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = recentAdapter
+            setRecycledViewPool(sharedMediaPool)
         }
 
         // 2. Movies Shelf
@@ -359,6 +370,20 @@ class HomeActivity : AppCompatActivity() {
                                     binding.rvApps.findViewHolderForAdapterPosition(0)?.itemView?.requestFocus()
                                 }
                             }
+                        }
+                    }
+                }
+
+                // Continue Watching (Recent Media)
+                launch {
+                    viewModel.recentMedia.collect { recentList ->
+                        if (recentList.isNotEmpty()) {
+                            binding.headerRecent.visibility = View.VISIBLE
+                            binding.rvRecent.visibility = View.VISIBLE
+                            recentAdapter.submitList(recentList)
+                        } else {
+                            binding.headerRecent.visibility = View.GONE
+                            binding.rvRecent.visibility = View.GONE
                         }
                     }
                 }

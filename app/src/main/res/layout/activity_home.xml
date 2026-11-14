@@ -403,6 +403,54 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_app_card" />
 
+                    <!-- Row 1.5: Continue Watching Shelf (Recent Media) -->
+                    <LinearLayout
+                        android:id="@+id/header_recent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/shelf_section_margin"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:gravity="bottom"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-bold"
+                            android:text="@string/title_recent"
+                            android:textColor="@color/leanback_cyan"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="sans-serif"
+                            android:text="@string/subtitle_recent"
+                            android:textColor="@color/white_60"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_recent"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/shelf_media_height"
+                        android:layout_marginTop="6dp"
+                        android:clipChildren="true"
+                        android:clipToPadding="false"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="36dp"
+                        android:nestedScrollingEnabled="false"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_media_card" />
+
                     <!-- Row 2: Movies Shelf -->
                     <LinearLayout
                         android:id="@+id/header_movies"

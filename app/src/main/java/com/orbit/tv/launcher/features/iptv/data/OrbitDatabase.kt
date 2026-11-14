@@ -5,10 +5,14 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [ChannelEntity::class, ProgramEntity::class], version = 1, exportSchema = false)
+import com.orbit.tv.launcher.features.home.data.WatchHistoryDao
+import com.orbit.tv.launcher.features.home.data.WatchHistoryEntity
+
+@Database(entities = [ChannelEntity::class, ProgramEntity::class, WatchHistoryEntity::class], version = 2, exportSchema = false)
 abstract class OrbitDatabase : RoomDatabase() {
 
     abstract fun iptvDao(): IptvDao
+    abstract fun watchHistoryDao(): WatchHistoryDao
 
     companion object {
         @Volatile

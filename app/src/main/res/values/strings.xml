@@ -23,6 +23,9 @@
     <string name="nav_power">System Power</string>
 
     <!-- Home Screen Shelves -->
+    <string name="title_recent">Continue Watching</string>
+    <string name="subtitle_recent">Recently opened movies &amp; shows</string>
+    <string name="badge_continue">CONTINUE</string>
     <string name="title_movies">Movies</string>
     <string name="subtitle_movies_trending">Trending this week</string>
     <string name="title_series">Series</string>

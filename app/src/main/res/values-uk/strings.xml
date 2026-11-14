@@ -17,6 +17,9 @@
     <string name="nav_optimizer">Оптимізація</string>
     <string name="nav_cast">Трансляція</string>
     <string name="nav_power">Живлення</string>
+    <string name="title_recent">Продовжити перегляд</string>
+    <string name="subtitle_recent">Нещодавно відкриті фільми та серіали</string>
+    <string name="badge_continue">ПЕРЕГЛЯД</string>
     <string name="title_movies">Фільми</string>
     <string name="subtitle_movies_trending">У тренді цього тижня</string>
     <string name="title_series">Серіали</string>

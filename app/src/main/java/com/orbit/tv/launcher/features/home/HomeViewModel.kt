@@ -19,15 +19,23 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+import com.orbit.tv.launcher.features.home.data.WatchHistoryRepository
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
+
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     private val packageManagerRepository = PackageManagerRepository(application)
     val appPrefsRepository = com.orbit.tv.launcher.features.apps.repository.AppPreferencesRepository(application)
+    val watchHistoryRepository = WatchHistoryRepository(application)
     val vpnManager = com.orbit.tv.launcher.features.vpn.VpnManager(application)
     val networkStateManager = com.orbit.tv.launcher.platform.device_capabilities.NetworkStateManager(application)
     val networkStatus = networkStateManager.networkStatus
     val isWifiActive = networkStateManager.isWifiActive
     val wifiUiState = networkStateManager.wifiUiState
+
+    val recentMedia: StateFlow<List<MediaModel>> = watchHistoryRepository.recentMedia
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     private val _rawInstalledApps = MutableStateFlow<List<AppModel>>(emptyList())
     val rawInstalledApps: StateFlow<List<AppModel>> = _rawInstalledApps.asStateFlow()
@@ -95,6 +103,12 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     fun launchApp(app: AppModel): Boolean {
         return packageManagerRepository.launchApp(app)
+    }
+
+    fun recordWatched(media: MediaModel, targetApp: String? = null) {
+        viewModelScope.launch {
+            watchHistoryRepository.recordWatched(media, targetApp)
+        }
     }
 
     fun getActiveLocale(): Locale {

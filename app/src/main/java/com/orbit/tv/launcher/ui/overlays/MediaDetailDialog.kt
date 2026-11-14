@@ -12,7 +12,9 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
 import coil.load
+import kotlinx.coroutines.launch
 import com.orbit.tv.launcher.R
 import com.orbit.tv.launcher.core.focus.TvFocusHelper
 import com.orbit.tv.launcher.databinding.DialogMediaDetailBinding
@@ -94,12 +96,16 @@ class MediaDetailDialog : DialogFragment() {
         }
 
         binding.btnActionTrailer.setOnClickListener {
+            viewLifecycleOwner.lifecycleScope.launch {
+                com.orbit.tv.launcher.features.home.data.WatchHistoryRepository(requireContext())
+                    .recordWatched(media, "Trailer")
+            }
             TvTrailerDialog.newInstance(media.title, media.id)
                 .show(parentFragmentManager, TvTrailerDialog.TAG)
         }
 
         binding.btnActionSearchApps.setOnClickListener {
-            WatchInAppsDialog.newInstance(media.title)
+            WatchInAppsDialog.newInstance(media)
                 .show(parentFragmentManager, WatchInAppsDialog.TAG)
             dismiss()
         }

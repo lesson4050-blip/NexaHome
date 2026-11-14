@@ -23,6 +23,9 @@
     <string name="nav_power">Питание</string>
 
     <!-- Home Screen Shelves -->
+    <string name="title_recent">Продолжить просмотр</string>
+    <string name="subtitle_recent">Недавно открытые фильмы и сериалы</string>
+    <string name="badge_continue">ПРОСМОТР</string>
     <string name="title_movies">Фильмы</string>
     <string name="subtitle_movies_trending">Популярно на этой неделе</string>
     <string name="title_series">Сериалы</string>

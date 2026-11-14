@@ -9,12 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.orbit.tv.launcher.R
 import com.orbit.tv.launcher.core.focus.TvFocusHelper
 import com.orbit.tv.launcher.databinding.DialogWatchInAppsBinding
 import com.orbit.tv.launcher.features.home.TvDeepLinkHelper
 import com.orbit.tv.launcher.features.home.adapters.MediaPlayerAdapter
+import com.orbit.tv.launcher.features.home.data.WatchHistoryRepository
+import com.orbit.tv.launcher.features.home.model.MediaModel
+import kotlinx.coroutines.launch
 
 class WatchInAppsDialog : DialogFragment() {
 
@@ -22,6 +26,7 @@ class WatchInAppsDialog : DialogFragment() {
     private val binding get() = _binding!!
 
     private var movieTitle: String = ""
+    private var media: MediaModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,6 +65,11 @@ class WatchInAppsDialog : DialogFragment() {
 
         val players = TvDeepLinkHelper.getInstalledMediaPlayers(requireContext())
         val adapter = MediaPlayerAdapter { player ->
+            media?.let { m ->
+                viewLifecycleOwner.lifecycleScope.launch {
+                    WatchHistoryRepository(requireContext()).recordWatched(m, player.name)
+                }
+            }
             TvDeepLinkHelper.launchSearchInApp(requireContext(), player, movieTitle)
             dismiss()
         }
@@ -88,6 +98,16 @@ class WatchInAppsDialog : DialogFragment() {
             val dialog = WatchInAppsDialog()
             val args = Bundle().apply {
                 putString(ARG_MOVIE_TITLE, movieTitle)
+            }
+            dialog.arguments = args
+            return dialog
+        }
+
+        fun newInstance(media: MediaModel): WatchInAppsDialog {
+            val dialog = WatchInAppsDialog()
+            dialog.media = media
+            val args = Bundle().apply {
+                putString(ARG_MOVIE_TITLE, media.title)
             }
             dialog.arguments = args
             return dialog
