@@ -140,7 +140,7 @@
                 android:focusable="true"
                 android:padding="10dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_settings" />
+                android:src="@drawable/ic_nav_launcher_custom" />
 
             <ImageButton
                 android:id="@+id/btn_nav_power"
@@ -382,21 +382,56 @@
 
                     </LinearLayout>
 
-                    <!-- SECTION 2: Wallpaper Theme & Focus Dimmer -->
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!-- SECTION 2: Wallpaper Theme -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:fontFamily="sans-serif-bold"
-                        android:text="@string/settings_section_wallpaper"
-                        android:textColor="@color/leanback_cyan"
-                        android:textSize="15sp" />
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="sans-serif-bold"
+                            android:text="@string/settings_section_wallpaper"
+                            android:textColor="@color/leanback_cyan"
+                            android:textSize="15sp" />
+
+                        <LinearLayout
+                            android:id="@+id/btn_upload_wallpaper"
+                            android:layout_width="wrap_content"
+                            android:layout_height="38dp"
+                            android:background="@drawable/bg_genre_chip"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingStart="14dp"
+                            android:paddingEnd="14dp">
+
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_marginEnd="8dp"
+                                android:src="@drawable/ic_upload" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-bold"
+                                android:text="@string/settings_btn_upload_wallpaper"
+                                android:textColor="@color/white"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_wallpaper_themes"
                         android:layout_width="match_parent"
-                        android:layout_height="52dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="10dp"
                         android:clipChildren="false"
                         android:clipToPadding="false"
                         android:orientation="horizontal"
@@ -405,52 +440,151 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_genre_chip" />
 
-
-                    <!-- SECTION 3: Content Language -->
+                    <!-- SECTION 3: Content Language & Preferred Media Player Cards -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:fontFamily="sans-serif-bold"
-                        android:text="@string/settings_section_language"
+                        android:text="Воспроизведение и каталог"
                         android:textColor="@color/leanback_cyan"
                         android:textSize="15sp" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_content_languages"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="52dp"
-                        android:layout_marginTop="8dp"
-                        android:clipChildren="false"
-                        android:clipToPadding="false"
-                        android:orientation="horizontal"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_genre_chip" />
-
-                    <!-- SECTION 4: Preferred Media Player -->
-                    <TextView
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:fontFamily="sans-serif-bold"
-                        android:text="@string/settings_section_player"
-                        android:textColor="@color/leanback_cyan"
-                        android:textSize="15sp" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_preferred_players"
-                        android:layout_width="match_parent"
-                        android:layout_height="52dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="10dp"
+                        android:baselineAligned="false"
                         android:clipChildren="false"
                         android:clipToPadding="false"
-                        android:orientation="horizontal"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_genre_chip" />
+                        android:orientation="horizontal">
+
+                        <!-- Language Selector Card -->
+                        <LinearLayout
+                            android:id="@+id/card_select_language"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="12dp"
+                            android:background="@drawable/bg_focus_app_card"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:clipChildren="false"
+                            android:clipToPadding="false"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_marginEnd="8dp"
+                                    android:src="@drawable/ic_language" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:text="@string/settings_section_language"
+                                    android:textColor="@color/white_60"
+                                    android:textSize="12sp" />
+
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:src="@drawable/ic_arrow_drop_down" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/tv_selected_language_val"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:fontFamily="sans-serif-black"
+                                android:textColor="@color/leanback_cyan"
+                                android:textSize="17sp"
+                                tools:text="Українська" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="sans-serif"
+                                android:text="@string/settings_press_to_change"
+                                android:textColor="@color/white_40"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                        <!-- Player Selector Card -->
+                        <LinearLayout
+                            android:id="@+id/card_select_player"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_focus_app_card"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:clipChildren="false"
+                            android:clipToPadding="false"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_marginEnd="8dp"
+                                    android:src="@drawable/ic_media_player" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:text="@string/settings_section_player"
+                                    android:textColor="@color/white_60"
+                                    android:textSize="12sp" />
+
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:src="@drawable/ic_arrow_drop_down" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/tv_selected_player_val"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:fontFamily="sans-serif-black"
+                                android:textColor="@color/leanback_cyan"
+                                android:textSize="17sp"
+                                tools:text="Всегда спрашивать" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="sans-serif"
+                                android:text="@string/settings_press_to_change"
+                                android:textColor="@color/white_40"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                     <!-- SECTION 5: Hidden Applications -->
                     <LinearLayout

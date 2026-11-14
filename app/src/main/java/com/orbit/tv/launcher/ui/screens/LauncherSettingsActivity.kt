@@ -1,12 +1,13 @@
 package com.orbit.tv.launcher.ui.screens
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.orbit.tv.launcher.R
 import com.orbit.tv.launcher.core.focus.TvFocusHelper
 import com.orbit.tv.launcher.databinding.ActivitySettingsBinding
@@ -16,10 +17,12 @@ import com.orbit.tv.launcher.features.home.model.AppModel
 import com.orbit.tv.launcher.platform.package_manager.PackageManagerRepository
 import com.orbit.tv.launcher.platform.storage.CacheManager
 import com.orbit.tv.launcher.platform.wallpaper.TvWallpaperHelper
+import com.orbit.tv.launcher.ui.overlays.TvOptionPickerDialog
 import com.orbit.tv.launcher.ui.overlays.TvPowerDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 
 class LauncherSettingsActivity : AppCompatActivity() {
 
@@ -30,8 +33,41 @@ class LauncherSettingsActivity : AppCompatActivity() {
 
     private lateinit var hiddenAppsAdapter: HiddenAppsAdapter
     private lateinit var wallpaperAdapter: SettingsChipAdapter
-    private lateinit var languageAdapter: SettingsChipAdapter
-    private lateinit var playerAdapter: SettingsChipAdapter
+
+    private val pickCustomWallpaperLauncher = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        if (uri != null) {
+            lifecycleScope.launch(Dispatchers.IO) {
+                try {
+                    val customFile = File(filesDir, "custom_wallpaper.jpg")
+                    contentResolver.openInputStream(uri)?.use { input ->
+                        customFile.outputStream().use { output ->
+                            input.copyTo(output)
+                        }
+                    }
+                    withContext(Dispatchers.Main) {
+                        appPrefs.setWallpaperTheme("CUSTOM")
+                        applyWallpaper("CUSTOM")
+                        setupWallpaperSection()
+                        Toast.makeText(
+                            this@LauncherSettingsActivity,
+                            R.string.settings_custom_wallpaper_success,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            this@LauncherSettingsActivity,
+                            R.string.settings_custom_wallpaper_fail,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,8 +106,6 @@ class LauncherSettingsActivity : AppCompatActivity() {
         TvWallpaperHelper.apply(theme, binding.silkShaderView, binding.ivBackdrop, binding.viewDimmer)
     }
 
-
-
     private fun setupFocus() {
         TvFocusHelper.bindFocusScale(binding.btnNavMedia, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnNavHistory, scaleRatio = 1.12f, elevationDp = 8f)
@@ -88,6 +122,9 @@ class LauncherSettingsActivity : AppCompatActivity() {
         TvFocusHelper.bindFocusScale(binding.btnClearCatalogCache, scaleRatio = 1.08f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.btnClearAllCache, scaleRatio = 1.08f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.btnUnhideAll, scaleRatio = 1.08f, elevationDp = 6f)
+        TvFocusHelper.bindFocusScale(binding.btnUploadWallpaper, scaleRatio = 1.08f, elevationDp = 6f)
+        TvFocusHelper.bindFocusScale(binding.cardSelectLanguage, scaleRatio = 1.04f, elevationDp = 6f)
+        TvFocusHelper.bindFocusScale(binding.cardSelectPlayer, scaleRatio = 1.04f, elevationDp = 6f)
     }
 
     private fun setupSidebar() {
@@ -139,28 +176,36 @@ class LauncherSettingsActivity : AppCompatActivity() {
 
     private fun setupCacheSection() {
         binding.btnClearImageCache.setOnClickListener {
-            lifecycleScope.launch {
+            lifecycleScope.launch(Dispatchers.IO) {
                 cacheManager.clearImageCache()
-                Toast.makeText(this@LauncherSettingsActivity, R.string.settings_cache_cleared, Toast.LENGTH_SHORT).show()
-                refreshCacheMetrics()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@LauncherSettingsActivity, R.string.settings_cache_cleared, Toast.LENGTH_SHORT).show()
+                    refreshCacheMetrics()
+                }
             }
         }
 
         binding.btnClearCatalogCache.setOnClickListener {
-            lifecycleScope.launch {
+            lifecycleScope.launch(Dispatchers.IO) {
                 cacheManager.clearCatalogCache()
-                Toast.makeText(this@LauncherSettingsActivity, R.string.settings_cache_cleared, Toast.LENGTH_SHORT).show()
-                refreshCacheMetrics()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@LauncherSettingsActivity, R.string.settings_cache_cleared, Toast.LENGTH_SHORT).show()
+                    refreshCacheMetrics()
+                }
             }
         }
 
         binding.btnClearAllCache.setOnClickListener {
-            lifecycleScope.launch {
+            lifecycleScope.launch(Dispatchers.IO) {
                 cacheManager.clearAllCache()
-                Toast.makeText(this@LauncherSettingsActivity, R.string.settings_cache_cleared, Toast.LENGTH_SHORT).show()
-                refreshCacheMetrics()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@LauncherSettingsActivity, R.string.settings_cache_cleared, Toast.LENGTH_SHORT).show()
+                    refreshCacheMetrics()
+                }
             }
         }
+
+        refreshCacheMetrics()
     }
 
     private fun refreshCacheMetrics() {
@@ -178,14 +223,29 @@ class LauncherSettingsActivity : AppCompatActivity() {
     }
 
     private fun setupWallpaperSection() {
-        val themes = listOf(
-            SettingsChip("SCENERY", getString(R.string.settings_wallpaper_scenery)),
+        binding.btnUploadWallpaper.setOnClickListener {
+            pickCustomWallpaperLauncher.launch("image/*")
+        }
+
+        val customFile = File(filesDir, "custom_wallpaper.jpg")
+        val themes = mutableListOf<SettingsChip>()
+
+        if (customFile.exists()) {
+            themes.add(SettingsChip("CUSTOM", getString(R.string.settings_wallpaper_custom)))
+        }
+
+        themes.addAll(listOf(
+            SettingsChip("SCENERY", getString(R.string.settings_wallpaper_scenery_fjord)),
+            SettingsChip("SCENERY_AURORA", getString(R.string.settings_wallpaper_scenery_aurora)),
+            SettingsChip("SCENERY_ALPINE", getString(R.string.settings_wallpaper_scenery_alpine)),
+            SettingsChip("SCENERY_FOREST", getString(R.string.settings_wallpaper_scenery_forest)),
+            SettingsChip("SCENERY_LAKE", getString(R.string.settings_wallpaper_scenery_lake)),
             SettingsChip("SILK_VIOLET", getString(R.string.settings_wallpaper_silk_violet)),
             SettingsChip("SILK_CYAN", getString(R.string.settings_wallpaper_silk_cyan)),
             SettingsChip("SILK_EMERALD", getString(R.string.settings_wallpaper_silk_emerald)),
             SettingsChip("SILK_MIDNIGHT", getString(R.string.settings_wallpaper_silk_midnight)),
             SettingsChip("SILK_CRIMSON", getString(R.string.settings_wallpaper_silk_crimson))
-        )
+        ))
 
         wallpaperAdapter = SettingsChipAdapter { chip ->
             appPrefs.setWallpaperTheme(chip.id)
@@ -197,51 +257,100 @@ class LauncherSettingsActivity : AppCompatActivity() {
         wallpaperAdapter.submitList(themes)
         wallpaperAdapter.selectedId = appPrefs.getWallpaperTheme()
         binding.rvWallpaperThemes.adapter = wallpaperAdapter
-
     }
 
     private fun setupLanguageSection() {
         val languages = listOf(
-            SettingsChip("SYSTEM", getString(R.string.settings_lang_system)),
-            SettingsChip("uk", "Українська"),
-            SettingsChip("ru", "Русский"),
-            SettingsChip("en", "English"),
-            SettingsChip("be", "Беларуская"),
-            SettingsChip("pl", "Polski"),
-            SettingsChip("de", "Deutsch"),
-            SettingsChip("fr", "Français"),
-            SettingsChip("es", "Español")
+            TvOptionPickerDialog.OptionItem("SYSTEM", getString(R.string.settings_lang_system), "Автоматически по языку системы"),
+            TvOptionPickerDialog.OptionItem("uk", "Українська", "uk • Каталог фильмов и сериалов"),
+            TvOptionPickerDialog.OptionItem("ru", "Русский", "ru • Каталог фильмов и сериалов"),
+            TvOptionPickerDialog.OptionItem("en", "English", "en • Content catalog & metadata"),
+            TvOptionPickerDialog.OptionItem("be", "Беларуская", "be • Каталог кантэнту"),
+            TvOptionPickerDialog.OptionItem("pl", "Polski", "pl • Katalog treści i opisy"),
+            TvOptionPickerDialog.OptionItem("de", "Deutsch", "de • Inhaltskatalog & Details"),
+            TvOptionPickerDialog.OptionItem("fr", "Français", "fr • Catalogue de contenu"),
+            TvOptionPickerDialog.OptionItem("es", "Español", "es • Catálogo de contenido")
         )
 
-        languageAdapter = SettingsChipAdapter { chip ->
-            appPrefs.setContentLanguage(chip.id)
-            languageAdapter.selectedId = chip.id
-            Toast.makeText(this, chip.title, Toast.LENGTH_SHORT).show()
+        fun updateSelectedLabel() {
+            val currentCode = appPrefs.getContentLanguage()
+            val matched = languages.find { it.id == currentCode }
+            binding.tvSelectedLanguageVal.text = matched?.title ?: getString(R.string.settings_lang_system)
         }
 
-        languageAdapter.submitList(languages)
-        languageAdapter.selectedId = appPrefs.getContentLanguage()
-        binding.rvContentLanguages.adapter = languageAdapter
+        updateSelectedLabel()
+
+        binding.cardSelectLanguage.setOnClickListener {
+            val currentCode = appPrefs.getContentLanguage()
+            val mappedOptions = languages.map { opt ->
+                opt.copy(isSelected = (opt.id == currentCode))
+            }
+
+            TvOptionPickerDialog.show(
+                fragmentManager = supportFragmentManager,
+                title = getString(R.string.settings_dialog_language_title),
+                options = mappedOptions
+            ) { selected ->
+                appPrefs.setContentLanguage(selected.id)
+                updateSelectedLabel()
+                Toast.makeText(this, selected.title, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun setupPlayerSection() {
-        val alwaysAsk = SettingsChip("ASK", getString(R.string.settings_player_always_ask))
-        val installedPlayers = TvDeepLinkHelper.getInstalledMediaPlayers(this)
+        fun buildPlayerOptions(): List<TvOptionPickerDialog.OptionItem> {
+            val currentPlayer = appPrefs.getPreferredPlayer()
+            val options = mutableListOf<TvOptionPickerDialog.OptionItem>()
 
-        val playerChips = mutableListOf(alwaysAsk)
-        installedPlayers.forEach { player ->
-            playerChips.add(SettingsChip(player.packageName, player.name))
+            options.add(
+                TvOptionPickerDialog.OptionItem(
+                    id = "ASK",
+                    title = getString(R.string.settings_player_always_ask),
+                    subtitle = "Показывать диалог выбора плеера при каждом запуске",
+                    isSelected = ("ASK" == currentPlayer)
+                )
+            )
+
+            val installed = TvDeepLinkHelper.getInstalledMediaPlayers(this)
+            installed.forEach { player ->
+                options.add(
+                    TvOptionPickerDialog.OptionItem(
+                        id = player.packageName,
+                        title = player.name,
+                        subtitle = player.packageName,
+                        isSelected = (player.packageName == currentPlayer)
+                    )
+                )
+            }
+            return options
         }
 
-        playerAdapter = SettingsChipAdapter { chip ->
-            appPrefs.setPreferredPlayer(chip.id)
-            playerAdapter.selectedId = chip.id
-            Toast.makeText(this, chip.title, Toast.LENGTH_SHORT).show()
+        fun updateSelectedPlayerLabel() {
+            val currentPlayer = appPrefs.getPreferredPlayer()
+            if (currentPlayer == "ASK") {
+                binding.tvSelectedPlayerVal.text = getString(R.string.settings_player_always_ask)
+            } else {
+                val installed = TvDeepLinkHelper.getInstalledMediaPlayers(this)
+                val matched = installed.find { it.packageName == currentPlayer }
+                binding.tvSelectedPlayerVal.text = matched?.name ?: currentPlayer
+            }
         }
 
-        playerAdapter.submitList(playerChips)
-        playerAdapter.selectedId = appPrefs.getPreferredPlayer()
-        binding.rvPreferredPlayers.adapter = playerAdapter
+        updateSelectedPlayerLabel()
+
+        binding.cardSelectPlayer.setOnClickListener {
+            val options = buildPlayerOptions()
+            TvOptionPickerDialog.show(
+                fragmentManager = supportFragmentManager,
+                title = getString(R.string.settings_dialog_player_title),
+                options = options
+            ) { selected ->
+                appPrefs.setPreferredPlayer(selected.id)
+                updateSelectedPlayerLabel()
+                Toast.makeText(this, selected.title, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun setupHiddenApps() {
