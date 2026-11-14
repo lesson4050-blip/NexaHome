@@ -38,9 +38,14 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:fontFamily="sans-serif-black"
+            android:letterSpacing="0.01"
             android:maxLines="1"
+            android:shadowColor="#CC000000"
+            android:shadowDx="0"
+            android:shadowDy="1"
+            android:shadowRadius="2"
             android:textColor="@color/white"
-            android:textSize="12sp"
+            android:textSize="13sp"
             tools:text="DUNE: PART TWO" />
 
         <TextView
@@ -49,10 +54,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:ellipsize="end"
-            android:fontFamily="sans-serif-medium"
+            android:fontFamily="sans-serif-bold"
+            android:letterSpacing="0.04"
             android:maxLines="1"
+            android:shadowColor="#99000000"
+            android:shadowDx="0"
+            android:shadowDy="1"
+            android:shadowRadius="1"
             android:textColor="@color/leanback_cyan"
-            android:textSize="9sp"
+            android:textSize="10sp"
             tools:text="4K ULTRA HD" />
 
     </LinearLayout>

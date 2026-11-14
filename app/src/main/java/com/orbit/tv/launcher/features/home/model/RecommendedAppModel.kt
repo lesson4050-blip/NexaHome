@@ -9,5 +9,6 @@ data class RecommendedAppModel(
     val description: String,
     val iconRes: Int,
     val isInstalled: Boolean = false,
-    val installedIcon: Drawable? = null
+    val installedIcon: Drawable? = null,
+    val directApkUrl: String? = null
 )

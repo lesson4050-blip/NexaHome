@@ -39,28 +39,33 @@ class RecommendedAppsAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            TvFocusHelper.bindFocusScale(binding.cardContainer, scaleRatio = 1.05f, elevationDp = 8f)
+            TvFocusHelper.bindFocusScale(binding.cardContainer, scaleRatio = 1.05f, elevationDp = 0f)
         }
 
         fun resetTransform() {
             binding.cardContainer.animate().cancel()
             val hasFocus = binding.cardContainer.isFocused
-            val density = binding.root.resources.displayMetrics.density
             val targetScale = if (hasFocus) 1.05f else 1.0f
-            val targetElevation = if (hasFocus) 8f * density else 0f
             binding.cardContainer.scaleX = targetScale
             binding.cardContainer.scaleY = targetScale
-            binding.cardContainer.translationZ = targetElevation
+            binding.cardContainer.translationZ = 0f
+            binding.cardContainer.elevation = 0f
             binding.cardContainer.translationX = 0f
             binding.cardContainer.translationY = 0f
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                binding.cardContainer.outlineAmbientShadowColor = android.graphics.Color.TRANSPARENT
+                binding.cardContainer.outlineSpotShadowColor = android.graphics.Color.TRANSPARENT
+            }
         }
 
         fun bind(item: RecommendedAppModel) {
             resetTransform()
             val ctx = binding.root.context
             binding.tvAppName.text = item.name
+            binding.tvAppName.paintFlags = binding.tvAppName.paintFlags or android.graphics.Paint.SUBPIXEL_TEXT_FLAG or android.graphics.Paint.ANTI_ALIAS_FLAG
             binding.tvCategoryTag.text = item.category
             binding.tvAppDescription.text = item.description
+            binding.tvAppDescription.paintFlags = binding.tvAppDescription.paintFlags or android.graphics.Paint.SUBPIXEL_TEXT_FLAG or android.graphics.Paint.ANTI_ALIAS_FLAG
 
             if (item.installedIcon != null) {
                 binding.ivAppIcon.setImageDrawable(item.installedIcon)

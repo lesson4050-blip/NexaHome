@@ -18,15 +18,23 @@ object TvFocusHelper {
         elevationDp: Float = 8f,
         duration: Long = 180L
     ) {
-        val density = view.resources.displayMetrics.density
-        val targetElevation = elevationDp * density
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+            view.outlineAmbientShadowColor = android.graphics.Color.TRANSPARENT
+            view.outlineSpotShadowColor = android.graphics.Color.TRANSPARENT
+        }
+        view.elevation = 0f
+        view.translationZ = 0f
 
         view.setOnFocusChangeListener { v, hasFocus ->
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                v.outlineAmbientShadowColor = android.graphics.Color.TRANSPARENT
+                v.outlineSpotShadowColor = android.graphics.Color.TRANSPARENT
+            }
             if (hasFocus) {
                 v.animate()
                     .scaleX(scaleRatio)
                     .scaleY(scaleRatio)
-                    .translationZ(targetElevation)
+                    .translationZ(0f)
                     .setDuration(duration)
                     .setInterpolator(interpolator)
                     .start()

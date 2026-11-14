@@ -69,7 +69,8 @@ class AppsHubActivity : AppCompatActivity() {
             name = "SmartTube",
             category = "Медиа",
             description = "YouTube без рекламы, 4K 60fps HDR, пропуск спонсорских вставок",
-            iconRes = R.drawable.ic_brand_smarttube
+            iconRes = R.drawable.ic_brand_smarttube,
+            directApkUrl = "https://github.com/yuliskov/SmartTube/releases/download/latest/smarttube_stable.apk"
         ),
         RecommendedAppModel(
             packageName = "org.videolan.vlc",
@@ -104,7 +105,8 @@ class AppsHubActivity : AppCompatActivity() {
             name = "Lampa TV",
             category = "Каталог",
             description = "Каталог фильмов и сериалов с трейлерами и онлайн-источниками",
-            iconRes = R.drawable.ic_brand_lampa
+            iconRes = R.drawable.ic_brand_lampa,
+            directApkUrl = "https://bwa.to/lampa.apk"
         ),
         RecommendedAppModel(
             packageName = "ch.protonvpn.android",
@@ -230,16 +232,15 @@ class AppsHubActivity : AppCompatActivity() {
             return
         }
 
-        // Direct web portal for sideloaded/open-source TV apps not on Google Play
-        when (app.packageName) {
-            "com.teamsmart.videomanager.tv" -> {
-                openBrowserUrl("https://smarttubeapp.github.io")
-                return
-            }
-            "tv.lampa" -> {
-                openBrowserUrl("https://lampa.mx")
-                return
-            }
+        // Sideloaded / open-source TV apps not present in Google Play: download & install in-app
+        if (!app.directApkUrl.isNullOrBlank()) {
+            com.orbit.tv.launcher.ui.overlays.SideloadInstallDialog.newInstance(
+                appName = app.name,
+                packageName = app.packageName,
+                apkUrl = app.directApkUrl,
+                iconRes = app.iconRes
+            ).show(supportFragmentManager, com.orbit.tv.launcher.ui.overlays.SideloadInstallDialog.TAG)
+            return
         }
 
         // 1-Click install via Google Play TV with web fallback

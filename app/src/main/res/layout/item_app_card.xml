@@ -32,9 +32,14 @@
             android:layout_marginTop="8dp"
             android:ellipsize="end"
             android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.02"
             android:maxLines="1"
+            android:shadowColor="#99000000"
+            android:shadowDx="0"
+            android:shadowDy="1"
+            android:shadowRadius="2"
             android:textColor="@color/white"
-            android:textSize="13sp"
+            android:textSize="14.5sp"
             tools:text="YouTube" />
 
     </LinearLayout>

@@ -39,26 +39,31 @@ class MediaAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            TvFocusHelper.bindFocusScale(binding.cardContainer, scaleRatio = 1.05f, elevationDp = 10f)
+            TvFocusHelper.bindFocusScale(binding.cardContainer, scaleRatio = 1.05f, elevationDp = 0f)
         }
 
         fun resetTransform() {
             binding.cardContainer.animate().cancel()
             val hasFocus = binding.cardContainer.isFocused
-            val density = binding.root.resources.displayMetrics.density
             val targetScale = if (hasFocus) 1.05f else 1.0f
-            val targetElevation = if (hasFocus) 10f * density else 0f
             binding.cardContainer.scaleX = targetScale
             binding.cardContainer.scaleY = targetScale
-            binding.cardContainer.translationZ = targetElevation
+            binding.cardContainer.translationZ = 0f
+            binding.cardContainer.elevation = 0f
             binding.cardContainer.translationX = 0f
             binding.cardContainer.translationY = 0f
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                binding.cardContainer.outlineAmbientShadowColor = android.graphics.Color.TRANSPARENT
+                binding.cardContainer.outlineSpotShadowColor = android.graphics.Color.TRANSPARENT
+            }
         }
 
         fun bind(media: MediaModel) {
             resetTransform()
             binding.tvTitle.text = media.title
+            binding.tvTitle.paintFlags = binding.tvTitle.paintFlags or android.graphics.Paint.SUBPIXEL_TEXT_FLAG or android.graphics.Paint.ANTI_ALIAS_FLAG
             binding.tvBadge.text = media.badge
+            binding.tvBadge.paintFlags = binding.tvBadge.paintFlags or android.graphics.Paint.SUBPIXEL_TEXT_FLAG or android.graphics.Paint.ANTI_ALIAS_FLAG
 
             // Memory-optimized Coil loading
             binding.ivPoster.load(media.posterUrl) {

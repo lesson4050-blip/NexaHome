@@ -218,8 +218,8 @@
                         android:layout_marginStart="10dp"
                         android:fontFamily="sans-serif-medium"
                         android:text="@string/search_hint"
-                        android:textColor="@color/search_hint"
-                        android:textSize="13sp" />
+                        android:textColor="@color/white_90"
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -351,18 +351,27 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-bold"
-                            android:textColor="@color/white_90"
-                            android:textSize="11sp"
-                            tools:text="SELASA" />
+                            android:letterSpacing="0.04"
+                            android:shadowColor="#80000000"
+                            android:shadowDx="0"
+                            android:shadowDy="1"
+                            android:shadowRadius="2"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            tools:text="СУББОТА" />
 
                         <TextView
                             android:id="@+id/tv_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif"
-                            android:textColor="@color/white_60"
-                            android:textSize="10sp"
-                            tools:text="2 November 2021" />
+                            android:fontFamily="sans-serif-medium"
+                            android:shadowColor="#80000000"
+                            android:shadowDx="0"
+                            android:shadowDy="1"
+                            android:shadowRadius="2"
+                            android:textColor="#E0FFFFFF"
+                            android:textSize="11.5sp"
+                            tools:text="14 ноября 2026" />
 
                     </LinearLayout>
 
@@ -372,6 +381,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:fontFamily="sans-serif-black"
+                        android:shadowColor="#99000000"
+                        android:shadowDx="0"
+                        android:shadowDy="1"
+                        android:shadowRadius="3"
                         android:textColor="@color/white"
                         android:textSize="26sp"
                         tools:text="17:31" />
@@ -468,9 +481,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="sans-serif-bold"
+                                android:letterSpacing="0.02"
+                                android:shadowColor="#99000000"
+                                android:shadowDx="0"
+                                android:shadowDy="1"
+                                android:shadowRadius="2"
                                 android:text="@string/title_movies"
                                 android:textColor="@color/leanback_cyan"
-                                android:textSize="16sp" />
+                                android:textSize="17sp" />
 
                             <TextView
                                 android:id="@+id/tv_movies_subtitle"
@@ -478,10 +496,14 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:layout_marginStart="10dp"
-                                android:fontFamily="sans-serif"
+                                android:fontFamily="sans-serif-medium"
+                                android:shadowColor="#80000000"
+                                android:shadowDx="0"
+                                android:shadowDy="1"
+                                android:shadowRadius="2"
                                 android:text="@string/subtitle_movies_trending"
-                                android:textColor="@color/white_60"
-                                android:textSize="12sp" />
+                                android:textColor="#E0FFFFFF"
+                                android:textSize="13sp" />
 
                             <LinearLayout
                                 android:id="@+id/btn_filter_movie_genre"
@@ -502,7 +524,7 @@
                                     android:fontFamily="sans-serif-bold"
                                     android:text="@string/genre_all"
                                     android:textColor="@color/leanback_cyan"
-                                    android:textSize="12sp" />
+                                    android:textSize="13sp" />
 
                                 <ImageView
                                     android:layout_width="16dp"
@@ -554,9 +576,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="sans-serif-bold"
+                                android:letterSpacing="0.02"
+                                android:shadowColor="#99000000"
+                                android:shadowDx="0"
+                                android:shadowDy="1"
+                                android:shadowRadius="2"
                                 android:text="@string/title_series"
                                 android:textColor="@color/leanback_cyan"
-                                android:textSize="16sp" />
+                                android:textSize="17sp" />
 
                             <TextView
                                 android:id="@+id/tv_series_subtitle"
@@ -564,10 +591,14 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:layout_marginStart="10dp"
-                                android:fontFamily="sans-serif"
+                                android:fontFamily="sans-serif-medium"
+                                android:shadowColor="#80000000"
+                                android:shadowDx="0"
+                                android:shadowDy="1"
+                                android:shadowRadius="2"
                                 android:text="@string/subtitle_series_top"
-                                android:textColor="@color/white_60"
-                                android:textSize="12sp" />
+                                android:textColor="#E0FFFFFF"
+                                android:textSize="13sp" />
 
                             <LinearLayout
                                 android:id="@+id/btn_filter_series_genre"
@@ -588,7 +619,7 @@
                                     android:fontFamily="sans-serif-bold"
                                     android:text="@string/genre_all"
                                     android:textColor="@color/leanback_cyan"
-                                    android:textSize="12sp" />
+                                    android:textSize="13sp" />
 
                                 <ImageView
                                     android:layout_width="16dp"

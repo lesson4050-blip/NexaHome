@@ -2,4 +2,6 @@
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
     <cache-path name="cast_cache" path="." />
     <files-path name="cast_files" path="." />
+    <cache-path name="apk_cache" path="installer" />
+    <external-path name="external" path="." />
 </paths>
