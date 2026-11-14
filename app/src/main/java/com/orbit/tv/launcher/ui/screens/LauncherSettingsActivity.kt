@@ -28,6 +28,8 @@ class LauncherSettingsActivity : AppCompatActivity() {
     private lateinit var cacheManager: CacheManager
 
     private lateinit var hiddenAppsAdapter: HiddenAppsAdapter
+    private lateinit var wallpaperAdapter: SettingsChipAdapter
+    private lateinit var dimmerAdapter: SettingsChipAdapter
     private lateinit var languageAdapter: SettingsChipAdapter
     private lateinit var playerAdapter: SettingsChipAdapter
 
@@ -40,18 +42,34 @@ class LauncherSettingsActivity : AppCompatActivity() {
         pkgRepo = PackageManagerRepository(this)
         cacheManager = CacheManager(this)
 
+        applyWallpaper(appPrefs.getWallpaperTheme())
+        applyDimmer(appPrefs.getDimmerOpacity())
+
         setupFocus()
         setupSidebar()
-        setupHiddenApps()
         setupCacheSection()
+        setupWallpaperSection()
         setupLanguageSection()
         setupPlayerSection()
+        setupHiddenApps()
     }
 
     override fun onResume() {
         super.onResume()
         loadHiddenApps()
         refreshCacheMetrics()
+    }
+
+    private fun applyWallpaper(theme: String) {
+        when (theme) {
+            "FOCUS" -> binding.ivBackdrop.setImageResource(R.drawable.bg_wallpaper_focus)
+            "NEBULA" -> binding.ivBackdrop.setImageResource(R.drawable.bg_wallpaper_nebula)
+            else -> binding.ivBackdrop.setImageResource(R.drawable.backdrop_scenery)
+        }
+    }
+
+    private fun applyDimmer(opacity: Float) {
+        binding.dimmerOverlay.alpha = opacity.coerceIn(0.40f, 0.98f)
     }
 
     private fun setupFocus() {
@@ -66,10 +84,10 @@ class LauncherSettingsActivity : AppCompatActivity() {
 
         binding.btnNavSettings.isSelected = true
 
-        TvFocusHelper.bindFocusScale(binding.btnUnhideAll, scaleRatio = 1.08f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.btnClearImageCache, scaleRatio = 1.08f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.btnClearCatalogCache, scaleRatio = 1.08f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.btnClearAllCache, scaleRatio = 1.08f, elevationDp = 6f)
+        TvFocusHelper.bindFocusScale(binding.btnUnhideAll, scaleRatio = 1.08f, elevationDp = 6f)
     }
 
     private fun setupSidebar() {
@@ -104,49 +122,6 @@ class LauncherSettingsActivity : AppCompatActivity() {
         }
         binding.btnNavPower.setOnClickListener {
             TvPowerDialog.show(supportFragmentManager)
-        }
-    }
-
-    private fun setupHiddenApps() {
-        hiddenAppsAdapter = HiddenAppsAdapter { app ->
-            appPrefs.unhideApp(app.packageName)
-            Toast.makeText(
-                this,
-                getString(R.string.settings_toast_unhidden, app.label),
-                Toast.LENGTH_SHORT
-            ).show()
-            loadHiddenApps()
-        }
-        binding.rvHiddenApps.adapter = hiddenAppsAdapter
-
-        binding.btnUnhideAll.setOnClickListener {
-            appPrefs.unhideAll()
-            Toast.makeText(this, R.string.settings_btn_unhide_all, Toast.LENGTH_SHORT).show()
-            loadHiddenApps()
-        }
-    }
-
-    private fun loadHiddenApps() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val hiddenSet = appPrefs.getHiddenPackages()
-            val allApps = pkgRepo.getInstalledTvApps()
-            val hiddenApps = allApps.filter { hiddenSet.contains(it.packageName) }
-
-            withContext(Dispatchers.Main) {
-                if (hiddenApps.isEmpty()) {
-                    binding.containerHiddenEmpty.visibility = View.VISIBLE
-                    binding.rvHiddenApps.visibility = View.GONE
-                    binding.btnUnhideAll.visibility = View.GONE
-                    binding.tvHiddenCount.text = getString(R.string.settings_hidden_count, 0)
-                    hiddenAppsAdapter.submitList(emptyList())
-                } else {
-                    binding.containerHiddenEmpty.visibility = View.GONE
-                    binding.rvHiddenApps.visibility = View.VISIBLE
-                    binding.btnUnhideAll.visibility = View.VISIBLE
-                    binding.tvHiddenCount.text = getString(R.string.settings_hidden_count, hiddenApps.size)
-                    hiddenAppsAdapter.submitList(hiddenApps)
-                }
-            }
         }
     }
 
@@ -188,6 +163,43 @@ class LauncherSettingsActivity : AppCompatActivity() {
                 binding.tvCacheTotalVal.text = cacheManager.formatSize(totalBytes)
             }
         }
+    }
+
+    private fun setupWallpaperSection() {
+        val themes = listOf(
+            SettingsChip("FOCUS", getString(R.string.settings_wallpaper_focus)),
+            SettingsChip("SCENERY", getString(R.string.settings_wallpaper_scenery)),
+            SettingsChip("NEBULA", getString(R.string.settings_wallpaper_nebula))
+        )
+
+        wallpaperAdapter = SettingsChipAdapter { chip ->
+            appPrefs.setWallpaperTheme(chip.id)
+            wallpaperAdapter.selectedId = chip.id
+            applyWallpaper(chip.id)
+            Toast.makeText(this, chip.title, Toast.LENGTH_SHORT).show()
+        }
+
+        wallpaperAdapter.submitList(themes)
+        wallpaperAdapter.selectedId = appPrefs.getWallpaperTheme()
+        binding.rvWallpaperThemes.adapter = wallpaperAdapter
+
+        val dimmerLevels = listOf(
+            SettingsChip("0.60", getString(R.string.settings_dimmer_light)),
+            SettingsChip("0.82", getString(R.string.settings_dimmer_medium)),
+            SettingsChip("0.95", getString(R.string.settings_dimmer_deep))
+        )
+
+        val currentDimmer = String.format(java.util.Locale.US, "%.2f", appPrefs.getDimmerOpacity())
+        dimmerAdapter = SettingsChipAdapter { chip ->
+            val opacity = chip.id.toFloatOrNull() ?: 0.82f
+            appPrefs.setDimmerOpacity(opacity)
+            dimmerAdapter.selectedId = chip.id
+            applyDimmer(opacity)
+        }
+
+        dimmerAdapter.submitList(dimmerLevels)
+        dimmerAdapter.selectedId = if (currentDimmer.startsWith("0.6")) "0.60" else if (currentDimmer.startsWith("0.9")) "0.95" else "0.82"
+        binding.rvDimmerLevels.adapter = dimmerAdapter
     }
 
     private fun setupLanguageSection() {
@@ -232,5 +244,48 @@ class LauncherSettingsActivity : AppCompatActivity() {
         playerAdapter.submitList(playerChips)
         playerAdapter.selectedId = appPrefs.getPreferredPlayer()
         binding.rvPreferredPlayers.adapter = playerAdapter
+    }
+
+    private fun setupHiddenApps() {
+        hiddenAppsAdapter = HiddenAppsAdapter { app ->
+            appPrefs.unhideApp(app.packageName)
+            Toast.makeText(
+                this,
+                getString(R.string.settings_toast_unhidden, app.label),
+                Toast.LENGTH_SHORT
+            ).show()
+            loadHiddenApps()
+        }
+        binding.rvHiddenApps.adapter = hiddenAppsAdapter
+
+        binding.btnUnhideAll.setOnClickListener {
+            appPrefs.unhideAll()
+            Toast.makeText(this, R.string.settings_btn_unhide_all, Toast.LENGTH_SHORT).show()
+            loadHiddenApps()
+        }
+    }
+
+    private fun loadHiddenApps() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val hiddenSet = appPrefs.getHiddenPackages()
+            val allApps = pkgRepo.getInstalledTvApps()
+            val hiddenApps = allApps.filter { hiddenSet.contains(it.packageName) }
+
+            withContext(Dispatchers.Main) {
+                if (hiddenApps.isEmpty()) {
+                    binding.containerHiddenEmpty.visibility = View.VISIBLE
+                    binding.rvHiddenApps.visibility = View.GONE
+                    binding.btnUnhideAll.visibility = View.GONE
+                    binding.tvHiddenCount.text = getString(R.string.settings_hidden_count, 0)
+                    hiddenAppsAdapter.submitList(emptyList())
+                } else {
+                    binding.containerHiddenEmpty.visibility = View.GONE
+                    binding.rvHiddenApps.visibility = View.VISIBLE
+                    binding.btnUnhideAll.visibility = View.VISIBLE
+                    binding.tvHiddenCount.text = getString(R.string.settings_hidden_count, hiddenApps.size)
+                    hiddenAppsAdapter.submitList(hiddenApps)
+                }
+            }
+        }
     }
 }

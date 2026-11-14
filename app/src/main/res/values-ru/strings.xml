@@ -345,6 +345,16 @@
     <string name="settings_lang_system">Как в системе</string>
     <string name="settings_section_player">Плеер по умолчанию</string>
     <string name="settings_player_always_ask">Всегда спрашивать</string>
+    <string name="settings_section_wallpaper">Обои лаунчера</string>
+    <string name="settings_wallpaper_focus">Темный фокус</string>
+    <string name="settings_wallpaper_scenery">Горный пейзаж</string>
+    <string name="settings_wallpaper_nebula">Глубокий космос</string>
+    <string name="settings_section_dimmer">Затемнение фона</string>
+    <string name="settings_dimmer_light">60% (Светлое)</string>
+    <string name="settings_dimmer_medium">80% (Оптимальное)</string>
+    <string name="settings_dimmer_deep">95% (Глубокий темный)</string>
+    <string name="settings_btn_clear_catalogs">Очистить каталоги</string>
+    <string name="settings_hidden_empty_compact">Все приложения видны в каталоге</string>
     <string name="settings_toast_unhidden">Восстановлено: %1$s</string>
 
 </resources>

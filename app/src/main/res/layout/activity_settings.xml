@@ -5,23 +5,36 @@
     android:id="@+id/root_settings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:background="@color/tv_dark_bg">
 
+    <!-- 1. Background Wallpaper Image (dynamically swappable) -->
     <ImageView
         android:id="@+id/iv_backdrop"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/backdrop_scenery" />
+        android:src="@drawable/bg_wallpaper_focus" />
 
+    <!-- 2. Adaptive Dimmer Scrim (guarantees WCAG AAA contrast for ANY user wallpaper) -->
+    <View
+        android:id="@+id/dimmer_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#D0080E18" />
+
+    <!-- 3. Ambient Vignette Glow -->
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/tv_dimmer" />
+        android:background="@drawable/bg_poster_gradient" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:paddingStart="@dimen/overscan_safe_margin_horizontal"
         android:paddingTop="@dimen/overscan_safe_margin_vertical"
         android:paddingEnd="@dimen/overscan_safe_margin_horizontal"
@@ -32,10 +45,12 @@
             android:id="@+id/container_sidebar"
             android:layout_width="@dimen/sidebar_width"
             android:layout_height="0dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -55,7 +70,7 @@
                 android:id="@+id/btn_nav_history"
                 android:layout_width="@dimen/sidebar_button_size"
                 android:layout_height="@dimen/sidebar_button_size"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/bg_nav_tile"
                 android:contentDescription="@string/nav_history"
                 android:focusable="true"
@@ -67,7 +82,7 @@
                 android:id="@+id/btn_nav_apps"
                 android:layout_width="@dimen/sidebar_button_size"
                 android:layout_height="@dimen/sidebar_button_size"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/bg_nav_tile"
                 android:contentDescription="@string/nav_home_apps"
                 android:focusable="true"
@@ -79,7 +94,7 @@
                 android:id="@+id/btn_nav_iptv"
                 android:layout_width="@dimen/sidebar_button_size"
                 android:layout_height="@dimen/sidebar_button_size"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/bg_nav_tile"
                 android:contentDescription="@string/nav_iptv"
                 android:focusable="true"
@@ -91,7 +106,7 @@
                 android:id="@+id/btn_nav_games"
                 android:layout_width="@dimen/sidebar_button_size"
                 android:layout_height="@dimen/sidebar_button_size"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/bg_nav_tile"
                 android:contentDescription="@string/nav_optimizer"
                 android:focusable="true"
@@ -103,7 +118,7 @@
                 android:id="@+id/btn_nav_cast"
                 android:layout_width="@dimen/sidebar_button_size"
                 android:layout_height="@dimen/sidebar_button_size"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/bg_nav_tile"
                 android:contentDescription="@string/nav_cast"
                 android:focusable="true"
@@ -120,7 +135,6 @@
                 android:id="@+id/btn_nav_settings"
                 android:layout_width="@dimen/circle_button_size"
                 android:layout_height="@dimen/circle_button_size"
-                android:layout_marginBottom="14dp"
                 android:background="@drawable/bg_circle_button"
                 android:contentDescription="@string/launcher_settings_title"
                 android:focusable="true"
@@ -132,6 +146,7 @@
                 android:id="@+id/btn_nav_power"
                 android:layout_width="@dimen/circle_button_size"
                 android:layout_height="@dimen/circle_button_size"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/bg_circle_button"
                 android:contentDescription="@string/nav_power"
                 android:focusable="true"
@@ -146,6 +161,8 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="24dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/container_sidebar"
@@ -194,7 +211,8 @@
                 android:id="@+id/scroll_settings"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="14dp"
+                android:clipChildren="false"
                 android:clipToPadding="false"
                 android:paddingBottom="48dp"
                 android:scrollbars="none"
@@ -206,112 +224,26 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
                     android:orientation="vertical">
 
-                    <!-- SECTION 1: Hidden Applications -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-bold"
-                            android:text="@string/settings_section_hidden"
-                            android:textColor="@color/leanback_cyan"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:id="@+id/tv_hidden_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:fontFamily="sans-serif"
-                            android:textColor="@color/white_60"
-                            android:textSize="12sp"
-                            tools:text="Скрыто: 2" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="1" />
-
-                        <Button
-                            android:id="@+id/btn_unhide_all"
-                            android:layout_width="wrap_content"
-                            android:layout_height="34dp"
-                            android:background="@drawable/bg_genre_chip"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:fontFamily="sans-serif-bold"
-                            android:paddingStart="14dp"
-                            android:paddingEnd="14dp"
-                            android:stateListAnimator="@null"
-                            android:text="@string/settings_btn_unhide_all"
-                            android:textColor="@color/color_genre_chip_text"
-                            android:textSize="11sp" />
-
-                    </LinearLayout>
-
-                    <!-- Hidden Apps RecyclerView -->
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_hidden_apps"
-                        android:layout_width="match_parent"
-                        android:layout_height="124dp"
-                        android:layout_marginTop="8dp"
-                        android:clipChildren="false"
-                        android:clipToPadding="false"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_hidden_app_card" />
-
-                    <!-- Hidden Apps Empty State -->
-                    <LinearLayout
-                        android:id="@+id/container_hidden_empty"
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:layout_marginTop="8dp"
-                        android:background="@drawable/bg_dialog_plate"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="16dp"
-                        android:visibility="gone"
-                        tools:visibility="visible">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_shield"
-                            app:tint="@color/leanback_cyan" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:fontFamily="sans-serif"
-                            android:text="@string/settings_hidden_empty"
-                            android:textColor="@color/white_60"
-                            android:textSize="12sp" />
-
-                    </LinearLayout>
-
-                    <!-- SECTION 2: Storage & Cache -->
+                    <!-- SECTION 1: Storage & Cache -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
                         android:fontFamily="sans-serif-bold"
                         android:text="@string/settings_section_storage"
                         android:textColor="@color/leanback_cyan"
-                        android:textSize="16sp" />
+                        android:textSize="15sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:baselineAligned="false"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
                         android:orientation="horizontal">
 
                         <!-- Posters Cache Card -->
@@ -321,6 +253,8 @@
                             android:layout_weight="1"
                             android:layout_marginEnd="12dp"
                             android:background="@drawable/bg_focus_app_card"
+                            android:clipChildren="false"
+                            android:clipToPadding="false"
                             android:orientation="vertical"
                             android:padding="16dp">
 
@@ -342,21 +276,22 @@
                                 android:textSize="18sp"
                                 tools:text="14.2 MB" />
 
-                            <Button
+                            <TextView
                                 android:id="@+id/btn_clear_image_cache"
                                 android:layout_width="wrap_content"
-                                android:layout_height="32dp"
+                                android:layout_height="38dp"
                                 android:layout_marginTop="12dp"
                                 android:background="@drawable/bg_genre_chip"
                                 android:clickable="true"
                                 android:focusable="true"
                                 android:fontFamily="sans-serif-bold"
-                                android:paddingStart="12dp"
-                                android:paddingEnd="12dp"
-                                android:stateListAnimator="@null"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:paddingStart="16dp"
+                                android:paddingEnd="16dp"
                                 android:text="@string/settings_btn_clear_images"
                                 android:textColor="@color/color_genre_chip_text"
-                                android:textSize="11sp" />
+                                android:textSize="12sp" />
 
                         </LinearLayout>
 
@@ -367,6 +302,8 @@
                             android:layout_weight="1"
                             android:layout_marginEnd="12dp"
                             android:background="@drawable/bg_focus_app_card"
+                            android:clipChildren="false"
+                            android:clipToPadding="false"
                             android:orientation="vertical"
                             android:padding="16dp">
 
@@ -388,21 +325,22 @@
                                 android:textSize="18sp"
                                 tools:text="850 KB" />
 
-                            <Button
+                            <TextView
                                 android:id="@+id/btn_clear_catalog_cache"
                                 android:layout_width="wrap_content"
-                                android:layout_height="32dp"
+                                android:layout_height="38dp"
                                 android:layout_marginTop="12dp"
                                 android:background="@drawable/bg_genre_chip"
                                 android:clickable="true"
                                 android:focusable="true"
                                 android:fontFamily="sans-serif-bold"
-                                android:paddingStart="12dp"
-                                android:paddingEnd="12dp"
-                                android:stateListAnimator="@null"
-                                android:text="Очистить каталоги"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:paddingStart="16dp"
+                                android:paddingEnd="16dp"
+                                android:text="@string/settings_btn_clear_catalogs"
                                 android:textColor="@color/color_genre_chip_text"
-                                android:textSize="11sp" />
+                                android:textSize="12sp" />
 
                         </LinearLayout>
 
@@ -412,6 +350,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:background="@drawable/bg_focus_app_card"
+                            android:clipChildren="false"
+                            android:clipToPadding="false"
                             android:orientation="vertical"
                             android:padding="16dp">
 
@@ -433,44 +373,92 @@
                                 android:textSize="18sp"
                                 tools:text="15.0 MB" />
 
-                            <Button
+                            <TextView
                                 android:id="@+id/btn_clear_all_cache"
                                 android:layout_width="wrap_content"
-                                android:layout_height="32dp"
+                                android:layout_height="38dp"
                                 android:layout_marginTop="12dp"
                                 android:background="@drawable/bg_genre_chip"
                                 android:clickable="true"
                                 android:focusable="true"
                                 android:fontFamily="sans-serif-bold"
-                                android:paddingStart="12dp"
-                                android:paddingEnd="12dp"
-                                android:stateListAnimator="@null"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:paddingStart="16dp"
+                                android:paddingEnd="16dp"
                                 android:text="@string/settings_btn_clear_all"
                                 android:textColor="@color/color_genre_chip_text"
-                                android:textSize="11sp" />
+                                android:textSize="12sp" />
 
                         </LinearLayout>
 
                     </LinearLayout>
 
+                    <!-- SECTION 2: Wallpaper Theme & Focus Dimmer -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="sans-serif-bold"
+                        android:text="@string/settings_section_wallpaper"
+                        android:textColor="@color/leanback_cyan"
+                        android:textSize="15sp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_wallpaper_themes"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="8dp"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:orientation="horizontal"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_genre_chip" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/settings_section_dimmer"
+                        android:textColor="@color/white_60"
+                        android:textSize="12sp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_dimmer_levels"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="6dp"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:orientation="horizontal"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_genre_chip" />
+
                     <!-- SECTION 3: Content Language -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="20dp"
                         android:fontFamily="sans-serif-bold"
                         android:text="@string/settings_section_language"
                         android:textColor="@color/leanback_cyan"
-                        android:textSize="16sp" />
+                        android:textSize="15sp" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_content_languages"
                         android:layout_width="match_parent"
-                        android:layout_height="36dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="8dp"
                         android:clipChildren="false"
                         android:clipToPadding="false"
                         android:orientation="horizontal"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_genre_chip" />
 
@@ -478,22 +466,116 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="20dp"
                         android:fontFamily="sans-serif-bold"
                         android:text="@string/settings_section_player"
                         android:textColor="@color/leanback_cyan"
-                        android:textSize="16sp" />
+                        android:textSize="15sp" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_preferred_players"
                         android:layout_width="match_parent"
-                        android:layout_height="36dp"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="8dp"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:orientation="horizontal"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_genre_chip" />
+
+                    <!-- SECTION 5: Hidden Applications -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="22dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-bold"
+                            android:text="@string/settings_section_hidden"
+                            android:textColor="@color/leanback_cyan"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/tv_hidden_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="sans-serif"
+                            android:textColor="@color/white_60"
+                            android:textSize="12sp"
+                            tools:text="Скрыто: 2" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/btn_unhide_all"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:background="@drawable/bg_genre_chip"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:fontFamily="sans-serif-bold"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:text="@string/settings_btn_unhide_all"
+                            android:textColor="@color/color_genre_chip_text"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <!-- Hidden Apps RecyclerView -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_hidden_apps"
+                        android:layout_width="match_parent"
+                        android:layout_height="124dp"
                         android:layout_marginTop="10dp"
                         android:clipChildren="false"
                         android:clipToPadding="false"
                         android:orientation="horizontal"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_genre_chip" />
+                        tools:listitem="@layout/item_hidden_app_card" />
+
+                    <!-- Hidden Apps Compact Empty State -->
+                    <LinearLayout
+                        android:id="@+id/container_hidden_empty"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/bg_dialog_plate"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_shield"
+                            app:tint="@color/leanback_cyan" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:fontFamily="sans-serif"
+                            android:text="@string/settings_hidden_empty_compact"
+                            android:textColor="@color/white_60"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 

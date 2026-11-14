@@ -105,11 +105,29 @@ class AppPreferencesRepository(context: Context) {
         prefs.edit().putString(KEY_PREFERRED_PLAYER, pkg).apply()
     }
 
+    fun getWallpaperTheme(): String {
+        return prefs.getString(KEY_WALLPAPER_THEME, "SCENERY") ?: "SCENERY"
+    }
+
+    fun setWallpaperTheme(theme: String) {
+        prefs.edit().putString(KEY_WALLPAPER_THEME, theme).apply()
+    }
+
+    fun getDimmerOpacity(): Float {
+        return prefs.getFloat(KEY_DIMMER_OPACITY, 0.82f)
+    }
+
+    fun setDimmerOpacity(opacity: Float) {
+        prefs.edit().putFloat(KEY_DIMMER_OPACITY, opacity).apply()
+    }
+
     companion object {
         private const val PREFS_NAME = "orbit_launcher_app_prefs"
         private const val KEY_PINNED_APPS = "key_pinned_packages"
         private const val KEY_HIDDEN_APPS = "key_hidden_packages"
         private const val KEY_CONTENT_LANGUAGE = "key_content_language"
         private const val KEY_PREFERRED_PLAYER = "key_preferred_player"
+        private const val KEY_WALLPAPER_THEME = "key_wallpaper_theme"
+        private const val KEY_DIMMER_OPACITY = "key_dimmer_opacity"
     }
 }

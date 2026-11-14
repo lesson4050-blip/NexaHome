@@ -345,6 +345,16 @@
     <string name="settings_lang_system">System Default</string>
     <string name="settings_section_player">Preferred Video Player</string>
     <string name="settings_player_always_ask">Always Ask</string>
+    <string name="settings_section_wallpaper">Wallpaper Theme</string>
+    <string name="settings_wallpaper_focus">Dark Focus</string>
+    <string name="settings_wallpaper_scenery">Mountain Scenery</string>
+    <string name="settings_wallpaper_nebula">Deep Nebula</string>
+    <string name="settings_section_dimmer">Background Dimmer</string>
+    <string name="settings_dimmer_light">60% (Light)</string>
+    <string name="settings_dimmer_medium">80% (Balanced)</string>
+    <string name="settings_dimmer_deep">95% (Deep Dark)</string>
+    <string name="settings_btn_clear_catalogs">Clear Catalogs</string>
+    <string name="settings_hidden_empty_compact">All apps are currently visible in launcher</string>
     <string name="settings_toast_unhidden">Restored: %1$s</string>
 
 </resources>
