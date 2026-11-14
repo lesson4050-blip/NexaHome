@@ -146,9 +146,22 @@ object TvDeepLinkHelper {
         "com.google.android.inputmethod.latin"
     )
 
-    private val MEDIA_KEYWORDS = listOf(
-        "video", "player", "cinema", "kino", "movie", "stream", "film", "iptv", "media", "tube", "lampa", "rezka", "megogo", "sweet"
+    private val EXCLUDED_KEYWORDS = listOf(
+        "file", "explorer", "manager", "commander", "xplore", "проводник", "файлы",
+        "music", "музыка", "audio", "sound", "podcast", "radio",
+        "stub", "test", "benchmark", "gallery", "галерея", "camera", "камера", "photo", "фото",
+        "launcher", "keyboard", "input", "settings", "overlay"
     )
+
+    private fun isExcludedApp(pkg: String, label: String, myPackage: String): Boolean {
+        if (pkg == myPackage || SYSTEM_IGNORE_PACKAGES.contains(pkg)) return true
+        if (pkg.startsWith("com.android.") || pkg.startsWith("android.")) return true
+        if (pkg.startsWith("com.google.android.") && !pkg.contains("youtube")) return true
+
+        val lowerPkg = pkg.lowercase()
+        val lowerLabel = label.lowercase()
+        return EXCLUDED_KEYWORDS.any { lowerPkg.contains(it) || lowerLabel.contains(it) }
+    }
 
     fun getInstalledMediaPlayers(context: Context): List<MediaPlayerApp> {
         val pm = context.packageManager
@@ -178,7 +191,7 @@ object TvDeepLinkHelper {
             }
         }
 
-        // 2. Dynamic discovery: query apps registered to view video content
+        // 2. Dynamic discovery: query apps registered to view video content (strictly filtering out file managers / stubs)
         try {
             val videoIntent = Intent(Intent.ACTION_VIEW).apply {
                 setDataAndType(Uri.parse("http://localhost/video.mp4"), "video/*")
@@ -190,10 +203,13 @@ object TvDeepLinkHelper {
             }
             for (ri in videoHandlers) {
                 val pkg = ri.activityInfo?.packageName ?: continue
-                if (pkg == myPackage || SYSTEM_IGNORE_PACKAGES.contains(pkg) || foundPackages.contains(pkg)) continue
+                if (foundPackages.contains(pkg)) continue
                 try {
                     val appInfo = pm.getApplicationInfo(pkg, 0)
                     val label = pm.getApplicationLabel(appInfo).toString()
+                    if (isExcludedApp(pkg, label, myPackage)) continue
+                    if (pm.getLaunchIntentForPackage(pkg) == null) continue
+
                     val icon = pm.getApplicationIcon(appInfo)
                     result.add(
                         MediaPlayerApp(
@@ -208,32 +224,30 @@ object TvDeepLinkHelper {
             }
         } catch (_: Exception) {}
 
-        // 3. Dynamic discovery: scan installed apps with CATEGORY_VIDEO or media keywords
+        // 3. Dynamic discovery: scan installed apps strictly marked with CATEGORY_VIDEO
         try {
             val installedApps = pm.getInstalledApplications(0)
             for (appInfo in installedApps) {
                 val pkg = appInfo.packageName
-                if (pkg == myPackage || SYSTEM_IGNORE_PACKAGES.contains(pkg) || foundPackages.contains(pkg)) continue
+                if (foundPackages.contains(pkg)) continue
+                if (appInfo.category != ApplicationInfo.CATEGORY_VIDEO) continue
                 if (pm.getLaunchIntentForPackage(pkg) == null) continue
 
-                val isVideoCat = (appInfo.category == ApplicationInfo.CATEGORY_VIDEO)
-                val matchesKeyword = MEDIA_KEYWORDS.any { pkg.lowercase().contains(it) }
+                try {
+                    val label = pm.getApplicationLabel(appInfo).toString()
+                    if (isExcludedApp(pkg, label, myPackage)) continue
 
-                if (isVideoCat || matchesKeyword) {
-                    try {
-                        val label = pm.getApplicationLabel(appInfo).toString()
-                        val icon = pm.getApplicationIcon(appInfo)
-                        result.add(
-                            MediaPlayerApp(
-                                packageName = pkg,
-                                name = label,
-                                icon = icon,
-                                categoryLabel = if (isVideoCat) "Видеоплеер / Стриминг" else "Медиаприложение"
-                            )
+                    val icon = pm.getApplicationIcon(appInfo)
+                    result.add(
+                        MediaPlayerApp(
+                            packageName = pkg,
+                            name = label,
+                            icon = icon,
+                            categoryLabel = "Видеоплеер / Стриминг"
                         )
-                        foundPackages.add(pkg)
-                    } catch (_: Exception) {}
-                }
+                    )
+                    foundPackages.add(pkg)
+                } catch (_: Exception) {}
             }
         } catch (_: Exception) {}
 
