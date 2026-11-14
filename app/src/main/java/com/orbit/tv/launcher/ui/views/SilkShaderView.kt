@@ -393,39 +393,51 @@ class SilkShaderView @JvmOverloads constructor(
                 }
 
                 void main() {
-                    vec2 uv = (v_texCoord * 2.0 - 1.0) * 2.2;
-                    uv.y *= (u_resolution.y / u_resolution.x);
+                    vec2 uv;
+                    uv.x = (v_texCoord.x * 2.0 - 1.0) * 2.2;
+                    uv.y = (v_texCoord.y * 2.0 - 1.0) * (2.2 * (u_resolution.y / u_resolution.x));
 
-                    float t = u_time * 0.22;
+                    float t = u_time;
 
                     vec2 p = uv;
-                    p.x += 0.35 * sin(2.2 * p.y + t * 0.7 + 0.7);
-                    p.y += 0.35 * cos(2.2 * p.x + t * 0.5 + 1.1);
+                    // Exact 5-octave domain warping (unrolled for maximum GPU fillrate performance)
+                    p.x += 0.350 * sin(2.2 * p.y + 0.7 + t * 0.15);
+                    p.y += 0.350 * cos(2.2 * p.x + 1.1 + t * 0.12);
 
-                    p.x += 0.18 * sin(4.4 * p.y - t * 0.6 + 0.3);
-                    p.y += 0.18 * cos(4.4 * p.x - t * 0.4 + 0.8);
+                    p.x += 0.175 * sin(4.4 * p.y + 0.7 + t * 0.15);
+                    p.y += 0.175 * cos(4.4 * p.x + 1.1 + t * 0.12);
 
-                    float fold = sin(p.x * 4.5 + p.y * 2.5 + t * 0.8) * 0.5 + 0.5;
-                    fold = fold * fold;
+                    p.x += 0.117 * sin(6.6 * p.y + 0.7 + t * 0.15);
+                    p.y += 0.117 * cos(6.6 * p.x + 1.1 + t * 0.12);
 
-                    float diagonal = sin(uv.x * 0.8 - uv.y * 1.2 + t * 0.3 + 0.5) * 0.5 + 0.5;
+                    p.x += 0.088 * sin(8.8 * p.y + 0.7 + t * 0.15);
+                    p.y += 0.088 * cos(8.8 * p.x + 1.1 + t * 0.12);
+
+                    p.x += 0.070 * sin(11.0 * p.y + 0.7 + t * 0.15);
+                    p.y += 0.070 * cos(11.0 * p.x + 1.1 + t * 0.12);
+
+                    float fold = sin(p.x * 4.5 + p.y * 2.5 + t * 0.1) * 0.5 + 0.5;
+                    fold = pow(fold, 1.8);
+
+                    float diagonal = sin(uv.x * 0.8 - uv.y * 1.2 + 0.5 + t * 0.05) * 0.5 + 0.5;
                     float ribbon = fold * (0.3 + 0.7 * diagonal);
 
-                    float dist = length(vec2(uv.x * 0.7, uv.y));
-                    float vignette = 1.0 - smoothstep(0.7, 1.9, dist) * 0.75;
+                    float dist = sqrt(uv.x * uv.x + (uv.y * 1.5) * (uv.y * 1.5));
+                    float vignette = 1.0 - clamp((dist - 0.8) / 1.6, 0.0, 0.85);
 
                     vec3 c0 = getBase(u_palette);
                     vec3 c1 = getMid(u_palette);
                     vec3 c2 = getBright(u_palette);
                     vec3 c3 = getHighlight(u_palette);
 
+                    float t_val = clamp(ribbon, 0.0, 1.0);
                     vec3 col = c0;
-                    if (ribbon < 0.4) {
-                        col = mix(c0, c1, ribbon / 0.4);
-                    } else if (ribbon < 0.75) {
-                        col = mix(c1, c2, (ribbon - 0.4) / 0.35);
+                    if (t_val < 0.4) {
+                        col = mix(c0, c1, t_val / 0.4);
+                    } else if (t_val < 0.75) {
+                        col = mix(c1, c2, (t_val - 0.4) / 0.35);
                     } else {
-                        col = mix(c2, c3, (ribbon - 0.75) / 0.25);
+                        col = mix(c2, c3, (t_val - 0.75) / 0.25);
                     }
 
                     col *= vignette;
