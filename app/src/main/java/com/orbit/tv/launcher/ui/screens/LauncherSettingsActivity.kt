@@ -56,13 +56,61 @@ class LauncherSettingsActivity : AppCompatActivity() {
         super.onResume()
         loadHiddenApps()
         refreshCacheMetrics()
+        val currentTheme = appPrefs.getWallpaperTheme()
+        if (currentTheme.startsWith("SILK_")) {
+            binding.silkShaderView.resumeRendering()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.silkShaderView.pauseRendering()
     }
 
     private fun applyWallpaper(theme: String) {
         when (theme) {
-            "FOCUS" -> binding.ivBackdrop.setImageResource(R.drawable.bg_wallpaper_focus)
-            "NEBULA" -> binding.ivBackdrop.setImageResource(R.drawable.bg_wallpaper_nebula)
-            else -> binding.ivBackdrop.setImageResource(R.drawable.backdrop_scenery)
+            "SILK_VIOLET" -> {
+                binding.ivBackdrop.visibility = View.GONE
+                binding.viewDimmer.visibility = View.GONE
+                binding.silkShaderView.visibility = View.VISIBLE
+                binding.silkShaderView.setPalette(0)
+                binding.silkShaderView.resumeRendering()
+            }
+            "SILK_CYAN" -> {
+                binding.ivBackdrop.visibility = View.GONE
+                binding.viewDimmer.visibility = View.GONE
+                binding.silkShaderView.visibility = View.VISIBLE
+                binding.silkShaderView.setPalette(1)
+                binding.silkShaderView.resumeRendering()
+            }
+            "SILK_EMERALD" -> {
+                binding.ivBackdrop.visibility = View.GONE
+                binding.viewDimmer.visibility = View.GONE
+                binding.silkShaderView.visibility = View.VISIBLE
+                binding.silkShaderView.setPalette(2)
+                binding.silkShaderView.resumeRendering()
+            }
+            "SILK_MIDNIGHT" -> {
+                binding.ivBackdrop.visibility = View.GONE
+                binding.viewDimmer.visibility = View.GONE
+                binding.silkShaderView.visibility = View.VISIBLE
+                binding.silkShaderView.setPalette(3)
+                binding.silkShaderView.resumeRendering()
+            }
+            "SILK_CRIMSON" -> {
+                binding.ivBackdrop.visibility = View.GONE
+                binding.viewDimmer.visibility = View.GONE
+                binding.silkShaderView.visibility = View.VISIBLE
+                binding.silkShaderView.setPalette(4)
+                binding.silkShaderView.resumeRendering()
+            }
+            else -> {
+                binding.silkShaderView.pauseRendering()
+                binding.silkShaderView.visibility = View.GONE
+                binding.ivBackdrop.visibility = View.VISIBLE
+                binding.ivBackdrop.setImageResource(R.drawable.backdrop_scenery)
+                binding.viewDimmer.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -163,9 +211,12 @@ class LauncherSettingsActivity : AppCompatActivity() {
 
     private fun setupWallpaperSection() {
         val themes = listOf(
-            SettingsChip("FOCUS", getString(R.string.settings_wallpaper_focus)),
             SettingsChip("SCENERY", getString(R.string.settings_wallpaper_scenery)),
-            SettingsChip("NEBULA", getString(R.string.settings_wallpaper_nebula))
+            SettingsChip("SILK_VIOLET", getString(R.string.settings_wallpaper_silk_violet)),
+            SettingsChip("SILK_CYAN", getString(R.string.settings_wallpaper_silk_cyan)),
+            SettingsChip("SILK_EMERALD", getString(R.string.settings_wallpaper_silk_emerald)),
+            SettingsChip("SILK_MIDNIGHT", getString(R.string.settings_wallpaper_silk_midnight)),
+            SettingsChip("SILK_CRIMSON", getString(R.string.settings_wallpaper_silk_crimson))
         )
 
         wallpaperAdapter = SettingsChipAdapter { chip ->

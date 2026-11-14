@@ -303,6 +303,13 @@
     <string name="settings_lang_system">Як у системі</string>
     <string name="settings_section_player">Плеєр за замовчуванням</string>
     <string name="settings_player_always_ask">Завжди запитувати</string>
-    <string name="settings_toast_unhidden">Відновлено: %1$s</string>
-
+    <string name="settings_section_wallpaper">Шпалери лаунчера</string>
+    <string name="settings_wallpaper_focus">Темний фокус</string>
+    <string name="settings_wallpaper_scenery">Гірський пейзаж</string>
+    <string name="settings_wallpaper_nebula">Глибокий космос</string>
+    <string name="settings_wallpaper_silk_violet">Фіолетовий шовк (Живий)</string>
+    <string name="settings_wallpaper_silk_cyan">Бірюзовий шовк (Живий)</string>
+    <string name="settings_wallpaper_silk_emerald">Смарагдовий шовк (Живий)</string>
+    <string name="settings_wallpaper_silk_midnight">Синій шовк (Живий)</string>
+    <string name="settings_wallpaper_silk_crimson">Рубіновий шовк (Живий)</string>
 </resources>

@@ -349,6 +349,11 @@
     <string name="settings_wallpaper_focus">Dark Focus</string>
     <string name="settings_wallpaper_scenery">Mountain Scenery</string>
     <string name="settings_wallpaper_nebula">Deep Nebula</string>
+    <string name="settings_wallpaper_silk_violet">Violet Silk (Live)</string>
+    <string name="settings_wallpaper_silk_cyan">Cyan Silk (Live)</string>
+    <string name="settings_wallpaper_silk_emerald">Emerald Silk (Live)</string>
+    <string name="settings_wallpaper_silk_midnight">Midnight Silk (Live)</string>
+    <string name="settings_wallpaper_silk_crimson">Crimson Silk (Live)</string>
     <string name="settings_section_dimmer">Background Dimmer</string>
     <string name="settings_dimmer_light">60% (Light)</string>
     <string name="settings_dimmer_medium">80% (Balanced)</string>

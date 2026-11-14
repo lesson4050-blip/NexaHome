@@ -349,6 +349,11 @@
     <string name="settings_wallpaper_focus">Темный фокус</string>
     <string name="settings_wallpaper_scenery">Горный пейзаж</string>
     <string name="settings_wallpaper_nebula">Глубокий космос</string>
+    <string name="settings_wallpaper_silk_violet">Фиолетовый шелк (Живой)</string>
+    <string name="settings_wallpaper_silk_cyan">Бирюзовый шелк (Живой)</string>
+    <string name="settings_wallpaper_silk_emerald">Изумрудный шелк (Живой)</string>
+    <string name="settings_wallpaper_silk_midnight">Синий шелк (Живой)</string>
+    <string name="settings_wallpaper_silk_crimson">Рубиновый шелк (Живой)</string>
     <string name="settings_section_dimmer">Затемнение фона</string>
     <string name="settings_dimmer_light">60% (Светлое)</string>
     <string name="settings_dimmer_medium">80% (Оптимальное)</string>
