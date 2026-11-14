@@ -38,9 +38,12 @@ import java.util.Date
 import java.util.Locale
 import kotlin.math.roundToInt
 
+import com.orbit.tv.launcher.platform.wallpaper.TvWallpaperHelper
+
 class OptimizerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityOptimizerBinding
+    private val appPrefs by lazy { com.orbit.tv.launcher.features.apps.repository.AppPreferencesRepository(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -504,5 +507,15 @@ class OptimizerActivity : AppCompatActivity() {
                 delay(10000)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        TvWallpaperHelper.apply(appPrefs.getWallpaperTheme(), binding.silkShaderView, binding.ivBackdrop, binding.viewDimmer)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        TvWallpaperHelper.pause(binding.silkShaderView)
     }
 }

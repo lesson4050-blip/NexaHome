@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.orbit.tv.launcher.R
 import com.orbit.tv.launcher.core.assistant.GoogleAssistantHelper
 import com.orbit.tv.launcher.core.focus.TvFocusHelper
+import com.orbit.tv.launcher.platform.wallpaper.TvWallpaperHelper
 import com.orbit.tv.launcher.databinding.ActivityHomeBinding
 import com.orbit.tv.launcher.features.home.HomeViewModel
 import com.orbit.tv.launcher.features.home.adapters.AppsAdapter
@@ -93,61 +94,14 @@ class HomeActivity : AppCompatActivity() {
         viewModel.loadInstalledApps()
         viewModel.checkAndReloadMediaIfNeeded()
         updateGoogleAssistantVisibility()
-        applyWallpaper(appPrefs.getWallpaperTheme())
+        TvWallpaperHelper.apply(appPrefs.getWallpaperTheme(), binding.silkShaderView, binding.ivBackdrop, binding.viewDimmer)
     }
 
     override fun onPause() {
         super.onPause()
-        binding.silkShaderView.pauseRendering()
+        TvWallpaperHelper.pause(binding.silkShaderView)
         stopInPlaceVoiceRecognition()
         animateVoiceMicActive(false)
-    }
-
-    private fun applyWallpaper(theme: String) {
-        when (theme) {
-            "SILK_VIOLET" -> {
-                binding.ivBackdrop.visibility = View.GONE
-                binding.viewDimmer.visibility = View.GONE
-                binding.silkShaderView.visibility = View.VISIBLE
-                binding.silkShaderView.setPalette(0)
-                binding.silkShaderView.resumeRendering()
-            }
-            "SILK_CYAN" -> {
-                binding.ivBackdrop.visibility = View.GONE
-                binding.viewDimmer.visibility = View.GONE
-                binding.silkShaderView.visibility = View.VISIBLE
-                binding.silkShaderView.setPalette(1)
-                binding.silkShaderView.resumeRendering()
-            }
-            "SILK_EMERALD" -> {
-                binding.ivBackdrop.visibility = View.GONE
-                binding.viewDimmer.visibility = View.GONE
-                binding.silkShaderView.visibility = View.VISIBLE
-                binding.silkShaderView.setPalette(2)
-                binding.silkShaderView.resumeRendering()
-            }
-            "SILK_MIDNIGHT" -> {
-                binding.ivBackdrop.visibility = View.GONE
-                binding.viewDimmer.visibility = View.GONE
-                binding.silkShaderView.visibility = View.VISIBLE
-                binding.silkShaderView.setPalette(3)
-                binding.silkShaderView.resumeRendering()
-            }
-            "SILK_CRIMSON" -> {
-                binding.ivBackdrop.visibility = View.GONE
-                binding.viewDimmer.visibility = View.GONE
-                binding.silkShaderView.visibility = View.VISIBLE
-                binding.silkShaderView.setPalette(4)
-                binding.silkShaderView.resumeRendering()
-            }
-            else -> {
-                binding.silkShaderView.pauseRendering()
-                binding.silkShaderView.visibility = View.GONE
-                binding.ivBackdrop.visibility = View.VISIBLE
-                binding.ivBackdrop.setImageResource(R.drawable.backdrop_scenery)
-                binding.viewDimmer.visibility = View.VISIBLE
-            }
-        }
     }
 
     override fun onDestroy() {

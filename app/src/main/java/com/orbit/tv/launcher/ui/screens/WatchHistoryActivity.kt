@@ -12,6 +12,9 @@ import com.orbit.tv.launcher.databinding.ActivityWatchHistoryBinding
 import com.orbit.tv.launcher.features.home.adapters.MediaAdapter
 import com.orbit.tv.launcher.features.home.data.WatchHistoryRepository
 import com.orbit.tv.launcher.ui.overlays.MediaDetailDialog
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.orbit.tv.launcher.features.apps.repository.AppPreferencesRepository
+import com.orbit.tv.launcher.platform.wallpaper.TvWallpaperHelper
 import com.orbit.tv.launcher.ui.overlays.TvPowerDialog
 import kotlinx.coroutines.launch
 
@@ -19,6 +22,7 @@ class WatchHistoryActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityWatchHistoryBinding
     private lateinit var repository: WatchHistoryRepository
+    private lateinit var appPrefs: AppPreferencesRepository
     private lateinit var mediaAdapter: MediaAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,12 +31,23 @@ class WatchHistoryActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         repository = WatchHistoryRepository(this)
+        appPrefs = AppPreferencesRepository(this)
 
         setupFocus()
         setupSidebarListeners()
         setupHistoryList()
         setupBackNavigation()
         observeHistory()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        TvWallpaperHelper.apply(appPrefs.getWallpaperTheme(), binding.silkShaderView, binding.ivBackdrop, binding.viewDimmer)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        TvWallpaperHelper.pause(binding.silkShaderView)
     }
 
     private fun setupFocus() {
@@ -98,7 +113,7 @@ class WatchHistoryActivity : AppCompatActivity() {
         }
 
         binding.rvHistory.apply {
-            layoutManager = GridLayoutManager(this@WatchHistoryActivity, 5)
+            layoutManager = LinearLayoutManager(this@WatchHistoryActivity, LinearLayoutManager.HORIZONTAL, false)
             adapter = mediaAdapter
         }
     }

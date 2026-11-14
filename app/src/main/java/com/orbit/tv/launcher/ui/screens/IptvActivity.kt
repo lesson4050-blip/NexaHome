@@ -27,10 +27,13 @@ import com.orbit.tv.launcher.ui.overlays.IptvPlaylistDialog
 import com.orbit.tv.launcher.ui.overlays.TvPowerDialog
 import kotlinx.coroutines.launch
 
+import com.orbit.tv.launcher.platform.wallpaper.TvWallpaperHelper
+
 class IptvActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityIptvBinding
     private val viewModel: IptvViewModel by viewModels()
+    private val appPrefs by lazy { com.orbit.tv.launcher.features.apps.repository.AppPreferencesRepository(this) }
 
     private var exoPlayer: ExoPlayer? = null
     private lateinit var epgAdapter: EpgChannelAdapter
@@ -520,11 +523,13 @@ class IptvActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         exoPlayer?.playWhenReady = true
+        TvWallpaperHelper.apply(appPrefs.getWallpaperTheme(), binding.silkShaderView, binding.ivBackdrop, binding.viewDimmer)
     }
 
     override fun onPause() {
         super.onPause()
         exoPlayer?.playWhenReady = false
+        TvWallpaperHelper.pause(binding.silkShaderView)
     }
 
     override fun onDestroy() {

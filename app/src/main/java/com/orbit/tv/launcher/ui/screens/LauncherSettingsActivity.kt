@@ -15,6 +15,7 @@ import com.orbit.tv.launcher.features.home.TvDeepLinkHelper
 import com.orbit.tv.launcher.features.home.model.AppModel
 import com.orbit.tv.launcher.platform.package_manager.PackageManagerRepository
 import com.orbit.tv.launcher.platform.storage.CacheManager
+import com.orbit.tv.launcher.platform.wallpaper.TvWallpaperHelper
 import com.orbit.tv.launcher.ui.overlays.TvPowerDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -56,62 +57,16 @@ class LauncherSettingsActivity : AppCompatActivity() {
         super.onResume()
         loadHiddenApps()
         refreshCacheMetrics()
-        val currentTheme = appPrefs.getWallpaperTheme()
-        if (currentTheme.startsWith("SILK_")) {
-            binding.silkShaderView.resumeRendering()
-        }
+        TvWallpaperHelper.apply(appPrefs.getWallpaperTheme(), binding.silkShaderView, binding.ivBackdrop, binding.viewDimmer)
     }
 
     override fun onPause() {
         super.onPause()
-        binding.silkShaderView.pauseRendering()
+        TvWallpaperHelper.pause(binding.silkShaderView)
     }
 
     private fun applyWallpaper(theme: String) {
-        when (theme) {
-            "SILK_VIOLET" -> {
-                binding.ivBackdrop.visibility = View.GONE
-                binding.viewDimmer.visibility = View.GONE
-                binding.silkShaderView.visibility = View.VISIBLE
-                binding.silkShaderView.setPalette(0)
-                binding.silkShaderView.resumeRendering()
-            }
-            "SILK_CYAN" -> {
-                binding.ivBackdrop.visibility = View.GONE
-                binding.viewDimmer.visibility = View.GONE
-                binding.silkShaderView.visibility = View.VISIBLE
-                binding.silkShaderView.setPalette(1)
-                binding.silkShaderView.resumeRendering()
-            }
-            "SILK_EMERALD" -> {
-                binding.ivBackdrop.visibility = View.GONE
-                binding.viewDimmer.visibility = View.GONE
-                binding.silkShaderView.visibility = View.VISIBLE
-                binding.silkShaderView.setPalette(2)
-                binding.silkShaderView.resumeRendering()
-            }
-            "SILK_MIDNIGHT" -> {
-                binding.ivBackdrop.visibility = View.GONE
-                binding.viewDimmer.visibility = View.GONE
-                binding.silkShaderView.visibility = View.VISIBLE
-                binding.silkShaderView.setPalette(3)
-                binding.silkShaderView.resumeRendering()
-            }
-            "SILK_CRIMSON" -> {
-                binding.ivBackdrop.visibility = View.GONE
-                binding.viewDimmer.visibility = View.GONE
-                binding.silkShaderView.visibility = View.VISIBLE
-                binding.silkShaderView.setPalette(4)
-                binding.silkShaderView.resumeRendering()
-            }
-            else -> {
-                binding.silkShaderView.pauseRendering()
-                binding.silkShaderView.visibility = View.GONE
-                binding.ivBackdrop.visibility = View.VISIBLE
-                binding.ivBackdrop.setImageResource(R.drawable.backdrop_scenery)
-                binding.viewDimmer.visibility = View.VISIBLE
-            }
-        }
+        TvWallpaperHelper.apply(theme, binding.silkShaderView, binding.ivBackdrop, binding.viewDimmer)
     }
 
 

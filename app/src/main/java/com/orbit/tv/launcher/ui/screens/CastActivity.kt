@@ -27,9 +27,12 @@ import kotlinx.coroutines.launch
 import java.net.Inet4Address
 import java.net.NetworkInterface
 
+import com.orbit.tv.launcher.platform.wallpaper.TvWallpaperHelper
+
 class CastActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCastBinding
+    private val appPrefs by lazy { com.orbit.tv.launcher.features.apps.repository.AppPreferencesRepository(this) }
     private var countdownJob: Job? = null
     private var secondsRemaining = 15 * 60 // 15 minutes
     private var currentPin = "849-210"
@@ -49,6 +52,12 @@ class CastActivity : AppCompatActivity() {
         super.onResume()
         updateProtocolBadges()
         refreshPinAndQr(animatePin = false)
+        TvWallpaperHelper.apply(appPrefs.getWallpaperTheme(), binding.silkShaderView, binding.ivBackdrop, binding.viewDimmer)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        TvWallpaperHelper.pause(binding.silkShaderView)
     }
 
     private fun setupFocus() {

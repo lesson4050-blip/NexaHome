@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.orbit.tv.launcher.R
 import com.orbit.tv.launcher.core.assistant.GoogleAssistantHelper
 import com.orbit.tv.launcher.core.focus.TvFocusHelper
+import com.orbit.tv.launcher.platform.wallpaper.TvWallpaperHelper
 import com.orbit.tv.launcher.databinding.ActivityAppsHubBinding
 import com.orbit.tv.launcher.features.home.HomeViewModel
 import com.orbit.tv.launcher.features.home.adapters.AppsAdapter
@@ -48,6 +49,7 @@ class AppsHubActivity : AppCompatActivity() {
     private lateinit var recommendedAppsAdapter: RecommendedAppsAdapter
     private var currentTab: HubTab = HubTab.ALL
     private var cachedApps: List<AppModel> = emptyList()
+    private val appPrefs by lazy { com.orbit.tv.launcher.features.apps.repository.AppPreferencesRepository(this) }
 
     private var speechRecognizer: SpeechRecognizer? = null
     private var isRecordingVoice: Boolean = false
@@ -137,10 +139,12 @@ class AppsHubActivity : AppCompatActivity() {
             renderRecommendedList()
         }
         updateGoogleAssistantVisibility()
+        TvWallpaperHelper.apply(appPrefs.getWallpaperTheme(), binding.silkShaderView, binding.ivBackdrop, binding.viewDimmer)
     }
 
     override fun onPause() {
         super.onPause()
+        TvWallpaperHelper.pause(binding.silkShaderView)
         stopInPlaceVoiceRecognition()
         animateVoiceMicActive(false)
     }

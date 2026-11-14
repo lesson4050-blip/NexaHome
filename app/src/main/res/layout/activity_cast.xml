@@ -8,6 +8,13 @@
     android:clipToPadding="false"
     android:background="@color/tv_dark_bg">
 
+    <!-- Background Animated Silk Shader -->
+    <com.orbit.tv.launcher.ui.views.SilkShaderView
+        android:id="@+id/silk_shader_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
     <ImageView
         android:id="@+id/iv_backdrop"
         android:layout_width="match_parent"
@@ -16,6 +23,7 @@
         android:src="@drawable/backdrop_scenery" />
 
     <View
+        android:id="@+id/view_dimmer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/tv_dimmer" />

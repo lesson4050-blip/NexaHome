@@ -54,15 +54,13 @@ class SilkShaderView @JvmOverloads constructor(
 
     override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
         stopThread()
-        surface.setDefaultBufferSize(480, 270)
-        renderThread = SilkRenderThread(surface, 480, 270, currentPalette).apply {
+        renderThread = SilkRenderThread(surface, width, height, currentPalette).apply {
             start()
         }
     }
 
     override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture, width: Int, height: Int) {
-        surface.setDefaultBufferSize(480, 270)
-        renderThread?.updateSize(480, 270)
+        renderThread?.updateSize(width, height)
     }
 
     override fun onSurfaceTextureDestroyed(surface: SurfaceTexture): Boolean {
@@ -360,36 +358,52 @@ class SilkShaderView @JvmOverloads constructor(
                 uniform float u_time;
                 uniform int u_palette;
 
-                vec3 getBase(int p) {
-                    if (p == 1) return vec3(0.02, 0.04, 0.06);
-                    if (p == 2) return vec3(0.02, 0.04, 0.03);
-                    if (p == 3) return vec3(0.02, 0.03, 0.08);
-                    if (p == 4) return vec3(0.05, 0.02, 0.03);
-                    return vec3(0.03, 0.02, 0.06);
+                vec3 getC0(int p) {
+                    if (p == 1) return vec3(0.02, 0.10, 0.14);
+                    if (p == 2) return vec3(0.02, 0.10, 0.06);
+                    if (p == 3) return vec3(0.02, 0.04, 0.13);
+                    if (p == 4) return vec3(0.13, 0.02, 0.05);
+                    return vec3(0.08, 0.04, 0.18);
                 }
 
-                vec3 getMid(int p) {
-                    if (p == 1) return vec3(0.04, 0.20, 0.28);
-                    if (p == 2) return vec3(0.04, 0.22, 0.14);
-                    if (p == 3) return vec3(0.06, 0.14, 0.38);
-                    if (p == 4) return vec3(0.28, 0.05, 0.12);
-                    return vec3(0.18, 0.06, 0.38);
+                vec3 getC1(int p) {
+                    if (p == 1) return vec3(0.04, 0.19, 0.26);
+                    if (p == 2) return vec3(0.04, 0.21, 0.11);
+                    if (p == 3) return vec3(0.04, 0.08, 0.24);
+                    if (p == 4) return vec3(0.26, 0.04, 0.09);
+                    return vec3(0.16, 0.04, 0.33);
                 }
 
-                vec3 getBright(int p) {
-                    if (p == 1) return vec3(0.02, 0.55, 0.70);
-                    if (p == 2) return vec3(0.06, 0.60, 0.36);
-                    if (p == 3) return vec3(0.18, 0.38, 0.85);
-                    if (p == 4) return vec3(0.72, 0.12, 0.25);
-                    return vec3(0.43, 0.18, 0.82);
+                vec3 getC2(int p) {
+                    if (p == 1) return vec3(0.05, 0.33, 0.45);
+                    if (p == 2) return vec3(0.05, 0.38, 0.20);
+                    if (p == 3) return vec3(0.07, 0.16, 0.46);
+                    if (p == 4) return vec3(0.46, 0.07, 0.15);
+                    return vec3(0.24, 0.01, 0.64);
                 }
 
-                vec3 getHighlight(int p) {
-                    if (p == 1) return vec3(0.40, 0.88, 0.96);
-                    if (p == 2) return vec3(0.45, 0.90, 0.65);
-                    if (p == 3) return vec3(0.55, 0.72, 1.00);
-                    if (p == 4) return vec3(0.98, 0.45, 0.55);
-                    return vec3(0.65, 0.45, 1.00);
+                vec3 getC3(int p) {
+                    if (p == 1) return vec3(0.09, 0.59, 0.75);
+                    if (p == 2) return vec3(0.09, 0.66, 0.34);
+                    if (p == 3) return vec3(0.13, 0.32, 0.75);
+                    if (p == 4) return vec3(0.75, 0.11, 0.25);
+                    return vec3(0.37, 0.20, 0.92);
+                }
+
+                vec3 getC4(int p) {
+                    if (p == 1) return vec3(0.27, 0.83, 1.00);
+                    if (p == 2) return vec3(0.28, 0.95, 0.53);
+                    if (p == 3) return vec3(0.37, 0.56, 1.00);
+                    if (p == 4) return vec3(1.00, 0.37, 0.51);
+                    return vec3(0.49, 0.36, 1.00);
+                }
+
+                vec3 getSheenTint(int p) {
+                    if (p == 1) return vec3(0.20, 0.45, 0.55);
+                    if (p == 2) return vec3(0.20, 0.55, 0.35);
+                    if (p == 3) return vec3(0.25, 0.35, 0.60);
+                    if (p == 4) return vec3(0.60, 0.25, 0.35);
+                    return vec3(0.35, 0.25, 0.55);
                 }
 
                 void main() {
@@ -400,7 +414,6 @@ class SilkShaderView @JvmOverloads constructor(
                     float t = u_time;
 
                     vec2 p = uv;
-                    // Exact 5-octave domain warping (unrolled for maximum GPU fillrate performance)
                     p.x += 0.350 * sin(2.2 * p.y + 0.7 + t * 0.15);
                     p.y += 0.350 * cos(2.2 * p.x + 1.1 + t * 0.12);
 
@@ -416,31 +429,45 @@ class SilkShaderView @JvmOverloads constructor(
                     p.x += 0.070 * sin(11.0 * p.y + 0.7 + t * 0.15);
                     p.y += 0.070 * cos(11.0 * p.x + 1.1 + t * 0.12);
 
-                    float fold = sin(p.x * 4.5 + p.y * 2.5 + t * 0.1) * 0.5 + 0.5;
-                    fold = pow(fold, 1.8);
+                    // 3 cascading silk fold waves layered together for continuous volume
+                    float f1 = sin(p.x * 3.2 + p.y * 1.8 + t * 0.10) * 0.5 + 0.5;
+                    float f2 = cos(p.x * 2.0 - p.y * 2.6 - t * 0.08) * 0.5 + 0.5;
+                    float f3 = sin(p.y * 3.6 + p.x * 1.4 + t * 0.14) * 0.5 + 0.5;
 
-                    float diagonal = sin(uv.x * 0.8 - uv.y * 1.2 + 0.5 + t * 0.05) * 0.5 + 0.5;
-                    float ribbon = fold * (0.3 + 0.7 * diagonal);
+                    float silk = f1 * 0.55 + f2 * 0.30 + f3 * 0.15;
 
-                    float dist = sqrt(uv.x * uv.x + (uv.y * 1.5) * (uv.y * 1.5));
-                    float vignette = 1.0 - clamp((dist - 0.8) / 1.6, 0.0, 0.85);
+                    float diag = sin(uv.x * 0.7 - uv.y * 1.1 + 0.5 + t * 0.06) * 0.5 + 0.5;
+                    float ribbon = silk * 0.70 + diag * 0.30;
 
-                    vec3 c0 = getBase(u_palette);
-                    vec3 c1 = getMid(u_palette);
-                    vec3 c2 = getBright(u_palette);
-                    vec3 c3 = getHighlight(u_palette);
+                    // Specular velvet fold sheen
+                    float sheen = pow(f1, 4.0) * 0.25;
 
-                    float t_val = clamp(ribbon, 0.0, 1.0);
-                    vec3 col = c0;
-                    if (t_val < 0.4) {
-                        col = mix(c0, c1, t_val / 0.4);
-                    } else if (t_val < 0.75) {
-                        col = mix(c1, c2, (t_val - 0.4) / 0.35);
+                    float r_val = clamp(ribbon, 0.0, 1.0);
+
+                    vec3 c0 = getC0(u_palette);
+                    vec3 c1 = getC1(u_palette);
+                    vec3 c2 = getC2(u_palette);
+                    vec3 c3 = getC3(u_palette);
+                    vec3 c4 = getC4(u_palette);
+
+                    vec3 col;
+                    if (r_val < 0.25) {
+                        col = mix(c0, c1, r_val / 0.25);
+                    } else if (r_val < 0.55) {
+                        col = mix(c1, c2, (r_val - 0.25) / 0.30);
+                    } else if (r_val < 0.82) {
+                        col = mix(c2, c3, (r_val - 0.55) / 0.27);
                     } else {
-                        col = mix(c2, c3, (t_val - 0.75) / 0.25);
+                        col = mix(c3, c4, (r_val - 0.82) / 0.18);
                     }
 
+                    col += getSheenTint(u_palette) * sheen;
+
+                    // Subtle edge vignette (maximum 20% darkening at extreme borders only)
+                    float dist = sqrt(uv.x * uv.x + (uv.y * 1.1) * (uv.y * 1.1));
+                    float vignette = 1.0 - clamp((dist - 1.6) / 2.0, 0.0, 0.20);
                     col *= vignette;
+
                     gl_FragColor = vec4(col, 1.0);
                 }
             """

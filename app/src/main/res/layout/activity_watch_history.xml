@@ -8,6 +8,13 @@
     android:clipToPadding="false"
     android:background="@color/tv_dark_bg">
 
+    <!-- Background Animated Silk Shader -->
+    <com.orbit.tv.launcher.ui.views.SilkShaderView
+        android:id="@+id/silk_shader_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
     <ImageView
         android:id="@+id/iv_backdrop"
         android:layout_width="match_parent"
@@ -16,6 +23,7 @@
         android:src="@drawable/backdrop_scenery" />
 
     <View
+        android:id="@+id/view_dimmer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/tv_dimmer" />
@@ -271,16 +279,15 @@
 
             </LinearLayout>
 
-            <!-- History Cards Grid -->
+            <!-- History Cards Row -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_history"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="18dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 android:paddingBottom="24dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/container_header"
