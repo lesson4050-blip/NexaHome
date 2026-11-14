@@ -52,8 +52,9 @@ class CastActivity : AppCompatActivity() {
     }
 
     private fun setupFocus() {
-        TvFocusHelper.bindFocusScale(binding.btnNavApps, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnNavMedia, scaleRatio = 1.12f, elevationDp = 8f)
+        TvFocusHelper.bindFocusScale(binding.btnNavHistory, scaleRatio = 1.12f, elevationDp = 8f)
+        TvFocusHelper.bindFocusScale(binding.btnNavApps, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnNavIptv, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnNavGames, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnNavCast, scaleRatio = 1.12f, elevationDp = 8f)
@@ -71,6 +72,10 @@ class CastActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         binding.btnNavMedia.setOnClickListener { finish() }
+        binding.btnNavHistory.setOnClickListener {
+            startActivity(Intent(this, WatchHistoryActivity::class.java))
+            finish()
+        }
         binding.btnNavApps.setOnClickListener {
             startActivity(Intent(this, AppsHubActivity::class.java))
             finish()

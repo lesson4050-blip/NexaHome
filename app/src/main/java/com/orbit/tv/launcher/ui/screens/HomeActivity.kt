@@ -42,7 +42,6 @@ class HomeActivity : AppCompatActivity() {
     private val viewModel: HomeViewModel by viewModels()
 
     private lateinit var appsAdapter: AppsAdapter
-    private lateinit var recentAdapter: MediaAdapter
     private lateinit var moviesAdapter: MediaAdapter
     private lateinit var seriesAdapter: MediaAdapter
 
@@ -105,8 +104,9 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setupFocusableControls() {
         // Sidebar buttons focus animation
-        TvFocusHelper.bindFocusScale(binding.btnNavApps, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnNavMedia, scaleRatio = 1.12f, elevationDp = 8f)
+        TvFocusHelper.bindFocusScale(binding.btnNavHistory, scaleRatio = 1.12f, elevationDp = 8f)
+        TvFocusHelper.bindFocusScale(binding.btnNavApps, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnNavIptv, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnNavGames, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnNavCast, scaleRatio = 1.12f, elevationDp = 8f)
@@ -144,16 +144,6 @@ class HomeActivity : AppCompatActivity() {
             adapter = appsAdapter
         }
 
-        // 1.5. Continue Watching Shelf (Recent Media)
-        recentAdapter = MediaAdapter { media ->
-            MediaDetailDialog.newInstance(media).show(supportFragmentManager, MediaDetailDialog.TAG)
-        }
-        binding.rvRecent.apply {
-            layoutManager = LinearLayoutManager(this@HomeActivity, LinearLayoutManager.HORIZONTAL, false)
-            adapter = recentAdapter
-            setRecycledViewPool(sharedMediaPool)
-        }
-
         // 2. Movies Shelf
         moviesAdapter = MediaAdapter { media ->
             MediaDetailDialog.newInstance(media).show(supportFragmentManager, MediaDetailDialog.TAG)
@@ -176,9 +166,12 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-        // Sidebar Navigation: 1. Home, 2. Apps, 3. IPTV, 4. Games, 5. Cast
+        // Sidebar Navigation: 1. Home, 2. History, 3. Apps, 4. IPTV, 5. Games, 6. Cast
         binding.btnNavMedia.setOnClickListener {
             binding.scrollContainer.smoothScrollTo(0, 0)
+        }
+        binding.btnNavHistory.setOnClickListener {
+            startActivity(Intent(this, WatchHistoryActivity::class.java))
         }
         binding.btnNavApps.setOnClickListener {
             startActivity(Intent(this, AppsHubActivity::class.java))
@@ -370,20 +363,6 @@ class HomeActivity : AppCompatActivity() {
                                     binding.rvApps.findViewHolderForAdapterPosition(0)?.itemView?.requestFocus()
                                 }
                             }
-                        }
-                    }
-                }
-
-                // Continue Watching (Recent Media)
-                launch {
-                    viewModel.recentMedia.collect { recentList ->
-                        if (recentList.isNotEmpty()) {
-                            binding.headerRecent.visibility = View.VISIBLE
-                            binding.rvRecent.visibility = View.VISIBLE
-                            recentAdapter.submitList(recentList)
-                        } else {
-                            binding.headerRecent.visibility = View.GONE
-                            binding.rvRecent.visibility = View.GONE
                         }
                     }
                 }

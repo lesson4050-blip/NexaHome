@@ -11,12 +11,19 @@
     <string name="vpn_status_connected">VPN</string>
     <string name="vpn_status_disconnected">ВИМКНЕНО</string>
     <string name="nav_media">Головна</string>
+    <string name="nav_history">Історія</string>
     <string name="nav_home_apps">Додатки</string>
     <string name="nav_iptv">ТБ канали</string>
     <string name="nav_games">Ігри</string>
     <string name="nav_optimizer">Оптимізація</string>
     <string name="nav_cast">Трансляція</string>
     <string name="nav_power">Живлення</string>
+
+    <!-- Watch History Screen -->
+    <string name="history_title">Історія перегляду</string>
+    <string name="history_subtitle">Фільми та серіали, відкриті на цьому пристрої</string>
+    <string name="history_btn_clear">Очистити історію</string>
+    <string name="history_empty">Історія перегляду порожня.\nВідкривайте фільми або серіали на Головній, щоб продовжувати перегляд тут.</string>
     <string name="title_recent">Продовжити перегляд</string>
     <string name="subtitle_recent">Нещодавно відкриті фільми та серіали</string>
     <string name="badge_continue">ПЕРЕГЛЯД</string>

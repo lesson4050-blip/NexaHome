@@ -15,12 +15,19 @@
 
     <!-- Navigation Drawer / Sidebar -->
     <string name="nav_media">Home</string>
+    <string name="nav_history">History</string>
     <string name="nav_home_apps">Apps</string>
     <string name="nav_iptv">TV Channels</string>
     <string name="nav_games">Gaming Arcade</string>
     <string name="nav_optimizer">Optimizer</string>
     <string name="nav_cast">Screen Cast</string>
     <string name="nav_power">System Power</string>
+
+    <!-- Watch History Screen -->
+    <string name="history_title">Watch History</string>
+    <string name="history_subtitle">Movies and series recently opened on this device</string>
+    <string name="history_btn_clear">Clear History</string>
+    <string name="history_empty">Watch history is empty.\nOpen movies or series from Home to resume them here.</string>
 
     <!-- Home Screen Shelves -->
     <string name="title_recent">Continue Watching</string>

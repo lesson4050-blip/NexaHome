@@ -62,6 +62,14 @@
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
+        <!-- Watch History Activity -->
+        <activity
+            android:name=".ui.screens.WatchHistoryActivity"
+            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:exported="true"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
         <!-- Live TV / IPTV Activity -->
         <activity
             android:name=".ui.screens.IptvActivity"

@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:background="@color/tv_dark_bg">
+
+    <ImageView
+        android:id="@+id/iv_backdrop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/backdrop_scenery" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/tv_dimmer" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingStart="@dimen/overscan_safe_margin_horizontal"
+        android:paddingTop="@dimen/overscan_safe_margin_vertical"
+        android:paddingEnd="@dimen/overscan_safe_margin_horizontal"
+        android:paddingBottom="@dimen/overscan_safe_margin_vertical">
+
+        <!-- Left Sidebar Rail -->
+        <LinearLayout
+            android:id="@+id/container_sidebar"
+            android:layout_width="@dimen/sidebar_width"
+            android:layout_height="0dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/btn_nav_media"
+                android:layout_width="@dimen/sidebar_button_size"
+                android:layout_height="@dimen/sidebar_button_size"
+                android:background="@drawable/bg_nav_tile"
+                android:contentDescription="@string/nav_media"
+                android:focusable="true"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_nav_home" />
+
+            <ImageButton
+                android:id="@+id/btn_nav_history"
+                android:layout_width="@dimen/sidebar_button_size"
+                android:layout_height="@dimen/sidebar_button_size"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_nav_tile"
+                android:contentDescription="@string/nav_history"
+                android:focusable="true"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_nav_history" />
+
+            <ImageButton
+                android:id="@+id/btn_nav_apps"
+                android:layout_width="@dimen/sidebar_button_size"
+                android:layout_height="@dimen/sidebar_button_size"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_nav_tile"
+                android:contentDescription="@string/nav_home_apps"
+                android:focusable="true"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_nav_apps" />
+
+            <ImageButton
+                android:id="@+id/btn_nav_iptv"
+                android:layout_width="@dimen/sidebar_button_size"
+                android:layout_height="@dimen/sidebar_button_size"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_nav_tile"
+                android:contentDescription="@string/nav_iptv"
+                android:focusable="true"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_nav_iptv" />
+
+            <ImageButton
+                android:id="@+id/btn_nav_games"
+                android:layout_width="@dimen/sidebar_button_size"
+                android:layout_height="@dimen/sidebar_button_size"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_nav_tile"
+                android:contentDescription="@string/nav_optimizer"
+                android:focusable="true"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_nav_speed" />
+
+            <ImageButton
+                android:id="@+id/btn_nav_cast"
+                android:layout_width="@dimen/sidebar_button_size"
+                android:layout_height="@dimen/sidebar_button_size"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_nav_tile"
+                android:contentDescription="@string/nav_cast"
+                android:focusable="true"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_nav_cast" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/btn_nav_power"
+                android:layout_width="@dimen/circle_button_size"
+                android:layout_height="@dimen/circle_button_size"
+                android:background="@drawable/bg_circle_button"
+                android:contentDescription="@string/nav_power"
+                android:focusable="true"
+                android:padding="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_nav_power" />
+
+        </LinearLayout>
+
+        <!-- Main Content Area -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="24dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/container_sidebar"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Top Header -->
+            <LinearLayout
+                android:id="@+id/container_header"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toStartOf="@id/btn_clear_history"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:background="@drawable/bg_nav_tile"
+                    android:padding="9dp"
+                    android:src="@drawable/ic_nav_history"
+                    app:tint="@color/leanback_cyan" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-black"
+                        android:text="@string/history_title"
+                        android:textColor="@color/white"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="sans-serif"
+                        android:text="@string/history_subtitle"
+                        android:textColor="@color/white_60"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Clear History Action Button -->
+            <LinearLayout
+                android:id="@+id/btn_clear_history"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_focus_app_card"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                app:layout_constraintBottom_toBottomOf="@id/container_header"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/container_header">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_delete"
+                    app:tint="@color/white_60" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="sans-serif-bold"
+                    android:text="@string/history_btn_clear"
+                    android:textColor="@color/white_90"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <!-- Empty State Placeholder -->
+            <LinearLayout
+                android:id="@+id/container_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/container_header">
+
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:alpha="0.3"
+                    android:src="@drawable/ic_nav_history"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:lineSpacingExtra="4dp"
+                    android:text="@string/history_empty"
+                    android:textColor="@color/white_40"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <!-- History Cards Grid -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_history"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="18dp"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:paddingBottom="24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/container_header"
+                tools:listitem="@layout/item_media_card" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

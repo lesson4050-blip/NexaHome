@@ -15,12 +15,19 @@
 
     <!-- Navigation Drawer / Sidebar -->
     <string name="nav_media">Главная</string>
+    <string name="nav_history">История</string>
     <string name="nav_home_apps">Приложения</string>
     <string name="nav_iptv">ТВ каналы</string>
     <string name="nav_games">Игры</string>
     <string name="nav_optimizer">Оптимизация</string>
     <string name="nav_cast">Трансляция</string>
     <string name="nav_power">Питание</string>
+
+    <!-- Watch History Screen -->
+    <string name="history_title">История просмотров</string>
+    <string name="history_subtitle">Фильмы и сериалы, открытые на этом устройстве</string>
+    <string name="history_btn_clear">Очистить историю</string>
+    <string name="history_empty">История просмотров пуста.\nОткрывайте фильмы и сериалы на Главной, чтобы продолжать просмотр здесь.</string>
 
     <!-- Home Screen Shelves -->
     <string name="title_recent">Продолжить просмотр</string>
