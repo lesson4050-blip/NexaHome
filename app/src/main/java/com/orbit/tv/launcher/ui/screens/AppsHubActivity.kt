@@ -285,6 +285,11 @@ class AppsHubActivity : AppCompatActivity() {
             finish()
         }
 
+        binding.btnNavSettings.setOnClickListener {
+            startActivity(Intent(this, LauncherSettingsActivity::class.java))
+            finish()
+        }
+
         binding.btnNavPower.setOnClickListener {
             TvPowerDialog.show(supportFragmentManager)
         }

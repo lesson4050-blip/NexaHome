@@ -325,4 +325,26 @@
     <string name="iptv_web_import_hint">Або адкрыйце ў браўзеры тэлефона: %1$s</string>
     <string name="iptv_web_import_emulator_hint">Эмулятар: адкрыйце ў браўзеры ПК http://localhost:8080 (пасля adb forward)</string>
     <string name="iptv_channels_count_format">%1$d каналаў</string>
+
+    <!-- Launcher Settings Screen -->
+    <string name="launcher_settings_title">Налады лаўнчара</string>
+    <string name="launcher_settings_subtitle">Схаваныя праграмы, памяць і параметры</string>
+    <string name="settings_section_hidden">Схаваныя праграмы</string>
+    <string name="settings_hidden_count">Схавана: %1$d</string>
+    <string name="settings_hidden_empty">Няма схаваных праграм. Зацісніце ОК на картцы ў каталогу, каб схаваць непатрэбнае.</string>
+    <string name="settings_btn_unhide_all">Аднавіць усе</string>
+    <string name="settings_btn_unhide">ВЯРНУЦЬ</string>
+    <string name="settings_section_storage">Памяць і кэш</string>
+    <string name="settings_cache_images">Постары: %1$s</string>
+    <string name="settings_cache_catalog">Каталогі: %1$s</string>
+    <string name="settings_cache_total">Усяго: %1$s</string>
+    <string name="settings_btn_clear_images">Ачысціць постары</string>
+    <string name="settings_btn_clear_all">Ачысціць увесь кэш</string>
+    <string name="settings_cache_cleared">Кэш паспяхова ачышчаны</string>
+    <string name="settings_section_language">Мова каталога</string>
+    <string name="settings_lang_system">Як у сістэме</string>
+    <string name="settings_section_player">Плэер па змаўчанні</string>
+    <string name="settings_player_always_ask">Заўсёды пытацца</string>
+    <string name="settings_toast_unhidden">Адноўлена: %1$s</string>
+
 </resources>

@@ -63,6 +63,7 @@ class OptimizerActivity : AppCompatActivity() {
         TvFocusHelper.bindFocusScale(binding.btnNavIptv, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnNavGames, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnNavCast, scaleRatio = 1.12f, elevationDp = 8f)
+        TvFocusHelper.bindFocusScale(binding.btnNavSettings, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnNavPower, scaleRatio = 1.12f, elevationDp = 8f)
 
         // Action Buttons
@@ -99,6 +100,10 @@ class OptimizerActivity : AppCompatActivity() {
         }
         binding.btnNavCast.setOnClickListener {
             startActivity(Intent(this, CastActivity::class.java))
+            finish()
+        }
+        binding.btnNavSettings.setOnClickListener {
+            startActivity(Intent(this, LauncherSettingsActivity::class.java))
             finish()
         }
         binding.btnNavPower.setOnClickListener {

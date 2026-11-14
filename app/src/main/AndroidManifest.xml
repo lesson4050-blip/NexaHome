@@ -94,6 +94,14 @@
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
+        <!-- Launcher Settings Activity -->
+        <activity
+            android:name=".ui.screens.LauncherSettingsActivity"
+            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:exported="true"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
         <!-- FileProvider for Sharing Cast Uploaded Media -->
         <provider
             android:name="androidx.core.content.FileProvider"

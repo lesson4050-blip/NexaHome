@@ -283,4 +283,26 @@
     <string name="iptv_web_import_hint">Або відкрийте у браузері телефону: %1$s</string>
     <string name="iptv_web_import_emulator_hint">Емулятор: відкрийте у браузері ПК http://localhost:8080 (після adb forward)</string>
     <string name="iptv_channels_count_format">%1$d каналів</string>
+
+    <!-- Launcher Settings Screen -->
+    <string name="launcher_settings_title">Налаштування лаунчера</string>
+    <string name="launcher_settings_subtitle">Приховані додатки, пам\'ять та параметри</string>
+    <string name="settings_section_hidden">Приховані додатки</string>
+    <string name="settings_hidden_count">Приховано: %1$d</string>
+    <string name="settings_hidden_empty">Немає прихованих додатків. Затисніть ОК на картці в каталозі, щоб приховати.</string>
+    <string name="settings_btn_unhide_all">Відновити всі</string>
+    <string name="settings_btn_unhide">ПОВЕРНУТИ</string>
+    <string name="settings_section_storage">Пам\'ять та кеш</string>
+    <string name="settings_cache_images">Постери: %1$s</string>
+    <string name="settings_cache_catalog">Каталоги: %1$s</string>
+    <string name="settings_cache_total">Усього: %1$s</string>
+    <string name="settings_btn_clear_images">Очистити постери</string>
+    <string name="settings_btn_clear_all">Очистити весь кеш</string>
+    <string name="settings_cache_cleared">Кеш успішно очищено</string>
+    <string name="settings_section_language">Мова каталогу</string>
+    <string name="settings_lang_system">Як у системі</string>
+    <string name="settings_section_player">Плеєр за замовчуванням</string>
+    <string name="settings_player_always_ask">Завжди запитувати</string>
+    <string name="settings_toast_unhidden">Відновлено: %1$s</string>
+
 </resources>

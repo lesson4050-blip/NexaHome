@@ -113,6 +113,7 @@ class HomeActivity : AppCompatActivity() {
         TvFocusHelper.bindFocusScale(binding.btnNavIptv, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnNavGames, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnNavCast, scaleRatio = 1.12f, elevationDp = 8f)
+        TvFocusHelper.bindFocusScale(binding.btnNavSettings, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnNavPower, scaleRatio = 1.12f, elevationDp = 8f)
 
         // Topbar controls focus animation
@@ -205,6 +206,9 @@ class HomeActivity : AppCompatActivity() {
         }
         binding.btnNavCast.setOnClickListener {
             startActivity(Intent(this, CastActivity::class.java))
+        }
+        binding.btnNavSettings.setOnClickListener {
+            startActivity(Intent(this, LauncherSettingsActivity::class.java))
         }
 
         // VPN Widget

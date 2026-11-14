@@ -247,4 +247,26 @@
     <string name="vpn_loc_us">🇺🇸 Estados Unidos</string>
     <string name="vpn_loc_de">🇩🇪 Alemanha</string>
     <string name="vpn_loc_pl">🇵🇱 Polônia</string>
+
+    <!-- Launcher Settings Screen -->
+    <string name="launcher_settings_title">Launcher Settings</string>
+    <string name="launcher_settings_subtitle">Hidden apps, cache &amp; preferences</string>
+    <string name="settings_section_hidden">Hidden Applications</string>
+    <string name="settings_hidden_count">Hidden: %1$d</string>
+    <string name="settings_hidden_empty">No hidden applications. Long-press any app in Apps Hub to hide it.</string>
+    <string name="settings_btn_unhide_all">Unhide All</string>
+    <string name="settings_btn_unhide">RESTORE</string>
+    <string name="settings_section_storage">Storage &amp; Disk Cache</string>
+    <string name="settings_cache_images">Posters: %1$s</string>
+    <string name="settings_cache_catalog">Catalogs: %1$s</string>
+    <string name="settings_cache_total">Total: %1$s</string>
+    <string name="settings_btn_clear_images">Clear Posters</string>
+    <string name="settings_btn_clear_all">Clear All Cache</string>
+    <string name="settings_cache_cleared">Cache cleared successfully</string>
+    <string name="settings_section_language">Content Language</string>
+    <string name="settings_lang_system">System Default</string>
+    <string name="settings_section_player">Preferred Video Player</string>
+    <string name="settings_player_always_ask">Always Ask</string>
+    <string name="settings_toast_unhidden">Restored: %1$s</string>
+
 </resources>

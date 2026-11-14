@@ -58,6 +58,7 @@ class CastActivity : AppCompatActivity() {
         TvFocusHelper.bindFocusScale(binding.btnNavIptv, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnNavGames, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnNavCast, scaleRatio = 1.12f, elevationDp = 8f)
+        TvFocusHelper.bindFocusScale(binding.btnNavSettings, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnNavPower, scaleRatio = 1.12f, elevationDp = 8f)
 
         TvFocusHelper.bindFocusScale(binding.btnRefreshPin, scaleRatio = 1.08f, elevationDp = 6f)
@@ -86,6 +87,10 @@ class CastActivity : AppCompatActivity() {
         }
         binding.btnNavGames.setOnClickListener {
             startActivity(Intent(this, OptimizerActivity::class.java))
+            finish()
+        }
+        binding.btnNavSettings.setOnClickListener {
+            startActivity(Intent(this, LauncherSettingsActivity::class.java))
             finish()
         }
         binding.btnNavPower.setOnClickListener {
