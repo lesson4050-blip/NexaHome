@@ -121,6 +121,14 @@ class AppPreferencesRepository(context: Context) {
         prefs.edit().putFloat(KEY_DIMMER_OPACITY, opacity).apply()
     }
 
+    fun getHomeLayoutMode(): String {
+        return prefs.getString(KEY_HOME_LAYOUT_MODE, HOME_LAYOUT_DEFAULT) ?: HOME_LAYOUT_DEFAULT
+    }
+
+    fun setHomeLayoutMode(mode: String) {
+        prefs.edit().putString(KEY_HOME_LAYOUT_MODE, mode).apply()
+    }
+
     companion object {
         private const val PREFS_NAME = "orbit_launcher_app_prefs"
         private const val KEY_PINNED_APPS = "key_pinned_packages"
@@ -129,5 +137,18 @@ class AppPreferencesRepository(context: Context) {
         private const val KEY_PREFERRED_PLAYER = "key_preferred_player"
         private const val KEY_WALLPAPER_THEME = "key_wallpaper_theme"
         private const val KEY_DIMMER_OPACITY = "key_dimmer_opacity"
+        private const val KEY_HOME_LAYOUT_MODE = "key_home_layout_mode"
+
+        const val HOME_LAYOUT_DEFAULT = "DEFAULT"
+        const val HOME_LAYOUT_CINEMA = "CINEMA"
+        const val HOME_LAYOUT_MOVIES_FIRST = "MOVIES_FIRST"
+        const val HOME_LAYOUT_NO_SERIES = "NO_SERIES"
+        const val HOME_LAYOUT_MINIMAL = "MINIMAL"
+
+        const val LAYOUT_APPS_MOVIES_SERIES = HOME_LAYOUT_DEFAULT
+        const val LAYOUT_MOVIES_SERIES_APPS = HOME_LAYOUT_CINEMA
+        const val LAYOUT_MOVIES_APPS_SERIES = HOME_LAYOUT_MOVIES_FIRST
+        const val LAYOUT_APPS_MOVIES = HOME_LAYOUT_NO_SERIES
+        const val LAYOUT_APPS_ONLY = HOME_LAYOUT_MINIMAL
     }
 }

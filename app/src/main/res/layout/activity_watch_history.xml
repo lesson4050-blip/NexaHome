@@ -167,131 +167,235 @@
             app:layout_constraintStart_toEndOf="@id/container_sidebar"
             app:layout_constraintTop_toTopOf="parent">
 
-            <!-- Top Header -->
-            <LinearLayout
-                android:id="@+id/container_header"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toStartOf="@id/btn_clear_history"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:layout_width="38dp"
-                    android:layout_height="38dp"
-                    android:background="@drawable/bg_nav_tile"
-                    android:padding="9dp"
-                    android:src="@drawable/ic_nav_history"
-                    app:tint="@color/leanback_cyan" />
+            <!-- Scrollable Content Canvas -->
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/scroll_history_canvas"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:paddingBottom="48dp"
+                android:scrollbars="none">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!-- Top Main Header -->
+                    <LinearLayout
+                        android:id="@+id/container_header"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-black"
-                        android:text="@string/history_title"
-                        android:textColor="@color/white"
-                        android:textSize="22sp" />
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                        <ImageView
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:background="@drawable/bg_nav_tile"
+                            android:padding="9dp"
+                            android:src="@drawable/ic_nav_history"
+                            app:tint="@color/leanback_cyan" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="14dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-black"
+                                android:text="@string/history_title"
+                                android:textColor="@color/white"
+                                android:textSize="22sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="sans-serif"
+                                android:text="@string/history_subtitle"
+                                android:textColor="@color/white_60"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!-- SECTION 1: System Watch Next (SmartTube, VLC, Kodi, etc.) -->
+                    <LinearLayout
+                        android:id="@+id/container_watch_next"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:fontFamily="sans-serif"
-                        android:text="@string/history_subtitle"
-                        android:textColor="@color/white_60"
-                        android:textSize="12sp" />
+                        android:layout_marginTop="20dp"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif-bold"
+                                android:text="@string/watch_next_title"
+                                android:textColor="@color/leanback_cyan"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_tab_pill"
+                                android:fontFamily="sans-serif-bold"
+                                android:paddingStart="10dp"
+                                android:paddingTop="3dp"
+                                android:paddingEnd="10dp"
+                                android:paddingBottom="3dp"
+                                android:text="@string/watch_next_badge"
+                                android:textColor="@color/white"
+                                android:textSize="10sp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="sans-serif"
+                            android:text="@string/watch_next_subtitle"
+                            android:textColor="@color/white_60"
+                            android:textSize="12sp" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_watch_next"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:clipChildren="false"
+                            android:clipToPadding="false"
+                            android:nestedScrollingEnabled="false"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:listitem="@layout/item_watch_next_card" />
+
+                    </LinearLayout>
+
+                    <!-- SECTION 2: Local Launcher Watch History -->
+                    <LinearLayout
+                        android:id="@+id/container_local_history_section"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="22dp"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif-bold"
+                                android:text="@string/history_local_title"
+                                android:textColor="@color/leanback_cyan"
+                                android:textSize="16sp" />
+
+                            <LinearLayout
+                                android:id="@+id/btn_clear_history"
+                                android:layout_width="wrap_content"
+                                android:layout_height="34dp"
+                                android:background="@drawable/bg_genre_chip"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                android:paddingStart="14dp"
+                                android:paddingEnd="14dp">
+
+                                <ImageView
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:src="@drawable/ic_delete"
+                                    app:tint="@color/white_80" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="6dp"
+                                    android:fontFamily="sans-serif-bold"
+                                    android:text="@string/history_btn_clear"
+                                    android:textColor="@color/white_90"
+                                    android:textSize="11sp" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <!-- Local History Cards Row -->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_history"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:clipChildren="false"
+                            android:clipToPadding="false"
+                            android:nestedScrollingEnabled="false"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:listitem="@layout/item_media_card" />
+
+                    </LinearLayout>
+
+                    <!-- Empty State Placeholder (when both are empty) -->
+                    <LinearLayout
+                        android:id="@+id/container_empty"
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:alpha="0.3"
+                            android:src="@drawable/ic_nav_history"
+                            app:tint="@color/white" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            android:fontFamily="sans-serif"
+                            android:gravity="center"
+                            android:lineSpacingExtra="4dp"
+                            android:text="@string/history_empty"
+                            android:textColor="@color/white_40"
+                            android:textSize="13sp" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
-            </LinearLayout>
-
-            <!-- Clear History Action Button -->
-            <LinearLayout
-                android:id="@+id/btn_clear_history"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:background="@drawable/bg_focus_app_card"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                app:layout_constraintBottom_toBottomOf="@id/container_header"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/container_header">
-
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_delete"
-                    app:tint="@color/white_60" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:fontFamily="sans-serif-bold"
-                    android:text="@string/history_btn_clear"
-                    android:textColor="@color/white_90"
-                    android:textSize="12sp" />
-
-            </LinearLayout>
-
-            <!-- Empty State Placeholder -->
-            <LinearLayout
-                android:id="@+id/container_empty"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/container_header">
-
-                <ImageView
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:alpha="0.3"
-                    android:src="@drawable/ic_nav_history"
-                    app:tint="@color/white" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:fontFamily="sans-serif"
-                    android:gravity="center"
-                    android:lineSpacingExtra="4dp"
-                    android:text="@string/history_empty"
-                    android:textColor="@color/white_40"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-            <!-- History Cards Row -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_history"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                android:paddingBottom="24dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/container_header"
-                tools:listitem="@layout/item_media_card" />
+            </androidx.core.widget.NestedScrollView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

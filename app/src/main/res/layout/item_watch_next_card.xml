@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="260dp"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="16dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="146dp"
+        app:cardBackgroundColor="@color/dialog_surface"
+        app:cardCornerRadius="14dp"
+        app:cardElevation="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_watch_next_thumb"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                tools:src="@drawable/backdrop_scenery" />
+
+            <!-- Gradient overlay for text contrast -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/bg_poster_gradient" />
+
+            <!-- App Source Badge (Top-Right) -->
+            <TextView
+                android:id="@+id/tv_watch_next_app"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="8dp"
+                android:background="@drawable/bg_tab_pill"
+                android:fontFamily="sans-serif-bold"
+                android:paddingStart="8dp"
+                android:paddingTop="3dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="3dp"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                tools:text="SmartTube" />
+
+            <!-- Red Playback Progress Bar (Bottom) -->
+            <ProgressBar
+                android:id="@+id/pb_watch_next_progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_alignParentBottom="true"
+                android:max="100"
+                android:progress="65"
+                android:progressBackgroundTint="#44FFFFFF"
+                android:progressTint="#EF4444" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- Card Title & Episode Subtitle -->
+    <TextView
+        android:id="@+id/tv_watch_next_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-bold"
+        android:maxLines="1"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        tools:text="Breaking Bad — S05E14" />
+
+    <TextView
+        android:id="@+id/tv_watch_next_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif"
+        android:maxLines="1"
+        android:textColor="@color/leanback_cyan"
+        android:textSize="11sp"
+        tools:text="Продолжить с 34:12" />
+
+</LinearLayout>

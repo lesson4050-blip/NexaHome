@@ -527,7 +527,89 @@
 
                     </LinearLayout>
 
-                    <!-- SECTION 3: Content Language & Preferred Media Player Cards -->
+                    <!-- SECTION 3: Home Screen Layout -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="sans-serif-bold"
+                        android:text="@string/settings_section_home"
+                        android:textColor="@color/leanback_cyan"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:baselineAligned="false"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:orientation="horizontal">
+
+                        <!-- Home Layout Selector Card -->
+                        <LinearLayout
+                            android:id="@+id/card_select_home_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_focus_app_card"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:clipChildren="false"
+                            android:clipToPadding="false"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_marginEnd="8dp"
+                                    android:src="@drawable/ic_nav_home" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:text="@string/settings_home_layout"
+                                    android:textColor="@color/white_60"
+                                    android:textSize="12sp" />
+
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:src="@drawable/ic_arrow_drop_down" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/tv_selected_home_layout_val"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:fontFamily="sans-serif-black"
+                                android:textColor="@color/leanback_cyan"
+                                android:textSize="17sp"
+                                tools:text="Приложения → Фильмы → Сериалы (Стандарт)" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="sans-serif"
+                                android:text="@string/settings_press_to_change"
+                                android:textColor="@color/white_40"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!-- SECTION 4: Content Language & Preferred Media Player Cards -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

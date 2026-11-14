@@ -74,6 +74,7 @@ class HomeActivity : AppCompatActivity() {
         setupClickListeners()
         setupBackNavigation()
         setupShelfScrollCoordination()
+        applyHomeLayoutMode()
         observeViewModelState()
     }
 
@@ -90,6 +91,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         java.util.Locale.setDefault(viewModel.getActiveLocale())
+        applyHomeLayoutMode()
         // Refresh apps list in case packages were uninstalled/installed while user was in another app
         viewModel.loadInstalledApps()
         viewModel.checkAndReloadMediaIfNeeded()
@@ -565,9 +567,13 @@ class HomeActivity : AppCompatActivity() {
             KeyEvent.KEYCODE_DPAD_DOWN -> {
                 if (event.action == KeyEvent.ACTION_DOWN) {
                     val focused = currentFocus
-                    if (focused != null && isDescendantOf(focused, binding.rvSeries)) {
-                        // Already on the bottom shelf; consume DOWN so NestedScrollView never scrolls into empty void
-                        return true
+                    val container = binding.containerAllShelves
+                    if (focused != null && container.childCount > 0) {
+                        val lastChild = container.getChildAt(container.childCount - 1)
+                        if (isDescendantOf(focused, lastChild)) {
+                            // Already on the bottom shelf; consume DOWN so NestedScrollView never scrolls into empty void
+                            return true
+                        }
                     }
                 }
             }
@@ -575,31 +581,75 @@ class HomeActivity : AppCompatActivity() {
         return super.dispatchKeyEvent(event)
     }
 
-    private fun setupShelfScrollCoordination() {
-        // Hard-clamp maximum vertical scroll so content NEVER scrolls past Movies header
-        binding.scrollContainer.setOnScrollChangeListener { _, _, scrollY, _, _ ->
-            val maxY = (binding.headerMovies.top - binding.scrollContainer.paddingTop).coerceAtLeast(0)
-            if (scrollY > maxY) {
-                binding.scrollContainer.scrollTo(0, maxY)
+    private fun applyHomeLayoutMode() {
+        val mode = appPrefs.getHomeLayoutMode()
+        val container = binding.containerAllShelves
+        val apps = binding.containerAppsShelf
+        val movies = binding.containerMoviesShelf
+        val series = binding.containerSeriesShelf
+
+        container.removeAllViews()
+
+        when (mode) {
+            com.orbit.tv.launcher.features.apps.repository.AppPreferencesRepository.HOME_LAYOUT_CINEMA -> {
+                movies.visibility = View.VISIBLE
+                series.visibility = View.VISIBLE
+                apps.visibility = View.VISIBLE
+                container.addView(movies)
+                container.addView(series)
+                container.addView(apps)
+            }
+            com.orbit.tv.launcher.features.apps.repository.AppPreferencesRepository.HOME_LAYOUT_MOVIES_FIRST -> {
+                movies.visibility = View.VISIBLE
+                apps.visibility = View.VISIBLE
+                series.visibility = View.VISIBLE
+                container.addView(movies)
+                container.addView(apps)
+                container.addView(series)
+            }
+            com.orbit.tv.launcher.features.apps.repository.AppPreferencesRepository.HOME_LAYOUT_NO_SERIES -> {
+                apps.visibility = View.VISIBLE
+                movies.visibility = View.VISIBLE
+                series.visibility = View.GONE
+                container.addView(apps)
+                container.addView(movies)
+            }
+            com.orbit.tv.launcher.features.apps.repository.AppPreferencesRepository.HOME_LAYOUT_MINIMAL -> {
+                apps.visibility = View.VISIBLE
+                movies.visibility = View.GONE
+                series.visibility = View.GONE
+                container.addView(apps)
+            }
+            else -> { // DEFAULT: Apps -> Movies -> Series
+                apps.visibility = View.VISIBLE
+                movies.visibility = View.VISIBLE
+                series.visibility = View.VISIBLE
+                container.addView(apps)
+                container.addView(movies)
+                container.addView(series)
             }
         }
+    }
 
+    private fun setupShelfScrollCoordination() {
         binding.scrollContainer.viewTreeObserver.addOnGlobalFocusChangeListener { _, newFocus ->
             if (newFocus == null) return@addOnGlobalFocusChangeListener
 
-            if (isDescendantOf(newFocus, binding.rvSeries) || 
-                isDescendantOf(newFocus, binding.headerSeries)
-            ) {
-                // Focus is on Series shelf: scroll down so Movies header sits cleanly at the top
-                val targetY = (binding.headerMovies.top - binding.scrollContainer.paddingTop).coerceAtLeast(0)
-                binding.scrollContainer.smoothScrollTo(0, targetY)
-            } else if (isDescendantOf(newFocus, binding.rvMovies) ||
-                isDescendantOf(newFocus, binding.headerMovies) ||
-                isDescendantOf(newFocus, binding.rvApps) ||
+            val container = binding.containerAllShelves
+            val childCount = container.childCount
+            if (childCount > 1) {
+                val lastChild = container.getChildAt(childCount - 1)
+                if (isDescendantOf(newFocus, lastChild)) {
+                    val targetY = (lastChild.top - binding.scrollContainer.paddingTop).coerceAtLeast(0)
+                    binding.scrollContainer.smoothScrollTo(0, targetY)
+                    return@addOnGlobalFocusChangeListener
+                }
+            }
+
+            if (childCount > 0 && (isDescendantOf(newFocus, container.getChildAt(0)) ||
                 isDescendantOf(newFocus, binding.containerTopBar) ||
-                isDescendantOf(newFocus, binding.containerSidebar)
+                isDescendantOf(newFocus, binding.containerSidebar))
             ) {
-                // Focus is on Movies, Apps, TopBar or Sidebar: return cleanly to top home view
                 binding.scrollContainer.smoothScrollTo(0, 0)
             }
         }

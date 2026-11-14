@@ -411,6 +411,7 @@
                 app:layout_constraintTop_toBottomOf="@id/container_top_bar">
 
                 <LinearLayout
+                    android:id="@+id/container_all_shelves"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clipChildren="false"
@@ -418,173 +419,203 @@
                     android:orientation="vertical"
                     android:paddingBottom="96dp">
 
-                    <!-- Row 1: Installed Streaming Apps -->
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_apps"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/shelf_apps_height"
-                        android:clipChildren="true"
-                        android:clipToPadding="false"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="36dp"
-                        android:nestedScrollingEnabled="false"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_app_card" />
-
-                    <!-- Row 2: Movies Shelf -->
+                    <!-- Shelf 1: Installed Streaming Apps -->
                     <LinearLayout
-                        android:id="@+id/header_movies"
+                        android:id="@+id/container_apps_shelf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/shelf_section_margin"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="36dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-bold"
-                            android:text="@string/title_movies"
-                            android:textColor="@color/leanback_cyan"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:id="@+id/tv_movies_subtitle"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginStart="10dp"
-                            android:fontFamily="sans-serif"
-                            android:text="@string/subtitle_movies_trending"
-                            android:textColor="@color/white_60"
-                            android:textSize="12sp" />
-
-                        <LinearLayout
-                            android:id="@+id/btn_filter_movie_genre"
-                            android:layout_width="wrap_content"
-                            android:layout_height="32dp"
-                            android:background="@drawable/bg_genre_chip"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:gravity="center_vertical"
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_apps"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/shelf_apps_height"
+                            android:clipChildren="true"
+                            android:clipToPadding="false"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="36dp"
+                            android:nestedScrollingEnabled="false"
                             android:orientation="horizontal"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="10dp">
-
-                            <TextView
-                                android:id="@+id/tv_current_movie_genre"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="sans-serif-bold"
-                                android:text="@string/genre_all"
-                                android:textColor="@color/leanback_cyan"
-                                android:textSize="12sp" />
-
-                            <ImageView
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:layout_marginStart="4dp"
-                                android:src="@drawable/ic_arrow_drop_down" />
-                        </LinearLayout>
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:listitem="@layout/item_app_card" />
 
                     </LinearLayout>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_movies"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/shelf_media_height"
-                        android:layout_marginTop="6dp"
-                        android:clipChildren="true"
-                        android:clipToPadding="false"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="36dp"
-                        android:nestedScrollingEnabled="false"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_media_card" />
-
-                    <!-- Row 3: TV Series Shelf -->
+                    <!-- Shelf 2: Movies Shelf -->
                     <LinearLayout
-                        android:id="@+id/header_series"
+                        android:id="@+id/container_movies_shelf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/shelf_section_margin"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="36dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-bold"
-                            android:text="@string/title_series"
-                            android:textColor="@color/leanback_cyan"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:id="@+id/tv_series_subtitle"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginStart="10dp"
-                            android:fontFamily="sans-serif"
-                            android:text="@string/subtitle_series_top"
-                            android:textColor="@color/white_60"
-                            android:textSize="12sp" />
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:orientation="vertical">
 
                         <LinearLayout
-                            android:id="@+id/btn_filter_series_genre"
-                            android:layout_width="wrap_content"
-                            android:layout_height="32dp"
-                            android:background="@drawable/bg_genre_chip"
-                            android:clickable="true"
-                            android:focusable="true"
+                            android:id="@+id/header_movies"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/shelf_section_margin"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="36dp"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="10dp">
+                            android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/tv_current_series_genre"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="sans-serif-bold"
-                                android:text="@string/genre_all"
+                                android:text="@string/title_movies"
                                 android:textColor="@color/leanback_cyan"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/tv_movies_subtitle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginStart="10dp"
+                                android:fontFamily="sans-serif"
+                                android:text="@string/subtitle_movies_trending"
+                                android:textColor="@color/white_60"
                                 android:textSize="12sp" />
 
-                            <ImageView
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:layout_marginStart="4dp"
-                                android:src="@drawable/ic_arrow_drop_down" />
+                            <LinearLayout
+                                android:id="@+id/btn_filter_movie_genre"
+                                android:layout_width="wrap_content"
+                                android:layout_height="32dp"
+                                android:background="@drawable/bg_genre_chip"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:paddingStart="12dp"
+                                android:paddingEnd="10dp">
+
+                                <TextView
+                                    android:id="@+id/tv_current_movie_genre"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="sans-serif-bold"
+                                    android:text="@string/genre_all"
+                                    android:textColor="@color/leanback_cyan"
+                                    android:textSize="12sp" />
+
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:layout_marginStart="4dp"
+                                    android:src="@drawable/ic_arrow_drop_down" />
+                            </LinearLayout>
+
                         </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_movies"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/shelf_media_height"
+                            android:layout_marginTop="6dp"
+                            android:clipChildren="true"
+                            android:clipToPadding="false"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="36dp"
+                            android:nestedScrollingEnabled="false"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:listitem="@layout/item_media_card" />
 
                     </LinearLayout>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_series"
+                    <!-- Shelf 3: TV Series Shelf -->
+                    <LinearLayout
+                        android:id="@+id/container_series_shelf"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/shelf_media_height"
-                        android:layout_marginTop="6dp"
-                        android:clipChildren="true"
+                        android:layout_height="wrap_content"
+                        android:clipChildren="false"
                         android:clipToPadding="false"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="36dp"
-                        android:nestedScrollingEnabled="false"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_media_card" />
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/header_series"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/shelf_section_margin"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="36dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-bold"
+                                android:text="@string/title_series"
+                                android:textColor="@color/leanback_cyan"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/tv_series_subtitle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginStart="10dp"
+                                android:fontFamily="sans-serif"
+                                android:text="@string/subtitle_series_top"
+                                android:textColor="@color/white_60"
+                                android:textSize="12sp" />
+
+                            <LinearLayout
+                                android:id="@+id/btn_filter_series_genre"
+                                android:layout_width="wrap_content"
+                                android:layout_height="32dp"
+                                android:background="@drawable/bg_genre_chip"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:paddingStart="12dp"
+                                android:paddingEnd="10dp">
+
+                                <TextView
+                                    android:id="@+id/tv_current_series_genre"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="sans-serif-bold"
+                                    android:text="@string/genre_all"
+                                    android:textColor="@color/leanback_cyan"
+                                    android:textSize="12sp" />
+
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:layout_marginStart="4dp"
+                                    android:src="@drawable/ic_arrow_drop_down" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_series"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/shelf_media_height"
+                            android:layout_marginTop="6dp"
+                            android:clipChildren="true"
+                            android:clipToPadding="false"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="36dp"
+                            android:nestedScrollingEnabled="false"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:listitem="@layout/item_media_card" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 

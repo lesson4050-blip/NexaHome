@@ -374,5 +374,16 @@
     <string name="settings_btn_clear_catalogs">Clear Catalogs</string>
     <string name="settings_hidden_empty_compact">All apps are currently visible in launcher</string>
     <string name="settings_toast_unhidden">Restored: %1$s</string>
+    <string name="settings_section_home">Home Screen</string>
+    <string name="settings_home_layout">Shelf Layout</string>
+    <string name="settings_home_layout_default">Apps → Movies → Series (Default)</string>
+    <string name="settings_home_layout_cinema">Movies → Series → Apps (Cinema)</string>
+    <string name="settings_home_layout_no_series">Apps &amp; Movies (No Series)</string>
+    <string name="settings_home_layout_minimal">Apps Only (Minimalist)</string>
+    <string name="settings_home_layout_movies_first">Movies → Apps → Series</string>
+    <string name="watch_next_title">Continue Watching</string>
+    <string name="watch_next_subtitle">Unfinished media from SmartTube, VLC &amp; players</string>
+    <string name="watch_next_badge">WATCH NEXT</string>
+    <string name="history_local_title">Launcher Playback History</string>
 
 </resources>

@@ -14,9 +14,13 @@ import com.orbit.tv.launcher.features.home.data.WatchHistoryRepository
 import com.orbit.tv.launcher.ui.overlays.MediaDetailDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.orbit.tv.launcher.features.apps.repository.AppPreferencesRepository
+import com.orbit.tv.launcher.platform.tvprovider.WatchNextRepository
 import com.orbit.tv.launcher.platform.wallpaper.TvWallpaperHelper
+import com.orbit.tv.launcher.ui.adapters.WatchNextAdapter
 import com.orbit.tv.launcher.ui.overlays.TvPowerDialog
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class WatchHistoryActivity : AppCompatActivity() {
 
@@ -24,6 +28,11 @@ class WatchHistoryActivity : AppCompatActivity() {
     private lateinit var repository: WatchHistoryRepository
     private lateinit var appPrefs: AppPreferencesRepository
     private lateinit var mediaAdapter: MediaAdapter
+    private lateinit var watchNextRepo: WatchNextRepository
+    private lateinit var watchNextAdapter: WatchNextAdapter
+
+    private var hasLocalHistory = false
+    private var hasWatchNext = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +41,11 @@ class WatchHistoryActivity : AppCompatActivity() {
 
         repository = WatchHistoryRepository(this)
         appPrefs = AppPreferencesRepository(this)
+        watchNextRepo = WatchNextRepository(this)
 
         setupFocus()
         setupSidebarListeners()
+        setupWatchNextList()
         setupHistoryList()
         setupBackNavigation()
         observeHistory()
@@ -43,6 +54,7 @@ class WatchHistoryActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         TvWallpaperHelper.apply(appPrefs.getWallpaperTheme(), binding.silkShaderView, binding.ivBackdrop, binding.viewDimmer)
+        loadWatchNext()
     }
 
     override fun onPause() {
@@ -106,6 +118,32 @@ class WatchHistoryActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupWatchNextList() {
+        watchNextAdapter = WatchNextAdapter { item ->
+            watchNextRepo.launch(item)
+        }
+        binding.rvWatchNext.apply {
+            layoutManager = LinearLayoutManager(this@WatchHistoryActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = watchNextAdapter
+        }
+    }
+
+    private fun loadWatchNext() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val items = watchNextRepo.getWatchNextPrograms()
+            withContext(Dispatchers.Main) {
+                hasWatchNext = items.isNotEmpty()
+                if (hasWatchNext) {
+                    binding.containerWatchNext.visibility = View.VISIBLE
+                    watchNextAdapter.submitList(items)
+                } else {
+                    binding.containerWatchNext.visibility = View.GONE
+                }
+                updateEmptyState()
+            }
+        }
+    }
+
     private fun setupHistoryList() {
         mediaAdapter = MediaAdapter { media ->
             MediaDetailDialog.newInstance(media)
@@ -122,9 +160,10 @@ class WatchHistoryActivity : AppCompatActivity() {
         val mediaRepo = com.orbit.tv.launcher.features.home.repository.MediaRepository(this)
         lifecycleScope.launch {
             repository.recentMedia.collect { list ->
-                if (list.isNotEmpty()) {
+                hasLocalHistory = list.isNotEmpty()
+                if (hasLocalHistory) {
+                    binding.containerLocalHistorySection.visibility = View.VISIBLE
                     binding.rvHistory.visibility = View.VISIBLE
-                    binding.containerEmpty.visibility = View.GONE
                     binding.btnClearHistory.visibility = View.VISIBLE
                     mediaAdapter.submitList(list)
 
@@ -159,12 +198,18 @@ class WatchHistoryActivity : AppCompatActivity() {
                         }
                     }
                 } else {
+                    binding.containerLocalHistorySection.visibility = View.GONE
                     binding.rvHistory.visibility = View.GONE
-                    binding.containerEmpty.visibility = View.VISIBLE
                     binding.btnClearHistory.visibility = View.GONE
                 }
+                updateEmptyState()
             }
         }
+    }
+
+    private fun updateEmptyState() {
+        val allEmpty = !hasLocalHistory && !hasWatchNext
+        binding.containerEmpty.visibility = if (allEmpty) View.VISIBLE else View.GONE
     }
 
     private fun setupBackNavigation() {

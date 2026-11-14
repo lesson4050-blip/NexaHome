@@ -374,5 +374,16 @@
     <string name="settings_btn_clear_catalogs">Очистить каталоги</string>
     <string name="settings_hidden_empty_compact">Все приложения видны в каталоге</string>
     <string name="settings_toast_unhidden">Восстановлено: %1$s</string>
+    <string name="settings_section_home">Главный экран</string>
+    <string name="settings_home_layout">Порядок полок на главном</string>
+    <string name="settings_home_layout_default">Приложения → Фильмы → Сериалы (Стандарт)</string>
+    <string name="settings_home_layout_cinema">Фильмы → Сериалы → Приложения (Кинозал)</string>
+    <string name="settings_home_layout_no_series">Приложения и Фильмы (Без сериалов)</string>
+    <string name="settings_home_layout_minimal">Только приложения (Минимализм)</string>
+    <string name="settings_home_layout_movies_first">Фильмы → Приложения → Сериалы</string>
+    <string name="watch_next_title">Продолжить просмотр</string>
+    <string name="watch_next_subtitle">Недосмотренные видео из SmartTube, VLC и плееров</string>
+    <string name="watch_next_badge">WATCH NEXT</string>
+    <string name="history_local_title">История запусков в лаунчере</string>
 
 </resources>

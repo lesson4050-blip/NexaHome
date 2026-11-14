@@ -1,6 +1,8 @@
 package com.orbit.tv.launcher.ui.screens
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -37,34 +39,86 @@ class LauncherSettingsActivity : AppCompatActivity() {
         ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         if (uri != null) {
-            lifecycleScope.launch(Dispatchers.IO) {
-                try {
-                    val customFile = File(filesDir, "custom_wallpaper.jpg")
-                    contentResolver.openInputStream(uri)?.use { input ->
-                        customFile.outputStream().use { output ->
-                            input.copyTo(output)
-                        }
-                    }
-                    withContext(Dispatchers.Main) {
-                        appPrefs.setWallpaperTheme("CUSTOM")
-                        applyWallpaper("CUSTOM")
-                        setupWallpaperSection()
-                        Toast.makeText(
-                            this@LauncherSettingsActivity,
-                            R.string.settings_custom_wallpaper_success,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                } catch (e: Exception) {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(
-                            this@LauncherSettingsActivity,
-                            R.string.settings_custom_wallpaper_fail,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+            lifecycleScope.launch {
+                val customFile = File(filesDir, "custom_wallpaper.jpg")
+                val success = saveOptimizedCustomWallpaper(uri, customFile)
+                if (success) {
+                    appPrefs.setWallpaperTheme("CUSTOM")
+                    applyWallpaper("CUSTOM")
+                    setupWallpaperSection()
+                    Toast.makeText(
+                        this@LauncherSettingsActivity,
+                        R.string.settings_custom_wallpaper_success,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        this@LauncherSettingsActivity,
+                        R.string.settings_custom_wallpaper_fail,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
+        }
+    }
+
+    private suspend fun saveOptimizedCustomWallpaper(uri: Uri, destFile: File): Boolean = withContext(Dispatchers.IO) {
+        try {
+            // Step 1: Read image dimensions only without loading bitmap pixels into heap
+            val boundsOptions = BitmapFactory.Options().apply {
+                inJustDecodeBounds = true
+            }
+            contentResolver.openInputStream(uri)?.use { stream ->
+                BitmapFactory.decodeStream(stream, null, boundsOptions)
+            }
+
+            val origWidth = boundsOptions.outWidth
+            val origHeight = boundsOptions.outHeight
+            if (origWidth <= 0 || origHeight <= 0) return@withContext false
+
+            // Step 2: Compute power-of-two inSampleSize targeting 1920x1080 (Full HD TV)
+            val targetWidth = 1920
+            val targetHeight = 1080
+            var sampleSize = 1
+            while ((origWidth / (sampleSize * 2)) >= targetWidth &&
+                (origHeight / (sampleSize * 2)) >= targetHeight) {
+                sampleSize *= 2
+            }
+
+            // Step 3: Decode with RGB_565 (2 bytes/pixel vs 4 bytes ARGB_8888, saving 50% RAM)
+            val decodeOptions = BitmapFactory.Options().apply {
+                inSampleSize = sampleSize
+                inPreferredConfig = Bitmap.Config.RGB_565
+                inDither = true
+            }
+
+            val decoded = contentResolver.openInputStream(uri)?.use { stream ->
+                BitmapFactory.decodeStream(stream, null, decodeOptions)
+            } ?: return@withContext false
+
+            // Step 4: Scale down if still exceeding target bounds
+            val scaled = if (decoded.width > targetWidth || decoded.height > targetHeight) {
+                val scale = minOf(targetWidth.toFloat() / decoded.width, targetHeight.toFloat() / decoded.height)
+                val newW = (decoded.width * scale).toInt()
+                val newH = (decoded.height * scale).toInt()
+                val result = Bitmap.createScaledBitmap(decoded, newW, newH, true)
+                if (result != decoded) {
+                    decoded.recycle()
+                }
+                result
+            } else {
+                decoded
+            }
+
+            // Step 5: Save compressed JPEG (85% quality)
+            destFile.outputStream().use { outStream ->
+                scaled.compress(Bitmap.CompressFormat.JPEG, 85, outStream)
+            }
+            scaled.recycle()
+            true
+        } catch (e: Throwable) {
+            android.util.Log.e("LauncherSettings", "Error optimizing custom wallpaper: ${e.message}", e)
+            false
         }
     }
 
@@ -84,6 +138,7 @@ class LauncherSettingsActivity : AppCompatActivity() {
         setupBackNavigation()
         setupCacheSection()
         setupWallpaperSection()
+        setupHomeLayoutSection()
         setupLanguageSection()
         setupPlayerSection()
         setupHiddenApps()
@@ -123,6 +178,7 @@ class LauncherSettingsActivity : AppCompatActivity() {
         TvFocusHelper.bindFocusScale(binding.btnUnhideAll, scaleRatio = 1.08f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.btnUploadWallpaper, scaleRatio = 1.08f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.cardSelectWallpaper, scaleRatio = 1.04f, elevationDp = 6f)
+        TvFocusHelper.bindFocusScale(binding.cardSelectHomeLayout, scaleRatio = 1.04f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.cardSelectLanguage, scaleRatio = 1.04f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.cardSelectPlayer, scaleRatio = 1.04f, elevationDp = 6f)
     }
@@ -278,6 +334,60 @@ class LauncherSettingsActivity : AppCompatActivity() {
                 updateSelectedWallpaperLabel()
                 Toast.makeText(this, selected.title, Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    private fun setupHomeLayoutSection() {
+        val currentMode = appPrefs.getHomeLayoutMode()
+        binding.tvSelectedHomeLayoutVal.text = getHomeLayoutLabel(currentMode)
+
+        binding.cardSelectHomeLayout.setOnClickListener {
+            val options = listOf(
+                TvOptionPickerDialog.OptionItem(
+                    id = AppPreferencesRepository.HOME_LAYOUT_DEFAULT,
+                    title = getString(R.string.settings_home_layout_default),
+                    isSelected = (appPrefs.getHomeLayoutMode() == AppPreferencesRepository.HOME_LAYOUT_DEFAULT)
+                ),
+                TvOptionPickerDialog.OptionItem(
+                    id = AppPreferencesRepository.HOME_LAYOUT_CINEMA,
+                    title = getString(R.string.settings_home_layout_cinema),
+                    isSelected = (appPrefs.getHomeLayoutMode() == AppPreferencesRepository.HOME_LAYOUT_CINEMA)
+                ),
+                TvOptionPickerDialog.OptionItem(
+                    id = AppPreferencesRepository.HOME_LAYOUT_MOVIES_FIRST,
+                    title = getString(R.string.settings_home_layout_movies_first),
+                    isSelected = (appPrefs.getHomeLayoutMode() == AppPreferencesRepository.HOME_LAYOUT_MOVIES_FIRST)
+                ),
+                TvOptionPickerDialog.OptionItem(
+                    id = AppPreferencesRepository.HOME_LAYOUT_NO_SERIES,
+                    title = getString(R.string.settings_home_layout_no_series),
+                    isSelected = (appPrefs.getHomeLayoutMode() == AppPreferencesRepository.HOME_LAYOUT_NO_SERIES)
+                ),
+                TvOptionPickerDialog.OptionItem(
+                    id = AppPreferencesRepository.HOME_LAYOUT_MINIMAL,
+                    title = getString(R.string.settings_home_layout_minimal),
+                    isSelected = (appPrefs.getHomeLayoutMode() == AppPreferencesRepository.HOME_LAYOUT_MINIMAL)
+                )
+            )
+
+            TvOptionPickerDialog.show(
+                fragmentManager = supportFragmentManager,
+                title = getString(R.string.settings_home_layout),
+                options = options
+            ) { selected ->
+                appPrefs.setHomeLayoutMode(selected.id)
+                binding.tvSelectedHomeLayoutVal.text = selected.title
+            }
+        }
+    }
+
+    private fun getHomeLayoutLabel(mode: String): String {
+        return when (mode) {
+            AppPreferencesRepository.HOME_LAYOUT_CINEMA -> getString(R.string.settings_home_layout_cinema)
+            AppPreferencesRepository.HOME_LAYOUT_MOVIES_FIRST -> getString(R.string.settings_home_layout_movies_first)
+            AppPreferencesRepository.HOME_LAYOUT_NO_SERIES -> getString(R.string.settings_home_layout_no_series)
+            AppPreferencesRepository.HOME_LAYOUT_MINIMAL -> getString(R.string.settings_home_layout_minimal)
+            else -> getString(R.string.settings_home_layout_default)
         }
     }
 
