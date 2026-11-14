@@ -170,7 +170,7 @@ class WatchHistoryActivity : AppCompatActivity() {
     private fun setupBackNavigation() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (binding.rvHistory.hasFocus() || binding.btnClearHistory.hasFocus()) {
+                if (!binding.containerSidebar.hasFocus()) {
                     binding.btnNavHistory.requestFocus()
                 } else {
                     finish()

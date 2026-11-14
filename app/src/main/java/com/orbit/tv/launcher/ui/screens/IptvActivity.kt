@@ -314,9 +314,10 @@ class IptvActivity : AppCompatActivity() {
                     hideOsdSidebar()
                 } else if (viewModel.isFullscreen.value) {
                     viewModel.exitFullscreen()
+                } else if (!binding.containerSidebar.hasFocus()) {
+                    binding.btnNavIptv.requestFocus()
                 } else {
-                    isEnabled = false
-                    onBackPressedDispatcher.onBackPressed()
+                    finish()
                 }
             }
         })

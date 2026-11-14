@@ -55,6 +55,7 @@ class HomeActivity : AppCompatActivity() {
 
     private var speechRecognizer: SpeechRecognizer? = null
     private var isRecordingVoice: Boolean = false
+    private var lastLaunchedAppPackage: String? = null
 
     private val audioPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -139,6 +140,7 @@ class HomeActivity : AppCompatActivity() {
         appsAdapter = AppsAdapter(
             showPinBadge = false,
             onAppClick = { app ->
+                lastLaunchedAppPackage = app.packageName
                 viewModel.launchApp(app)
             },
             onAppLongClick = { app ->
@@ -388,6 +390,18 @@ class HomeActivity : AppCompatActivity() {
                 launch {
                     viewModel.installedApps.collect { apps ->
                         appsAdapter.submitList(apps) {
+                            val targetPkg = lastLaunchedAppPackage
+                            if (targetPkg != null) {
+                                val targetIdx = apps.indexOfFirst { it.packageName == targetPkg }
+                                if (targetIdx != -1) {
+                                    binding.rvApps.post {
+                                        binding.rvApps.scrollToPosition(targetIdx)
+                                        binding.rvApps.findViewHolderForAdapterPosition(targetIdx)?.itemView?.requestFocus()
+                                    }
+                                    lastLaunchedAppPackage = null
+                                    return@submitList
+                                }
+                            }
                             if (apps.isNotEmpty() && !binding.rvApps.hasFocus() && !binding.rvMovies.hasFocus() && !binding.rvSeries.hasFocus()) {
                                 binding.rvApps.post {
                                     binding.rvApps.findViewHolderForAdapterPosition(0)?.itemView?.requestFocus()

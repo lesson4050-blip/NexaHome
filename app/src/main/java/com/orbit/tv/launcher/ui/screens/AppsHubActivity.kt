@@ -53,6 +53,7 @@ class AppsHubActivity : AppCompatActivity() {
 
     private var speechRecognizer: SpeechRecognizer? = null
     private var isRecordingVoice: Boolean = false
+    private var lastLaunchedAppPackage: String? = null
 
     private val audioPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -129,6 +130,7 @@ class AppsHubActivity : AppCompatActivity() {
         setupFocusControls()
         setupGrids()
         setupListeners()
+        setupBackNavigation()
         observeData()
     }
 
@@ -188,6 +190,7 @@ class AppsHubActivity : AppCompatActivity() {
             showPinBadge = true,
             isGridMode = true,
             onAppClick = { app ->
+                lastLaunchedAppPackage = app.packageName
                 viewModel.launchApp(app)
             },
             onAppLongClick = { app ->
@@ -275,8 +278,8 @@ class AppsHubActivity : AppCompatActivity() {
         }
 
         binding.btnNavIptv.setOnClickListener {
-            val intent = Intent(this, IptvActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, IptvActivity::class.java))
+            finish()
         }
 
         binding.btnNavGames.setOnClickListener {
@@ -358,6 +361,18 @@ class AppsHubActivity : AppCompatActivity() {
         binding.btnGoogleAssistant.setOnClickListener {
             GoogleAssistantHelper.launch(this)
         }
+    }
+
+    private fun setupBackNavigation() {
+        onBackPressedDispatcher.addCallback(this, object : androidx.activity.OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (!binding.containerSidebar.hasFocus()) {
+                    binding.btnNavApps.requestFocus()
+                } else {
+                    finish()
+                }
+            }
+        })
     }
 
     private fun updateGoogleAssistantVisibility() {
@@ -516,6 +531,18 @@ class AppsHubActivity : AppCompatActivity() {
 
         val freshList = ArrayList(filtered)
         appsGridAdapter.submitList(freshList) {
+            val targetPkg = lastLaunchedAppPackage
+            if (targetPkg != null) {
+                val targetIdx = freshList.indexOfFirst { it.packageName == targetPkg }
+                if (targetIdx != -1) {
+                    binding.rvAllApps.post {
+                        binding.rvAllApps.scrollToPosition(targetIdx)
+                        binding.rvAllApps.findViewHolderForAdapterPosition(targetIdx)?.itemView?.requestFocus()
+                    }
+                    lastLaunchedAppPackage = null
+                    return@submitList
+                }
+            }
             binding.rvAllApps.post {
                 binding.rvAllApps.requestLayout()
             }

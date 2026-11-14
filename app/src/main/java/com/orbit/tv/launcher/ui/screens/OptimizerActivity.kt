@@ -162,7 +162,11 @@ class OptimizerActivity : AppCompatActivity() {
     private fun setupBackNavigation() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                finish()
+                if (!binding.containerSidebar.hasFocus()) {
+                    binding.btnNavGames.requestFocus()
+                } else {
+                    finish()
+                }
             }
         })
     }

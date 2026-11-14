@@ -46,6 +46,7 @@ class LauncherSettingsActivity : AppCompatActivity() {
 
         setupFocus()
         setupSidebar()
+        setupBackNavigation()
         setupCacheSection()
         setupWallpaperSection()
         setupLanguageSection()
@@ -122,6 +123,18 @@ class LauncherSettingsActivity : AppCompatActivity() {
         binding.btnNavPower.setOnClickListener {
             TvPowerDialog.show(supportFragmentManager)
         }
+    }
+
+    private fun setupBackNavigation() {
+        onBackPressedDispatcher.addCallback(this, object : androidx.activity.OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (!binding.containerSidebar.hasFocus()) {
+                    binding.btnNavSettings.requestFocus()
+                } else {
+                    finish()
+                }
+            }
+        })
     }
 
     private fun setupCacheSection() {

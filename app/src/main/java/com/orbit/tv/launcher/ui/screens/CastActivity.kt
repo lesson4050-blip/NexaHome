@@ -382,7 +382,11 @@ class CastActivity : AppCompatActivity() {
     private fun setupBackNavigation() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                finish()
+                if (!binding.containerSidebar.hasFocus()) {
+                    binding.btnNavCast.requestFocus()
+                } else {
+                    finish()
+                }
             }
         })
     }
