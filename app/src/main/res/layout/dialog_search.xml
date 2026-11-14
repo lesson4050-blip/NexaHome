@@ -130,10 +130,9 @@
                 android:paddingEnd="18dp">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_play_arrow"
-                    app:tint="#EF4444" />
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/ic_brand_youtube" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -161,10 +160,9 @@
                 android:paddingEnd="18dp">
 
                 <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/ic_search"
-                    app:tint="@color/leanback_cyan" />
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_brand_google" />
 
                 <TextView
                     android:layout_width="wrap_content"

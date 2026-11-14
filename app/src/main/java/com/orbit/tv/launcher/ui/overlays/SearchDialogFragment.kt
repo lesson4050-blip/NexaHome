@@ -352,16 +352,44 @@ class SearchDialogFragment : DialogFragment() {
 
     private fun launchYouTubeSearch(query: String) {
         val q = query.ifBlank { getString(R.string.search_default_yt_query) }
-        try {
-            val ytIntent = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube://results?search_query=${Uri.encode(q)}"))
-            startActivity(ytIntent)
-        } catch (e: Exception) {
+        val pm = requireContext().packageManager
+        
+        // Check for SmartTube first (frequently used on TV without GMS)
+        val smartTubePackages = listOf("com.teamsmart.videomanager.tv", "com.liskovsoft.smarttubetv.beta")
+        for (pkg in smartTubePackages) {
             try {
-                val webYt = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/results?search_query=${Uri.encode(q)}"))
-                startActivity(webYt)
-            } catch (e2: Exception) {
-                Toast.makeText(requireContext(), getString(R.string.search_cant_open_yt), Toast.LENGTH_SHORT).show()
+                pm.getPackageInfo(pkg, 0)
+                val intent = Intent(Intent.ACTION_SEARCH).apply {
+                    setPackage(pkg)
+                    putExtra("query", q)
+                    putExtra(SearchManager.QUERY, q)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                startActivity(intent)
+                dismissAllowingStateLoss()
+                return
+            } catch (_: Exception) {}
+        }
+
+        // Try standard YouTube deep link
+        try {
+            val ytIntent = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube://results?search_query=${Uri.encode(q)}")).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
+            startActivity(ytIntent)
+            dismissAllowingStateLoss()
+            return
+        } catch (_: Exception) {}
+
+        // Fallback to web YouTube
+        try {
+            val webYt = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/results?search_query=${Uri.encode(q)}")).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            startActivity(webYt)
+            dismissAllowingStateLoss()
+        } catch (e2: Exception) {
+            Toast.makeText(requireContext(), getString(R.string.search_cant_open_yt), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -370,12 +398,17 @@ class SearchDialogFragment : DialogFragment() {
         try {
             val searchIntent = Intent(Intent.ACTION_WEB_SEARCH).apply {
                 putExtra(SearchManager.QUERY, q)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             startActivity(searchIntent)
+            dismissAllowingStateLoss()
         } catch (e: Exception) {
             try {
-                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?q=${Uri.encode(q)}"))
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?q=${Uri.encode(q)}")).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
                 startActivity(browserIntent)
+                dismissAllowingStateLoss()
             } catch (e2: Exception) {
                 Toast.makeText(requireContext(), getString(R.string.search_cant_open_browser), Toast.LENGTH_SHORT).show()
             }

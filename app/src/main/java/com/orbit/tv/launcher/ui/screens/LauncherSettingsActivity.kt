@@ -32,7 +32,6 @@ class LauncherSettingsActivity : AppCompatActivity() {
     private lateinit var cacheManager: CacheManager
 
     private lateinit var hiddenAppsAdapter: HiddenAppsAdapter
-    private lateinit var wallpaperAdapter: SettingsChipAdapter
 
     private val pickCustomWallpaperLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
@@ -123,6 +122,7 @@ class LauncherSettingsActivity : AppCompatActivity() {
         TvFocusHelper.bindFocusScale(binding.btnClearAllCache, scaleRatio = 1.08f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.btnUnhideAll, scaleRatio = 1.08f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.btnUploadWallpaper, scaleRatio = 1.08f, elevationDp = 6f)
+        TvFocusHelper.bindFocusScale(binding.cardSelectWallpaper, scaleRatio = 1.04f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.cardSelectLanguage, scaleRatio = 1.04f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.cardSelectPlayer, scaleRatio = 1.04f, elevationDp = 6f)
     }
@@ -227,36 +227,58 @@ class LauncherSettingsActivity : AppCompatActivity() {
             pickCustomWallpaperLauncher.launch("image/*")
         }
 
-        val customFile = File(filesDir, "custom_wallpaper.jpg")
-        val themes = mutableListOf<SettingsChip>()
+        fun buildWallpaperOptions(): List<TvOptionPickerDialog.OptionItem> {
+            val current = appPrefs.getWallpaperTheme()
+            val customFile = File(filesDir, "custom_wallpaper.jpg")
+            val list = mutableListOf<TvOptionPickerDialog.OptionItem>()
 
-        if (customFile.exists()) {
-            themes.add(SettingsChip("CUSTOM", getString(R.string.settings_wallpaper_custom)))
+            if (customFile.exists()) {
+                list.add(
+                    TvOptionPickerDialog.OptionItem(
+                        id = "CUSTOM",
+                        title = getString(R.string.settings_wallpaper_custom),
+                        subtitle = "Пользовательское фото из памяти",
+                        isSelected = (current == "CUSTOM")
+                    )
+                )
+            }
+
+            list.add(TvOptionPickerDialog.OptionItem("SCENERY", getString(R.string.settings_wallpaper_scenery_fjord), "4K фотообои", current == "SCENERY" || current == "SCENERY_FJORD"))
+            list.add(TvOptionPickerDialog.OptionItem("SCENERY_AURORA", getString(R.string.settings_wallpaper_scenery_aurora), "4K фотообои", current == "SCENERY_AURORA"))
+            list.add(TvOptionPickerDialog.OptionItem("SCENERY_ALPINE", getString(R.string.settings_wallpaper_scenery_alpine), "4K фотообои", current == "SCENERY_ALPINE"))
+            list.add(TvOptionPickerDialog.OptionItem("SCENERY_FOREST", getString(R.string.settings_wallpaper_scenery_forest), "4K фотообои", current == "SCENERY_FOREST"))
+            list.add(TvOptionPickerDialog.OptionItem("SCENERY_LAKE", getString(R.string.settings_wallpaper_scenery_lake), "4K фотообои", current == "SCENERY_LAKE"))
+            list.add(TvOptionPickerDialog.OptionItem("SILK_VIOLET", getString(R.string.settings_wallpaper_silk_violet), "Живой шейдер 60 FPS", current == "SILK_VIOLET"))
+            list.add(TvOptionPickerDialog.OptionItem("SILK_CYAN", getString(R.string.settings_wallpaper_silk_cyan), "Живой шейдер 60 FPS", current == "SILK_CYAN"))
+            list.add(TvOptionPickerDialog.OptionItem("SILK_EMERALD", getString(R.string.settings_wallpaper_silk_emerald), "Живой шейдер 60 FPS", current == "SILK_EMERALD"))
+            list.add(TvOptionPickerDialog.OptionItem("SILK_MIDNIGHT", getString(R.string.settings_wallpaper_silk_midnight), "Живой шейдер 60 FPS", current == "SILK_MIDNIGHT"))
+            list.add(TvOptionPickerDialog.OptionItem("SILK_CRIMSON", getString(R.string.settings_wallpaper_silk_crimson), "Живой шейдер 60 FPS", current == "SILK_CRIMSON"))
+
+            return list
         }
 
-        themes.addAll(listOf(
-            SettingsChip("SCENERY", getString(R.string.settings_wallpaper_scenery_fjord)),
-            SettingsChip("SCENERY_AURORA", getString(R.string.settings_wallpaper_scenery_aurora)),
-            SettingsChip("SCENERY_ALPINE", getString(R.string.settings_wallpaper_scenery_alpine)),
-            SettingsChip("SCENERY_FOREST", getString(R.string.settings_wallpaper_scenery_forest)),
-            SettingsChip("SCENERY_LAKE", getString(R.string.settings_wallpaper_scenery_lake)),
-            SettingsChip("SILK_VIOLET", getString(R.string.settings_wallpaper_silk_violet)),
-            SettingsChip("SILK_CYAN", getString(R.string.settings_wallpaper_silk_cyan)),
-            SettingsChip("SILK_EMERALD", getString(R.string.settings_wallpaper_silk_emerald)),
-            SettingsChip("SILK_MIDNIGHT", getString(R.string.settings_wallpaper_silk_midnight)),
-            SettingsChip("SILK_CRIMSON", getString(R.string.settings_wallpaper_silk_crimson))
-        ))
-
-        wallpaperAdapter = SettingsChipAdapter { chip ->
-            appPrefs.setWallpaperTheme(chip.id)
-            wallpaperAdapter.selectedId = chip.id
-            applyWallpaper(chip.id)
-            Toast.makeText(this, chip.title, Toast.LENGTH_SHORT).show()
+        fun updateSelectedWallpaperLabel() {
+            val options = buildWallpaperOptions()
+            val current = appPrefs.getWallpaperTheme()
+            val matched = options.find { it.id == current }
+            binding.tvSelectedWallpaperVal.text = matched?.title ?: getString(R.string.settings_wallpaper_scenery_fjord)
         }
 
-        wallpaperAdapter.submitList(themes)
-        wallpaperAdapter.selectedId = appPrefs.getWallpaperTheme()
-        binding.rvWallpaperThemes.adapter = wallpaperAdapter
+        updateSelectedWallpaperLabel()
+
+        binding.cardSelectWallpaper.setOnClickListener {
+            val options = buildWallpaperOptions()
+            TvOptionPickerDialog.show(
+                fragmentManager = supportFragmentManager,
+                title = getString(R.string.settings_section_wallpaper),
+                options = options
+            ) { selected ->
+                appPrefs.setWallpaperTheme(selected.id)
+                applyWallpaper(selected.id)
+                updateSelectedWallpaperLabel()
+                Toast.makeText(this, selected.title, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun setupLanguageSection() {

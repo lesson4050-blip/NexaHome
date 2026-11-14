@@ -441,8 +441,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/shelf_section_margin"
                         android:paddingStart="8dp"
-                        android:paddingEnd="8dp"
-                        android:gravity="bottom"
+                        android:paddingEnd="36dp"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <TextView
@@ -455,29 +455,44 @@
 
                         <TextView
                             android:id="@+id/tv_movies_subtitle"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:layout_marginStart="10dp"
                             android:fontFamily="sans-serif"
                             android:text="@string/subtitle_movies_trending"
                             android:textColor="@color/white_60"
                             android:textSize="12sp" />
 
-                    </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/btn_filter_movie_genre"
+                            android:layout_width="wrap_content"
+                            android:layout_height="32dp"
+                            android:background="@drawable/bg_genre_chip"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="10dp">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_movie_genres"
-                        android:layout_width="match_parent"
-                        android:layout_height="36dp"
-                        android:layout_marginTop="8dp"
-                        android:clipChildren="false"
-                        android:clipToPadding="false"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="36dp"
-                        android:nestedScrollingEnabled="false"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_genre_chip" />
+                            <TextView
+                                android:id="@+id/tv_current_movie_genre"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-bold"
+                                android:text="@string/genre_all"
+                                android:textColor="@color/leanback_cyan"
+                                android:textSize="12sp" />
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_marginStart="4dp"
+                                android:src="@drawable/ic_arrow_drop_down" />
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_movies"
@@ -502,8 +517,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/shelf_section_margin"
                         android:paddingStart="8dp"
-                        android:paddingEnd="8dp"
-                        android:gravity="bottom"
+                        android:paddingEnd="36dp"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <TextView
@@ -516,29 +531,44 @@
 
                         <TextView
                             android:id="@+id/tv_series_subtitle"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:layout_marginStart="10dp"
                             android:fontFamily="sans-serif"
                             android:text="@string/subtitle_series_top"
                             android:textColor="@color/white_60"
                             android:textSize="12sp" />
 
-                    </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/btn_filter_series_genre"
+                            android:layout_width="wrap_content"
+                            android:layout_height="32dp"
+                            android:background="@drawable/bg_genre_chip"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="10dp">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_series_genres"
-                        android:layout_width="match_parent"
-                        android:layout_height="36dp"
-                        android:layout_marginTop="8dp"
-                        android:clipChildren="false"
-                        android:clipToPadding="false"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="36dp"
-                        android:nestedScrollingEnabled="false"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_genre_chip" />
+                            <TextView
+                                android:id="@+id/tv_current_series_genre"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-bold"
+                                android:text="@string/genre_all"
+                                android:textColor="@color/leanback_cyan"
+                                android:textSize="12sp" />
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_marginStart="4dp"
+                                android:src="@drawable/ic_arrow_drop_down" />
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_series"

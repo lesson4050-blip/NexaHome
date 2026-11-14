@@ -34,6 +34,7 @@ import android.view.View
 import android.view.ViewParent
 import com.orbit.tv.launcher.ui.overlays.MediaDetailDialog
 import com.orbit.tv.launcher.ui.overlays.SearchDialogFragment
+import com.orbit.tv.launcher.ui.overlays.TvOptionPickerDialog
 import com.orbit.tv.launcher.ui.overlays.TvPowerDialog
 import kotlinx.coroutines.launch
 
@@ -45,8 +46,6 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var appsAdapter: AppsAdapter
     private lateinit var moviesAdapter: MediaAdapter
     private lateinit var seriesAdapter: MediaAdapter
-    private lateinit var movieGenreAdapter: com.orbit.tv.launcher.features.home.adapters.GenreAdapter
-    private lateinit var seriesGenreAdapter: com.orbit.tv.launcher.features.home.adapters.GenreAdapter
 
     private val appPrefs by lazy { com.orbit.tv.launcher.features.apps.repository.AppPreferencesRepository(this) }
 
@@ -129,6 +128,8 @@ class HomeActivity : AppCompatActivity() {
         TvFocusHelper.bindFocusScale(binding.btnSystemVpn, scaleRatio = 1.08f, elevationDp = 6f)
         TvFocusHelper.bindFocusScale(binding.ivWifiStatus, scaleRatio = 1.12f, elevationDp = 8f)
         TvFocusHelper.bindFocusScale(binding.btnSettings, scaleRatio = 1.12f, elevationDp = 8f)
+        TvFocusHelper.bindFocusScale(binding.btnFilterMovieGenre, scaleRatio = 1.08f, elevationDp = 6f)
+        TvFocusHelper.bindFocusScale(binding.btnFilterSeriesGenre, scaleRatio = 1.08f, elevationDp = 6f)
 
         // Set initial selected nav state: Home button
         binding.btnNavMedia.isSelected = true
@@ -155,16 +156,7 @@ class HomeActivity : AppCompatActivity() {
             adapter = appsAdapter
         }
 
-        // 2. Movies Shelf & Genre Filters
-        movieGenreAdapter = com.orbit.tv.launcher.features.home.adapters.GenreAdapter { genre ->
-            viewModel.selectMovieGenre(genre)
-        }
-        binding.rvMovieGenres.apply {
-            layoutManager = LinearLayoutManager(this@HomeActivity, LinearLayoutManager.HORIZONTAL, false)
-            adapter = movieGenreAdapter
-        }
-        movieGenreAdapter.submitList(viewModel.movieGenres)
-
+        // 2. Movies Shelf
         moviesAdapter = MediaAdapter { media ->
             MediaDetailDialog.newInstance(media).show(supportFragmentManager, MediaDetailDialog.TAG)
         }
@@ -174,16 +166,7 @@ class HomeActivity : AppCompatActivity() {
             setRecycledViewPool(sharedMediaPool)
         }
 
-        // 3. Series Shelf & Genre Filters
-        seriesGenreAdapter = com.orbit.tv.launcher.features.home.adapters.GenreAdapter { genre ->
-            viewModel.selectSeriesGenre(genre)
-        }
-        binding.rvSeriesGenres.apply {
-            layoutManager = LinearLayoutManager(this@HomeActivity, LinearLayoutManager.HORIZONTAL, false)
-            adapter = seriesGenreAdapter
-        }
-        seriesGenreAdapter.submitList(viewModel.seriesGenres)
-
+        // 3. Series Shelf
         seriesAdapter = MediaAdapter { media ->
             MediaDetailDialog.newInstance(media).show(supportFragmentManager, MediaDetailDialog.TAG)
         }
@@ -264,6 +247,50 @@ class HomeActivity : AppCompatActivity() {
         // Power Button
         binding.btnNavPower.setOnClickListener {
             TvPowerDialog.show(supportFragmentManager)
+        }
+
+        // Movie Genre Dropdown Picker
+        binding.btnFilterMovieGenre.setOnClickListener {
+            val currentGenre = viewModel.selectedMovieGenre.value
+            val options = viewModel.movieGenres.map { g ->
+                TvOptionPickerDialog.OptionItem(
+                    id = g.id,
+                    title = getString(g.nameRes),
+                    isSelected = (g.id == currentGenre.id)
+                )
+            }
+            TvOptionPickerDialog.show(
+                fragmentManager = supportFragmentManager,
+                title = getString(R.string.title_movies),
+                options = options
+            ) { selected ->
+                val matched = viewModel.movieGenres.find { it.id == selected.id }
+                if (matched != null) {
+                    viewModel.selectMovieGenre(matched)
+                }
+            }
+        }
+
+        // Series Genre Dropdown Picker
+        binding.btnFilterSeriesGenre.setOnClickListener {
+            val currentGenre = viewModel.selectedSeriesGenre.value
+            val options = viewModel.seriesGenres.map { g ->
+                TvOptionPickerDialog.OptionItem(
+                    id = g.id,
+                    title = getString(g.nameRes),
+                    isSelected = (g.id == currentGenre.id)
+                )
+            }
+            TvOptionPickerDialog.show(
+                fragmentManager = supportFragmentManager,
+                title = getString(R.string.title_series),
+                options = options
+            ) { selected ->
+                val matched = viewModel.seriesGenres.find { it.id == selected.id }
+                if (matched != null) {
+                    viewModel.selectSeriesGenre(matched)
+                }
+            }
         }
     }
 
@@ -423,7 +450,7 @@ class HomeActivity : AppCompatActivity() {
                 // Selected Movie Genre
                 launch {
                     viewModel.selectedMovieGenre.collect { genre ->
-                        movieGenreAdapter.selectedGenreId = genre.id
+                        binding.tvCurrentMovieGenre.text = getString(genre.nameRes)
                         if (genre.id == "all") {
                             binding.tvMoviesSubtitle.setText(R.string.subtitle_movies_trending)
                         } else {
@@ -444,7 +471,7 @@ class HomeActivity : AppCompatActivity() {
                 // Selected Series Genre
                 launch {
                     viewModel.selectedSeriesGenre.collect { genre ->
-                        seriesGenreAdapter.selectedGenreId = genre.id
+                        binding.tvCurrentSeriesGenre.text = getString(genre.nameRes)
                         if (genre.id == "all") {
                             binding.tvSeriesSubtitle.setText(R.string.subtitle_series_top)
                         } else {
@@ -561,14 +588,12 @@ class HomeActivity : AppCompatActivity() {
             if (newFocus == null) return@addOnGlobalFocusChangeListener
 
             if (isDescendantOf(newFocus, binding.rvSeries) || 
-                isDescendantOf(newFocus, binding.headerSeries) || 
-                isDescendantOf(newFocus, binding.rvSeriesGenres)
+                isDescendantOf(newFocus, binding.headerSeries)
             ) {
                 // Focus is on Series shelf: scroll down so Movies header sits cleanly at the top
                 val targetY = (binding.headerMovies.top - binding.scrollContainer.paddingTop).coerceAtLeast(0)
                 binding.scrollContainer.smoothScrollTo(0, targetY)
             } else if (isDescendantOf(newFocus, binding.rvMovies) ||
-                isDescendantOf(newFocus, binding.rvMovieGenres) ||
                 isDescendantOf(newFocus, binding.headerMovies) ||
                 isDescendantOf(newFocus, binding.rvApps) ||
                 isDescendantOf(newFocus, binding.containerTopBar) ||

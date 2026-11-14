@@ -383,62 +383,149 @@
                     </LinearLayout>
 
                     <!-- SECTION 2: Wallpaper Theme -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="sans-serif-bold"
+                        android:text="@string/settings_section_wallpaper"
+                        android:textColor="@color/leanback_cyan"
+                        android:textSize="15sp" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:gravity="center_vertical"
+                        android:layout_marginTop="10dp"
+                        android:baselineAligned="false"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <!-- Wallpaper Selector Card -->
+                        <LinearLayout
+                            android:id="@+id/card_select_wallpaper"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:fontFamily="sans-serif-bold"
-                            android:text="@string/settings_section_wallpaper"
-                            android:textColor="@color/leanback_cyan"
-                            android:textSize="15sp" />
-
-                        <LinearLayout
-                            android:id="@+id/btn_upload_wallpaper"
-                            android:layout_width="wrap_content"
-                            android:layout_height="38dp"
-                            android:background="@drawable/bg_genre_chip"
+                            android:layout_marginEnd="12dp"
+                            android:background="@drawable/bg_focus_app_card"
                             android:clickable="true"
                             android:focusable="true"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingStart="14dp"
-                            android:paddingEnd="14dp">
+                            android:clipChildren="false"
+                            android:clipToPadding="false"
+                            android:orientation="vertical"
+                            android:padding="16dp">
 
-                            <ImageView
-                                android:layout_width="18dp"
-                                android:layout_height="18dp"
-                                android:layout_marginEnd="8dp"
-                                android:src="@drawable/ic_upload" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_marginEnd="8dp"
+                                    android:src="@drawable/ic_nav_launcher_custom" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:text="@string/settings_section_wallpaper"
+                                    android:textColor="@color/white_60"
+                                    android:textSize="12sp" />
+
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:src="@drawable/ic_arrow_drop_down" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/tv_selected_wallpaper_val"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:fontFamily="sans-serif-black"
+                                android:textColor="@color/leanback_cyan"
+                                android:textSize="17sp"
+                                tools:text="Северное сияние (Фото)" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="sans-serif-bold"
-                                android:text="@string/settings_btn_upload_wallpaper"
-                                android:textColor="@color/white"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-                    </LinearLayout>
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="sans-serif"
+                                android:text="@string/settings_press_to_change"
+                                android:textColor="@color/white_40"
+                                android:textSize="11sp" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_wallpaper_themes"
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:layout_marginTop="10dp"
-                        android:clipChildren="false"
-                        android:clipToPadding="false"
-                        android:orientation="horizontal"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_genre_chip" />
+                        </LinearLayout>
+
+                        <!-- Upload Wallpaper Card -->
+                        <LinearLayout
+                            android:id="@+id/btn_upload_wallpaper"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_focus_app_card"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:clipChildren="false"
+                            android:clipToPadding="false"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_marginEnd="8dp"
+                                    android:src="@drawable/ic_upload" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:text="@string/settings_btn_upload_wallpaper"
+                                    android:textColor="@color/white_60"
+                                    android:textSize="12sp" />
+
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:src="@drawable/ic_arrow_drop_down" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:fontFamily="sans-serif-black"
+                                android:text="Своя картинка"
+                                android:textColor="@color/white"
+                                android:textSize="17sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="sans-serif"
+                                android:text="@string/settings_custom_wallpaper_hint"
+                                android:textColor="@color/white_40"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                     <!-- SECTION 3: Content Language & Preferred Media Player Cards -->
                     <TextView
