@@ -181,6 +181,7 @@
     <string name="media_btn_trailer">예고편</string>
     <string name="media_btn_search_apps">앱에서 열기</string>
     <string name="media_search_toast">%1$s 검색 중...</string>
+    <string name="genre_all">전체</string>
     <string name="genre_action">행동</string>
     <string name="genre_adventure">모험</string>
     <string name="genre_animation">생기</string>

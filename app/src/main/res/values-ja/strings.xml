@@ -181,6 +181,7 @@
     <string name="media_btn_trailer">予告編</string>
     <string name="media_btn_search_apps">アプリで開く</string>
     <string name="media_search_toast">%1$s を検索しています...</string>
+    <string name="genre_all">すべて</string>
     <string name="genre_action">アクション</string>
     <string name="genre_adventure">アドベンチャー</string>
     <string name="genre_animation">アニメーション</string>

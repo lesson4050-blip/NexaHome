@@ -3,6 +3,7 @@ package com.orbit.tv.launcher.features.home
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.orbit.tv.launcher.R
 import com.orbit.tv.launcher.features.home.model.AppModel
 import com.orbit.tv.launcher.features.home.model.MediaModel
 import com.orbit.tv.launcher.platform.device_capabilities.VpnCapabilityManager
@@ -43,6 +44,36 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private val _installedApps = MutableStateFlow<List<AppModel>>(emptyList())
     val installedApps: StateFlow<List<AppModel>> = _installedApps.asStateFlow()
 
+    val movieGenres = listOf(
+        com.orbit.tv.launcher.features.home.model.GenreFilter("all", R.string.genre_all, null, isSeries = false),
+        com.orbit.tv.launcher.features.home.model.GenreFilter("action", R.string.genre_action, 28, isSeries = false),
+        com.orbit.tv.launcher.features.home.model.GenreFilter("comedy", R.string.genre_comedy, 35, isSeries = false),
+        com.orbit.tv.launcher.features.home.model.GenreFilter("scifi", R.string.genre_scifi, 878, isSeries = false),
+        com.orbit.tv.launcher.features.home.model.GenreFilter("horror", R.string.genre_horror, 27, isSeries = false),
+        com.orbit.tv.launcher.features.home.model.GenreFilter("drama", R.string.genre_drama, 18, isSeries = false),
+        com.orbit.tv.launcher.features.home.model.GenreFilter("animation", R.string.genre_animation, 16, isSeries = false),
+        com.orbit.tv.launcher.features.home.model.GenreFilter("thriller", R.string.genre_thriller, 53, isSeries = false),
+        com.orbit.tv.launcher.features.home.model.GenreFilter("adventure", R.string.genre_adventure, 12, isSeries = false),
+        com.orbit.tv.launcher.features.home.model.GenreFilter("family", R.string.genre_family, 10751, isSeries = false)
+    )
+
+    val seriesGenres = listOf(
+        com.orbit.tv.launcher.features.home.model.GenreFilter("all", R.string.genre_all, null, isSeries = true),
+        com.orbit.tv.launcher.features.home.model.GenreFilter("drama", R.string.genre_drama, 18, isSeries = true),
+        com.orbit.tv.launcher.features.home.model.GenreFilter("comedy", R.string.genre_comedy, 35, isSeries = true),
+        com.orbit.tv.launcher.features.home.model.GenreFilter("scifi", R.string.genre_scifi, 10765, isSeries = true),
+        com.orbit.tv.launcher.features.home.model.GenreFilter("action", R.string.genre_action, 10759, isSeries = true),
+        com.orbit.tv.launcher.features.home.model.GenreFilter("crime", R.string.genre_crime, 80, isSeries = true),
+        com.orbit.tv.launcher.features.home.model.GenreFilter("animation", R.string.genre_animation, 16, isSeries = true),
+        com.orbit.tv.launcher.features.home.model.GenreFilter("doc", R.string.genre_documentary, 99, isSeries = true)
+    )
+
+    private val _selectedMovieGenre = MutableStateFlow(movieGenres[0])
+    val selectedMovieGenre: StateFlow<com.orbit.tv.launcher.features.home.model.GenreFilter> = _selectedMovieGenre.asStateFlow()
+
+    private val _selectedSeriesGenre = MutableStateFlow(seriesGenres[0])
+    val selectedSeriesGenre: StateFlow<com.orbit.tv.launcher.features.home.model.GenreFilter> = _selectedSeriesGenre.asStateFlow()
+
     private val _movies = MutableStateFlow<List<MediaModel>>(emptyList())
     val movies: StateFlow<List<MediaModel>> = _movies.asStateFlow()
 
@@ -67,14 +98,32 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         startClockTicker()
     }
 
+    fun selectMovieGenre(genre: com.orbit.tv.launcher.features.home.model.GenreFilter) {
+        if (_selectedMovieGenre.value == genre) return
+        _selectedMovieGenre.value = genre
+        viewModelScope.launch {
+            val m = mediaRepository.getMoviesByGenre(genre.tmdbGenreId)
+            _movies.value = m
+        }
+    }
+
+    fun selectSeriesGenre(genre: com.orbit.tv.launcher.features.home.model.GenreFilter) {
+        if (_selectedSeriesGenre.value == genre) return
+        _selectedSeriesGenre.value = genre
+        viewModelScope.launch {
+            val s = mediaRepository.getSeriesByGenre(genre.tmdbGenreId)
+            _series.value = s
+        }
+    }
+
     fun loadMediaShelves(forceRefresh: Boolean = false) {
         lastLoadedLanguage = mediaRepository.getTmdbLanguage()
         viewModelScope.launch {
-            val m = mediaRepository.getTrendingMovies(forceRefresh)
+            val m = mediaRepository.getMoviesByGenre(_selectedMovieGenre.value.tmdbGenreId, forceRefresh)
             _movies.value = m
         }
         viewModelScope.launch {
-            val s = mediaRepository.getTrendingSeries(forceRefresh)
+            val s = mediaRepository.getSeriesByGenre(_selectedSeriesGenre.value.tmdbGenreId, forceRefresh)
             _series.value = s
         }
     }

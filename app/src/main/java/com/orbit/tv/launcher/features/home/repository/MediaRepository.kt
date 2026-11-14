@@ -309,6 +309,96 @@ class MediaRepository(private val context: Context) {
         getCuratedBaselineSeries()
     }
 
+    suspend fun getMoviesByGenre(genreId: Int?, forceRefresh: Boolean = false): List<MediaModel> = withContext(Dispatchers.IO) {
+        if (genreId == null || genreId == 0) {
+            return@withContext getTrendingMovies(forceRefresh)
+        }
+        val tmdbLang = getTmdbLanguage()
+        val cacheFile = File(context.cacheDir, "cached_movies_g${genreId}_${tmdbLang.replace('-', '_')}.json")
+        val tmdbUrl = "$TMDB_BASE_URL/discover/movie?api_key=$TMDB_API_KEY&language=$tmdbLang&sort_by=popularity.desc&with_genres=$genreId"
+
+        // Tier 1: Instant load from disk cache
+        if (!forceRefresh && cacheFile.exists()) {
+            try {
+                val cached = cacheFile.readText()
+                val parsedTmdb = parseTmdbJson(cached, isSeries = false)
+                if (parsedTmdb.isNotEmpty()) return@withContext parsedTmdb
+            } catch (_: Exception) {}
+        }
+
+        // Tier 2: TMDb API Network Fetch
+        val tmdbData = fetchFromNetwork(tmdbUrl)
+        if (tmdbData != null) {
+            val parsed = parseTmdbJson(tmdbData, isSeries = false)
+            if (parsed.isNotEmpty()) {
+                try {
+                    cacheFile.writeText(tmdbData)
+                } catch (_: Exception) {}
+                return@withContext parsed
+            }
+        }
+
+        // Tier 3: Local Disk Cache Fallback
+        if (cacheFile.exists()) {
+            try {
+                val cached = cacheFile.readText()
+                val parsedTmdb = parseTmdbJson(cached, isSeries = false)
+                if (parsedTmdb.isNotEmpty()) return@withContext parsedTmdb
+            } catch (_: Exception) {}
+        }
+
+        // Tier 4: Fallback - filter loaded trending movies by genre
+        val trending = getTrendingMovies(false)
+        val genreName = mapTmdbGenre(genreId)
+        val filtered = trending.filter { it.rawGenres.any { g -> g.contains(genreName, ignoreCase = true) } }
+        if (filtered.isNotEmpty()) filtered else trending
+    }
+
+    suspend fun getSeriesByGenre(genreId: Int?, forceRefresh: Boolean = false): List<MediaModel> = withContext(Dispatchers.IO) {
+        if (genreId == null || genreId == 0) {
+            return@withContext getTrendingSeries(forceRefresh)
+        }
+        val tmdbLang = getTmdbLanguage()
+        val cacheFile = File(context.cacheDir, "cached_series_g${genreId}_${tmdbLang.replace('-', '_')}.json")
+        val tmdbUrl = "$TMDB_BASE_URL/discover/tv?api_key=$TMDB_API_KEY&language=$tmdbLang&sort_by=popularity.desc&with_genres=$genreId"
+
+        // Tier 1: Instant load from disk cache
+        if (!forceRefresh && cacheFile.exists()) {
+            try {
+                val cached = cacheFile.readText()
+                val parsedTmdb = parseTmdbJson(cached, isSeries = true)
+                if (parsedTmdb.isNotEmpty()) return@withContext parsedTmdb
+            } catch (_: Exception) {}
+        }
+
+        // Tier 2: TMDb API Network Fetch
+        val tmdbData = fetchFromNetwork(tmdbUrl)
+        if (tmdbData != null) {
+            val parsed = parseTmdbJson(tmdbData, isSeries = true)
+            if (parsed.isNotEmpty()) {
+                try {
+                    cacheFile.writeText(tmdbData)
+                } catch (_: Exception) {}
+                return@withContext parsed
+            }
+        }
+
+        // Tier 3: Local Disk Cache Fallback
+        if (cacheFile.exists()) {
+            try {
+                val cached = cacheFile.readText()
+                val parsedTmdb = parseTmdbJson(cached, isSeries = true)
+                if (parsedTmdb.isNotEmpty()) return@withContext parsedTmdb
+            } catch (_: Exception) {}
+        }
+
+        // Tier 4: Fallback - filter loaded trending series by genre
+        val trending = getTrendingSeries(false)
+        val genreName = mapTmdbGenre(genreId)
+        val filtered = trending.filter { it.rawGenres.any { g -> g.contains(genreName, ignoreCase = true) } }
+        if (filtered.isNotEmpty()) filtered else trending
+    }
+
     private fun fetchFromNetwork(urlString: String): String? {
         var conn: HttpURLConnection? = null
         return try {

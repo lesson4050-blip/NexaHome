@@ -181,6 +181,7 @@
     <string name="media_btn_trailer">Fragman</string>
     <string name="media_btn_search_apps">Uygulamalarda Aç</string>
     <string name="media_search_toast">%1$s aranıyor...</string>
+    <string name="genre_all">Tümü</string>
     <string name="genre_action">Eylem</string>
     <string name="genre_adventure">Macera</string>
     <string name="genre_animation">Animasyon</string>

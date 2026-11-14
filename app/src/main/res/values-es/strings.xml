@@ -181,6 +181,7 @@
     <string name="media_btn_trailer">Tráiler</string>
     <string name="media_btn_search_apps">Abrir en aplicaciones</string>
     <string name="media_search_toast">Buscando %1$s...</string>
+    <string name="genre_all">Todos</string>
     <string name="genre_action">Acción</string>
     <string name="genre_adventure">Aventura</string>
     <string name="genre_animation">Animación</string>

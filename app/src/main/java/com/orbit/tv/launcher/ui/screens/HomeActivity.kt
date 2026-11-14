@@ -44,6 +44,8 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var appsAdapter: AppsAdapter
     private lateinit var moviesAdapter: MediaAdapter
     private lateinit var seriesAdapter: MediaAdapter
+    private lateinit var movieGenreAdapter: com.orbit.tv.launcher.features.home.adapters.GenreAdapter
+    private lateinit var seriesGenreAdapter: com.orbit.tv.launcher.features.home.adapters.GenreAdapter
 
     // Shared ViewPool between media shelves to minimize RAM allocations on 1GB RAM devices
     private val sharedMediaPool = RecyclerView.RecycledViewPool()
@@ -145,7 +147,16 @@ class HomeActivity : AppCompatActivity() {
             adapter = appsAdapter
         }
 
-        // 2. Movies Shelf
+        // 2. Movies Shelf & Genre Filters
+        movieGenreAdapter = com.orbit.tv.launcher.features.home.adapters.GenreAdapter { genre ->
+            viewModel.selectMovieGenre(genre)
+        }
+        binding.rvMovieGenres.apply {
+            layoutManager = LinearLayoutManager(this@HomeActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = movieGenreAdapter
+        }
+        movieGenreAdapter.submitList(viewModel.movieGenres)
+
         moviesAdapter = MediaAdapter { media ->
             MediaDetailDialog.newInstance(media).show(supportFragmentManager, MediaDetailDialog.TAG)
         }
@@ -155,7 +166,16 @@ class HomeActivity : AppCompatActivity() {
             setRecycledViewPool(sharedMediaPool)
         }
 
-        // 3. Series Shelf
+        // 3. Series Shelf & Genre Filters
+        seriesGenreAdapter = com.orbit.tv.launcher.features.home.adapters.GenreAdapter { genre ->
+            viewModel.selectSeriesGenre(genre)
+        }
+        binding.rvSeriesGenres.apply {
+            layoutManager = LinearLayoutManager(this@HomeActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = seriesGenreAdapter
+        }
+        seriesGenreAdapter.submitList(viewModel.seriesGenres)
+
         seriesAdapter = MediaAdapter { media ->
             MediaDetailDialog.newInstance(media).show(supportFragmentManager, MediaDetailDialog.TAG)
         }
@@ -371,14 +391,42 @@ class HomeActivity : AppCompatActivity() {
                 // Movies
                 launch {
                     viewModel.movies.collect { movies ->
-                        moviesAdapter.submitList(movies)
+                        moviesAdapter.submitList(movies) {
+                            binding.rvMovies.scrollToPosition(0)
+                        }
+                    }
+                }
+
+                // Selected Movie Genre
+                launch {
+                    viewModel.selectedMovieGenre.collect { genre ->
+                        movieGenreAdapter.selectedGenreId = genre.id
+                        if (genre.id == "all") {
+                            binding.tvMoviesSubtitle.setText(R.string.subtitle_movies_trending)
+                        } else {
+                            binding.tvMoviesSubtitle.text = getString(genre.nameRes)
+                        }
                     }
                 }
 
                 // Series
                 launch {
                     viewModel.series.collect { series ->
-                        seriesAdapter.submitList(series)
+                        seriesAdapter.submitList(series) {
+                            binding.rvSeries.scrollToPosition(0)
+                        }
+                    }
+                }
+
+                // Selected Series Genre
+                launch {
+                    viewModel.selectedSeriesGenre.collect { genre ->
+                        seriesGenreAdapter.selectedGenreId = genre.id
+                        if (genre.id == "all") {
+                            binding.tvSeriesSubtitle.setText(R.string.subtitle_series_top)
+                        } else {
+                            binding.tvSeriesSubtitle.text = getString(genre.nameRes)
+                        }
                     }
                 }
 
@@ -489,11 +537,15 @@ class HomeActivity : AppCompatActivity() {
         binding.scrollContainer.viewTreeObserver.addOnGlobalFocusChangeListener { _, newFocus ->
             if (newFocus == null) return@addOnGlobalFocusChangeListener
 
-            if (isDescendantOf(newFocus, binding.rvSeries) || isDescendantOf(newFocus, binding.headerSeries)) {
+            if (isDescendantOf(newFocus, binding.rvSeries) || 
+                isDescendantOf(newFocus, binding.headerSeries) || 
+                isDescendantOf(newFocus, binding.rvSeriesGenres)
+            ) {
                 // Focus is on Series shelf: scroll down so Movies header sits cleanly at the top
                 val targetY = (binding.headerMovies.top - binding.scrollContainer.paddingTop).coerceAtLeast(0)
                 binding.scrollContainer.smoothScrollTo(0, targetY)
             } else if (isDescendantOf(newFocus, binding.rvMovies) ||
+                isDescendantOf(newFocus, binding.rvMovieGenres) ||
                 isDescendantOf(newFocus, binding.headerMovies) ||
                 isDescendantOf(newFocus, binding.rvApps) ||
                 isDescendantOf(newFocus, binding.containerTopBar) ||

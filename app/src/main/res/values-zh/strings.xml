@@ -181,6 +181,7 @@
     <string name="media_btn_trailer">预告片</string>
     <string name="media_btn_search_apps">在应用程序中打开</string>
     <string name="media_search_toast">正在搜索 %1$s...</string>
+    <string name="genre_all">全部</string>
     <string name="genre_action">行动</string>
     <string name="genre_adventure">冒险</string>
     <string name="genre_animation">动画片</string>

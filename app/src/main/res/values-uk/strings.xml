@@ -210,6 +210,7 @@
     <string name="watch_dialog_section_hint">ВСТАНОВЛЕНІ ПЛЕЄРИ ТА СЕРВІСИ</string>
     <string name="watch_badge_open">ВІДКРИТИ</string>
     <string name="watch_badge_search">ПОШУК</string>
+    <string name="genre_all">Всі</string>
     <string name="genre_action">Бойовик</string>
     <string name="genre_adventure">Пригоди</string>
     <string name="genre_animation">Анімація</string>

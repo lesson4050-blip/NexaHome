@@ -246,6 +246,7 @@
     <string name="watch_badge_search">ПОИСК</string>
 
     <!-- Media Genres -->
+    <string name="genre_all">Все</string>
     <string name="genre_action">Боевик</string>
     <string name="genre_adventure">Приключения</string>
     <string name="genre_animation">Мультфильм</string>

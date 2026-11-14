@@ -246,6 +246,7 @@
     <string name="watch_badge_search">ПОШУК</string>
 
     <!-- Media Genres -->
+    <string name="genre_all">Усе</string>
     <string name="genre_action">Баявік</string>
     <string name="genre_adventure">Прыгоды</string>
     <string name="genre_animation">Мультфільм</string>

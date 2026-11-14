@@ -19,6 +19,8 @@ import java.util.Locale
 class IptvViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = IptvRepository(application)
+    val networkStateManager = com.orbit.tv.launcher.platform.device_capabilities.NetworkStateManager(application)
+    val networkStatus = networkStateManager.networkStatus
 
     private val _allChannels = MutableStateFlow<List<IptvChannel>>(emptyList())
 

@@ -181,6 +181,7 @@
     <string name="media_btn_trailer">Trailer</string>
     <string name="media_btn_search_apps">Open in Apps</string>
     <string name="media_search_toast">Searching for __PH_0__...</string>
+    <string name="genre_all">الكل</string>
     <string name="genre_action">Action</string>
     <string name="genre_adventure">Adventure</string>
     <string name="genre_animation">Animation</string>

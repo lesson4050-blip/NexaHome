@@ -37,6 +37,11 @@ class IptvActivity : AppCompatActivity() {
     private lateinit var categoryAdapter: com.orbit.tv.launcher.features.iptv.adapters.IptvCategoryAdapter
     private lateinit var osdAdapter: EpgChannelAdapter
 
+    private var retryAttempt = 0
+    private val maxAutoRetries = 5
+    private val reconnectHandler = Handler(Looper.getMainLooper())
+    private val reconnectRunnable = Runnable { performAutoReconnect() }
+
     private val bannerHandler = Handler(Looper.getMainLooper())
     private val hideBannerRunnable = Runnable {
         binding.bannerFullscreenInfo.animate()
@@ -171,51 +176,104 @@ class IptvActivity : AppCompatActivity() {
     }
 
     private fun initExoPlayer() {
+        val loadControl = androidx.media3.exoplayer.DefaultLoadControl.Builder()
+            .setBufferDurationsMs(
+                2500, // minBufferMs
+                15000, // maxBufferMs
+                1000, // bufferForPlaybackMs
+                2000 // bufferForPlaybackAfterRebufferMs
+            )
+            .setPrioritizeTimeOverSizeThresholds(true)
+            .build()
+
         val httpDataSourceFactory = androidx.media3.datasource.DefaultHttpDataSource.Factory()
             .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
             .setAllowCrossProtocolRedirects(true)
-            .setConnectTimeoutMs(15000)
-            .setReadTimeoutMs(15000)
+            .setConnectTimeoutMs(8000)
+            .setReadTimeoutMs(8000)
+            .setKeepPostFor302Redirects(true)
 
         val mediaSourceFactory = androidx.media3.exoplayer.source.DefaultMediaSourceFactory(this)
             .setDataSourceFactory(httpDataSourceFactory)
 
         exoPlayer = ExoPlayer.Builder(this)
             .setMediaSourceFactory(mediaSourceFactory)
+            .setLoadControl(loadControl)
             .build()
             .apply {
-            addListener(object : Player.Listener {
-                override fun onPlaybackStateChanged(playbackState: Int) {
-                    if (playbackState == Player.STATE_READY) {
-                        binding.overlayPlayerError.visibility = View.GONE
-                        binding.overlayFullscreenError.visibility = View.GONE
+                addListener(object : Player.Listener {
+                    override fun onPlaybackStateChanged(playbackState: Int) {
+                        if (playbackState == Player.STATE_READY) {
+                            retryAttempt = 0
+                            reconnectHandler.removeCallbacks(reconnectRunnable)
+                            binding.overlayPlayerError.visibility = View.GONE
+                            binding.overlayFullscreenError.visibility = View.GONE
+                            binding.btnRetryPlayback.visibility = View.VISIBLE
+                            binding.btnFullscreenRetry.visibility = View.VISIBLE
+                        }
                     }
-                }
 
-                override fun onPlayerError(error: PlaybackException) {
-                    handlePlayerError(error)
-                }
-            })
-        }
+                    override fun onPlayerError(error: PlaybackException) {
+                        handlePlayerError(error)
+                    }
+                })
+            }
         binding.playerView.player = exoPlayer
     }
 
     private fun handlePlayerError(error: PlaybackException) {
-        val errorMessage = error.localizedMessage?.take(60) ?: "Ошибка подключения к потоку"
-        if (viewModel.isFullscreen.value) {
-            binding.overlayFullscreenError.visibility = View.VISIBLE
-            binding.tvFullscreenErrorDesc.text = "Канал временно недоступен • ВВЕРХ/ВНИЗ для переключения"
-            binding.btnFullscreenRetry.requestFocus()
+        if (retryAttempt < maxAutoRetries) {
+            retryAttempt++
+            // Exponential backoff: 1.5s, 3s, 6s, 12s, 15s
+            val delayMs = (1500L * (1 shl (retryAttempt - 1))).coerceAtMost(15000L)
+            val reconnectingText = "Переподключение... ($retryAttempt/$maxAutoRetries)"
+
+            if (viewModel.isFullscreen.value) {
+                binding.overlayFullscreenError.visibility = View.VISIBLE
+                binding.tvFullscreenErrorDesc.text = "$reconnectingText • ВВЕРХ/ВНИЗ для переключения"
+                binding.btnFullscreenRetry.visibility = View.GONE
+            } else {
+                binding.overlayPlayerError.visibility = View.VISIBLE
+                binding.tvErrorMessage.text = reconnectingText
+                binding.btnRetryPlayback.visibility = View.GONE
+            }
+
+            reconnectHandler.removeCallbacks(reconnectRunnable)
+            reconnectHandler.postDelayed(reconnectRunnable, delayMs)
         } else {
-            binding.overlayPlayerError.visibility = View.VISIBLE
-            binding.tvErrorMessage.text = "Поток недоступен ($errorMessage)"
-            binding.btnRetryPlayback.requestFocus()
+            val errorMessage = error.localizedMessage?.take(60) ?: "Ошибка подключения к потоку"
+            if (viewModel.isFullscreen.value) {
+                binding.overlayFullscreenError.visibility = View.VISIBLE
+                binding.btnFullscreenRetry.visibility = View.VISIBLE
+                binding.tvFullscreenErrorDesc.text = "Канал временно недоступен • ВВЕРХ/ВНИЗ для переключения"
+                binding.btnFullscreenRetry.requestFocus()
+            } else {
+                binding.overlayPlayerError.visibility = View.VISIBLE
+                binding.btnRetryPlayback.visibility = View.VISIBLE
+                binding.tvErrorMessage.text = "Поток недоступен ($errorMessage)"
+                binding.btnRetryPlayback.requestFocus()
+            }
+        }
+    }
+
+    private fun performAutoReconnect() {
+        val channel = viewModel.activeChannel.value ?: return
+        exoPlayer?.let { player ->
+            player.stop()
+            val mediaItem = MediaItem.fromUri(channel.streamUrl)
+            player.setMediaItem(mediaItem)
+            player.prepare()
+            player.playWhenReady = true
         }
     }
 
     private fun retryActiveChannel() {
+        retryAttempt = 0
+        reconnectHandler.removeCallbacks(reconnectRunnable)
         binding.overlayPlayerError.visibility = View.GONE
         binding.overlayFullscreenError.visibility = View.GONE
+        binding.btnRetryPlayback.visibility = View.VISIBLE
+        binding.btnFullscreenRetry.visibility = View.VISIBLE
         viewModel.activeChannel.value?.let { playChannel(it) }
     }
 
@@ -279,13 +337,30 @@ class IptvActivity : AppCompatActivity() {
                         applyFullscreenMode(isFullscreen)
                     }
                 }
+
+                // Auto-reconnect on network restoration
+                launch {
+                    viewModel.networkStatus.collect { status ->
+                        if (status != com.orbit.tv.launcher.platform.device_capabilities.NetworkStatus.DISCONNECTED) {
+                            if (retryAttempt > 0 || binding.overlayPlayerError.visibility == View.VISIBLE || binding.overlayFullscreenError.visibility == View.VISIBLE) {
+                                retryAttempt = 0
+                                reconnectHandler.removeCallbacks(reconnectRunnable)
+                                performAutoReconnect()
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 
     private fun playChannel(channel: IptvChannel) {
+        retryAttempt = 0
+        reconnectHandler.removeCallbacks(reconnectRunnable)
         binding.overlayPlayerError.visibility = View.GONE
         binding.overlayFullscreenError.visibility = View.GONE
+        binding.btnRetryPlayback.visibility = View.VISIBLE
+        binding.btnFullscreenRetry.visibility = View.VISIBLE
 
         epgAdapter.activeChannelId = channel.id
         osdAdapter.activeChannelId = channel.id
@@ -432,6 +507,7 @@ class IptvActivity : AppCompatActivity() {
         } catch (e: Exception) {}
         bannerHandler.removeCallbacks(hideBannerRunnable)
         osdHandler.removeCallbacks(hideOsdRunnable)
+        reconnectHandler.removeCallbacks(reconnectRunnable)
         exoPlayer?.release()
         exoPlayer = null
     }
