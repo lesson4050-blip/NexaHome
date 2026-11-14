@@ -6,18 +6,24 @@ import com.orbit.tv.launcher.features.iptv.data.OrbitDatabase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class WatchHistoryRepository(context: Context) {
+class WatchHistoryRepository(private val context: Context) {
 
     private val dao = OrbitDatabase.getInstance(context).watchHistoryDao()
+    private val mediaRepository = com.orbit.tv.launcher.features.home.repository.MediaRepository(context)
 
     val recentMedia: Flow<List<MediaModel>> = dao.getRecentHistory().map { list ->
         list.map { entity ->
-            val appBadge = if (!entity.targetApp.isNullOrBlank()) {
-                "${entity.badge} • ${entity.targetApp}"
+            val targetAppLabel = when (entity.targetApp) {
+                "Trailer" -> context.getString(com.orbit.tv.launcher.R.string.media_btn_trailer)
+                null, "" -> null
+                else -> entity.targetApp
+            }
+            val appBadge = if (!targetAppLabel.isNullOrBlank()) {
+                "${entity.badge} • $targetAppLabel"
             } else {
                 entity.badge
             }
-            MediaModel(
+            val baseModel = MediaModel(
                 id = entity.id,
                 title = entity.title,
                 posterUrl = entity.posterUrl,
@@ -29,6 +35,7 @@ class WatchHistoryRepository(context: Context) {
                 isSeries = entity.isSeries,
                 deeplinkUri = entity.deeplinkUri
             )
+            mediaRepository.resolveLocalizedMedia(baseModel)
         }
     }
 

@@ -99,6 +99,7 @@ class WatchHistoryActivity : AppCompatActivity() {
     }
 
     private fun observeHistory() {
+        val mediaRepo = com.orbit.tv.launcher.features.home.repository.MediaRepository(this)
         lifecycleScope.launch {
             repository.recentMedia.collect { list ->
                 if (list.isNotEmpty()) {
@@ -106,6 +107,37 @@ class WatchHistoryActivity : AppCompatActivity() {
                     binding.containerEmpty.visibility = View.GONE
                     binding.btnClearHistory.visibility = View.VISIBLE
                     mediaAdapter.submitList(list)
+
+                    // Background enrichment for items not found in current shelf cache
+                    val tmdbLang = mediaRepo.getTmdbLanguage()
+                    val unlocalized = list.filter { item ->
+                        val itemCache = java.io.File(cacheDir, "item_${item.id}_${tmdbLang.replace('-', '_')}.json")
+                        !itemCache.exists() && item.id.matches(Regex("\\d+"))
+                    }
+                    if (unlocalized.isNotEmpty()) {
+                        launch {
+                            var changed = false
+                            val updated = list.toMutableList()
+                            for (item in unlocalized) {
+                                val fetched = mediaRepo.fetchAndCacheSingleItem(item.id, item.isSeries)
+                                if (fetched != null) {
+                                    val idx = updated.indexOfFirst { it.id == item.id }
+                                    if (idx != -1) {
+                                        updated[idx] = updated[idx].copy(
+                                            title = fetched.title,
+                                            description = fetched.description,
+                                            posterUrl = fetched.posterUrl.ifBlank { updated[idx].posterUrl },
+                                            genre = fetched.genre
+                                        )
+                                        changed = true
+                                    }
+                                }
+                            }
+                            if (changed) {
+                                mediaAdapter.submitList(updated.toList())
+                            }
+                        }
+                    }
                 } else {
                     binding.rvHistory.visibility = View.GONE
                     binding.containerEmpty.visibility = View.VISIBLE

@@ -71,6 +71,138 @@ class MediaRepository(private val context: Context) {
         }
     }
 
+    fun resolveLocalizedMedia(media: MediaModel): MediaModel {
+        val tmdbLang = getTmdbLanguage()
+        val cacheFile = if (media.isSeries) getSeriesCacheFile(tmdbLang) else getMoviesCacheFile(tmdbLang)
+
+        // 1. Check current language shelf cache
+        if (cacheFile.exists()) {
+            try {
+                val cached = cacheFile.readText()
+                val parsed = parseTmdbJson(cached, isSeries = media.isSeries)
+                val found = parsed.find { it.id == media.id }
+                if (found != null) {
+                    return media.copy(
+                        title = found.title,
+                        description = found.description,
+                        genre = found.genre,
+                        rawGenres = found.rawGenres,
+                        posterUrl = found.posterUrl.ifBlank { media.posterUrl }
+                    )
+                }
+            } catch (_: Exception) {}
+        }
+
+        // 2. Check curated baseline for current language
+        val baselines = if (media.isSeries) getCuratedBaselineSeries() else getCuratedBaselineMovies()
+        val baseFound = baselines.find { it.id == media.id }
+        if (baseFound != null) {
+            return media.copy(
+                title = baseFound.title,
+                description = baseFound.description,
+                genre = baseFound.genre,
+                rawGenres = baseFound.rawGenres,
+                posterUrl = baseFound.posterUrl.ifBlank { media.posterUrl }
+            )
+        }
+
+        // 3. Check single item cache for this ID and language
+        val itemCacheFile = File(context.cacheDir, "item_${media.id}_${tmdbLang.replace('-', '_')}.json")
+        if (itemCacheFile.exists()) {
+            try {
+                val json = itemCacheFile.readText()
+                val parsed = parseSingleTmdbItem(json, media.isSeries)
+                if (parsed != null) {
+                    return media.copy(
+                        title = parsed.title,
+                        description = parsed.description,
+                        genre = parsed.genre,
+                        rawGenres = parsed.rawGenres,
+                        posterUrl = parsed.posterUrl.ifBlank { media.posterUrl }
+                    )
+                }
+            } catch (_: Exception) {}
+        }
+
+        return media
+    }
+
+    suspend fun fetchAndCacheSingleItem(id: String, isSeries: Boolean): MediaModel? = withContext(Dispatchers.IO) {
+        if (!id.matches(Regex("\\d+"))) return@withContext null
+        val tmdbLang = getTmdbLanguage()
+        val type = if (isSeries) "tv" else "movie"
+        val url = "$TMDB_BASE_URL/$type/$id?api_key=$TMDB_API_KEY&language=$tmdbLang"
+        val data = fetchFromNetwork(url) ?: return@withContext null
+        val itemCacheFile = File(context.cacheDir, "item_${id}_${tmdbLang.replace('-', '_')}.json")
+        try {
+            itemCacheFile.writeText(data)
+        } catch (_: Exception) {}
+        parseSingleTmdbItem(data, isSeries)
+    }
+
+    private fun parseSingleTmdbItem(jsonStr: String, isSeries: Boolean): MediaModel? {
+        return try {
+            val item = JSONObject(jsonStr)
+            val id = item.optLong("id", 0).toString()
+            if (id == "0") return null
+
+            val title = if (isSeries) {
+                val name = item.optString("name", "").trim()
+                val orig = item.optString("original_name", "").trim()
+                if (name.isNotBlank()) name else if (orig.isNotBlank()) orig else "Untitled"
+            } else {
+                val t = item.optString("title", "").trim()
+                val orig = item.optString("original_title", "").trim()
+                if (t.isNotBlank()) t else if (orig.isNotBlank()) orig else "Untitled"
+            }
+
+            val posterPath = item.optString("poster_path", "").trim()
+            val posterUrl = if (posterPath.isNotBlank() && posterPath != "null") {
+                "https://image.tmdb.org/t/p/w500$posterPath"
+            } else ""
+
+            val voteAvg = item.optDouble("vote_average", 0.0)
+            val rating = if (voteAvg > 0.0) String.format(Locale.US, "%.1f", voteAvg) else ""
+            val badge = if (rating.isNotBlank()) "★ $rating" else if (isSeries) context.getString(R.string.badge_series) else context.getString(R.string.badge_movie)
+
+            val dateStr = if (isSeries) item.optString("first_air_date", "") else item.optString("release_date", "")
+            val year = if (dateStr.length >= 4) dateStr.substring(0, 4) else ""
+
+            val genresArray = item.optJSONArray("genres")
+            val genresList = mutableListOf<String>()
+            if (genresArray != null) {
+                for (g in 0 until genresArray.length()) {
+                    val gObj = genresArray.optJSONObject(g)
+                    val gName = gObj?.optString("name", "") ?: ""
+                    if (gName.isNotBlank()) genresList.add(gName)
+                }
+            }
+            val rawGenre = if (genresList.isNotEmpty()) genresList.joinToString(", ") else context.getString(R.string.genre_feature)
+            val rawOverview = item.optString("overview", "").trim()
+            val description = if (rawOverview.isNotBlank() && rawOverview != "null") {
+                rawOverview
+            } else {
+                context.getString(R.string.media_desc_unavailable)
+            }
+
+            MediaModel(
+                id = id,
+                title = title,
+                posterUrl = posterUrl,
+                badge = badge,
+                genre = rawGenre,
+                rawGenres = genresList,
+                rating = rating,
+                description = description,
+                releaseYear = year,
+                isSeries = isSeries,
+                deeplinkUri = if (isSeries) "https://www.themoviedb.org/tv/$id" else "https://www.themoviedb.org/movie/$id"
+            )
+        } catch (_: Exception) {
+            null
+        }
+    }
+
     suspend fun getTrendingMovies(forceRefresh: Boolean = false): List<MediaModel> = withContext(Dispatchers.IO) {
         val tmdbLang = getTmdbLanguage()
         val cacheFile = getMoviesCacheFile(tmdbLang)
