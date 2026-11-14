@@ -3,8 +3,10 @@ package com.orbit.tv.launcher.features.home
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.orbit.tv.launcher.R
@@ -28,40 +30,60 @@ object TvDeepLinkHelper {
             "YouTube"
         ),
         KnownPlayerDef(
+            listOf("com.megogo.application", "net.megogo.tv"),
+            "Онлайн-кинотеатр MEGOGO"
+        ),
+        KnownPlayerDef(
+            listOf("tv.sweet.player", "tv.sweet.tv"),
+            "Онлайн-кинотеатр Sweet.tv"
+        ),
+        KnownPlayerDef(
+            listOf("ua.kyivstar.tv"),
+            "Онлайн-кинотеатр Киевстар ТВ"
+        ),
+        KnownPlayerDef(
             listOf("ru.kinopoisk.tv", "com.yandex.tv.kinopoisk"),
-            "Онлайн-кинотеатр"
+            "Онлайн-кинотеатр Кинопоиск"
         ),
         KnownPlayerDef(
             listOf("com.lampa.app", "com.lampa.tv", "ru.lampa.tv"),
-            "Медиа-агрегатор"
+            "Медиа-агрегатор Lampa"
         ),
         KnownPlayerDef(
             listOf("com.num"),
-            "Торрент-каталог фильмов"
+            "Торрент-каталог NUM"
         ),
         KnownPlayerDef(
             listOf("com.vokino"),
-            "Онлайн-кинотеатр"
+            "Онлайн-кинотеатр VoKino"
         ),
         KnownPlayerDef(
             listOf("ru.eugene.deluxe", "ru.eugene.deluxereborn"),
-            "Медиа-агрегатор"
+            "Медиа-агрегатор LazyMedia"
+        ),
+        KnownPlayerDef(
+            listOf("com.hdrezka", "org.rezka", "com.rezka.app"),
+            "Онлайн-кинотеатр HDRezka"
+        ),
+        KnownPlayerDef(
+            listOf("com.zona", "com.kinoplay"),
+            "Онлайн-кинотеатр"
         ),
         KnownPlayerDef(
             listOf("ru.ivi.client"),
-            "Онлайн-кинотеатр"
+            "Онлайн-кинотеатр IVI"
         ),
         KnownPlayerDef(
             listOf("tv.okko.androidtv"),
-            "Онлайн-кинотеатр"
+            "Онлайн-кинотеатр Okko"
         ),
         KnownPlayerDef(
             listOf("premier.one.tv"),
-            "Онлайн-кинотеатр"
+            "Онлайн-кинотеатр Premier"
         ),
         KnownPlayerDef(
             listOf("ru.start.android"),
-            "Онлайн-кинотеатр"
+            "Онлайн-кинотеатр START"
         ),
         KnownPlayerDef(
             listOf("com.vk.vkvideo.tv", "com.vk.vkvideo"),
@@ -80,20 +102,61 @@ object TvDeepLinkHelper {
             "Wink"
         ),
         KnownPlayerDef(
-            listOf("org.videolan.vlc"),
-            "Медиаплеер"
+            listOf("com.netflix.ninja", "com.netflix.mediaclient"),
+            "Netflix"
         ),
         KnownPlayerDef(
-            listOf("ru.yourok.torrserve"),
-            "TorrServe"
+            listOf("org.videolan.vlc"),
+            "Медиаплеер VLC"
+        ),
+        KnownPlayerDef(
+            listOf("com.mxtech.videoplayer.ad", "com.mxtech.videoplayer.pro"),
+            "Медиаплеер MX Player"
+        ),
+        KnownPlayerDef(
+            listOf("net.gtvbox.videoplayer"),
+            "Медиаплеер Vimu"
+        ),
+        KnownPlayerDef(
+            listOf("com.brouken.player"),
+            "Медиаплеер Just Player"
+        ),
+        KnownPlayerDef(
+            listOf("org.courville.nova"),
+            "Медиаплеер Nova"
+        ),
+        KnownPlayerDef(
+            listOf("org.xbmc.kodi"),
+            "Медиацентр Kodi"
+        ),
+        KnownPlayerDef(
+            listOf("ru.yourok.torrserve", "ru.yourok.torrserver"),
+            "Торрент-сервер TorrServe"
         )
+    )
+
+    private val SYSTEM_IGNORE_PACKAGES = setOf(
+        "android",
+        "com.android.systemui",
+        "com.android.settings",
+        "com.android.vending",
+        "com.google.android.gms",
+        "com.google.android.googlequicksearchbox",
+        "com.google.android.katniss",
+        "com.google.android.inputmethod.latin"
+    )
+
+    private val MEDIA_KEYWORDS = listOf(
+        "video", "player", "cinema", "kino", "movie", "stream", "film", "iptv", "media", "tube", "lampa", "rezka", "megogo", "sweet"
     )
 
     fun getInstalledMediaPlayers(context: Context): List<MediaPlayerApp> {
         val pm = context.packageManager
         val result = mutableListOf<MediaPlayerApp>()
         val foundPackages = mutableSetOf<String>()
+        val myPackage = context.packageName
 
+        // 1. Process known catalog services first (clean names and priority)
         for (def in KNOWN_PLAYERS) {
             for (pkg in def.packageNames) {
                 if (foundPackages.contains(pkg)) continue
@@ -110,18 +173,77 @@ object TvDeepLinkHelper {
                         )
                     )
                     foundPackages.add(pkg)
-                    break // Take first matched package variant
+                    break
                 } catch (_: PackageManager.NameNotFoundException) {}
             }
         }
 
-        // Always add Global Android TV Media Search at the bottom
+        // 2. Dynamic discovery: query apps registered to view video content
+        try {
+            val videoIntent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(Uri.parse("http://localhost/video.mp4"), "video/*")
+            }
+            val videoHandlers = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                pm.queryIntentActivities(videoIntent, PackageManager.ResolveInfoFlags.of(0))
+            } else {
+                pm.queryIntentActivities(videoIntent, 0)
+            }
+            for (ri in videoHandlers) {
+                val pkg = ri.activityInfo?.packageName ?: continue
+                if (pkg == myPackage || SYSTEM_IGNORE_PACKAGES.contains(pkg) || foundPackages.contains(pkg)) continue
+                try {
+                    val appInfo = pm.getApplicationInfo(pkg, 0)
+                    val label = pm.getApplicationLabel(appInfo).toString()
+                    val icon = pm.getApplicationIcon(appInfo)
+                    result.add(
+                        MediaPlayerApp(
+                            packageName = pkg,
+                            name = label,
+                            icon = icon,
+                            categoryLabel = "Видеоплеер / Стриминг"
+                        )
+                    )
+                    foundPackages.add(pkg)
+                } catch (_: Exception) {}
+            }
+        } catch (_: Exception) {}
+
+        // 3. Dynamic discovery: scan installed apps with CATEGORY_VIDEO or media keywords
+        try {
+            val installedApps = pm.getInstalledApplications(0)
+            for (appInfo in installedApps) {
+                val pkg = appInfo.packageName
+                if (pkg == myPackage || SYSTEM_IGNORE_PACKAGES.contains(pkg) || foundPackages.contains(pkg)) continue
+                if (pm.getLaunchIntentForPackage(pkg) == null) continue
+
+                val isVideoCat = (appInfo.category == ApplicationInfo.CATEGORY_VIDEO)
+                val matchesKeyword = MEDIA_KEYWORDS.any { pkg.lowercase().contains(it) }
+
+                if (isVideoCat || matchesKeyword) {
+                    try {
+                        val label = pm.getApplicationLabel(appInfo).toString()
+                        val icon = pm.getApplicationIcon(appInfo)
+                        result.add(
+                            MediaPlayerApp(
+                                packageName = pkg,
+                                name = label,
+                                icon = icon,
+                                categoryLabel = if (isVideoCat) "Видеоплеер / Стриминг" else "Медиаприложение"
+                            )
+                        )
+                        foundPackages.add(pkg)
+                    } catch (_: Exception) {}
+                }
+            }
+        } catch (_: Exception) {}
+
+        // 4. Always add Google Play / System Search fallback at the end
         result.add(
             MediaPlayerApp(
                 packageName = "system.search",
-                name = "Глобальный поиск Android TV",
+                name = "Поиск в Google Play / Браузере",
                 icon = ContextCompat.getDrawable(context, R.drawable.ic_search),
-                categoryLabel = "Поиск по всем приложениям",
+                categoryLabel = "Поиск по всей системе",
                 isSystemSearch = true
             )
         )
@@ -138,6 +260,34 @@ object TvDeepLinkHelper {
         val pm = context.packageManager
         val pkg = app.packageName
 
+        // Special handling for Lampa deep link
+        if (pkg.contains("lampa")) {
+            try {
+                val encoded = URLEncoder.encode(query, "UTF-8")
+                val lampaUri = Uri.parse("lampa://search?q=$encoded")
+                val lampaIntent = Intent(Intent.ACTION_VIEW, lampaUri).apply {
+                    setPackage(pkg)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                context.startActivity(lampaIntent)
+                return
+            } catch (_: Exception) {}
+        }
+
+        // Special handling for YouTube / SmartTube
+        if (pkg.contains("youtube") || pkg.contains("smarttube") || pkg.contains("teamsmart")) {
+            try {
+                val encoded = URLEncoder.encode(query, "UTF-8")
+                val ytUri = Uri.parse("vnd.youtube://results?search_query=$encoded")
+                val ytIntent = Intent(Intent.ACTION_VIEW, ytUri).apply {
+                    setPackage(pkg)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                context.startActivity(ytIntent)
+                return
+            } catch (_: Exception) {}
+        }
+
         // Strategy 1: Standard Android Search Intent targeted to specific package
         try {
             val searchIntent = Intent(Intent.ACTION_SEARCH).apply {
@@ -153,21 +303,7 @@ object TvDeepLinkHelper {
             }
         } catch (_: Exception) {}
 
-        // Strategy 2: Specific deep links for YouTube / SmartTube
-        if (pkg.contains("youtube") || pkg.contains("smarttube") || pkg.contains("teamsmart")) {
-            try {
-                val encoded = URLEncoder.encode(query, "UTF-8")
-                val ytUri = Uri.parse("vnd.youtube://results?search_query=$encoded")
-                val ytIntent = Intent(Intent.ACTION_VIEW, ytUri).apply {
-                    setPackage(pkg)
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                }
-                context.startActivity(ytIntent)
-                return
-            } catch (_: Exception) {}
-        }
-
-        // Strategy 3: Standard launch intent with extras
+        // Strategy 2: Standard launch intent with query extras
         try {
             val launchIntent = pm.getLaunchIntentForPackage(pkg)?.apply {
                 putExtra(SearchManager.QUERY, query)
@@ -185,23 +321,27 @@ object TvDeepLinkHelper {
     }
 
     private fun launchSystemGlobalSearch(context: Context, query: String) {
+        val pm = context.packageManager
         try {
             val intent = Intent(Intent.ACTION_SEARCH).apply {
                 putExtra(SearchManager.QUERY, query)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
-            context.startActivity(intent)
-        } catch (_: Exception) {
-            // Fallback: Web search URL if device has no global search handler
-            try {
-                val encoded = URLEncoder.encode(query, "UTF-8")
-                val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?q=$encoded")).apply {
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                }
-                context.startActivity(webIntent)
-            } catch (_: Exception) {
-                Toast.makeText(context, "Поиск недоступен", Toast.LENGTH_SHORT).show()
+            if (intent.resolveActivity(pm) != null) {
+                context.startActivity(intent)
+                return
             }
+        } catch (_: Exception) {}
+
+        // Fallback: Web search URL if device has no global search handler
+        try {
+            val encoded = URLEncoder.encode(query, "UTF-8")
+            val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?q=$encoded")).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(webIntent)
+        } catch (_: Exception) {
+            Toast.makeText(context, "Поиск недоступен", Toast.LENGTH_SHORT).show()
         }
     }
 }
