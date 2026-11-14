@@ -228,8 +228,12 @@
     <string name="media_genre_fallback">Художественный фильм</string>
     <string name="media_desc_unavailable">Описание недоступно.</string>
     <string name="media_btn_trailer">Трейлер</string>
-    <string name="media_btn_search_apps">Искать в приложениях</string>
+    <string name="media_btn_search_apps">Смотреть в сервисах</string>
     <string name="media_search_toast">Поиск «%1$s»...</string>
+    <string name="watch_dialog_title">Смотреть фильм</string>
+    <string name="watch_dialog_section_hint">УСТАНОВЛЕННЫЕ ПЛЕЕРЫ И КИНОТЕАТРЫ</string>
+    <string name="watch_badge_open">ОТКРЫТЬ</string>
+    <string name="watch_badge_search">ПОИСК</string>
 
     <!-- Media Genres -->
     <string name="genre_action">Боевик</string>

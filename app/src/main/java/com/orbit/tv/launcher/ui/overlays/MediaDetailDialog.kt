@@ -99,13 +99,8 @@ class MediaDetailDialog : DialogFragment() {
         }
 
         binding.btnActionSearchApps.setOnClickListener {
-            try {
-                val query = URLEncoder.encode(media.title, "UTF-8")
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?q=watch+online+$query"))
-                startActivity(intent)
-            } catch (e: Exception) {
-                Toast.makeText(requireContext(), getString(R.string.media_search_toast, media.title), Toast.LENGTH_SHORT).show()
-            }
+            WatchInAppsDialog.newInstance(media.title)
+                .show(parentFragmentManager, WatchInAppsDialog.TAG)
             dismiss()
         }
     }

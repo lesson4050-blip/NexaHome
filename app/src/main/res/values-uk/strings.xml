@@ -194,8 +194,12 @@
     <string name="media_genre_fallback">Художній фільм</string>
     <string name="media_desc_unavailable">Опис недоступний.</string>
     <string name="media_btn_trailer">Трейлер</string>
-    <string name="media_btn_search_apps">Відкрити в додатках</string>
+    <string name="media_btn_search_apps">Дивитися в додатках</string>
     <string name="media_search_toast">Пошук %1$s...</string>
+    <string name="watch_dialog_title">Дивитися фільм</string>
+    <string name="watch_dialog_section_hint">ВСТАНОВЛЕНІ ПЛЕЄРИ ТА СЕРВІСИ</string>
+    <string name="watch_badge_open">ВІДКРИТИ</string>
+    <string name="watch_badge_search">ПОШУК</string>
     <string name="genre_action">Бойовик</string>
     <string name="genre_adventure">Пригоди</string>
     <string name="genre_animation">Анімація</string>

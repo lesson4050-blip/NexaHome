@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="540dp"
+    android:minWidth="540dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_focus_app_card"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <!-- Header: Title, Movie Name & Close Button -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/bg_nav_tile"
+            android:padding="8dp"
+            android:src="@drawable/ic_nav_home"
+            app:tint="@color/leanback_cyan" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_dialog_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-black"
+                android:text="@string/watch_dialog_title"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_dialog_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/white_60"
+                android:textSize="12sp"
+                tools:text="Dune: Part Two" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btn_close_dialog"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/bg_circle_button"
+            android:contentDescription="@string/close_action"
+            android:focusable="true"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_close" />
+
+    </LinearLayout>
+
+    <!-- Subtitle divider -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="sans-serif-bold"
+        android:text="@string/watch_dialog_section_hint"
+        android:textColor="@color/white_40"
+        android:textSize="10sp" />
+
+    <!-- RecyclerView of Installed Media Players -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_media_players"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:nestedScrollingEnabled="false"
+        tools:listitem="@layout/item_media_player_app" />
+
+</LinearLayout>

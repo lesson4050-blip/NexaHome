@@ -228,8 +228,12 @@
     <string name="media_genre_fallback">Feature Film</string>
     <string name="media_desc_unavailable">Description unavailable.</string>
     <string name="media_btn_trailer">Trailer</string>
-    <string name="media_btn_search_apps">Open in Apps</string>
-    <string name="media_search_toast">Searching for %1$s...</string>
+    <string name="media_btn_search_apps">Watch in Apps</string>
+    <string name="media_search_toast">Opening %1$s...</string>
+    <string name="watch_dialog_title">Watch Movie</string>
+    <string name="watch_dialog_section_hint">INSTALLED PLAYERS &amp; SERVICES</string>
+    <string name="watch_badge_open">OPEN</string>
+    <string name="watch_badge_search">SEARCH</string>
 
     <!-- Media Genres -->
     <string name="genre_action">Action</string>
