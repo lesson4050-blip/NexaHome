@@ -272,32 +272,27 @@ class AppsHubActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         binding.btnNavMedia.setOnClickListener {
-            finish() // Return to Home screen
+            com.orbit.tv.launcher.core.navigation.TvNavHelper.finishWithPop(this)
         }
 
         binding.btnNavHistory.setOnClickListener {
-            startActivity(Intent(this, WatchHistoryActivity::class.java))
-            finish()
+            com.orbit.tv.launcher.core.navigation.TvNavHelper.openScreen(this, WatchHistoryActivity::class.java)
         }
 
         binding.btnNavIptv.setOnClickListener {
-            startActivity(Intent(this, IptvActivity::class.java))
-            finish()
+            com.orbit.tv.launcher.core.navigation.TvNavHelper.openScreen(this, IptvActivity::class.java)
         }
 
         binding.btnNavGames.setOnClickListener {
-            startActivity(Intent(this, OptimizerActivity::class.java))
-            finish()
+            com.orbit.tv.launcher.core.navigation.TvNavHelper.openScreen(this, OptimizerActivity::class.java)
         }
 
         binding.btnNavCast.setOnClickListener {
-            startActivity(Intent(this, CastActivity::class.java))
-            finish()
+            com.orbit.tv.launcher.core.navigation.TvNavHelper.openScreen(this, CastActivity::class.java)
         }
 
         binding.btnNavSettings.setOnClickListener {
-            startActivity(Intent(this, LauncherSettingsActivity::class.java))
-            finish()
+            com.orbit.tv.launcher.core.navigation.TvNavHelper.openScreen(this, LauncherSettingsActivity::class.java)
         }
 
         binding.btnNavPower.setOnClickListener {
@@ -372,7 +367,7 @@ class AppsHubActivity : AppCompatActivity() {
                 if (!binding.containerSidebar.hasFocus()) {
                     binding.btnNavApps.requestFocus()
                 } else {
-                    finish()
+                    com.orbit.tv.launcher.core.navigation.TvNavHelper.finishWithPop(this@AppsHubActivity)
                 }
             }
         })

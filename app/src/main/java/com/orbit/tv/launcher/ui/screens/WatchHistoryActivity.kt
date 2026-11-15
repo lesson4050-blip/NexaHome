@@ -78,7 +78,7 @@ class WatchHistoryActivity : AppCompatActivity() {
 
     private fun setupSidebarListeners() {
         binding.btnNavMedia.setOnClickListener {
-            finish()
+            com.orbit.tv.launcher.core.navigation.TvNavHelper.finishWithPop(this)
         }
         binding.btnNavHistory.setOnClickListener {
             // Already here: focus history list
@@ -87,24 +87,19 @@ class WatchHistoryActivity : AppCompatActivity() {
             }
         }
         binding.btnNavApps.setOnClickListener {
-            startActivity(Intent(this, AppsHubActivity::class.java))
-            finish()
+            com.orbit.tv.launcher.core.navigation.TvNavHelper.openScreen(this, AppsHubActivity::class.java)
         }
         binding.btnNavIptv.setOnClickListener {
-            startActivity(Intent(this, IptvActivity::class.java))
-            finish()
+            com.orbit.tv.launcher.core.navigation.TvNavHelper.openScreen(this, IptvActivity::class.java)
         }
         binding.btnNavGames.setOnClickListener {
-            startActivity(Intent(this, OptimizerActivity::class.java))
-            finish()
+            com.orbit.tv.launcher.core.navigation.TvNavHelper.openScreen(this, OptimizerActivity::class.java)
         }
         binding.btnNavCast.setOnClickListener {
-            startActivity(Intent(this, CastActivity::class.java))
-            finish()
+            com.orbit.tv.launcher.core.navigation.TvNavHelper.openScreen(this, CastActivity::class.java)
         }
         binding.btnNavSettings.setOnClickListener {
-            startActivity(Intent(this, LauncherSettingsActivity::class.java))
-            finish()
+            com.orbit.tv.launcher.core.navigation.TvNavHelper.openScreen(this, LauncherSettingsActivity::class.java)
         }
         binding.btnNavPower.setOnClickListener {
             TvPowerDialog.show(supportFragmentManager)
@@ -218,7 +213,7 @@ class WatchHistoryActivity : AppCompatActivity() {
                 if (!binding.containerSidebar.hasFocus()) {
                     binding.btnNavHistory.requestFocus()
                 } else {
-                    finish()
+                    com.orbit.tv.launcher.core.navigation.TvNavHelper.finishWithPop(this@WatchHistoryActivity)
                 }
             }
         })

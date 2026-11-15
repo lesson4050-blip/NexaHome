@@ -185,22 +185,22 @@ class HomeActivity : AppCompatActivity() {
             binding.scrollContainer.smoothScrollTo(0, 0)
         }
         binding.btnNavHistory.setOnClickListener {
-            startActivity(Intent(this, WatchHistoryActivity::class.java))
+            com.orbit.tv.launcher.core.navigation.TvNavHelper.openScreen(this, WatchHistoryActivity::class.java)
         }
         binding.btnNavApps.setOnClickListener {
-            startActivity(Intent(this, AppsHubActivity::class.java))
+            com.orbit.tv.launcher.core.navigation.TvNavHelper.openScreen(this, AppsHubActivity::class.java)
         }
         binding.btnNavIptv.setOnClickListener {
-            startActivity(Intent(this, IptvActivity::class.java))
+            com.orbit.tv.launcher.core.navigation.TvNavHelper.openScreen(this, IptvActivity::class.java)
         }
         binding.btnNavGames.setOnClickListener {
-            startActivity(Intent(this, OptimizerActivity::class.java))
+            com.orbit.tv.launcher.core.navigation.TvNavHelper.openScreen(this, OptimizerActivity::class.java)
         }
         binding.btnNavCast.setOnClickListener {
-            startActivity(Intent(this, CastActivity::class.java))
+            com.orbit.tv.launcher.core.navigation.TvNavHelper.openScreen(this, CastActivity::class.java)
         }
         binding.btnNavSettings.setOnClickListener {
-            startActivity(Intent(this, LauncherSettingsActivity::class.java))
+            com.orbit.tv.launcher.core.navigation.TvNavHelper.openScreen(this, LauncherSettingsActivity::class.java)
         }
 
         // VPN Widget
