@@ -54,13 +54,19 @@ class SilkShaderView @JvmOverloads constructor(
 
     override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
         stopThread()
-        renderThread = SilkRenderThread(surface, width, height, currentPalette).apply {
+        val targetW = if (width > 0) width else 1920
+        val targetH = if (height > 0) height else 1080
+        surface.setDefaultBufferSize(targetW, targetH)
+        renderThread = SilkRenderThread(surface, targetW, targetH, currentPalette).apply {
             start()
         }
     }
 
     override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture, width: Int, height: Int) {
-        renderThread?.updateSize(width, height)
+        if (width > 0 && height > 0) {
+            surface.setDefaultBufferSize(width, height)
+            renderThread?.updateSize(width, height)
+        }
     }
 
     override fun onSurfaceTextureDestroyed(surface: SurfaceTexture): Boolean {
@@ -352,7 +358,7 @@ class SilkShaderView @JvmOverloads constructor(
             """
 
             private const val FRAGMENT_SHADER = """
-                precision mediump float;
+                precision highp float;
                 varying vec2 v_texCoord;
                 uniform vec2 u_resolution;
                 uniform float u_time;
@@ -403,17 +409,11 @@ class SilkShaderView @JvmOverloads constructor(
                     if (p == 2) return vec3(0.20, 0.55, 0.35);
                     if (p == 3) return vec3(0.25, 0.35, 0.60);
                     if (p == 4) return vec3(0.60, 0.25, 0.35);
-                    return vec3(0.35, 0.25, 0.55);
+                    return vec3(0.42, 0.30, 0.65);
                 }
 
-                void main() {
-                    vec2 uv;
-                    uv.x = (v_texCoord.x * 2.0 - 1.0) * 2.2;
-                    uv.y = (v_texCoord.y * 2.0 - 1.0) * (2.2 * (u_resolution.y / u_resolution.x));
-
-                    float t = u_time;
-
-                    vec2 p = uv;
+                float sampleSilk(vec2 pt, float t) {
+                    vec2 p = pt;
                     p.x += 0.350 * sin(2.2 * p.y + 0.7 + t * 0.15);
                     p.y += 0.350 * cos(2.2 * p.x + 1.1 + t * 0.12);
 
@@ -429,20 +429,40 @@ class SilkShaderView @JvmOverloads constructor(
                     p.x += 0.070 * sin(11.0 * p.y + 0.7 + t * 0.15);
                     p.y += 0.070 * cos(11.0 * p.x + 1.1 + t * 0.12);
 
-                    // 3 cascading silk fold waves layered together for continuous volume
                     float f1 = sin(p.x * 3.2 + p.y * 1.8 + t * 0.10) * 0.5 + 0.5;
                     float f2 = cos(p.x * 2.0 - p.y * 2.6 - t * 0.08) * 0.5 + 0.5;
                     float f3 = sin(p.y * 3.6 + p.x * 1.4 + t * 0.14) * 0.5 + 0.5;
 
-                    float silk = f1 * 0.55 + f2 * 0.30 + f3 * 0.15;
+                    float s = f1 * 0.55 + f2 * 0.30 + f3 * 0.15;
+                    float diag = sin(pt.x * 0.7 - pt.y * 1.1 + 0.5 + t * 0.06) * 0.5 + 0.5;
+                    return s * 0.70 + diag * 0.30;
+                }
 
-                    float diag = sin(uv.x * 0.7 - uv.y * 1.1 + 0.5 + t * 0.06) * 0.5 + 0.5;
-                    float ribbon = silk * 0.70 + diag * 0.30;
+                void main() {
+                    vec2 uv;
+                    uv.x = (v_texCoord.x * 2.0 - 1.0) * 2.2;
+                    uv.y = (v_texCoord.y * 2.0 - 1.0) * (2.2 * (u_resolution.y / u_resolution.x));
 
-                    // Specular velvet fold sheen
-                    float sheen = pow(f1, 4.0) * 0.25;
+                    float t = u_time;
 
-                    float r_val = clamp(ribbon, 0.0, 1.0);
+                    float centerVal = sampleSilk(uv, t);
+
+                    // Estimate surface normal via finite difference for crisp specular fold ridges
+                    float eps = 0.008;
+                    float valX = sampleSilk(vec2(uv.x + eps, uv.y), t);
+                    float valY = sampleSilk(vec2(uv.x, uv.y + eps), t);
+                    float dx = (valX - centerVal) / eps;
+                    float dy = (valY - centerVal) / eps;
+
+                    vec3 norm = normalize(vec3(-dx * 0.7, -dy * 0.7, 1.0));
+                    vec3 lightDir = normalize(vec3(0.35, 0.65, 0.75));
+                    vec3 viewDir = vec3(0.0, 0.0, 1.0);
+                    vec3 halfDir = normalize(lightDir + viewDir);
+
+                    float ndoth = max(dot(norm, halfDir), 0.0);
+                    float specular = pow(ndoth, 12.0) * 0.40;
+
+                    float r_val = clamp(centerVal, 0.0, 1.0);
 
                     vec3 c0 = getC0(u_palette);
                     vec3 c1 = getC1(u_palette);
@@ -452,23 +472,27 @@ class SilkShaderView @JvmOverloads constructor(
 
                     vec3 col;
                     if (r_val < 0.25) {
-                        col = mix(c0, c1, r_val / 0.25);
+                        col = mix(c0, c1, smoothstep(0.0, 0.25, r_val));
                     } else if (r_val < 0.55) {
-                        col = mix(c1, c2, (r_val - 0.25) / 0.30);
+                        col = mix(c1, c2, smoothstep(0.25, 0.55, r_val));
                     } else if (r_val < 0.82) {
-                        col = mix(c2, c3, (r_val - 0.55) / 0.27);
+                        col = mix(c2, c3, smoothstep(0.55, 0.82, r_val));
                     } else {
-                        col = mix(c3, c4, (r_val - 0.82) / 0.18);
+                        col = mix(c3, c4, smoothstep(0.82, 1.0, r_val));
                     }
 
-                    col += getSheenTint(u_palette) * sheen;
+                    col += getSheenTint(u_palette) * specular;
 
-                    // Subtle edge vignette (maximum 20% darkening at extreme borders only)
+                    // Subtle edge vignette
                     float dist = sqrt(uv.x * uv.x + (uv.y * 1.1) * (uv.y * 1.1));
                     float vignette = 1.0 - clamp((dist - 1.6) / 2.0, 0.0, 0.20);
                     col *= vignette;
 
-                    gl_FragColor = vec4(col, 1.0);
+                    // Screen-space triangular dither (eliminates 8-bit banding steps on dark gradients)
+                    float dither = (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) * (1.8 / 255.0);
+                    col += dither;
+
+                    gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
                 }
             """
         }
