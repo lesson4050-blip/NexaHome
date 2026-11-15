@@ -88,26 +88,23 @@ class OptimizerActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         // Sidebar
-        binding.btnNavMedia.setOnClickListener { finish() }
+        binding.btnNavMedia.setOnClickListener {
+            com.orbit.tv.launcher.core.navigation.TvNavHelper.finishWithPop(this)
+        }
         binding.btnNavHistory.setOnClickListener {
-            startActivity(Intent(this, WatchHistoryActivity::class.java))
-            finish()
+            com.orbit.tv.launcher.core.navigation.TvNavHelper.openScreen(this, WatchHistoryActivity::class.java)
         }
         binding.btnNavApps.setOnClickListener {
-            startActivity(Intent(this, AppsHubActivity::class.java))
-            finish()
+            com.orbit.tv.launcher.core.navigation.TvNavHelper.openScreen(this, AppsHubActivity::class.java)
         }
         binding.btnNavIptv.setOnClickListener {
-            startActivity(Intent(this, IptvActivity::class.java))
-            finish()
+            com.orbit.tv.launcher.core.navigation.TvNavHelper.openScreen(this, IptvActivity::class.java)
         }
         binding.btnNavCast.setOnClickListener {
-            startActivity(Intent(this, CastActivity::class.java))
-            finish()
+            com.orbit.tv.launcher.core.navigation.TvNavHelper.openScreen(this, CastActivity::class.java)
         }
         binding.btnNavSettings.setOnClickListener {
-            startActivity(Intent(this, LauncherSettingsActivity::class.java))
-            finish()
+            com.orbit.tv.launcher.core.navigation.TvNavHelper.openScreen(this, LauncherSettingsActivity::class.java)
         }
         binding.btnNavPower.setOnClickListener {
             TvPowerDialog.show(supportFragmentManager)
@@ -165,7 +162,7 @@ class OptimizerActivity : AppCompatActivity() {
                 if (!binding.containerSidebar.hasFocus()) {
                     binding.btnNavGames.requestFocus()
                 } else {
-                    finish()
+                    com.orbit.tv.launcher.core.navigation.TvNavHelper.finishWithPop(this@OptimizerActivity)
                 }
             }
         })

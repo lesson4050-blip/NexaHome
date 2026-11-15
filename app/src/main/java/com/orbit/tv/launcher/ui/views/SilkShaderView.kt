@@ -54,8 +54,10 @@ class SilkShaderView @JvmOverloads constructor(
 
     override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
         stopThread()
-        val targetW = if (width > 0) width else 1920
-        val targetH = if (height > 0) height else 1080
+        // Optimal balanced resolution: clamp to 720p (1280x720)
+        // 1280x720 is 7.1x sharper than 270p (zero blur), but 55% lighter than 1080p and 88% lighter than 4K!
+        val targetW = if (width > 0) minOf(width, 1280) else 1280
+        val targetH = if (height > 0) minOf(height, 720) else 720
         surface.setDefaultBufferSize(targetW, targetH)
         renderThread = SilkRenderThread(surface, targetW, targetH, currentPalette).apply {
             start()
@@ -64,8 +66,10 @@ class SilkShaderView @JvmOverloads constructor(
 
     override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture, width: Int, height: Int) {
         if (width > 0 && height > 0) {
-            surface.setDefaultBufferSize(width, height)
-            renderThread?.updateSize(width, height)
+            val targetW = minOf(width, 1280)
+            val targetH = minOf(height, 720)
+            surface.setDefaultBufferSize(targetW, targetH)
+            renderThread?.updateSize(targetW, targetH)
         }
     }
 
