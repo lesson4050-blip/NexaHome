@@ -40,6 +40,7 @@ class SideloadInstallDialog : DialogFragment() {
 
     private var downloadJob: Job? = null
     private var downloadedFile: File? = null
+    private var isInstallTriggered = false
 
     private val httpClient = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
@@ -112,14 +113,18 @@ class SideloadInstallDialog : DialogFragment() {
         TvFocusHelper.bindFocusScale(binding.btnCancel, 1.05f)
 
         binding.btnCancel.setOnClickListener {
+            isInstallTriggered = false
             cancelDownload()
+            try {
+                downloadedFile?.delete()
+            } catch (_: Exception) {}
             dismissAllowingStateLoss()
         }
 
         binding.btnActionSecondary.setOnClickListener {
-            val siteUrl = when (packageName) {
-                "com.teamsmart.videomanager.tv" -> "https://smarttubeapp.github.io"
-                "tv.lampa" -> "https://lampa.mx"
+            val siteUrl = when {
+                packageName.contains("smarttube") -> "https://smarttubeapp.github.io"
+                packageName.contains("lampa") -> "https://lampa.mx"
                 else -> apkUrl
             }
             try {
@@ -134,6 +139,7 @@ class SideloadInstallDialog : DialogFragment() {
     }
 
     private fun startDownload() {
+        isInstallTriggered = false
         binding.pbDownload.progress = 0
         binding.pbDownload.isIndeterminate = false
         binding.tvDownloadStatus.text = "Подключение к серверу..."
@@ -145,7 +151,8 @@ class SideloadInstallDialog : DialogFragment() {
         downloadJob?.cancel()
         downloadJob = lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val installerDir = File(requireContext().cacheDir, "installer")
+                val context = requireContext().applicationContext
+                val installerDir = context.getExternalFilesDir("installer") ?: File(context.cacheDir, "installer")
                 if (!installerDir.exists()) {
                     installerDir.mkdirs()
                 }
@@ -209,6 +216,10 @@ class SideloadInstallDialog : DialogFragment() {
                                 }
                             }
                         }
+                        output.flush()
+                        try {
+                            output.fd.sync()
+                        } catch (_: Exception) {}
                     }
                 }
 
@@ -248,6 +259,22 @@ class SideloadInstallDialog : DialogFragment() {
     private fun triggerInstallation(apkFile: File) {
         val context = context ?: return
 
+        // Verify APK parse validity
+        val archiveInfo = context.packageManager.getPackageArchiveInfo(apkFile.absolutePath, 0)
+        if (archiveInfo == null) {
+            binding.tvDownloadStatus.text = "Ошибка структуры пакета"
+            binding.tvInstallNotice.visibility = View.VISIBLE
+            binding.tvInstallNotice.text = "Загруженный файл поврежден или не поддерживается архитектурой системы."
+            binding.btnActionPrimary.visibility = View.VISIBLE
+            binding.btnActionPrimary.text = "Повторить"
+            binding.btnActionPrimary.setOnClickListener {
+                startDownload()
+            }
+            binding.btnActionSecondary.visibility = View.VISIBLE
+            binding.btnActionPrimary.requestFocus()
+            return
+        }
+
         // Check if unknown sources permission is granted on Android 8.0+ (API 26+)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (!context.packageManager.canRequestPackageInstalls()) {
@@ -271,6 +298,7 @@ class SideloadInstallDialog : DialogFragment() {
         }
 
         try {
+            isInstallTriggered = true
             val apkUri = FileProvider.getUriForFile(
                 context,
                 "${context.packageName}.fileprovider",
@@ -279,24 +307,28 @@ class SideloadInstallDialog : DialogFragment() {
 
             val installIntent = Intent(Intent.ACTION_VIEW).apply {
                 setDataAndType(apkUri, "application/vnd.android.package-archive")
+                clipData = android.content.ClipData.newRawUri("package_apk", apkUri)
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             context.startActivity(installIntent)
             dismissAllowingStateLoss()
         } catch (e: Exception) {
+            isInstallTriggered = false
             binding.tvDownloadStatus.text = "Не удалось запустить установщик: ${e.message}"
             binding.tvInstallNotice.visibility = View.VISIBLE
-            binding.tvInstallNotice.text = "Файл сохранен в кэш. Вы можете установить его через файловый менеджер или повторить попытку."
+            binding.tvInstallNotice.text = "Файл сохранен в ${apkFile.name}. Вы можете установить его через файловый менеджер."
         }
     }
 
     private fun cancelDownload() {
         downloadJob?.cancel()
         downloadJob = null
-        try {
-            downloadedFile?.delete()
-        } catch (_: Exception) {}
+        if (!isInstallTriggered) {
+            try {
+                downloadedFile?.delete()
+            } catch (_: Exception) {}
+        }
     }
 
     override fun onDestroyView() {

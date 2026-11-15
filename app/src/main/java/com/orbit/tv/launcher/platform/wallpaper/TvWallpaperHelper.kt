@@ -39,6 +39,7 @@ object TvWallpaperHelper {
                     backdropView.load(customFile) {
                         crossfade(true)
                     }
+                    dimmerView?.setBackgroundResource(R.drawable.bg_top_subtle_gradient)
                     dimmerView?.visibility = View.VISIBLE
                 } else {
                     setupStatic(R.drawable.backdrop_scenery, silkView, backdropView, dimmerView)
@@ -71,6 +72,7 @@ object TvWallpaperHelper {
         silkView?.visibility = View.GONE
         backdropView?.visibility = View.VISIBLE
         backdropView?.setImageResource(drawableRes)
+        dimmerView?.setBackgroundResource(R.drawable.bg_top_subtle_gradient)
         dimmerView?.visibility = View.VISIBLE
     }
 

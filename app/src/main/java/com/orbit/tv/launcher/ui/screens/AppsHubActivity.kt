@@ -65,7 +65,7 @@ class AppsHubActivity : AppCompatActivity() {
 
     private val rawCuratedApps = listOf(
         RecommendedAppModel(
-            packageName = "com.teamsmart.videomanager.tv",
+            packageName = "org.smarttube.stable",
             name = "SmartTube",
             category = "Медиа",
             description = "YouTube без рекламы, 4K 60fps HDR, пропуск спонсорских вставок",
@@ -101,12 +101,12 @@ class AppsHubActivity : AppCompatActivity() {
             iconRes = R.drawable.ic_brand_google_assistant
         ),
         RecommendedAppModel(
-            packageName = "tv.lampa",
+            packageName = "top.rootu.lampa",
             name = "Lampa TV",
             category = "Каталог",
             description = "Каталог фильмов и сериалов с трейлерами и онлайн-источниками",
             iconRes = R.drawable.ic_brand_lampa,
-            directApkUrl = "https://bwa.to/lampa.apk"
+            directApkUrl = "https://github.com/lampa-app/LAMPA/releases/latest/download/app-lite-release.apk"
         ),
         RecommendedAppModel(
             packageName = "ch.protonvpn.android",
@@ -225,8 +225,10 @@ class AppsHubActivity : AppCompatActivity() {
                 return
             }
 
-            val launchIntent = packageManager.getLaunchIntentForPackage(app.packageName)
+            val launchIntent = packageManager.getLeanbackLaunchIntentForPackage(app.packageName)
+                ?: packageManager.getLaunchIntentForPackage(app.packageName)
             if (launchIntent != null) {
+                lastLaunchedAppPackage = app.packageName
                 startActivity(launchIntent)
             }
             return
@@ -563,18 +565,28 @@ class AppsHubActivity : AppCompatActivity() {
         binding.rvRecommendedApps.visibility = View.VISIBLE
         binding.tvEmptyState.visibility = View.GONE
 
+        val packageAliases = mapOf(
+            "org.smarttube.stable" to listOf("org.smarttube.stable", "com.teamsmart.videomanager.tv", "com.liskovsoft.videomanager"),
+            "top.rootu.lampa" to listOf("top.rootu.lampa", "tv.lampa", "com.lampa.app", "ru.lampa.tv")
+        )
+
         val pm = packageManager
         val list = rawCuratedApps.map { item ->
             var installed = false
             var icon = item.installedIcon
-            try {
-                pm.getPackageInfo(item.packageName, 0)
-                installed = true
-                icon = pm.getApplicationIcon(item.packageName)
-            } catch (e: Exception) {
-                installed = false
+            var effectivePackage = item.packageName
+
+            val candidates = packageAliases[item.packageName] ?: listOf(item.packageName)
+            for (pkg in candidates) {
+                try {
+                    pm.getPackageInfo(pkg, 0)
+                    installed = true
+                    icon = pm.getApplicationIcon(pkg)
+                    effectivePackage = pkg
+                    break
+                } catch (_: Exception) {}
             }
-            item.copy(isInstalled = installed, installedIcon = icon)
+            item.copy(packageName = effectivePackage, isInstalled = installed, installedIcon = icon)
         }
 
         binding.tvAppCount.text = getString(R.string.apps_count_recommended, list.size)

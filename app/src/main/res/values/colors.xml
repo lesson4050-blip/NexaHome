@@ -8,7 +8,7 @@
     
     <!-- TV Background & Dimming -->
     <color name="tv_dark_bg">#0B1522</color>
-    <color name="tv_dimmer">#A60F172A</color>
+    <color name="tv_dimmer">#00000000</color>
     <color name="tv_sidebar_bg">#80000000</color>
     <color name="tv_card_dark">#171F2C</color>
     <color name="tv_card_border">#26FFFFFF</color>

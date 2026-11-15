@@ -3,5 +3,6 @@
     <cache-path name="cast_cache" path="." />
     <files-path name="cast_files" path="." />
     <cache-path name="apk_cache" path="installer" />
+    <external-files-path name="ext_installer" path="installer" />
     <external-path name="external" path="." />
 </paths>
