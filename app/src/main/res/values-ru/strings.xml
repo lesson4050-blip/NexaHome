@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App & General -->
-    <string name="app_name">Orbit TV</string>
+    <string name="app_name">Vela</string>
     <string name="search_hint">Поиск фильмов, сериалов, приложений...</string>
     <string name="search_voice">Голосовой поиск</string>
     <string name="settings_title">Настройки</string>

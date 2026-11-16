@@ -358,4 +358,20 @@ object TvDeepLinkHelper {
             Toast.makeText(context, "Поиск недоступен", Toast.LENGTH_SHORT).show()
         }
     }
+
+    fun isMediaApp(packageName: String): Boolean {
+        return KNOWN_PLAYERS.any { def -> def.packageNames.any { pkg -> packageName.contains(pkg, ignoreCase = true) } } ||
+                packageName.contains("youtube", ignoreCase = true) ||
+                packageName.contains("smarttube", ignoreCase = true) ||
+                packageName.contains("lampa", ignoreCase = true) ||
+                packageName.contains("kodi", ignoreCase = true) ||
+                packageName.contains("vlc", ignoreCase = true) ||
+                packageName.contains("video", ignoreCase = true) ||
+                packageName.contains("player", ignoreCase = true)
+    }
+
+    fun getCategoryLabel(packageName: String): String? {
+        val found = KNOWN_PLAYERS.firstOrNull { def -> def.packageNames.any { pkg -> packageName.contains(pkg, ignoreCase = true) } }
+        return found?.categoryLabel
+    }
 }

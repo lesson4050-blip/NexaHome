@@ -86,6 +86,26 @@ class IptvActivity : AppCompatActivity() {
         setupBackNavigation()
         observeViewModel()
         registerPlaylistReceiver()
+        handleIncomingChannelIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleIncomingChannelIntent(intent)
+    }
+
+    private fun handleIncomingChannelIntent(intent: Intent?) {
+        val targetChannelId = intent?.getStringExtra(EXTRA_CHANNEL_ID)
+        if (!targetChannelId.isNullOrBlank()) {
+            lifecycleScope.launch {
+                viewModel.allChannels.collect { channels ->
+                    if (channels.isNotEmpty()) {
+                        viewModel.selectChannelById(targetChannelId)
+                    }
+                }
+            }
+        }
     }
 
     private fun registerPlaylistReceiver() {
@@ -406,6 +426,28 @@ class IptvActivity : AppCompatActivity() {
             player.playWhenReady = true
         }
 
+        lifecycleScope.launch(kotlinx.coroutines.Dispatchers.IO) {
+            try {
+                com.orbit.tv.launcher.features.home.data.WatchHistoryRepository(this@IptvActivity).recordWatched(
+                    com.orbit.tv.launcher.features.home.model.MediaModel(
+                        id = "iptv_${channel.id}",
+                        title = channel.name,
+                        posterUrl = channel.logoUrl.orEmpty(),
+                        badge = "IPTV",
+                        genre = channel.group.ifBlank { "Live TV" },
+                        rating = "LIVE",
+                        description = channel.currentProgram.orEmpty().ifBlank { channel.name },
+                        releaseYear = java.text.SimpleDateFormat("HH:mm", java.util.Locale.getDefault()).format(java.util.Date()),
+                        isSeries = false,
+                        deeplinkUri = channel.streamUrl
+                    ),
+                    targetAppName = "Orbit Live TV"
+                )
+            } catch (e: Exception) {
+                android.util.Log.w("IptvActivity", "Failed to record watched channel: ${e.message}")
+            }
+        }
+
         if (viewModel.isFullscreen.value) {
             showFullscreenBanner()
         }
@@ -545,5 +587,6 @@ class IptvActivity : AppCompatActivity() {
 
     companion object {
         const val ACTION_IPTV_UPDATED = "com.orbit.tv.launcher.ACTION_IPTV_PLAYLIST_UPDATED"
+        const val EXTRA_CHANNEL_ID = "com.orbit.tv.launcher.EXTRA_IPTV_CHANNEL_ID"
     }
 }

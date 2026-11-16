@@ -141,8 +141,40 @@ class WatchHistoryActivity : AppCompatActivity() {
 
     private fun setupHistoryList() {
         mediaAdapter = MediaAdapter { media ->
-            MediaDetailDialog.newInstance(media)
-                .show(supportFragmentManager, MediaDetailDialog.TAG)
+            when {
+                media.id.startsWith("iptv_") -> {
+                    val channelId = media.id.removePrefix("iptv_")
+                    val intent = Intent(this@WatchHistoryActivity, IptvActivity::class.java).apply {
+                        putExtra(IptvActivity.EXTRA_CHANNEL_ID, channelId)
+                        addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    }
+                    startActivity(intent)
+                    overridePendingTransition(com.orbit.tv.launcher.R.anim.tv_nav_enter, com.orbit.tv.launcher.R.anim.tv_nav_exit)
+                }
+                media.id.startsWith("app_") || (media.deeplinkUri?.startsWith("package:") == true) -> {
+                    val pkg = media.deeplinkUri?.removePrefix("package:") ?: media.id.removePrefix("app_")
+                    val launchIntent = packageManager.getLaunchIntentForPackage(pkg)
+                    if (launchIntent != null) {
+                        launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(launchIntent)
+                    } else {
+                        MediaDetailDialog.newInstance(media).show(supportFragmentManager, MediaDetailDialog.TAG)
+                    }
+                }
+                !media.deeplinkUri.isNullOrBlank() && (media.deeplinkUri.startsWith("http") || media.deeplinkUri.startsWith("lampa://")) -> {
+                    try {
+                        val intent = Intent(Intent.ACTION_VIEW, android.net.Uri.parse(media.deeplinkUri)).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        }
+                        startActivity(intent)
+                    } catch (_: Exception) {
+                        MediaDetailDialog.newInstance(media).show(supportFragmentManager, MediaDetailDialog.TAG)
+                    }
+                }
+                else -> {
+                    MediaDetailDialog.newInstance(media).show(supportFragmentManager, MediaDetailDialog.TAG)
+                }
+            }
         }
 
         binding.rvHistory.apply {

@@ -28,7 +28,7 @@ class PackageManagerRepository(private val context: Context) {
 
         for (resolveInfo in leanbackApps) {
             val pkg = resolveInfo.activityInfo.packageName
-            if (pkg == ownPackageName) continue
+            if (pkg.startsWith("com.orbit.tv.launcher")) continue
 
             val label = resolveInfo.loadLabel(packageManager).toString()
             val icon = resolveInfo.loadIcon(packageManager)
@@ -53,7 +53,7 @@ class PackageManagerRepository(private val context: Context) {
 
         for (resolveInfo in standardApps) {
             val pkg = resolveInfo.activityInfo.packageName
-            if (pkg == ownPackageName || appsMap.containsKey(pkg)) continue
+            if (pkg.startsWith("com.orbit.tv.launcher") || appsMap.containsKey(pkg)) continue
 
             val label = resolveInfo.loadLabel(packageManager).toString()
             val icon = resolveInfo.loadIcon(packageManager)

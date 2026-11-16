@@ -193,6 +193,28 @@ class AppsHubActivity : AppCompatActivity() {
             isGridMode = true,
             onAppClick = { app ->
                 lastLaunchedAppPackage = app.packageName
+                if (com.orbit.tv.launcher.features.home.TvDeepLinkHelper.isMediaApp(app.packageName)) {
+                    val label = com.orbit.tv.launcher.features.home.TvDeepLinkHelper.getCategoryLabel(app.packageName) ?: "Медиа"
+                    lifecycleScope.launch(kotlinx.coroutines.Dispatchers.IO) {
+                        try {
+                            com.orbit.tv.launcher.features.home.data.WatchHistoryRepository(this@AppsHubActivity).recordWatched(
+                                com.orbit.tv.launcher.features.home.model.MediaModel(
+                                    id = "app_${app.packageName}",
+                                    title = app.label,
+                                    posterUrl = "",
+                                    badge = label,
+                                    genre = "Приложение",
+                                    rating = "APP",
+                                    description = app.label,
+                                    releaseYear = java.text.SimpleDateFormat("HH:mm", java.util.Locale.getDefault()).format(java.util.Date()),
+                                    isSeries = false,
+                                    deeplinkUri = "package:${app.packageName}"
+                                ),
+                                targetAppName = app.label
+                            )
+                        } catch (_: Exception) {}
+                    }
+                }
                 viewModel.launchApp(app)
             },
             onAppLongClick = { app ->

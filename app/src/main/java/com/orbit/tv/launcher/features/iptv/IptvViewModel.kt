@@ -23,6 +23,7 @@ class IptvViewModel(application: Application) : AndroidViewModel(application) {
     val networkStatus = networkStateManager.networkStatus
 
     private val _allChannels = MutableStateFlow<List<IptvChannel>>(emptyList())
+    val allChannels: StateFlow<List<IptvChannel>> = _allChannels.asStateFlow()
 
     private val _filteredChannels = MutableStateFlow<List<IptvChannel>>(emptyList())
     val filteredChannels: StateFlow<List<IptvChannel>> = _filteredChannels.asStateFlow()
@@ -101,6 +102,13 @@ class IptvViewModel(application: Application) : AndroidViewModel(application) {
             toggleFullscreen()
         } else {
             _activeChannel.value = channel
+        }
+    }
+
+    fun selectChannelById(channelId: String) {
+        val found = _allChannels.value.find { it.id == channelId }
+        if (found != null) {
+            _activeChannel.value = found
         }
     }
 
