@@ -52,22 +52,22 @@ class SilkShaderView @JvmOverloads constructor(
         renderThread?.resumeRendering()
     }
 
+    companion object {
+        private const val RENDER_WIDTH = 960
+        private const val RENDER_HEIGHT = 540
+    }
+
     override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
         stopThread()
-        val dm = resources.displayMetrics
-        val targetW = if (width > 0) width else dm.widthPixels.coerceAtLeast(1920)
-        val targetH = if (height > 0) height else dm.heightPixels.coerceAtLeast(1080)
-        surface.setDefaultBufferSize(targetW, targetH)
-        renderThread = SilkRenderThread(surface, targetW, targetH, currentPalette).apply {
+        surface.setDefaultBufferSize(RENDER_WIDTH, RENDER_HEIGHT)
+        renderThread = SilkRenderThread(surface, RENDER_WIDTH, RENDER_HEIGHT, currentPalette).apply {
             start()
         }
     }
 
     override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture, width: Int, height: Int) {
-        if (width > 0 && height > 0) {
-            surface.setDefaultBufferSize(width, height)
-            renderThread?.updateSize(width, height)
-        }
+        surface.setDefaultBufferSize(RENDER_WIDTH, RENDER_HEIGHT)
+        renderThread?.updateSize(RENDER_WIDTH, RENDER_HEIGHT)
     }
 
     override fun onSurfaceTextureDestroyed(surface: SurfaceTexture): Boolean {
@@ -359,7 +359,7 @@ class SilkShaderView @JvmOverloads constructor(
             """
 
             private const val FRAGMENT_SHADER = """
-                precision highp float;
+                precision mediump float;
                 varying vec2 v_texCoord;
                 uniform vec2 u_resolution;
                 uniform float u_time;
@@ -413,57 +413,37 @@ class SilkShaderView @JvmOverloads constructor(
                     return vec3(0.42, 0.30, 0.65);
                 }
 
-                float sampleSilk(vec2 pt, float t) {
-                    vec2 p = pt;
+                void main() {
+                    vec2 uv;
+                    uv.x = (v_texCoord.x * 2.0 - 1.0) * 2.2;
+                    uv.y = (v_texCoord.y * 2.0 - 1.0) * (2.2 * (u_resolution.y / u_resolution.x));
+
+                    float t = mod(u_time, 3600.0);
+
+                    // Liquid silk domain warp (3 harmonic octaves)
+                    vec2 p = uv;
                     p.x += 0.350 * sin(2.2 * p.y + 0.7 + t * 0.15);
                     p.y += 0.350 * cos(2.2 * p.x + 1.1 + t * 0.12);
 
                     p.x += 0.175 * sin(4.4 * p.y + 0.7 + t * 0.15);
                     p.y += 0.175 * cos(4.4 * p.x + 1.1 + t * 0.12);
 
-                    p.x += 0.117 * sin(6.6 * p.y + 0.7 + t * 0.15);
-                    p.y += 0.117 * cos(6.6 * p.x + 1.1 + t * 0.12);
-
-                    p.x += 0.088 * sin(8.8 * p.y + 0.7 + t * 0.15);
-                    p.y += 0.088 * cos(8.8 * p.x + 1.1 + t * 0.12);
-
-                    p.x += 0.070 * sin(11.0 * p.y + 0.7 + t * 0.15);
-                    p.y += 0.070 * cos(11.0 * p.x + 1.1 + t * 0.12);
+                    p.x += 0.100 * sin(6.6 * p.y + 0.7 + t * 0.15);
+                    p.y += 0.100 * cos(6.6 * p.x + 1.1 + t * 0.12);
 
                     float f1 = sin(p.x * 3.2 + p.y * 1.8 + t * 0.10) * 0.5 + 0.5;
                     float f2 = cos(p.x * 2.0 - p.y * 2.6 - t * 0.08) * 0.5 + 0.5;
                     float f3 = sin(p.y * 3.6 + p.x * 1.4 + t * 0.14) * 0.5 + 0.5;
 
                     float s = f1 * 0.55 + f2 * 0.30 + f3 * 0.15;
-                    float diag = sin(pt.x * 0.7 - pt.y * 1.1 + 0.5 + t * 0.06) * 0.5 + 0.5;
-                    return s * 0.70 + diag * 0.30;
-                }
+                    float diag = sin(uv.x * 0.7 - uv.y * 1.1 + 0.5 + t * 0.06) * 0.5 + 0.5;
+                    float r_val = clamp(s * 0.70 + diag * 0.30, 0.0, 1.0);
 
-                void main() {
-                    vec2 uv;
-                    uv.x = (v_texCoord.x * 2.0 - 1.0) * 2.2;
-                    uv.y = (v_texCoord.y * 2.0 - 1.0) * (2.2 * (u_resolution.y / u_resolution.x));
-
-                    float t = u_time;
-
-                    float centerVal = sampleSilk(uv, t);
-
-                    // Estimate surface normal via finite difference for crisp specular fold ridges
-                    float eps = 0.008;
-                    float valX = sampleSilk(vec2(uv.x + eps, uv.y), t);
-                    float valY = sampleSilk(vec2(uv.x, uv.y + eps), t);
-                    float dx = (valX - centerVal) / eps;
-                    float dy = (valY - centerVal) / eps;
-
-                    vec3 norm = normalize(vec3(-dx * 0.7, -dy * 0.7, 1.0));
-                    vec3 lightDir = normalize(vec3(0.35, 0.65, 0.75));
-                    vec3 viewDir = vec3(0.0, 0.0, 1.0);
-                    vec3 halfDir = normalize(lightDir + viewDir);
-
-                    float ndoth = max(dot(norm, halfDir), 0.0);
-                    float specular = pow(ndoth, 12.0) * 0.40;
-
-                    float r_val = clamp(centerVal, 0.0, 1.0);
+                    // Single-pass anisotropic sheen highlights along the fold interference contours
+                    float fold = 1.0 - abs(f1 - f2);
+                    float foldSheen = pow(clamp(fold, 0.0, 1.0), 5.0) * 0.38;
+                    float peakSheen = pow(r_val, 3.5) * 0.22;
+                    float specular = foldSheen + peakSheen;
 
                     vec3 c0 = getC0(u_palette);
                     vec3 c1 = getC1(u_palette);
@@ -489,7 +469,7 @@ class SilkShaderView @JvmOverloads constructor(
                     float vignette = 1.0 - clamp((dist - 1.6) / 2.0, 0.0, 0.20);
                     col *= vignette;
 
-                    // Screen-space triangular dither (eliminates 8-bit banding steps on dark gradients)
+                    // Screen-space triangular dither (eliminates 8-bit banding)
                     float dither = (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) * (1.8 / 255.0);
                     col += dither;
 

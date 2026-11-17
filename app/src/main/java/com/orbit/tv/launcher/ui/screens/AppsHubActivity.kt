@@ -426,7 +426,9 @@ class AppsHubActivity : AppCompatActivity() {
         }
 
         if (!SpeechRecognizer.isRecognitionAvailable(this)) {
-            openSearchDialog()
+            if (!GoogleAssistantHelper.launch(this)) {
+                openSearchDialog()
+            }
             return
         }
 
@@ -459,6 +461,7 @@ class AppsHubActivity : AppCompatActivity() {
                         isRecordingVoice = false
                         animateVoiceMicActive(false)
                         binding.tvSearchInput.text = getString(R.string.search_apps_hint)
+                        GoogleAssistantHelper.launch(this@AppsHubActivity)
                     }
 
                     override fun onResults(results: Bundle?) {
@@ -492,7 +495,9 @@ class AppsHubActivity : AppCompatActivity() {
         } catch (e: Exception) {
             isRecordingVoice = false
             animateVoiceMicActive(false)
-            openSearchDialog()
+            if (!GoogleAssistantHelper.launch(this)) {
+                openSearchDialog()
+            }
         }
     }
 

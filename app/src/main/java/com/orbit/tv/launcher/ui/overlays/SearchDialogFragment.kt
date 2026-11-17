@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import com.orbit.tv.launcher.R
+import com.orbit.tv.launcher.core.assistant.GoogleAssistantHelper
 import com.orbit.tv.launcher.core.focus.TvFocusHelper
 import com.orbit.tv.launcher.databinding.DialogSearchBinding
 import com.orbit.tv.launcher.features.home.adapters.AppsAdapter
@@ -264,6 +265,9 @@ class SearchDialogFragment : DialogFragment() {
         }
 
         if (!SpeechRecognizer.isRecognitionAvailable(ctx)) {
+            if (GoogleAssistantHelper.launch(ctx)) {
+                dismissAllowingStateLoss()
+            }
             return
         }
 
@@ -296,6 +300,10 @@ class SearchDialogFragment : DialogFragment() {
                         isRecordingVoice = false
                         animateVoiceMicActive(false)
                         binding.etSearchQuery.hint = getString(R.string.search_hint)
+                        val c = context
+                        if (c != null && GoogleAssistantHelper.launch(c)) {
+                            dismissAllowingStateLoss()
+                        }
                     }
 
                     override fun onResults(results: Bundle?) {
@@ -333,6 +341,10 @@ class SearchDialogFragment : DialogFragment() {
         } catch (e: Exception) {
             isRecordingVoice = false
             animateVoiceMicActive(false)
+            val c = context
+            if (c != null && GoogleAssistantHelper.launch(c)) {
+                dismissAllowingStateLoss()
+            }
         }
     }
 

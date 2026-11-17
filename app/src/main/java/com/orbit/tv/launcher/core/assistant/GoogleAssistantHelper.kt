@@ -20,9 +20,21 @@ object GoogleAssistantHelper {
         val assistIntent = Intent(Intent.ACTION_ASSIST)
         return assistIntent.resolveActivity(context.packageManager) != null
     }
-
     fun launch(context: Context): Boolean {
-        // 1. Prioritize Katniss Assistant search on Android TV / Google TV
+        // 1. Prioritize Katniss Assistant TV search trampoline
+        try {
+            val assistIntent = Intent(Intent.ACTION_ASSIST).apply {
+                component = android.content.ComponentName(
+                    KATNISS_PKG,
+                    "com.google.android.apps.tvsearch.app.launch.trampoline.SearchActivityTrampoline"
+                )
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(assistIntent)
+            return true
+        } catch (_: Exception) {}
+
+        // 2. Package-directed Katniss ASSIST intent
         try {
             val assistIntent = Intent(Intent.ACTION_ASSIST).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
