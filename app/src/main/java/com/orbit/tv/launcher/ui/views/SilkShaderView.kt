@@ -58,6 +58,7 @@ class SilkShaderView @JvmOverloads constructor(
     }
 
     override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
+        android.util.Log.e("SilkDebug", "onSurfaceTextureAvailable: w=$width, h=$height")
         stopThread()
         surface.setDefaultBufferSize(RENDER_WIDTH, RENDER_HEIGHT)
         renderThread = SilkRenderThread(surface, RENDER_WIDTH, RENDER_HEIGHT, currentPalette).apply {
@@ -66,11 +67,13 @@ class SilkShaderView @JvmOverloads constructor(
     }
 
     override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture, width: Int, height: Int) {
+        android.util.Log.e("SilkDebug", "onSurfaceTextureSizeChanged: w=$width, h=$height")
         surface.setDefaultBufferSize(RENDER_WIDTH, RENDER_HEIGHT)
         renderThread?.updateSize(RENDER_WIDTH, RENDER_HEIGHT)
     }
 
     override fun onSurfaceTextureDestroyed(surface: SurfaceTexture): Boolean {
+        android.util.Log.e("SilkDebug", "onSurfaceTextureDestroyed")
         stopThread()
         return true
     }
@@ -149,10 +152,15 @@ class SilkShaderView @JvmOverloads constructor(
         }
 
         override fun run() {
-            if (!initEGL()) {
+            android.util.Log.e("SilkDebug", "SilkRenderThread run() started")
+            val eglOk = initEGL()
+            android.util.Log.e("SilkDebug", "initEGL result: $eglOk")
+            if (!eglOk) {
                 return
             }
-            if (!initGL()) {
+            val glOk = initGL()
+            android.util.Log.e("SilkDebug", "initGL result: $glOk")
+            if (!glOk) {
                 releaseEGL()
                 return
             }
@@ -172,16 +180,20 @@ class SilkShaderView @JvmOverloads constructor(
 
                 if (!isRunning) break
 
-                val frameStart = SystemClock.uptimeMillis()
-                val elapsedTime = (frameStart - startTime) / 1000f
+                val t0 = SystemClock.uptimeMillis()
+                val elapsedTime = (t0 - startTime) / 1000f
 
                 drawFrame(elapsedTime)
+                val t1 = SystemClock.uptimeMillis()
 
-                if (!EGL14.eglSwapBuffers(eglDisplay, eglSurface)) {
+                val swapOk = EGL14.eglSwapBuffers(eglDisplay, eglSurface)
+                val t2 = SystemClock.uptimeMillis()
+
+                if (!swapOk) {
                     break
                 }
 
-                val frameDuration = SystemClock.uptimeMillis() - frameStart
+                val frameDuration = t2 - t0
                 val sleepTime = targetFrameMs - frameDuration
                 if (sleepTime > 0) {
                     try {
@@ -238,7 +250,10 @@ class SilkShaderView @JvmOverloads constructor(
         private fun initGL(): Boolean {
             val vShader = compileShader(GLES20.GL_VERTEX_SHADER, VERTEX_SHADER)
             val fShader = compileShader(GLES20.GL_FRAGMENT_SHADER, FRAGMENT_SHADER)
-            if (vShader == 0 || fShader == 0) return false
+            if (vShader == 0 || fShader == 0) {
+                android.util.Log.e("SilkShader", "Failed to compile shaders: v=$vShader, f=$fShader")
+                return false
+            }
 
             programId = GLES20.glCreateProgram()
             GLES20.glAttachShader(programId, vShader)
@@ -248,6 +263,7 @@ class SilkShaderView @JvmOverloads constructor(
             val linkStatus = IntArray(1)
             GLES20.glGetProgramiv(programId, GLES20.GL_LINK_STATUS, linkStatus, 0)
             if (linkStatus[0] == 0) {
+                android.util.Log.e("SilkShader", "Link error: " + GLES20.glGetProgramInfoLog(programId))
                 GLES20.glDeleteProgram(programId)
                 return false
             }
@@ -318,6 +334,8 @@ class SilkShaderView @JvmOverloads constructor(
             val compiled = IntArray(1)
             GLES20.glGetShaderiv(shader, GLES20.GL_COMPILE_STATUS, compiled, 0)
             if (compiled[0] == 0) {
+                val err = GLES20.glGetShaderInfoLog(shader)
+                android.util.Log.e("SilkShader", "Shader compile failed ($type):\n$err\nSource:\n$source")
                 GLES20.glDeleteShader(shader)
                 return 0
             }
@@ -413,6 +431,32 @@ class SilkShaderView @JvmOverloads constructor(
                     return vec3(0.42, 0.30, 0.65);
                 }
 
+                float sampleSilk(vec2 pt, float t) {
+                    vec2 p = pt;
+                    p.x += 0.350 * sin(2.2 * p.y + 0.7 + t * 0.15);
+                    p.y += 0.350 * cos(2.2 * p.x + 1.1 + t * 0.12);
+
+                    p.x += 0.175 * sin(4.4 * p.y + 0.7 + t * 0.15);
+                    p.y += 0.175 * cos(4.4 * p.x + 1.1 + t * 0.12);
+
+                    p.x += 0.117 * sin(6.6 * p.y + 0.7 + t * 0.15);
+                    p.y += 0.117 * cos(6.6 * p.x + 1.1 + t * 0.12);
+
+                    p.x += 0.088 * sin(8.8 * p.y + 0.7 + t * 0.15);
+                    p.y += 0.088 * cos(8.8 * p.x + 1.1 + t * 0.12);
+
+                    p.x += 0.070 * sin(11.0 * p.y + 0.7 + t * 0.15);
+                    p.y += 0.070 * cos(11.0 * p.x + 1.1 + t * 0.12);
+
+                    float f1 = sin(p.x * 3.2 + p.y * 1.8 + t * 0.10) * 0.5 + 0.5;
+                    float f2 = cos(p.x * 2.0 - p.y * 2.6 - t * 0.08) * 0.5 + 0.5;
+                    float f3 = sin(p.y * 3.6 + p.x * 1.4 + t * 0.14) * 0.5 + 0.5;
+
+                    float s = f1 * 0.55 + f2 * 0.30 + f3 * 0.15;
+                    float diag = sin(pt.x * 0.7 - pt.y * 1.1 + 0.5 + t * 0.06) * 0.5 + 0.5;
+                    return s * 0.70 + diag * 0.30;
+                }
+
                 void main() {
                     vec2 uv;
                     uv.x = (v_texCoord.x * 2.0 - 1.0) * 2.2;
@@ -420,30 +464,24 @@ class SilkShaderView @JvmOverloads constructor(
 
                     float t = mod(u_time, 3600.0);
 
-                    // Liquid silk domain warp (3 harmonic octaves)
-                    vec2 p = uv;
-                    p.x += 0.350 * sin(2.2 * p.y + 0.7 + t * 0.15);
-                    p.y += 0.350 * cos(2.2 * p.x + 1.1 + t * 0.12);
+                    float centerVal = sampleSilk(uv, t);
 
-                    p.x += 0.175 * sin(4.4 * p.y + 0.7 + t * 0.15);
-                    p.y += 0.175 * cos(4.4 * p.x + 1.1 + t * 0.12);
+                    // Estimate surface normal via finite difference for crisp specular fold ridges
+                    float eps = 0.008;
+                    float valX = sampleSilk(vec2(uv.x + eps, uv.y), t);
+                    float valY = sampleSilk(vec2(uv.x, uv.y + eps), t);
+                    float dx = (valX - centerVal) / eps;
+                    float dy = (valY - centerVal) / eps;
 
-                    p.x += 0.100 * sin(6.6 * p.y + 0.7 + t * 0.15);
-                    p.y += 0.100 * cos(6.6 * p.x + 1.1 + t * 0.12);
+                    vec3 norm = normalize(vec3(-dx * 0.7, -dy * 0.7, 1.0));
+                    vec3 lightDir = normalize(vec3(0.35, 0.65, 0.75));
+                    vec3 viewDir = vec3(0.0, 0.0, 1.0);
+                    vec3 halfDir = normalize(lightDir + viewDir);
 
-                    float f1 = sin(p.x * 3.2 + p.y * 1.8 + t * 0.10) * 0.5 + 0.5;
-                    float f2 = cos(p.x * 2.0 - p.y * 2.6 - t * 0.08) * 0.5 + 0.5;
-                    float f3 = sin(p.y * 3.6 + p.x * 1.4 + t * 0.14) * 0.5 + 0.5;
+                    float ndoth = max(dot(norm, halfDir), 0.0);
+                    float specular = pow(ndoth, 12.0) * 0.40;
 
-                    float s = f1 * 0.55 + f2 * 0.30 + f3 * 0.15;
-                    float diag = sin(uv.x * 0.7 - uv.y * 1.1 + 0.5 + t * 0.06) * 0.5 + 0.5;
-                    float r_val = clamp(s * 0.70 + diag * 0.30, 0.0, 1.0);
-
-                    // Single-pass anisotropic sheen highlights along the fold interference contours
-                    float fold = 1.0 - abs(f1 - f2);
-                    float foldSheen = pow(clamp(fold, 0.0, 1.0), 5.0) * 0.38;
-                    float peakSheen = pow(r_val, 3.5) * 0.22;
-                    float specular = foldSheen + peakSheen;
+                    float r_val = clamp(centerVal, 0.0, 1.0);
 
                     vec3 c0 = getC0(u_palette);
                     vec3 c1 = getC1(u_palette);
@@ -465,11 +503,10 @@ class SilkShaderView @JvmOverloads constructor(
                     col += getSheenTint(u_palette) * specular;
 
                     // Subtle edge vignette
-                    float dist = sqrt(uv.x * uv.x + (uv.y * 1.1) * (uv.y * 1.1));
-                    float vignette = 1.0 - clamp((dist - 1.6) / 2.0, 0.0, 0.20);
-                    col *= vignette;
+                    float distSq = uv.x * uv.x + uv.y * uv.y;
+                    col *= clamp(1.0 - distSq * 0.05, 0.75, 1.0);
 
-                    // Screen-space triangular dither (eliminates 8-bit banding)
+                    // Screen-space triangular dither
                     float dither = (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) * (1.8 / 255.0);
                     col += dither;
 
