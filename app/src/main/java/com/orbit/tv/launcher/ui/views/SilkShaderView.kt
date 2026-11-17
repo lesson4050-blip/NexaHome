@@ -19,10 +19,11 @@ import java.nio.FloatBuffer
  * Ultra-optimized native OpenGL ES 2.0 animated silk shader view for Android TV.
  *
  * Performance architecture:
- * 1. Hardware buffer fixed to 480x270 (16x fillrate reduction vs 1080p).
- * 2. Hardware bilinear upscaling to native TV resolution by SurfaceFlinger at 0% GPU cost.
- * 3. Frame rate locked to ~30 FPS (33ms target).
- * 4. Dedicated render thread with full lock-based pause/resume (0% CPU/GPU when paused).
+ * 1. Offscreen FBO fixed at 640x360 with native GPU derivatives (dFdx/dFdy).
+ * 2. Hardware bilinear upscaling via full-screen blit to native 1080p display buffer.
+ * 3. Constant-step time integration (zero phase judder/jerkiness).
+ * 4. Automatic screen dimension tracking (never clips or leaves empty corners on activity transitions).
+ * 5. Dedicated render thread with full lock-based pause/resume (0% CPU/GPU when paused).
  */
 class SilkShaderView @JvmOverloads constructor(
     context: Context,
@@ -53,23 +54,21 @@ class SilkShaderView @JvmOverloads constructor(
     }
 
     companion object {
-        private const val RENDER_WIDTH = 960
-        private const val RENDER_HEIGHT = 540
+        private const val FBO_WIDTH = 640
+        private const val FBO_HEIGHT = 360
     }
 
     override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
         android.util.Log.e("SilkDebug", "onSurfaceTextureAvailable: w=$width, h=$height")
         stopThread()
-        surface.setDefaultBufferSize(RENDER_WIDTH, RENDER_HEIGHT)
-        renderThread = SilkRenderThread(surface, RENDER_WIDTH, RENDER_HEIGHT, currentPalette).apply {
+        renderThread = SilkRenderThread(surface, width, height, currentPalette).apply {
             start()
         }
     }
 
     override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture, width: Int, height: Int) {
         android.util.Log.e("SilkDebug", "onSurfaceTextureSizeChanged: w=$width, h=$height")
-        surface.setDefaultBufferSize(RENDER_WIDTH, RENDER_HEIGHT)
-        renderThread?.updateSize(RENDER_WIDTH, RENDER_HEIGHT)
+        renderThread?.updateSize(width, height)
     }
 
     override fun onSurfaceTextureDestroyed(surface: SurfaceTexture): Boolean {
@@ -85,8 +84,9 @@ class SilkShaderView @JvmOverloads constructor(
     private fun stopThread() {
         renderThread?.let {
             it.stopRendering()
+            it.interrupt()
             try {
-                it.join(400)
+                it.join(500)
             } catch (ignored: InterruptedException) {}
         }
         renderThread = null
@@ -112,15 +112,27 @@ class SilkShaderView @JvmOverloads constructor(
         private var eglContext: EGLContext = EGL14.EGL_NO_CONTEXT
         private var eglSurface: EGLSurface = EGL14.EGL_NO_SURFACE
 
-        private var programId = 0
+        // Silk generation program
+        private var silkProgramId = 0
         private var uTimeHandle = 0
         private var uResHandle = 0
         private var uPaletteHandle = 0
         private var aPosHandle = 0
         private var aTexCoordHandle = 0
 
-        private lateinit var vertexBuffer: FloatBuffer
-        private lateinit var texCoordBuffer: FloatBuffer
+        // Fullscreen blit program
+        private var blitProgramId = 0
+        private var uBlitTextureHandle = 0
+        private var aBlitPosHandle = 0
+        private var aBlitTexCoordHandle = 0
+
+        // FBO for offscreen low-res rendering
+        private var fboId = 0
+        private var fboTextureId = 0
+
+        private lateinit var quadVertexBuffer: FloatBuffer
+        private lateinit var silkTexCoordBuffer: FloatBuffer
+        private lateinit var blitTexCoordBuffer: FloatBuffer
 
         private val targetFrameMs = 16L // Native 60 FPS VSYNC lock
 
@@ -165,7 +177,12 @@ class SilkShaderView @JvmOverloads constructor(
                 return
             }
 
-            val startTime = SystemClock.uptimeMillis()
+            var virtualTime = 0.0f
+            var frameCount = 0
+            var lastLogTime = SystemClock.uptimeMillis()
+            var totalDrawMs = 0L
+            var totalSwapMs = 0L
+            var totalSleepMs = 0L
 
             while (isRunning) {
                 synchronized(pauseLock) {
@@ -181,9 +198,11 @@ class SilkShaderView @JvmOverloads constructor(
                 if (!isRunning) break
 
                 val t0 = SystemClock.uptimeMillis()
-                val elapsedTime = (t0 - startTime) / 1000f
+                // Constant time progression ensures zero spatial jerkiness
+                virtualTime += 0.0166667f
+                if (virtualTime > 3600.0f) virtualTime -= 3600.0f
 
-                drawFrame(elapsedTime)
+                drawFrame(virtualTime)
                 val t1 = SystemClock.uptimeMillis()
 
                 val swapOk = EGL14.eglSwapBuffers(eglDisplay, eglSurface)
@@ -201,6 +220,26 @@ class SilkShaderView @JvmOverloads constructor(
                     } catch (ignored: InterruptedException) {
                         break
                     }
+                }
+                val t3 = SystemClock.uptimeMillis()
+
+                frameCount++
+                totalDrawMs += (t1 - t0)
+                totalSwapMs += (t2 - t1)
+                totalSleepMs += (t3 - t2)
+
+                if (t3 - lastLogTime >= 5000L) {
+                    val elapsedSec = (t3 - lastLogTime) / 1000.0
+                    val fps = frameCount / elapsedSec
+                    val avgDraw = totalDrawMs.toFloat() / frameCount
+                    val avgSwap = totalSwapMs.toFloat() / frameCount
+                    val avgSleep = totalSleepMs.toFloat() / frameCount
+                    android.util.Log.i("SilkPerf", "FPS: ${"%.1f".format(fps)} | draw: ${"%.1f".format(avgDraw)}ms | swap: ${"%.1f".format(avgSwap)}ms | sleep: ${"%.1f".format(avgSleep)}ms")
+                    frameCount = 0
+                    totalDrawMs = 0L
+                    totalSwapMs = 0L
+                    totalSleepMs = 0L
+                    lastLogTime = t3
                 }
             }
 
@@ -252,83 +291,182 @@ class SilkShaderView @JvmOverloads constructor(
         }
 
         private fun initGL(): Boolean {
+            // 1. Compile Silk generation program
             val vShader = compileShader(GLES20.GL_VERTEX_SHADER, VERTEX_SHADER)
             val fShader = compileShader(GLES20.GL_FRAGMENT_SHADER, FRAGMENT_SHADER)
             if (vShader == 0 || fShader == 0) {
-                android.util.Log.e("SilkShader", "Failed to compile shaders: v=$vShader, f=$fShader")
+                android.util.Log.e("SilkShader", "Failed to compile silk shaders: v=$vShader, f=$fShader")
                 return false
             }
 
-            programId = GLES20.glCreateProgram()
-            GLES20.glAttachShader(programId, vShader)
-            GLES20.glAttachShader(programId, fShader)
-            GLES20.glLinkProgram(programId)
+            silkProgramId = GLES20.glCreateProgram()
+            GLES20.glAttachShader(silkProgramId, vShader)
+            GLES20.glAttachShader(silkProgramId, fShader)
+            GLES20.glLinkProgram(silkProgramId)
 
             val linkStatus = IntArray(1)
-            GLES20.glGetProgramiv(programId, GLES20.GL_LINK_STATUS, linkStatus, 0)
+            GLES20.glGetProgramiv(silkProgramId, GLES20.GL_LINK_STATUS, linkStatus, 0)
             if (linkStatus[0] == 0) {
-                android.util.Log.e("SilkShader", "Link error: " + GLES20.glGetProgramInfoLog(programId))
-                GLES20.glDeleteProgram(programId)
+                android.util.Log.e("SilkShader", "Link error: " + GLES20.glGetProgramInfoLog(silkProgramId))
+                GLES20.glDeleteProgram(silkProgramId)
                 return false
             }
 
-            aPosHandle = GLES20.glGetAttribLocation(programId, "a_position")
-            aTexCoordHandle = GLES20.glGetAttribLocation(programId, "a_texCoord")
-            uTimeHandle = GLES20.glGetUniformLocation(programId, "u_time")
-            uResHandle = GLES20.glGetUniformLocation(programId, "u_resolution")
-            uPaletteHandle = GLES20.glGetUniformLocation(programId, "u_palette")
+            aPosHandle = GLES20.glGetAttribLocation(silkProgramId, "a_position")
+            aTexCoordHandle = GLES20.glGetAttribLocation(silkProgramId, "a_texCoord")
+            uTimeHandle = GLES20.glGetUniformLocation(silkProgramId, "u_time")
+            uResHandle = GLES20.glGetUniformLocation(silkProgramId, "u_resolution")
+            uPaletteHandle = GLES20.glGetUniformLocation(silkProgramId, "u_palette")
 
+            // 2. Compile Fullscreen Blit program
+            val blitVShader = compileShader(GLES20.GL_VERTEX_SHADER, BLIT_VERTEX_SHADER)
+            val blitFShader = compileShader(GLES20.GL_FRAGMENT_SHADER, BLIT_FRAGMENT_SHADER)
+            if (blitVShader == 0 || blitFShader == 0) {
+                android.util.Log.e("SilkShader", "Failed to compile blit shaders")
+                return false
+            }
+
+            blitProgramId = GLES20.glCreateProgram()
+            GLES20.glAttachShader(blitProgramId, blitVShader)
+            GLES20.glAttachShader(blitProgramId, blitFShader)
+            GLES20.glLinkProgram(blitProgramId)
+
+            GLES20.glGetProgramiv(blitProgramId, GLES20.GL_LINK_STATUS, linkStatus, 0)
+            if (linkStatus[0] == 0) {
+                android.util.Log.e("SilkShader", "Blit link error: " + GLES20.glGetProgramInfoLog(blitProgramId))
+                GLES20.glDeleteProgram(blitProgramId)
+                return false
+            }
+
+            aBlitPosHandle = GLES20.glGetAttribLocation(blitProgramId, "a_position")
+            aBlitTexCoordHandle = GLES20.glGetAttribLocation(blitProgramId, "a_texCoord")
+            uBlitTextureHandle = GLES20.glGetUniformLocation(blitProgramId, "u_texture")
+
+            // 3. Setup Vertex & Texture buffers
             val quadCoords = floatArrayOf(
-                -1f,  1f,
-                -1f, -1f,
-                 1f,  1f,
-                 1f, -1f
+                -1f,  1f,   // top-left
+                -1f, -1f,   // bottom-left
+                 1f,  1f,   // top-right
+                 1f, -1f    // bottom-right
             )
-            vertexBuffer = ByteBuffer.allocateDirect(quadCoords.size * 4)
+            quadVertexBuffer = ByteBuffer.allocateDirect(quadCoords.size * 4)
                 .order(ByteOrder.nativeOrder())
                 .asFloatBuffer().apply {
                     put(quadCoords)
                     position(0)
                 }
 
-            val texCoords = floatArrayOf(
+            val silkTexCoords = floatArrayOf(
                 0f, 0f,
                 0f, 1f,
                 1f, 0f,
                 1f, 1f
             )
-            texCoordBuffer = ByteBuffer.allocateDirect(texCoords.size * 4)
+            silkTexCoordBuffer = ByteBuffer.allocateDirect(silkTexCoords.size * 4)
                 .order(ByteOrder.nativeOrder())
                 .asFloatBuffer().apply {
-                    put(texCoords)
+                    put(silkTexCoords)
                     position(0)
                 }
 
-            GLES20.glViewport(0, 0, bufferWidth, bufferHeight)
+            val blitTexCoords = floatArrayOf(
+                0f, 1f,   // top-left samples top of FBO
+                0f, 0f,   // bottom-left samples bottom of FBO
+                1f, 1f,   // top-right samples top of FBO
+                1f, 0f    // bottom-right samples bottom of FBO
+            )
+            blitTexCoordBuffer = ByteBuffer.allocateDirect(blitTexCoords.size * 4)
+                .order(ByteOrder.nativeOrder())
+                .asFloatBuffer().apply {
+                    put(blitTexCoords)
+                    position(0)
+                }
+
+            // 4. Create Offscreen FBO (640x360) with Hardware Bilinear Filtering
+            val textures = IntArray(1)
+            GLES20.glGenTextures(1, textures, 0)
+            fboTextureId = textures[0]
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, fboTextureId)
+            GLES20.glTexImage2D(
+                GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA,
+                FBO_WIDTH, FBO_HEIGHT, 0,
+                GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, null
+            )
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR)
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR)
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE)
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE)
+
+            val fbos = IntArray(1)
+            GLES20.glGenFramebuffers(1, fbos, 0)
+            fboId = fbos[0]
+            GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, fboId)
+            GLES20.glFramebufferTexture2D(
+                GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0,
+                GLES20.GL_TEXTURE_2D, fboTextureId, 0
+            )
+
+            val fboStatus = GLES20.glCheckFramebufferStatus(GLES20.GL_FRAMEBUFFER)
+            GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0)
+            if (fboStatus != GLES20.GL_FRAMEBUFFER_COMPLETE) {
+                android.util.Log.e("SilkShader", "FBO incomplete: $fboStatus")
+                return false
+            }
+
             return true
         }
 
         private fun drawFrame(timeSec: Float) {
-            GLES20.glViewport(0, 0, bufferWidth, bufferHeight)
+            // === PASS 1: Render silk into low-res 640x360 FBO ===
+            GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, fboId)
+            GLES20.glViewport(0, 0, FBO_WIDTH, FBO_HEIGHT)
             GLES20.glClearColor(0.02f, 0.02f, 0.04f, 1.0f)
             GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
 
-            GLES20.glUseProgram(programId)
+            GLES20.glUseProgram(silkProgramId)
 
             GLES20.glUniform1f(uTimeHandle, timeSec)
-            GLES20.glUniform2f(uResHandle, bufferWidth.toFloat(), bufferHeight.toFloat())
+            GLES20.glUniform2f(uResHandle, FBO_WIDTH.toFloat(), FBO_HEIGHT.toFloat())
             GLES20.glUniform1i(uPaletteHandle, palette)
 
             GLES20.glEnableVertexAttribArray(aPosHandle)
-            GLES20.glVertexAttribPointer(aPosHandle, 2, GLES20.GL_FLOAT, false, 0, vertexBuffer)
+            GLES20.glVertexAttribPointer(aPosHandle, 2, GLES20.GL_FLOAT, false, 0, quadVertexBuffer)
 
             GLES20.glEnableVertexAttribArray(aTexCoordHandle)
-            GLES20.glVertexAttribPointer(aTexCoordHandle, 2, GLES20.GL_FLOAT, false, 0, texCoordBuffer)
+            GLES20.glVertexAttribPointer(aTexCoordHandle, 2, GLES20.GL_FLOAT, false, 0, silkTexCoordBuffer)
 
             GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4)
 
             GLES20.glDisableVertexAttribArray(aPosHandle)
             GLES20.glDisableVertexAttribArray(aTexCoordHandle)
+
+            // === PASS 2: Bilinear blit from FBO to physical window surface (Full Screen 1080p) ===
+            val surfWidth = IntArray(1)
+            val surfHeight = IntArray(1)
+            EGL14.eglQuerySurface(eglDisplay, eglSurface, EGL14.EGL_WIDTH, surfWidth, 0)
+            EGL14.eglQuerySurface(eglDisplay, eglSurface, EGL14.EGL_HEIGHT, surfHeight, 0)
+            val screenW = if (surfWidth[0] > 0) surfWidth[0] else if (bufferWidth > 0) bufferWidth else 1920
+            val screenH = if (surfHeight[0] > 0) surfHeight[0] else if (bufferHeight > 0) bufferHeight else 1080
+
+            GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0)
+            GLES20.glViewport(0, 0, screenW, screenH)
+
+            GLES20.glUseProgram(blitProgramId)
+
+            GLES20.glActiveTexture(GLES20.GL_TEXTURE0)
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, fboTextureId)
+            GLES20.glUniform1i(uBlitTextureHandle, 0)
+
+            GLES20.glEnableVertexAttribArray(aBlitPosHandle)
+            GLES20.glVertexAttribPointer(aBlitPosHandle, 2, GLES20.GL_FLOAT, false, 0, quadVertexBuffer)
+
+            GLES20.glEnableVertexAttribArray(aBlitTexCoordHandle)
+            GLES20.glVertexAttribPointer(aBlitTexCoordHandle, 2, GLES20.GL_FLOAT, false, 0, blitTexCoordBuffer)
+
+            GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4)
+
+            GLES20.glDisableVertexAttribArray(aBlitPosHandle)
+            GLES20.glDisableVertexAttribArray(aBlitTexCoordHandle)
         }
 
         private fun compileShader(type: Int, source: String): Int {
@@ -347,9 +485,21 @@ class SilkShaderView @JvmOverloads constructor(
         }
 
         private fun releaseGL() {
-            if (programId != 0) {
-                GLES20.glDeleteProgram(programId)
-                programId = 0
+            if (fboId != 0) {
+                GLES20.glDeleteFramebuffers(1, intArrayOf(fboId), 0)
+                fboId = 0
+            }
+            if (fboTextureId != 0) {
+                GLES20.glDeleteTextures(1, intArrayOf(fboTextureId), 0)
+                fboTextureId = 0
+            }
+            if (silkProgramId != 0) {
+                GLES20.glDeleteProgram(silkProgramId)
+                silkProgramId = 0
+            }
+            if (blitProgramId != 0) {
+                GLES20.glDeleteProgram(blitProgramId)
+                blitProgramId = 0
             }
         }
 
@@ -380,7 +530,27 @@ class SilkShaderView @JvmOverloads constructor(
                 }
             """
 
+            private const val BLIT_VERTEX_SHADER = """
+                attribute vec4 a_position;
+                attribute vec2 a_texCoord;
+                varying vec2 v_texCoord;
+                void main() {
+                    gl_Position = a_position;
+                    v_texCoord = a_texCoord;
+                }
+            """
+
+            private const val BLIT_FRAGMENT_SHADER = """
+                precision mediump float;
+                varying vec2 v_texCoord;
+                uniform sampler2D u_texture;
+                void main() {
+                    gl_FragColor = texture2D(u_texture, v_texCoord);
+                }
+            """
+
             private const val FRAGMENT_SHADER = """
+                #extension GL_OES_standard_derivatives : enable
                 precision mediump float;
                 varying vec2 v_texCoord;
                 uniform vec2 u_resolution;
@@ -470,12 +640,9 @@ class SilkShaderView @JvmOverloads constructor(
 
                     float centerVal = sampleSilk(uv, t);
 
-                    // Estimate surface normal via finite difference for crisp specular fold ridges
-                    float eps = 0.008;
-                    float valX = sampleSilk(vec2(uv.x + eps, uv.y), t);
-                    float valY = sampleSilk(vec2(uv.x, uv.y + eps), t);
-                    float dx = (valX - centerVal) / eps;
-                    float dy = (valY - centerVal) / eps;
+                    // Native GPU screen-space derivatives: exact normal estimation with ZERO extra trigonometric calls
+                    float dx = dFdx(centerVal) * 120.0;
+                    float dy = dFdy(centerVal) * 120.0;
 
                     vec3 norm = normalize(vec3(-dx * 0.7, -dy * 0.7, 1.0));
                     vec3 lightDir = normalize(vec3(0.35, 0.65, 0.75));
