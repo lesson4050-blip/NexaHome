@@ -122,7 +122,7 @@ class SilkShaderView @JvmOverloads constructor(
         private lateinit var vertexBuffer: FloatBuffer
         private lateinit var texCoordBuffer: FloatBuffer
 
-        private val targetFrameMs = 33L // ~30 FPS lock
+        private val targetFrameMs = 16L // Native 60 FPS VSYNC lock
 
         fun setPalette(newPalette: Int) {
             palette = newPalette
@@ -244,7 +244,11 @@ class SilkShaderView @JvmOverloads constructor(
             eglSurface = EGL14.eglCreateWindowSurface(eglDisplay, eglConfig, surfaceTexture, surfaceAttribs, 0)
             if (eglSurface == EGL14.EGL_NO_SURFACE) return false
 
-            return EGL14.eglMakeCurrent(eglDisplay, eglSurface, eglSurface, eglContext)
+            val ok = EGL14.eglMakeCurrent(eglDisplay, eglSurface, eglSurface, eglContext)
+            if (ok) {
+                EGL14.eglSwapInterval(eglDisplay, 1)
+            }
+            return ok
         }
 
         private fun initGL(): Boolean {
