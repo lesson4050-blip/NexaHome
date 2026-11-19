@@ -150,15 +150,16 @@ class SmartTvApplication : Application(), ImageLoaderFactory {
     override fun newImageLoader(): ImageLoader {
         return ImageLoader.Builder(this)
             .bitmapConfig(Bitmap.Config.RGB_565) // 50% memory saving over ARGB_8888
+            .allowRgb565(true)
             .memoryCache {
                 MemoryCache.Builder(this)
-                    .maxSizePercent(0.10) // 10% of available heap is optimal for 1-2GB TV boxes
+                    .maxSizePercent(0.05) // 5% of available heap limit
                     .build()
             }
             .diskCache {
                 DiskCache.Builder()
                     .directory(cacheDir.resolve("image_cache"))
-                    .maxSizeBytes(40L * 1024 * 1024) // 40 MB max disk cache
+                    .maxSizeBytes(20L * 1024 * 1024) // 20 MB max disk cache
                     .build()
             }
             .respectCacheHeaders(false)

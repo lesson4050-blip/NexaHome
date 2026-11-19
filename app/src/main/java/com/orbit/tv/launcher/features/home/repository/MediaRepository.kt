@@ -158,7 +158,7 @@ class MediaRepository(private val context: Context) {
 
             val posterPath = item.optString("poster_path", "").trim()
             val posterUrl = if (posterPath.isNotBlank() && posterPath != "null") {
-                "https://image.tmdb.org/t/p/w500$posterPath"
+                "https://image.tmdb.org/t/p/w342$posterPath"
             } else ""
 
             val voteAvg = item.optDouble("vote_average", 0.0)
@@ -444,7 +444,7 @@ class MediaRepository(private val context: Context) {
 
                 val posterPath = item.optString("poster_path", "").trim()
                 if (posterPath.isBlank() || posterPath == "null") continue
-                val posterUrl = "https://image.tmdb.org/t/p/w500$posterPath"
+                val posterUrl = "https://image.tmdb.org/t/p/w342$posterPath"
 
                 val voteAvg = item.optDouble("vote_average", 0.0)
                 val rating = if (voteAvg > 0.0) String.format(Locale.US, "%.1f", voteAvg) else ""

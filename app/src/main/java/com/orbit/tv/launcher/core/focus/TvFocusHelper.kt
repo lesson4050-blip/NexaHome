@@ -16,7 +16,7 @@ object TvFocusHelper {
         view: View,
         scaleRatio: Float = 1.05f,
         elevationDp: Float = 8f,
-        duration: Long = 180L
+        duration: Long = 120L
     ) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
             view.outlineAmbientShadowColor = android.graphics.Color.TRANSPARENT
@@ -26,23 +26,11 @@ object TvFocusHelper {
         view.translationZ = 0f
 
         view.setOnFocusChangeListener { v, hasFocus ->
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
-                v.outlineAmbientShadowColor = android.graphics.Color.TRANSPARENT
-                v.outlineSpotShadowColor = android.graphics.Color.TRANSPARENT
-            }
-            if (hasFocus) {
+            val targetScale = if (hasFocus) scaleRatio else 1.0f
+            if (kotlin.math.abs(v.scaleX - targetScale) > 0.005f) {
                 v.animate()
-                    .scaleX(scaleRatio)
-                    .scaleY(scaleRatio)
-                    .translationZ(0f)
-                    .setDuration(duration)
-                    .setInterpolator(interpolator)
-                    .withLayer()
-                    .start()
-            } else {
-                v.animate()
-                    .scaleX(1.0f)
-                    .scaleY(1.0f)
+                    .scaleX(targetScale)
+                    .scaleY(targetScale)
                     .translationZ(0f)
                     .setDuration(duration)
                     .setInterpolator(interpolator)

@@ -243,7 +243,7 @@ class HomeActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@HomeActivity, LinearLayoutManager.HORIZONTAL, false)
             adapter = appsAdapter
             setHasFixedSize(true)
-            setItemViewCacheSize(6)
+            setItemViewCacheSize(3)
         }
 
         // 2. Movies Shelf
@@ -255,7 +255,7 @@ class HomeActivity : AppCompatActivity() {
             adapter = moviesAdapter
             setRecycledViewPool(sharedMediaPool)
             setHasFixedSize(true)
-            setItemViewCacheSize(6)
+            setItemViewCacheSize(3)
         }
 
         // 3. Series Shelf
@@ -267,9 +267,9 @@ class HomeActivity : AppCompatActivity() {
             adapter = seriesAdapter
             setRecycledViewPool(sharedMediaPool)
             setHasFixedSize(true)
-            setItemViewCacheSize(6)
+            setItemViewCacheSize(3)
         }
-        sharedMediaPool.setMaxRecycledViews(0, 10)
+        sharedMediaPool.setMaxRecycledViews(0, 6)
 
         val shaderScrollThrottleListener = object : RecyclerView.OnScrollListener() {
             private val resumeRunnable = Runnable { silkShaderView?.resumeRendering() }

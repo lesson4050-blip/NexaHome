@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.size.Precision
+import coil.size.ViewSizeResolver
 import com.orbit.tv.launcher.R
 import com.orbit.tv.launcher.core.focus.TvFocusHelper
 import com.orbit.tv.launcher.databinding.ItemWatchNextCardBinding
@@ -43,8 +45,10 @@ class WatchNextAdapter(
 
             ivWatchNextThumb.load(item.posterUri) {
                 crossfade(true)
-                placeholder(R.drawable.backdrop_scenery)
-                error(R.drawable.backdrop_scenery)
+                size(ViewSizeResolver(ivWatchNextThumb))
+                precision(Precision.INEXACT)
+                placeholder(R.drawable.bg_media_placeholder)
+                error(R.drawable.bg_media_placeholder)
             }
 
             TvFocusHelper.bindFocusScale(root, scaleRatio = 1.05f, elevationDp = 6f)

@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.size.Precision
+import coil.size.ViewSizeResolver
 import com.orbit.tv.launcher.R
 import com.orbit.tv.launcher.core.focus.TvFocusHelper
 import com.orbit.tv.launcher.databinding.ItemMediaCardBinding
@@ -82,6 +84,8 @@ class MediaAdapter(
                         binding.ivPoster.scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
                         binding.ivPoster.load(media.posterUrl) {
                             crossfade(true)
+                            size(ViewSizeResolver(binding.ivPoster))
+                            precision(Precision.INEXACT)
                             placeholder(R.drawable.bg_iptv_card_fallback)
                             error(R.drawable.bg_iptv_card_fallback)
                         }
@@ -94,6 +98,8 @@ class MediaAdapter(
                     binding.ivPoster.scaleType = android.widget.ImageView.ScaleType.CENTER_CROP
                     binding.ivPoster.load(media.posterUrl) {
                         crossfade(true)
+                        size(ViewSizeResolver(binding.ivPoster))
+                        precision(Precision.INEXACT)
                         placeholder(R.drawable.bg_media_placeholder)
                         error(R.drawable.bg_media_placeholder)
                     }
