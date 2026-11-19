@@ -517,15 +517,29 @@ class AppsHubActivity : AppCompatActivity() {
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         when (event.keyCode) {
             KeyEvent.KEYCODE_VOICE_ASSIST,
-            KeyEvent.KEYCODE_SEARCH,
             KeyEvent.KEYCODE_ASSIST -> {
-                if (event.action == KeyEvent.ACTION_DOWN) {
-                    if (event.repeatCount == 0 && !isRecordingVoice) {
+                if (event.action == KeyEvent.ACTION_DOWN && event.repeatCount == 0) {
+                    if (GoogleAssistantHelper.isAvailable(this)) {
+                        GoogleAssistantHelper.launch(this)
+                    } else if (!isRecordingVoice) {
                         startInPlaceVoiceRecognition()
                     }
                     return true
                 } else if (event.action == KeyEvent.ACTION_UP) {
-                    stopInPlaceVoiceRecognition()
+                    return true
+                }
+            }
+            KeyEvent.KEYCODE_SEARCH -> {
+                if (event.action == KeyEvent.ACTION_DOWN && event.repeatCount == 0) {
+                    if (GoogleAssistantHelper.isAvailable(this)) {
+                        GoogleAssistantHelper.launch(this)
+                    } else if (isRecordingVoice) {
+                        stopInPlaceVoiceRecognition()
+                    } else {
+                        startInPlaceVoiceRecognition()
+                    }
+                    return true
+                } else if (event.action == KeyEvent.ACTION_UP) {
                     return true
                 }
             }
@@ -682,20 +696,5 @@ class AppsHubActivity : AppCompatActivity() {
         }
     }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_VOICE_ASSIST) {
-            if (GoogleAssistantHelper.launch(this)) {
-                return true
-            }
-        }
-        if (keyCode == KeyEvent.KEYCODE_SEARCH) {
-            if (isRecordingVoice) {
-                stopInPlaceVoiceRecognition()
-            } else {
-                startInPlaceVoiceRecognition()
-            }
-            return true
-        }
-        return super.onKeyDown(keyCode, event)
-    }
+
 }

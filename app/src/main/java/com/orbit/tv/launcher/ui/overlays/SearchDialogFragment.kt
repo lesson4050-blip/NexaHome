@@ -70,13 +70,14 @@ class SearchDialogFragment : DialogFragment() {
             if (keyCode == android.view.KeyEvent.KEYCODE_VOICE_ASSIST ||
                 keyCode == android.view.KeyEvent.KEYCODE_SEARCH ||
                 keyCode == android.view.KeyEvent.KEYCODE_ASSIST) {
-                if (event.action == android.view.KeyEvent.ACTION_DOWN) {
-                    if (event.repeatCount == 0 && !isRecordingVoice) {
+                if (event.action == android.view.KeyEvent.ACTION_DOWN && event.repeatCount == 0) {
+                    if (isRecordingVoice) {
+                        stopInPlaceVoiceRecognition()
+                    } else {
                         startInPlaceVoiceRecognition()
                     }
                     return@setOnKeyListener true
                 } else if (event.action == android.view.KeyEvent.ACTION_UP) {
-                    stopInPlaceVoiceRecognition()
                     return@setOnKeyListener true
                 }
             }
