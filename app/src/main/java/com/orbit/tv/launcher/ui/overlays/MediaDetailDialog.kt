@@ -81,10 +81,11 @@ class MediaDetailDialog : DialogFragment() {
         binding.tvDetailRating.text = if (media.rating.isNotBlank()) "★ ${media.rating}" else media.badge
         binding.tvDetailYear.text = if (media.releaseYear.isNotBlank()) media.releaseYear else "2024"
 
+        val fallbackRes = if (media.id.startsWith("iptv_")) R.drawable.bg_iptv_card_fallback else R.drawable.bg_media_placeholder
         binding.ivDetailPoster.load(media.posterUrl) {
             crossfade(true)
-            placeholder(R.drawable.bg_focus_media_card)
-            error(R.drawable.bg_focus_media_card)
+            placeholder(fallbackRes)
+            error(fallbackRes)
         }
     }
 

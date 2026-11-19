@@ -49,6 +49,16 @@ class WatchHistoryActivity : AppCompatActivity() {
         setupHistoryList()
         setupBackNavigation()
         observeHistory()
+
+        binding.root.post {
+            if (binding.rvWatchNext.visibility == View.VISIBLE && watchNextAdapter.itemCount > 0) {
+                binding.rvWatchNext.findViewHolderForAdapterPosition(0)?.itemView?.requestFocus()
+            } else if (mediaAdapter.itemCount > 0) {
+                binding.rvHistory.findViewHolderForAdapterPosition(0)?.itemView?.requestFocus()
+            } else {
+                binding.btnNavHistory.requestFocus()
+            }
+        }
     }
 
     override fun onResume() {

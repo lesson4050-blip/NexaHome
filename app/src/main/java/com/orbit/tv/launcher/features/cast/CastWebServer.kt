@@ -213,6 +213,66 @@ class CastWebServer(
                     sendJsonResponse(output, """{"status":"error","message":"${e.message}"}""")
                 }
             }
+            path.startsWith("/api/wallpaper") -> {
+                try {
+                    val destFile = File(context.filesDir, "custom_wallpaper.jpg")
+                    val tempFile = File(context.cacheDir, "temp_wall_${System.currentTimeMillis()}.tmp")
+                    val fileOut = FileOutputStream(tempFile)
+                    val buffer = ByteArray(8192)
+                    var bytesRemaining = contentLength
+                    while (bytesRemaining > 0) {
+                        val toRead = minOf(buffer.size, bytesRemaining)
+                        val read = rawInput.read(buffer, 0, toRead)
+                        if (read == -1) break
+                        fileOut.write(buffer, 0, read)
+                        bytesRemaining -= read
+                    }
+                    fileOut.close()
+
+                    // Check bounds and optimize image
+                    val options = android.graphics.BitmapFactory.Options().apply {
+                        inJustDecodeBounds = true
+                    }
+                    android.graphics.BitmapFactory.decodeFile(tempFile.absolutePath, options)
+                    val w = options.outWidth
+                    val h = options.outHeight
+
+                    if (w > 0 && h > 0) {
+                        var sampleSize = 1
+                        val maxDim = 3840
+                        while (w / sampleSize > maxDim || h / sampleSize > maxDim) {
+                            sampleSize *= 2
+                        }
+
+                        val decodeOpts = android.graphics.BitmapFactory.Options().apply {
+                            inSampleSize = sampleSize
+                            inPreferredConfig = android.graphics.Bitmap.Config.ARGB_8888
+                        }
+                        val bmp = android.graphics.BitmapFactory.decodeFile(tempFile.absolutePath, decodeOpts)
+                        if (bmp != null) {
+                            val out = FileOutputStream(destFile)
+                            bmp.compress(android.graphics.Bitmap.CompressFormat.JPEG, 92, out)
+                            out.flush()
+                            out.close()
+                            bmp.recycle()
+                        } else {
+                            tempFile.copyTo(destFile, overwrite = true)
+                        }
+                    } else {
+                        tempFile.copyTo(destFile, overwrite = true)
+                    }
+                    tempFile.delete()
+
+                    val appPrefs = com.orbit.tv.launcher.features.apps.repository.AppPreferencesRepository(context)
+                    appPrefs.setWallpaperTheme("CUSTOM")
+                    context.sendBroadcast(Intent("com.orbit.tv.launcher.ACTION_WALLPAPER_CHANGED"))
+
+                    sendJsonResponse(output, """{"status":"ok","message":"Wallpaper updated on TV"}""")
+                } catch (e: Exception) {
+                    android.util.Log.e("CastWebServer", "Error saving uploaded wallpaper: ${e.message}", e)
+                    sendJsonResponse(output, """{"status":"error","message":"${e.message}"}""")
+                }
+            }
             path.startsWith("/api/iptv/playlist") -> {
                 val body = CharArray(contentLength)
                 reader.read(body, 0, contentLength)
@@ -356,6 +416,11 @@ class CastWebServer(
         val alertFileOpened = context.getString(R.string.cast_web_alert_file_opened)
         val alertUploadError = context.getString(R.string.cast_web_alert_upload_error)
         val cmdDone = context.getString(R.string.cast_web_cmd_done)
+        val tabWallpaper = if (lang == "uk") "Шпалери" else if (lang == "ru") "Обои" else "Wallpaper"
+        val labelWallpaper = if (lang == "uk") "Виберіть фото для фону ТВ" else if (lang == "ru") "Выберите фото для фона ТВ" else "Select photo for TV wallpaper"
+        val btnUploadWallpaper = if (lang == "uk") "Встановити шпалерами на ТВ" else if (lang == "ru") "Установить обоями на ТВ" else "Set as TV Wallpaper"
+        val toastWallpaperUploading = if (lang == "uk") "Встановлення шпалер на ТВ..." else if (lang == "ru") "Установка обоев на ТВ..." else "Setting wallpaper on TV..."
+        val toastWallpaperDone = if (lang == "uk") "✓ Шпалери успішно встановлені на ТВ!" else if (lang == "ru") "✓ Обои успешно применены на ТВ!" else "✓ TV Wallpaper updated successfully!"
 
         return """
 <!DOCTYPE html>
@@ -374,8 +439,8 @@ class CastWebServer(
         .status-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #10B981; font-weight: 600; margin-top: 4px; }
         .dot { width: 8px; height: 8px; border-radius: 50%; background: #10B981; animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-        .tabs { display: flex; gap: 8px; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 4px; border-radius: 14px; }
-        .tab-btn { flex: 1; padding: 10px; font-size: 13px; font-weight: 600; border: none; background: transparent; color: #94A3B8; border-radius: 10px; cursor: pointer; transition: 0.2s; }
+        .tabs { display: flex; gap: 6px; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 4px; border-radius: 14px; }
+        .tab-btn { flex: 1; padding: 9px 4px; font-size: 12px; font-weight: 600; border: none; background: transparent; color: #94A3B8; border-radius: 10px; cursor: pointer; transition: 0.2s; white-space: nowrap; text-align: center; }
         .tab-btn.active { background: #06B6D4; color: #000000; }
         .section { display: none; }
         .section.active { display: block; }
@@ -404,6 +469,7 @@ class CastWebServer(
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('youtube')">$tabYt</button>
             <button class="tab-btn" onclick="switchTab('files')">$tabFiles</button>
+            <button class="tab-btn" onclick="switchTab('wallpaper')">$tabWallpaper</button>
             <button class="tab-btn" onclick="switchTab('iptv')">IPTV</button>
             <button class="tab-btn" onclick="switchTab('remote')">$tabRemote</button>
         </div>
@@ -426,7 +492,19 @@ class CastWebServer(
             <button class="btn" onclick="uploadSelectedFile()">$btnUpload</button>
         </div>
 
-        <!-- Tab 3: IPTV Playlist Importer -->
+        <!-- Tab 3: Wallpaper Upload -->
+        <div id="tab-wallpaper" class="section">
+            <div class="input-group">
+                <label>$labelWallpaper</label>
+                <input type="file" id="wallpaperSelector" accept="image/*" onchange="previewWallpaper(this)" style="display:block; width:100%; font-size:13px; color:#94A3B8;">
+            </div>
+            <div id="wallpaperPreviewBox" style="display:none; margin-bottom:16px; text-align:center;">
+                <img id="wallpaperPreviewImg" style="width:100%; max-height:180px; object-fit:cover; border-radius:14px; border:1px solid rgba(255,255,255,0.2);">
+            </div>
+            <button class="btn" onclick="uploadWallpaper()">$btnUploadWallpaper</button>
+        </div>
+
+        <!-- Tab 4: IPTV Playlist Importer -->
         <div id="tab-iptv" class="section">
             <div class="input-group">
                 <label>M3U / M3U8 Playlist URL</label>
@@ -441,7 +519,7 @@ class CastWebServer(
             </div>
         </div>
 
-        <!-- Tab 4: Remote Control -->
+        <!-- Tab 5: Remote Control -->
         <div id="tab-remote" class="section">
             <div class="remote-grid">
                 <button class="remote-btn" onclick="sendRemote('vol_up')">$volUp</button>
@@ -458,18 +536,11 @@ class CastWebServer(
         function switchTab(tabId) {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            if (tabId === 'youtube') {
-                document.querySelectorAll('.tab-btn')[0].classList.add('active');
-                document.getElementById('tab-youtube').classList.add('active');
-            } else if (tabId === 'files') {
-                document.querySelectorAll('.tab-btn')[1].classList.add('active');
-                document.getElementById('tab-files').classList.add('active');
-            } else if (tabId === 'iptv') {
-                document.querySelectorAll('.tab-btn')[2].classList.add('active');
-                document.getElementById('tab-iptv').classList.add('active');
-            } else {
-                document.querySelectorAll('.tab-btn')[3].classList.add('active');
-                document.getElementById('tab-remote').classList.add('active');
+            const tabs = ['youtube', 'files', 'wallpaper', 'iptv', 'remote'];
+            const idx = tabs.indexOf(tabId);
+            if (idx >= 0) {
+                document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+                document.getElementById('tab-' + tabId).classList.add('active');
             }
         }
 
@@ -478,6 +549,30 @@ class CastWebServer(
             t.innerText = text;
             t.style.display = 'block';
             setTimeout(() => { t.style.display = 'none'; }, 3000);
+        }
+
+        function previewWallpaper(input) {
+            const f = input.files[0];
+            if (!f) return;
+            const r = new FileReader();
+            r.onload = function(e) {
+                document.getElementById('wallpaperPreviewImg').src = e.target.result;
+                document.getElementById('wallpaperPreviewBox').style.display = 'block';
+            };
+            r.readAsDataURL(f);
+        }
+
+        function uploadWallpaper() {
+            const f = document.getElementById('wallpaperSelector').files[0];
+            if (!f) return alert('Выберите изображение');
+            showNotification('$toastWallpaperUploading');
+            fetch('/api/wallpaper', {
+                method: 'POST',
+                headers: { 'Content-Type': f.type || 'application/octet-stream' },
+                body: f
+            }).then(r => r.json()).then(data => {
+                showNotification('$toastWallpaperDone');
+            }).catch(e => alert('$alertUploadError'));
         }
 
         function sendMediaUrl() {

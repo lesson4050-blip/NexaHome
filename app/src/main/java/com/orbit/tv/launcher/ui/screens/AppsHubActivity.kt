@@ -134,6 +134,10 @@ class AppsHubActivity : AppCompatActivity() {
         setupListeners()
         setupBackNavigation()
         observeData()
+
+        binding.root.post {
+            binding.btnTabAll.requestFocus()
+        }
     }
 
     override fun onResume() {
@@ -426,9 +430,7 @@ class AppsHubActivity : AppCompatActivity() {
         }
 
         if (!SpeechRecognizer.isRecognitionAvailable(this)) {
-            if (!GoogleAssistantHelper.launch(this)) {
-                openSearchDialog()
-            }
+            openSearchDialog()
             return
         }
 
@@ -461,7 +463,7 @@ class AppsHubActivity : AppCompatActivity() {
                         isRecordingVoice = false
                         animateVoiceMicActive(false)
                         binding.tvSearchInput.text = getString(R.string.search_apps_hint)
-                        GoogleAssistantHelper.launch(this@AppsHubActivity)
+                        openSearchDialog()
                     }
 
                     override fun onResults(results: Bundle?) {
@@ -681,7 +683,12 @@ class AppsHubActivity : AppCompatActivity() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_VOICE_ASSIST || keyCode == KeyEvent.KEYCODE_SEARCH) {
+        if (keyCode == KeyEvent.KEYCODE_VOICE_ASSIST) {
+            if (GoogleAssistantHelper.launch(this)) {
+                return true
+            }
+        }
+        if (keyCode == KeyEvent.KEYCODE_SEARCH) {
             if (isRecordingVoice) {
                 stopInPlaceVoiceRecognition()
             } else {

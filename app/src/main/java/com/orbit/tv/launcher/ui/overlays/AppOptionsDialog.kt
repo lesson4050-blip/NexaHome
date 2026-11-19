@@ -34,6 +34,11 @@ class AppOptionsDialog : DialogFragment() {
         this.onPreferenceChangedListener = onPreferenceChanged
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.Theme_TvSideSheetDialog)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,6 +55,18 @@ class AppOptionsDialog : DialogFragment() {
         return dialog
     }
 
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.let { window ->
+            window.decorView.setPadding(0, 0, 0, 0)
+            val dm = resources.displayMetrics
+            val panelWidth = (520 * dm.density).toInt().coerceAtMost((dm.widthPixels * 0.45f).toInt())
+            window.setLayout(panelWidth, ViewGroup.LayoutParams.MATCH_PARENT)
+            window.setGravity(android.view.Gravity.END)
+            window.setWindowAnimations(R.style.Animation_TvSideSheet)
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         appPrefsRepo = AppPreferencesRepository(requireContext())
@@ -60,11 +77,11 @@ class AppOptionsDialog : DialogFragment() {
     }
 
     private fun setupFocus() {
-        TvFocusHelper.bindFocusScale(binding.btnDialogClose, scaleRatio = 1.15f, elevationDp = 8f)
-        TvFocusHelper.bindFocusScale(binding.btnActionPin, scaleRatio = 1.04f, elevationDp = 6f)
-        TvFocusHelper.bindFocusScale(binding.btnActionHide, scaleRatio = 1.04f, elevationDp = 6f)
-        TvFocusHelper.bindFocusScale(binding.btnActionInfo, scaleRatio = 1.04f, elevationDp = 6f)
-        TvFocusHelper.bindFocusScale(binding.btnActionUninstall, scaleRatio = 1.04f, elevationDp = 6f)
+        TvFocusHelper.bindFocusScale(binding.btnDialogClose, scaleRatio = 1.12f, elevationDp = 6f)
+        TvFocusHelper.bindFocusScale(binding.btnActionPin, scaleRatio = 1.025f, elevationDp = 4f)
+        TvFocusHelper.bindFocusScale(binding.btnActionHide, scaleRatio = 1.025f, elevationDp = 4f)
+        TvFocusHelper.bindFocusScale(binding.btnActionInfo, scaleRatio = 1.025f, elevationDp = 4f)
+        TvFocusHelper.bindFocusScale(binding.btnActionUninstall, scaleRatio = 1.025f, elevationDp = 4f)
 
         // Default focus to Pin action
         binding.btnActionPin.requestFocus()

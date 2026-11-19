@@ -65,26 +65,38 @@ class MediaAdapter(
             binding.tvBadge.text = media.badge
             binding.tvBadge.paintFlags = binding.tvBadge.paintFlags or android.graphics.Paint.SUBPIXEL_TEXT_FLAG or android.graphics.Paint.ANTI_ALIAS_FLAG
 
-            if (media.id.startsWith("app_")) {
-                val pkg = media.id.removePrefix("app_")
-                try {
-                    val icon = binding.root.context.packageManager.getApplicationIcon(pkg)
-                    binding.ivPoster.scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
-                    binding.ivPoster.setImageDrawable(icon)
-                } catch (_: Exception) {
-                    binding.ivPoster.scaleType = android.widget.ImageView.ScaleType.CENTER_CROP
-                    binding.ivPoster.setImageResource(R.drawable.ic_nav_apps)
+            when {
+                media.id.startsWith("app_") -> {
+                    val pkg = media.id.removePrefix("app_")
+                    try {
+                        val icon = binding.root.context.packageManager.getApplicationIcon(pkg)
+                        binding.ivPoster.scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
+                        binding.ivPoster.setImageDrawable(icon)
+                    } catch (_: Exception) {
+                        binding.ivPoster.scaleType = android.widget.ImageView.ScaleType.CENTER_CROP
+                        binding.ivPoster.setImageResource(R.drawable.ic_nav_apps)
+                    }
                 }
-            } else if (media.id.startsWith("iptv_") && media.posterUrl.isBlank()) {
-                binding.ivPoster.scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
-                binding.ivPoster.setImageResource(R.drawable.ic_nav_iptv)
-            } else {
-                binding.ivPoster.scaleType = android.widget.ImageView.ScaleType.CENTER_CROP
-                // Memory-optimized Coil loading
-                binding.ivPoster.load(media.posterUrl) {
-                    crossfade(true)
-                    placeholder(R.drawable.bg_focus_media_card)
-                    error(R.drawable.bg_focus_media_card)
+                media.id.startsWith("iptv_") -> {
+                    if (media.posterUrl.isNotBlank()) {
+                        binding.ivPoster.scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
+                        binding.ivPoster.load(media.posterUrl) {
+                            crossfade(true)
+                            placeholder(R.drawable.bg_iptv_card_fallback)
+                            error(R.drawable.bg_iptv_card_fallback)
+                        }
+                    } else {
+                        binding.ivPoster.scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
+                        binding.ivPoster.setImageResource(R.drawable.bg_iptv_card_fallback)
+                    }
+                }
+                else -> {
+                    binding.ivPoster.scaleType = android.widget.ImageView.ScaleType.CENTER_CROP
+                    binding.ivPoster.load(media.posterUrl) {
+                        crossfade(true)
+                        placeholder(R.drawable.bg_media_placeholder)
+                        error(R.drawable.bg_media_placeholder)
+                    }
                 }
             }
 

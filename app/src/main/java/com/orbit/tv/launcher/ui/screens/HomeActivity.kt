@@ -88,6 +88,29 @@ class HomeActivity : AppCompatActivity() {
         })
     }
 
+    private val wallpaperReceiver = object : android.content.BroadcastReceiver() {
+        override fun onReceive(context: android.content.Context?, intent: android.content.Intent?) {
+            TvWallpaperHelper.apply(appPrefs.getWallpaperTheme(), binding.silkShaderView, binding.ivBackdrop, binding.viewDimmer)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val filter = android.content.IntentFilter("com.orbit.tv.launcher.ACTION_WALLPAPER_CHANGED")
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(wallpaperReceiver, filter, RECEIVER_NOT_EXPORTED)
+        } else {
+            registerReceiver(wallpaperReceiver, filter)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        try {
+            unregisterReceiver(wallpaperReceiver)
+        } catch (_: Exception) {}
+    }
+
     override fun onResume() {
         super.onResume()
         java.util.Locale.setDefault(viewModel.getActiveLocale())
@@ -349,9 +372,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
         if (!SpeechRecognizer.isRecognitionAvailable(this)) {
-            if (!GoogleAssistantHelper.launch(this)) {
-                openSearchDialog()
-            }
+            openSearchDialog()
             return
         }
 
@@ -384,7 +405,7 @@ class HomeActivity : AppCompatActivity() {
                         isRecordingVoice = false
                         animateVoiceMicActive(false)
                         binding.tvSearchInput.text = getString(R.string.search_hint)
-                        GoogleAssistantHelper.launch(this@HomeActivity)
+                        openSearchDialog()
                     }
 
                     override fun onResults(results: Bundle?) {
@@ -418,9 +439,7 @@ class HomeActivity : AppCompatActivity() {
         } catch (e: Exception) {
             isRecordingVoice = false
             animateVoiceMicActive(false)
-            if (!GoogleAssistantHelper.launch(this)) {
-                openSearchDialog()
-            }
+            openSearchDialog()
         }
     }
 
@@ -694,7 +713,11 @@ class HomeActivity : AppCompatActivity() {
 
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_VOICE_ASSIST || keyCode == KeyEvent.KEYCODE_SEARCH) {
+        if (keyCode == KeyEvent.KEYCODE_VOICE_ASSIST) {
+            GoogleAssistantHelper.launch(this)
+            return true
+        }
+        if (keyCode == KeyEvent.KEYCODE_SEARCH) {
             if (isRecordingVoice) {
                 stopInPlaceVoiceRecognition()
             } else {

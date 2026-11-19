@@ -87,6 +87,10 @@ class IptvActivity : AppCompatActivity() {
         observeViewModel()
         registerPlaylistReceiver()
         handleIncomingChannelIntent(intent)
+
+        binding.root.post {
+            binding.rvEpgChannels.requestFocus()
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {

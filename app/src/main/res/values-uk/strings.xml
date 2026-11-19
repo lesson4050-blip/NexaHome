@@ -323,4 +323,18 @@
     <string name="settings_options_dialog_count">Варіантів: %d</string>
     <string name="settings_wallpaper_category_silk">Живі шпалери</string>
     <string name="settings_wallpaper_category_photo">Фотошпалери</string>
+    <string name="settings_btn_upload_wallpaper">Завантажити власні шпалери</string>
+    <string name="settings_custom_wallpaper_hint">Зображення з пам\'яті або флешки</string>
+    <string name="settings_custom_wallpaper_success">Користувацькі шпалери встановлено</string>
+    <string name="settings_custom_wallpaper_fail">Не вдалося відкрити зображення</string>
+    <string name="settings_wallpaper_upload_phone_title">Завантажити з телефону (Wi-Fi / QR)</string>
+    <string name="settings_wallpaper_upload_phone_subtitle">Відкрийте сторінку на смартфоні та оберіть фото</string>
+    <string name="settings_wallpaper_upload_storage_title">З пам\'яті ТВ або флешки</string>
+    <string name="settings_wallpaper_upload_storage_subtitle">Пошук зображень у папках Download, Pictures, DCIM</string>
+    <string name="settings_wallpaper_upload_system_title">Системний провідник</string>
+    <string name="settings_wallpaper_upload_system_subtitle">Стандартна галерея Android (за наявності)</string>
+    <string name="settings_wallpaper_phone_dialog_title">Встановлення шпалер зі смартфона</string>
+    <string name="settings_wallpaper_phone_dialog_subtitle">Бездротова передача локальною мережею Wi-Fi</string>
+    <string name="settings_wallpaper_phone_dialog_instructions">1. Підключіть телефон до тієї ж мережі Wi-Fi.\n2. Відкрийте у браузері смартфона адресу:\n   %1$s\n3. Перейдіть на вкладку «Шпалери» та виберіть будь-яке фото.\nВоно миттєво з\'явиться на екрані телевізора!</string>
+    <string name="settings_wallpaper_storage_empty">Накопичувач порожній або немає зображень у папках Download/Pictures</string>
 </resources>

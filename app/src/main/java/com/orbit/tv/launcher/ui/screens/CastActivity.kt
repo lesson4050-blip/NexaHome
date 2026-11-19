@@ -77,7 +77,9 @@ class CastActivity : AppCompatActivity() {
         TvFocusHelper.bindFocusScale(binding.btnProtoAirplay, scaleRatio = 1.04f, elevationDp = 8f)
 
         binding.btnNavCast.isSelected = true
-        binding.btnProtoDlna.requestFocus()
+        binding.root.post {
+            binding.btnProtoDlna.requestFocus()
+        }
     }
 
     private fun setupListeners() {

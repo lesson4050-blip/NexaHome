@@ -265,9 +265,6 @@ class SearchDialogFragment : DialogFragment() {
         }
 
         if (!SpeechRecognizer.isRecognitionAvailable(ctx)) {
-            if (GoogleAssistantHelper.launch(ctx)) {
-                dismissAllowingStateLoss()
-            }
             return
         }
 
@@ -300,10 +297,6 @@ class SearchDialogFragment : DialogFragment() {
                         isRecordingVoice = false
                         animateVoiceMicActive(false)
                         binding.etSearchQuery.hint = getString(R.string.search_hint)
-                        val c = context
-                        if (c != null && GoogleAssistantHelper.launch(c)) {
-                            dismissAllowingStateLoss()
-                        }
                     }
 
                     override fun onResults(results: Bundle?) {
@@ -341,10 +334,6 @@ class SearchDialogFragment : DialogFragment() {
         } catch (e: Exception) {
             isRecordingVoice = false
             animateVoiceMicActive(false)
-            val c = context
-            if (c != null && GoogleAssistantHelper.launch(c)) {
-                dismissAllowingStateLoss()
-            }
         }
     }
 

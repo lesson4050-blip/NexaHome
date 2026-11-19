@@ -117,6 +117,46 @@ class LauncherSettingsActivity : AppCompatActivity() {
         }
     }
 
+    private val wallpaperReceiver = object : android.content.BroadcastReceiver() {
+        override fun onReceive(context: android.content.Context?, intent: android.content.Intent?) {
+            applyWallpaper(appPrefs.getWallpaperTheme())
+            setupWallpaperSection()
+        }
+    }
+
+    private suspend fun saveOptimizedCustomWallpaper(srcFile: File, destFile: File): Boolean = withContext(Dispatchers.IO) {
+        try {
+            val boundsOptions = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+            BitmapFactory.decodeFile(srcFile.absolutePath, boundsOptions)
+            val origWidth = boundsOptions.outWidth
+            val origHeight = boundsOptions.outHeight
+            if (origWidth <= 0 || origHeight <= 0) return@withContext false
+
+            if (origWidth <= 3840 && origHeight <= 2160) {
+                srcFile.copyTo(destFile, overwrite = true)
+                return@withContext true
+            }
+
+            var sampleSize = 1
+            while ((origWidth / (sampleSize * 2)) >= 1920 && (origHeight / (sampleSize * 2)) >= 1080) {
+                sampleSize *= 2
+            }
+            val decodeOptions = BitmapFactory.Options().apply {
+                inSampleSize = sampleSize
+                inPreferredConfig = Bitmap.Config.ARGB_8888
+            }
+            val decoded = BitmapFactory.decodeFile(srcFile.absolutePath, decodeOptions) ?: return@withContext false
+            destFile.outputStream().use { outStream ->
+                decoded.compress(Bitmap.CompressFormat.JPEG, 92, outStream)
+            }
+            decoded.recycle()
+            true
+        } catch (e: Exception) {
+            android.util.Log.e("LauncherSettings", "Error saving file wallpaper: ${e.message}", e)
+            false
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
@@ -137,6 +177,27 @@ class LauncherSettingsActivity : AppCompatActivity() {
         setupLanguageSection()
         setupPlayerSection()
         setupHiddenApps()
+
+        binding.root.post {
+            binding.cardSelectWallpaper.requestFocus()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val filter = android.content.IntentFilter("com.orbit.tv.launcher.ACTION_WALLPAPER_CHANGED")
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(wallpaperReceiver, filter, RECEIVER_NOT_EXPORTED)
+        } else {
+            registerReceiver(wallpaperReceiver, filter)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        try {
+            unregisterReceiver(wallpaperReceiver)
+        } catch (_: Exception) {}
     }
 
     override fun onResume() {
@@ -267,7 +328,44 @@ class LauncherSettingsActivity : AppCompatActivity() {
 
     private fun setupWallpaperSection() {
         binding.btnUploadWallpaper.setOnClickListener {
-            pickCustomWallpaperLauncher.launch("image/*")
+            val uploadOptions = listOf(
+                TvOptionPickerDialog.OptionItem(
+                    id = "phone",
+                    title = getString(R.string.settings_wallpaper_upload_phone_title),
+                    subtitle = getString(R.string.settings_wallpaper_upload_phone_subtitle),
+                    isSelected = false
+                ),
+                TvOptionPickerDialog.OptionItem(
+                    id = "storage",
+                    title = getString(R.string.settings_wallpaper_upload_storage_title),
+                    subtitle = getString(R.string.settings_wallpaper_upload_storage_subtitle),
+                    isSelected = false
+                ),
+                TvOptionPickerDialog.OptionItem(
+                    id = "system",
+                    title = getString(R.string.settings_wallpaper_upload_system_title),
+                    subtitle = getString(R.string.settings_wallpaper_upload_system_subtitle),
+                    isSelected = false
+                )
+            )
+
+            TvOptionPickerDialog.show(
+                fragmentManager = supportFragmentManager,
+                title = getString(R.string.settings_btn_upload_wallpaper),
+                options = uploadOptions
+            ) { selected ->
+                when (selected.id) {
+                    "phone" -> showPhoneWallpaperUploadDialog()
+                    "storage" -> openLocalStorageWallpaperPicker()
+                    "system" -> {
+                        try {
+                            pickCustomWallpaperLauncher.launch("image/*")
+                        } catch (e: Exception) {
+                            Toast.makeText(this, R.string.settings_custom_wallpaper_fail, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
         }
 
         fun buildWallpaperOptions(): List<TvOptionPickerDialog.OptionItem> {
@@ -325,6 +423,98 @@ class LauncherSettingsActivity : AppCompatActivity() {
                 Toast.makeText(this, selected.title, Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun showPhoneWallpaperUploadDialog() {
+        val ip = getLocalIpAddress() ?: "127.0.0.1"
+        val displayUrl = if (ip.startsWith("10.0.2.")) "http://localhost:8080" else "http://$ip:8080"
+        com.orbit.tv.launcher.ui.overlays.CastProtocolDialog.show(
+            fragmentManager = supportFragmentManager,
+            title = getString(R.string.settings_wallpaper_phone_dialog_title),
+            subtitle = getString(R.string.settings_wallpaper_phone_dialog_subtitle),
+            instructions = getString(R.string.settings_wallpaper_phone_dialog_instructions, displayUrl),
+            iconRes = R.drawable.ic_nav_cast,
+            primaryText = getString(R.string.cast_btn_understood),
+            localIp = ip
+        )
+    }
+
+    private fun openLocalStorageWallpaperPicker() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val candidateDirs = listOf(
+                File("/sdcard/Download"),
+                File("/sdcard/Pictures"),
+                File("/sdcard/DCIM"),
+                File("/storage")
+            )
+            val imageExtensions = listOf("jpg", "jpeg", "png", "webp")
+            val foundImages = mutableListOf<File>()
+
+            for (dir in candidateDirs) {
+                if (dir.exists() && dir.canRead()) {
+                    try {
+                        dir.walkTopDown().maxDepth(3).filter { file ->
+                            file.isFile && file.length() > 20480 &&
+                                    imageExtensions.any { ext -> file.name.endsWith(".$ext", ignoreCase = true) }
+                        }.forEach {
+                            if (foundImages.size < 50) foundImages.add(it)
+                        }
+                    } catch (_: Exception) {}
+                }
+            }
+
+            withContext(Dispatchers.Main) {
+                if (foundImages.isEmpty()) {
+                    Toast.makeText(this@LauncherSettingsActivity, R.string.settings_wallpaper_storage_empty, Toast.LENGTH_LONG).show()
+                    return@withContext
+                }
+
+                val options = foundImages.map { file ->
+                    TvOptionPickerDialog.OptionItem(
+                        id = file.absolutePath,
+                        title = file.name,
+                        subtitle = file.parentFile?.name ?: file.parent ?: "",
+                        isSelected = false
+                    )
+                }
+
+                TvOptionPickerDialog.show(
+                    fragmentManager = supportFragmentManager,
+                    title = getString(R.string.settings_wallpaper_upload_storage_title),
+                    options = options
+                ) { selectedItem ->
+                    val chosenFile = File(selectedItem.id)
+                    lifecycleScope.launch {
+                        val destFile = File(filesDir, "custom_wallpaper.jpg")
+                        val success = saveOptimizedCustomWallpaper(chosenFile, destFile)
+                        if (success) {
+                            appPrefs.setWallpaperTheme("CUSTOM")
+                            applyWallpaper("CUSTOM")
+                            setupWallpaperSection()
+                            sendBroadcast(Intent("com.orbit.tv.launcher.ACTION_WALLPAPER_CHANGED"))
+                            Toast.makeText(this@LauncherSettingsActivity, R.string.settings_custom_wallpaper_success, Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this@LauncherSettingsActivity, R.string.settings_custom_wallpaper_fail, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getLocalIpAddress(): String? {
+        try {
+            val interfaces = java.net.NetworkInterface.getNetworkInterfaces() ?: return null
+            for (intf in interfaces) {
+                val addrs = intf.inetAddresses ?: continue
+                for (addr in addrs) {
+                    if (!addr.isLoopbackAddress && addr is java.net.Inet4Address) {
+                        return addr.hostAddress
+                    }
+                }
+            }
+        } catch (_: Exception) {}
+        return null
     }
 
     private fun setupHomeLayoutSection() {

@@ -38,6 +38,8 @@ object TvWallpaperHelper {
                     backdropView.visibility = View.VISIBLE
                     backdropView.load(customFile) {
                         crossfade(true)
+                        memoryCacheKey("custom_wallpaper_${customFile.lastModified()}")
+                        diskCacheKey("custom_wallpaper_${customFile.lastModified()}")
                     }
                     dimmerView?.setBackgroundResource(R.drawable.bg_top_subtle_gradient)
                     dimmerView?.visibility = View.VISIBLE

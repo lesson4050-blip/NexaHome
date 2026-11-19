@@ -372,6 +372,16 @@
     <string name="settings_wallpaper_category_photo">Scenery Photo</string>
     <string name="settings_custom_wallpaper_success">Custom wallpaper applied</string>
     <string name="settings_custom_wallpaper_fail">Failed to load selected image</string>
+    <string name="settings_wallpaper_upload_phone_title">Send from Phone (Wi-Fi / QR)</string>
+    <string name="settings_wallpaper_upload_phone_subtitle">Open browser on smartphone and select any photo</string>
+    <string name="settings_wallpaper_upload_storage_title">From TV Storage or USB Flash Drive</string>
+    <string name="settings_wallpaper_upload_storage_subtitle">Scan Download, Pictures, and DCIM folders</string>
+    <string name="settings_wallpaper_upload_system_title">System File Picker</string>
+    <string name="settings_wallpaper_upload_system_subtitle">Standard Android gallery or file manager</string>
+    <string name="settings_wallpaper_phone_dialog_title">Phone Wallpaper Upload</string>
+    <string name="settings_wallpaper_phone_dialog_subtitle">Wireless Wi-Fi Fast Transfer</string>
+    <string name="settings_wallpaper_phone_dialog_instructions">1. Connect your smartphone to the same Wi-Fi network.\n2. Open the following address in your phone\'s browser:\n   %1$s\n3. Switch to the \"Wallpaper\" tab and select any image.\nIt will instantly become your TV wallpaper!</string>
+    <string name="settings_wallpaper_storage_empty">No pictures found in TV storage or USB drive</string>
     <string name="settings_section_dimmer">Background Dimmer</string>
     <string name="settings_dimmer_light">60% (Light)</string>
     <string name="settings_dimmer_medium">80% (Balanced)</string>

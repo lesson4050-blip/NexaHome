@@ -372,6 +372,16 @@
     <string name="settings_wallpaper_category_photo">Фотообои</string>
     <string name="settings_custom_wallpaper_success">Пользовательские обои установлены</string>
     <string name="settings_custom_wallpaper_fail">Не удалось открыть изображение</string>
+    <string name="settings_wallpaper_upload_phone_title">Загрузить с телефона (Wi-Fi / QR)</string>
+    <string name="settings_wallpaper_upload_phone_subtitle">Откройте страницу на смартфоне и выберите фото</string>
+    <string name="settings_wallpaper_upload_storage_title">Из памяти ТВ или флешки</string>
+    <string name="settings_wallpaper_upload_storage_subtitle">Поиск изображений в папках Download, Pictures, DCIM</string>
+    <string name="settings_wallpaper_upload_system_title">Системный проводник</string>
+    <string name="settings_wallpaper_upload_system_subtitle">Стандартная галерея Android (при наличии)</string>
+    <string name="settings_wallpaper_phone_dialog_title">Установка обоев со смартфона</string>
+    <string name="settings_wallpaper_phone_dialog_subtitle">Беспроводная передача по локальной сети Wi-Fi</string>
+    <string name="settings_wallpaper_phone_dialog_instructions">1. Подключите телефон к той же сети Wi-Fi.\n2. Откройте в браузере смартфона адрес:\n   %1$s\n3. Перейдите во вкладку «Обои» и выберите любое фото.\nОно мгновенно появится на экране телевизора!</string>
+    <string name="settings_wallpaper_storage_empty">Накопитель пуст или нет изображений в папках Download/Pictures</string>
     <string name="settings_section_dimmer">Затемнение фона</string>
     <string name="settings_dimmer_light">60% (Светлое)</string>
     <string name="settings_dimmer_medium">80% (Оптимальное)</string>
