@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipChildren="false"
-    android:clipToPadding="false"
-    android:background="@color/tv_dark_bg">
+    android:clipToPadding="false">
 
     <!-- 0. Background Animated Silk Shader ViewStub (loaded on-demand only if SILK theme is active) -->
     <ViewStub
@@ -30,12 +29,13 @@
         android:background="@color/tv_dimmer" />
 
     <!-- 3. Overscan Safe-Zone (5% boundary) -->
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/container_safe_zone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipChildren="false"
         android:clipToPadding="false"
+        android:orientation="horizontal"
         android:paddingStart="@dimen/overscan_safe_margin_horizontal"
         android:paddingTop="@dimen/overscan_safe_margin_vertical"
         android:paddingEnd="@dimen/overscan_safe_margin_horizontal"
@@ -45,17 +45,14 @@
         <LinearLayout
             android:id="@+id/container_sidebar"
             android:layout_width="@dimen/sidebar_width"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:elevation="12dp"
             android:clipChildren="false"
             android:clipToPadding="false"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:gravity="center_horizontal"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="vertical">
 
             <!-- Primary Nav Tiles: 1. Home, 2. Apps, 3. IPTV, 4. Games, 5. Cast -->
             <ImageButton
@@ -161,20 +158,18 @@
         </LinearLayout>
 
         <!-- 5. Main Content Canvas -->
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:id="@+id/container_main_content"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:layout_marginStart="24dp"
             android:clipChildren="true"
             android:clipToPadding="false"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/container_sidebar"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="vertical">
 
             <!-- 5.1 Top Bar Component -->
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <RelativeLayout
                 android:id="@+id/container_top_bar"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/topbar_height"
@@ -182,10 +177,7 @@
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:paddingEnd="8dp">
 
                 <!-- Search Cluster -->
                 <LinearLayout
@@ -200,9 +192,8 @@
                     android:orientation="horizontal"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true">
 
                     <ImageView
                         android:id="@+id/iv_search_icon"
@@ -233,9 +224,8 @@
                     android:padding="10dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_mic"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/search_bar"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_toEndOf="@id/search_bar"
+                    android:layout_centerVertical="true" />
 
                 <LinearLayout
                     android:id="@+id/btn_google_assistant"
@@ -250,9 +240,8 @@
                     android:paddingStart="12dp"
                     android:paddingEnd="16dp"
                     android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/btn_voice_search"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_toEndOf="@id/btn_voice_search"
+                    android:layout_centerVertical="true">
 
                     <ImageView
                         android:layout_width="22dp"
@@ -280,9 +269,8 @@
                     android:layout_marginEnd="8dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true">
 
                     <!-- VPN Widget Pill -->
                     <LinearLayout
@@ -404,23 +392,20 @@
 
                 </LinearLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
 
             <!-- 5.2 Scrollable Content Rows (Leanback Shelf Container) -->
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/scroll_container"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_weight="1"
                 android:layout_marginTop="4dp"
                 android:clipChildren="true"
                 android:clipToPadding="false"
                 android:paddingTop="12dp"
                 android:paddingBottom="0dp"
-                android:scrollbars="none"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/container_top_bar">
+                android:scrollbars="none">
 
                 <LinearLayout
                     android:id="@+id/container_all_shelves"
@@ -648,8 +633,8 @@
 
             </androidx.core.widget.NestedScrollView>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </FrameLayout>

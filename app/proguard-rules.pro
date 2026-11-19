@@ -35,3 +35,11 @@
 
 # Android TV Leanback
 -keep class androidx.leanback.** { *; }
+
+# Keep Custom Views for XML inflation
+-keep class com.orbit.tv.launcher.ui.views.** { *; }
+-keepclassmembers class * extends android.view.View {
+    public <init>(android.content.Context);
+    public <init>(android.content.Context, android.util.AttributeSet);
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
