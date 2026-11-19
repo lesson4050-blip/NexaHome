@@ -95,7 +95,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     init {
         loadInstalledApps()
         viewModelScope.launch {
-            delay(150) // Let initial apps shelf & UI frame layout first
+            delay(800) // Defer off-screen media rows until after initial frame draw
             loadMediaShelves()
         }
         startClockTicker()

@@ -109,9 +109,21 @@ class HomeActivity : AppCompatActivity() {
         })
     }
 
+    private var silkShaderView: com.orbit.tv.launcher.ui.views.SilkShaderView? = null
+
+    private fun getOrInflateSilkShader(): com.orbit.tv.launcher.ui.views.SilkShaderView? {
+        if (silkShaderView != null) return silkShaderView
+        val theme = appPrefs.getWallpaperTheme()
+        if (theme.startsWith("SILK")) {
+            val stub = binding.stubSilkShader
+            silkShaderView = stub.inflate() as? com.orbit.tv.launcher.ui.views.SilkShaderView
+        }
+        return silkShaderView
+    }
+
     private val wallpaperReceiver = object : android.content.BroadcastReceiver() {
         override fun onReceive(context: android.content.Context?, intent: android.content.Intent?) {
-            TvWallpaperHelper.apply(appPrefs.getWallpaperTheme(), binding.silkShaderView, binding.ivBackdrop, binding.viewDimmer)
+            TvWallpaperHelper.apply(appPrefs.getWallpaperTheme(), getOrInflateSilkShader(), binding.ivBackdrop, binding.viewDimmer)
         }
     }
 
@@ -132,20 +144,28 @@ class HomeActivity : AppCompatActivity() {
         } catch (_: Exception) {}
     }
 
+    private var isFirstResume = true
+
     override fun onResume() {
         super.onResume()
         java.util.Locale.setDefault(viewModel.getActiveLocale())
-        applyHomeLayoutMode()
-        // Refresh apps list in case packages were uninstalled/installed while user was in another app
-        viewModel.loadInstalledApps()
-        viewModel.checkAndReloadMediaIfNeeded()
-        updateGoogleAssistantVisibility()
-        TvWallpaperHelper.apply(appPrefs.getWallpaperTheme(), binding.silkShaderView, binding.ivBackdrop, binding.viewDimmer)
+        if (isFirstResume) {
+            isFirstResume = false
+            updateGoogleAssistantVisibility()
+            TvWallpaperHelper.apply(appPrefs.getWallpaperTheme(), getOrInflateSilkShader(), binding.ivBackdrop, binding.viewDimmer)
+        } else {
+            applyHomeLayoutMode()
+            // Refresh apps list in case packages were uninstalled/installed while user was in another app
+            viewModel.loadInstalledApps()
+            viewModel.checkAndReloadMediaIfNeeded()
+            updateGoogleAssistantVisibility()
+            TvWallpaperHelper.apply(appPrefs.getWallpaperTheme(), getOrInflateSilkShader(), binding.ivBackdrop, binding.viewDimmer)
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        TvWallpaperHelper.pause(binding.silkShaderView)
+        TvWallpaperHelper.pause(silkShaderView)
         stopInPlaceVoiceRecognition()
         animateVoiceMicActive(false)
     }
@@ -222,6 +242,8 @@ class HomeActivity : AppCompatActivity() {
         binding.rvApps.apply {
             layoutManager = LinearLayoutManager(this@HomeActivity, LinearLayoutManager.HORIZONTAL, false)
             adapter = appsAdapter
+            setHasFixedSize(true)
+            setItemViewCacheSize(6)
         }
 
         // 2. Movies Shelf
@@ -232,6 +254,8 @@ class HomeActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@HomeActivity, LinearLayoutManager.HORIZONTAL, false)
             adapter = moviesAdapter
             setRecycledViewPool(sharedMediaPool)
+            setHasFixedSize(true)
+            setItemViewCacheSize(6)
         }
 
         // 3. Series Shelf
@@ -242,15 +266,17 @@ class HomeActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@HomeActivity, LinearLayoutManager.HORIZONTAL, false)
             adapter = seriesAdapter
             setRecycledViewPool(sharedMediaPool)
+            setHasFixedSize(true)
+            setItemViewCacheSize(6)
         }
         sharedMediaPool.setMaxRecycledViews(0, 10)
 
         val shaderScrollThrottleListener = object : RecyclerView.OnScrollListener() {
-            private val resumeRunnable = Runnable { binding.silkShaderView.resumeRendering() }
+            private val resumeRunnable = Runnable { silkShaderView?.resumeRendering() }
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING) {
                     binding.root.removeCallbacks(resumeRunnable)
-                    binding.silkShaderView.pauseRendering()
+                    silkShaderView?.pauseRendering()
                 } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     binding.root.removeCallbacks(resumeRunnable)
                     binding.root.postDelayed(resumeRunnable, 350)
@@ -680,12 +706,21 @@ class HomeActivity : AppCompatActivity() {
         return super.dispatchKeyEvent(event)
     }
 
+    private var lastAppliedLayoutMode: String? = null
+
     private fun applyHomeLayoutMode() {
         val mode = appPrefs.getHomeLayoutMode()
+        if (mode == lastAppliedLayoutMode) return
         val container = binding.containerAllShelves
         val apps = binding.containerAppsShelf
         val movies = binding.containerMoviesShelf
         val series = binding.containerSeriesShelf
+
+        if (mode == com.orbit.tv.launcher.features.apps.repository.AppPreferencesRepository.HOME_LAYOUT_DEFAULT && lastAppliedLayoutMode == null) {
+            lastAppliedLayoutMode = mode
+            return
+        }
+        lastAppliedLayoutMode = mode
 
         container.removeAllViews()
 

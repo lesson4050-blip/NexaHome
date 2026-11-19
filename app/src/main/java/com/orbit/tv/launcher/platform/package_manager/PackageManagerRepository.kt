@@ -45,8 +45,11 @@ class PackageManagerRepository(private val context: Context) {
             val label = resolveInfo.loadLabel(packageManager).toString()
             val icon = resolveInfo.loadIcon(packageManager)
             val isGame = (resolveInfo.activityInfo.applicationInfo.flags and ApplicationInfo.FLAG_IS_GAME) != 0
-            val launchIntent = packageManager.getLeanbackLaunchIntentForPackage(pkg)
-                ?: packageManager.getLaunchIntentForPackage(pkg)
+            val launchIntent = Intent(Intent.ACTION_MAIN).apply {
+                addCategory(Intent.CATEGORY_LEANBACK_LAUNCHER)
+                component = android.content.ComponentName(pkg, resolveInfo.activityInfo.name)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
 
             appsMap[pkg] = AppModel(
                 packageName = pkg,
@@ -70,7 +73,11 @@ class PackageManagerRepository(private val context: Context) {
             val label = resolveInfo.loadLabel(packageManager).toString()
             val icon = resolveInfo.loadIcon(packageManager)
             val isGame = (resolveInfo.activityInfo.applicationInfo.flags and ApplicationInfo.FLAG_IS_GAME) != 0
-            val launchIntent = packageManager.getLaunchIntentForPackage(pkg)
+            val launchIntent = Intent(Intent.ACTION_MAIN).apply {
+                addCategory(Intent.CATEGORY_LAUNCHER)
+                component = android.content.ComponentName(pkg, resolveInfo.activityInfo.name)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
 
             appsMap[pkg] = AppModel(
                 packageName = pkg,

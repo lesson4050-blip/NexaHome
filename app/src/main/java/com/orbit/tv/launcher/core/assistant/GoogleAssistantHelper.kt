@@ -8,17 +8,23 @@ object GoogleAssistantHelper {
 
     private const val KATNISS_PKG = "com.google.android.katniss"
     private const val SEARCHBOX_PKG = "com.google.android.googlequicksearchbox"
+    @Volatile
+    private var cachedAvailable: Boolean? = null
 
     fun isAvailable(context: Context): Boolean {
+        cachedAvailable?.let { return it }
         for (pkg in listOf(KATNISS_PKG, SEARCHBOX_PKG)) {
             try {
                 context.packageManager.getPackageInfo(pkg, 0)
+                cachedAvailable = true
                 return true
             } catch (_: PackageManager.NameNotFoundException) {
             }
         }
         val assistIntent = Intent(Intent.ACTION_ASSIST)
-        return assistIntent.resolveActivity(context.packageManager) != null
+        val available = assistIntent.resolveActivity(context.packageManager) != null
+        cachedAvailable = available
+        return available
     }
     fun launch(context: Context): Boolean {
         // 1. Prioritize Katniss Assistant TV search trampoline

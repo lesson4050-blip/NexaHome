@@ -111,6 +111,7 @@ class SmartTvApplication : Application(), ImageLoaderFactory {
 
     private fun applyAppDensity() {
         val dm = resources.displayMetrics
+        if (dm.densityDpi == TARGET_DPI) return
         dm.densityDpi = TARGET_DPI
         dm.density = TARGET_DPI / 160f
         dm.scaledDensity = dm.density
@@ -129,6 +130,7 @@ class SmartTvApplication : Application(), ImageLoaderFactory {
 
     private fun applyActivityDensity(activity: Activity) {
         val dm = activity.resources.displayMetrics
+        if (dm.densityDpi == TARGET_DPI) return
         dm.densityDpi = TARGET_DPI
         dm.density = TARGET_DPI / 160f
         dm.scaledDensity = dm.density

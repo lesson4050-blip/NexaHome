@@ -37,6 +37,7 @@ object TvFocusHelper {
                     .translationZ(0f)
                     .setDuration(duration)
                     .setInterpolator(interpolator)
+                    .withLayer()
                     .start()
             } else {
                 v.animate()
@@ -45,6 +46,7 @@ object TvFocusHelper {
                     .translationZ(0f)
                     .setDuration(duration)
                     .setInterpolator(interpolator)
+                    .withLayer()
                     .start()
             }
         }

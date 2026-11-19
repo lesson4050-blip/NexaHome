@@ -8,12 +8,12 @@
     android:clipToPadding="false"
     android:background="@color/tv_dark_bg">
 
-    <!-- 0. Background Animated Silk Shader -->
-    <com.orbit.tv.launcher.ui.views.SilkShaderView
-        android:id="@+id/silk_shader_view"
+    <!-- 0. Background Animated Silk Shader ViewStub (loaded on-demand only if SILK theme is active) -->
+    <ViewStub
+        android:id="@+id/stub_silk_shader"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone" />
+        android:layout="@layout/view_silk_shader" />
 
     <!-- 1. Background Backdrop Scenery -->
     <ImageView
@@ -452,7 +452,6 @@
                             android:paddingEnd="36dp"
                             android:nestedScrollingEnabled="false"
                             android:orientation="horizontal"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             tools:listitem="@layout/item_app_card" />
 
                     </LinearLayout>
@@ -547,7 +546,6 @@
                             android:paddingEnd="36dp"
                             android:nestedScrollingEnabled="false"
                             android:orientation="horizontal"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             tools:listitem="@layout/item_media_card" />
 
                     </LinearLayout>
@@ -642,7 +640,6 @@
                             android:paddingEnd="36dp"
                             android:nestedScrollingEnabled="false"
                             android:orientation="horizontal"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             tools:listitem="@layout/item_media_card" />
 
                     </LinearLayout>
