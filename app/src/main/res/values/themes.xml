@@ -13,4 +13,19 @@
         <item name="android:fontFamily">@font/app_font</item>
         <item name="fontFamily">@font/app_font</item>
     </style>
+
+    <style name="Animation.TvSideSheet" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/tv_side_sheet_enter</item>
+        <item name="android:windowExitAnimation">@anim/tv_side_sheet_exit</item>
+    </style>
+
+    <style name="Theme.TvSideSheetDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowAnimationStyle">@style/Animation.TvSideSheet</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.55</item>
+    </style>
 </resources>

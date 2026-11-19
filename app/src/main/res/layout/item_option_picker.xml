@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container_option_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:background="@drawable/bg_genre_chip"
+    android:minHeight="64dp"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/bg_side_sheet_item"
     android:clickable="true"
     android:focusable="true"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingStart="16dp"
-    android:paddingTop="12dp"
-    android:paddingEnd="16dp"
-    android:paddingBottom="12dp">
+    android:paddingStart="20dp"
+    android:paddingTop="14dp"
+    android:paddingEnd="18dp"
+    android:paddingBottom="14dp">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -27,28 +29,30 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-bold"
             android:textColor="@color/white"
-            android:textSize="15sp"
-            tools:text="Українська" />
+            android:textSize="16sp"
+            tools:text="Фиолетовый шелк" />
 
         <TextView
             android:id="@+id/tv_option_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="3dp"
             android:fontFamily="sans-serif"
             android:textColor="@color/white_60"
-            android:textSize="11sp"
+            android:textSize="12sp"
             android:visibility="gone"
-            tools:text="uk • Каталог контенту"
+            tools:text="Живые обои"
             tools:visibility="visible" />
     </LinearLayout>
 
+    <!-- Selected check indicator -->
     <ImageView
         android:id="@+id/iv_option_check"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
-        android:layout_marginStart="12dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="14dp"
         android:src="@drawable/ic_check"
+        app:tint="@color/leanback_cyan"
         android:visibility="gone"
         tools:visibility="visible" />
 

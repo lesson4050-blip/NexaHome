@@ -286,16 +286,19 @@ class LauncherSettingsActivity : AppCompatActivity() {
                 )
             }
 
-            list.add(TvOptionPickerDialog.OptionItem("SCENERY", getString(R.string.settings_wallpaper_scenery_fjord), "4K фотообои", current == "SCENERY" || current == "SCENERY_FJORD"))
-            list.add(TvOptionPickerDialog.OptionItem("SCENERY_AURORA", getString(R.string.settings_wallpaper_scenery_aurora), "4K фотообои", current == "SCENERY_AURORA"))
-            list.add(TvOptionPickerDialog.OptionItem("SCENERY_ALPINE", getString(R.string.settings_wallpaper_scenery_alpine), "4K фотообои", current == "SCENERY_ALPINE"))
-            list.add(TvOptionPickerDialog.OptionItem("SCENERY_FOREST", getString(R.string.settings_wallpaper_scenery_forest), "4K фотообои", current == "SCENERY_FOREST"))
-            list.add(TvOptionPickerDialog.OptionItem("SCENERY_LAKE", getString(R.string.settings_wallpaper_scenery_lake), "4K фотообои", current == "SCENERY_LAKE"))
-            list.add(TvOptionPickerDialog.OptionItem("SILK_VIOLET", getString(R.string.settings_wallpaper_silk_violet), "Живой шейдер 60 FPS", current == "SILK_VIOLET"))
-            list.add(TvOptionPickerDialog.OptionItem("SILK_CYAN", getString(R.string.settings_wallpaper_silk_cyan), "Живой шейдер 60 FPS", current == "SILK_CYAN"))
-            list.add(TvOptionPickerDialog.OptionItem("SILK_EMERALD", getString(R.string.settings_wallpaper_silk_emerald), "Живой шейдер 60 FPS", current == "SILK_EMERALD"))
-            list.add(TvOptionPickerDialog.OptionItem("SILK_MIDNIGHT", getString(R.string.settings_wallpaper_silk_midnight), "Живой шейдер 60 FPS", current == "SILK_MIDNIGHT"))
-            list.add(TvOptionPickerDialog.OptionItem("SILK_CRIMSON", getString(R.string.settings_wallpaper_silk_crimson), "Живой шейдер 60 FPS", current == "SILK_CRIMSON"))
+            val catPhoto = getString(R.string.settings_wallpaper_category_photo)
+            val catSilk = getString(R.string.settings_wallpaper_category_silk)
+
+            list.add(TvOptionPickerDialog.OptionItem("SCENERY", getString(R.string.settings_wallpaper_scenery_fjord), catPhoto, current == "SCENERY" || current == "SCENERY_FJORD"))
+            list.add(TvOptionPickerDialog.OptionItem("SCENERY_AURORA", getString(R.string.settings_wallpaper_scenery_aurora), catPhoto, current == "SCENERY_AURORA"))
+            list.add(TvOptionPickerDialog.OptionItem("SCENERY_ALPINE", getString(R.string.settings_wallpaper_scenery_alpine), catPhoto, current == "SCENERY_ALPINE"))
+            list.add(TvOptionPickerDialog.OptionItem("SCENERY_FOREST", getString(R.string.settings_wallpaper_scenery_forest), catPhoto, current == "SCENERY_FOREST"))
+            list.add(TvOptionPickerDialog.OptionItem("SCENERY_LAKE", getString(R.string.settings_wallpaper_scenery_lake), catPhoto, current == "SCENERY_LAKE"))
+            list.add(TvOptionPickerDialog.OptionItem("SILK_VIOLET", getString(R.string.settings_wallpaper_silk_violet), catSilk, current == "SILK_VIOLET"))
+            list.add(TvOptionPickerDialog.OptionItem("SILK_CYAN", getString(R.string.settings_wallpaper_silk_cyan), catSilk, current == "SILK_CYAN"))
+            list.add(TvOptionPickerDialog.OptionItem("SILK_EMERALD", getString(R.string.settings_wallpaper_silk_emerald), catSilk, current == "SILK_EMERALD"))
+            list.add(TvOptionPickerDialog.OptionItem("SILK_MIDNIGHT", getString(R.string.settings_wallpaper_silk_midnight), catSilk, current == "SILK_MIDNIGHT"))
+            list.add(TvOptionPickerDialog.OptionItem("SILK_CRIMSON", getString(R.string.settings_wallpaper_silk_crimson), catSilk, current == "SILK_CRIMSON"))
 
             return list
         }

@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +12,15 @@ import android.view.Window
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
+import com.orbit.tv.launcher.R
 import com.orbit.tv.launcher.core.focus.TvFocusHelper
 import com.orbit.tv.launcher.databinding.DialogOptionPickerBinding
 import com.orbit.tv.launcher.databinding.ItemOptionPickerBinding
 
+/**
+ * Modern full-height Apple TV / Google TV style side sheet selection drawer.
+ * Slides in smoothly from the right, providing luxurious vertical space for TV remote navigation.
+ */
 class TvOptionPickerDialog : DialogFragment() {
 
     data class OptionItem(
@@ -49,11 +55,29 @@ class TvOptionPickerDialog : DialogFragment() {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.Theme_TvSideSheetDialog)
+    }
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         return dialog
+    }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.let { window ->
+            window.decorView.setPadding(0, 0, 0, 0)
+            val dm = resources.displayMetrics
+            // Clean 520dp wide side panel or 45% max width on 1080p
+            val panelWidth = (520 * dm.density).toInt().coerceAtMost((dm.widthPixels * 0.45f).toInt())
+            window.setLayout(panelWidth, ViewGroup.LayoutParams.MATCH_PARENT)
+            window.setGravity(Gravity.END)
+            window.setWindowAnimations(R.style.Animation_TvSideSheet)
+        }
     }
 
     override fun onCreateView(
@@ -68,6 +92,7 @@ class TvOptionPickerDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.tvDialogTitle.text = titleText
+        binding.tvDialogSubtitle.text = getString(R.string.settings_options_dialog_count, options.size)
 
         val adapter = OptionAdapter(options) { selected ->
             onSelectListener?.invoke(selected)
@@ -120,7 +145,7 @@ class TvOptionPickerDialog : DialogFragment() {
                 ivOptionCheck.visibility = if (item.isSelected) View.VISIBLE else View.GONE
                 containerOptionItem.isSelected = item.isSelected
 
-                TvFocusHelper.bindFocusScale(root, 1.02f)
+                TvFocusHelper.bindFocusScale(root, 1.03f, 4f)
 
                 root.setOnClickListener {
                     onClick(item)

@@ -307,9 +307,20 @@
     <string name="settings_wallpaper_focus">Темний фокус</string>
     <string name="settings_wallpaper_scenery">Гірський пейзаж</string>
     <string name="settings_wallpaper_nebula">Глибокий космос</string>
-    <string name="settings_wallpaper_silk_violet">Фіолетовий шовк (Живий)</string>
-    <string name="settings_wallpaper_silk_cyan">Бірюзовий шовк (Живий)</string>
-    <string name="settings_wallpaper_silk_emerald">Смарагдовий шовк (Живий)</string>
-    <string name="settings_wallpaper_silk_midnight">Синій шовк (Живий)</string>
-    <string name="settings_wallpaper_silk_crimson">Рубіновий шовк (Живий)</string>
+    <string name="settings_wallpaper_silk_violet">Фіолетовий шовк</string>
+    <string name="settings_wallpaper_silk_cyan">Бірюзовий шовк</string>
+    <string name="settings_wallpaper_silk_emerald">Смарагдовий шовк</string>
+    <string name="settings_wallpaper_silk_midnight">Глибокий синій</string>
+    <string name="settings_wallpaper_silk_crimson">Рубіновий шовк</string>
+    <string name="settings_wallpaper_scenery_fjord">Норвезький фьорд</string>
+    <string name="settings_wallpaper_scenery_aurora">Північне сяйво</string>
+    <string name="settings_wallpaper_scenery_alpine">Альпійський захід</string>
+    <string name="settings_wallpaper_scenery_forest">Туманний ліс</string>
+    <string name="settings_wallpaper_scenery_lake">Гірське озеро</string>
+    <string name="settings_wallpaper_custom">Власні шпалери</string>
+    <string name="settings_options_dialog_badge">Параметри</string>
+    <string name="settings_dialog_back_hint">Назад для закриття</string>
+    <string name="settings_options_dialog_count">Варіантів: %d</string>
+    <string name="settings_wallpaper_category_silk">Живі шпалери</string>
+    <string name="settings_wallpaper_category_photo">Фотошпалери</string>
 </resources>

@@ -2,43 +2,72 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="480dp"
-    android:layout_height="wrap_content"
-    android:background="@drawable/bg_dialog_plate"
-    android:clipChildren="false"
-    android:clipToPadding="false"
-    android:orientation="vertical"
-    android:padding="24dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_side_sheet_panel"
+    android:orientation="vertical">
 
-    <!-- Header -->
-    <TextView
-        android:id="@+id/tv_dialog_title"
-        android:layout_width="wrap_content"
+    <!-- Top Header Container -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-black"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        tools:text="Язык каталога" />
+        android:orientation="vertical"
+        android:paddingStart="36dp"
+        android:paddingTop="36dp"
+        android:paddingEnd="36dp"
+        android:paddingBottom="14dp">
 
-    <TextView
-        android:id="@+id/tv_dialog_subtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:fontFamily="sans-serif"
-        android:text="@string/settings_press_to_change"
-        android:textColor="@color/leanback_cyan"
-        android:textSize="12sp" />
+        <TextView
+            android:id="@+id/tv_dialog_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.08"
+            android:text="@string/settings_options_dialog_badge"
+            android:textAllCaps="true"
+            android:textColor="@color/leanback_cyan"
+            android:textSize="11sp" />
 
-    <!-- Items List -->
+        <TextView
+            android:id="@+id/tv_dialog_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:fontFamily="sans-serif-black"
+            android:textColor="@color/white"
+            android:textSize="26sp"
+            tools:text="Обои лаунчера" />
+
+        <TextView
+            android:id="@+id/tv_dialog_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="sans-serif"
+            android:text="@string/settings_press_to_change"
+            android:textColor="@color/white_60"
+            android:textSize="13sp" />
+
+        <!-- Accent separator line -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="#1FFFFFFF" />
+    </LinearLayout>
+
+    <!-- Scrollable Items List (Takes all vertical space cleanly) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_dialog_options"
         android:layout_width="match_parent"
-        android:layout_height="320dp"
-        android:layout_marginTop="16dp"
-        android:clipChildren="false"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:clipToPadding="false"
-        android:scrollbars="vertical"
+        android:paddingStart="32dp"
+        android:paddingTop="14dp"
+        android:paddingEnd="32dp"
+        android:paddingBottom="36dp"
+        android:scrollbars="none"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_option_picker" />
 
