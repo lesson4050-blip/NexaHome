@@ -73,7 +73,9 @@ object TvWallpaperHelper {
         silkView?.pauseRendering()
         silkView?.visibility = View.GONE
         backdropView?.visibility = View.VISIBLE
-        backdropView?.setImageResource(drawableRes)
+        backdropView?.load(drawableRes) {
+            crossfade(false)
+        }
         dimmerView?.setBackgroundResource(R.drawable.bg_top_subtle_gradient)
         dimmerView?.visibility = View.VISIBLE
     }

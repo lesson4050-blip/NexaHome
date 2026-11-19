@@ -14,10 +14,22 @@ import kotlinx.coroutines.withContext
  */
 class PackageManagerRepository(private val context: Context) {
 
+    companion object {
+        @Volatile
+        private var memoryCachedApps: List<AppModel>? = null
+
+        fun invalidateCache() {
+            memoryCachedApps = null
+        }
+    }
+
     private val packageManager: PackageManager = context.packageManager
     private val ownPackageName: String = context.packageName
 
-    suspend fun getInstalledTvApps(): List<AppModel> = withContext(Dispatchers.IO) {
+    suspend fun getInstalledTvApps(forceRefresh: Boolean = false): List<AppModel> = withContext(Dispatchers.IO) {
+        if (!forceRefresh) {
+            memoryCachedApps?.let { return@withContext it }
+        }
         val appsMap = mutableMapOf<String, AppModel>()
 
         // 1. Primary: Native Leanback TV Apps
@@ -69,7 +81,9 @@ class PackageManagerRepository(private val context: Context) {
             )
         }
 
-        appsMap.values.toList()
+        val list = appsMap.values.toList()
+        memoryCachedApps = list
+        list
     }
 
     fun launchApp(app: AppModel): Boolean {

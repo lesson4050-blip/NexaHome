@@ -66,16 +66,37 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val t0 = android.os.SystemClock.uptimeMillis()
         binding = ActivityHomeBinding.inflate(layoutInflater)
+        val t1 = android.os.SystemClock.uptimeMillis()
         setContentView(binding.root)
+        val t2 = android.os.SystemClock.uptimeMillis()
 
         setupFocusableControls()
+        val t3 = android.os.SystemClock.uptimeMillis()
         setupRecyclerViews()
+        val t4 = android.os.SystemClock.uptimeMillis()
         setupClickListeners()
+        val t5 = android.os.SystemClock.uptimeMillis()
         setupBackNavigation()
+        val t6 = android.os.SystemClock.uptimeMillis()
         setupShelfScrollCoordination()
+        val t7 = android.os.SystemClock.uptimeMillis()
         applyHomeLayoutMode()
+        val t8 = android.os.SystemClock.uptimeMillis()
         observeViewModelState()
+        val t9 = android.os.SystemClock.uptimeMillis()
+
+        android.util.Log.i("OrbitPerf", "INFLATE=${t1-t0}ms, SET_VIEW=${t2-t1}ms, FOCUS=${t3-t2}ms, RVS=${t4-t3}ms, CLICKS=${t5-t4}ms, BACK=${t6-t5}ms, COORD=${t7-t6}ms, MODE=${t8-t7}ms, VM_OBS=${t9-t8}ms, TOTAL_ON_CREATE=${t9-t0}ms")
+
+        binding.root.post {
+            val tPost = android.os.SystemClock.uptimeMillis()
+            android.util.Log.i("OrbitPerf", "FIRST_FRAME_POST=${tPost-t0}ms")
+            lifecycleScope.launch(kotlinx.coroutines.Dispatchers.IO) {
+                kotlinx.coroutines.delay(1200)
+                com.orbit.tv.launcher.features.cast.CastServerManager.start(applicationContext)
+            }
+        }
     }
 
     private fun setupBackNavigation() {
@@ -222,6 +243,24 @@ class HomeActivity : AppCompatActivity() {
             adapter = seriesAdapter
             setRecycledViewPool(sharedMediaPool)
         }
+        sharedMediaPool.setMaxRecycledViews(0, 10)
+
+        val shaderScrollThrottleListener = object : RecyclerView.OnScrollListener() {
+            private val resumeRunnable = Runnable { binding.silkShaderView.resumeRendering() }
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING) {
+                    binding.root.removeCallbacks(resumeRunnable)
+                    binding.silkShaderView.pauseRendering()
+                } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    binding.root.removeCallbacks(resumeRunnable)
+                    binding.root.postDelayed(resumeRunnable, 350)
+                }
+            }
+        }
+
+        binding.rvApps.addOnScrollListener(shaderScrollThrottleListener)
+        binding.rvMovies.addOnScrollListener(shaderScrollThrottleListener)
+        binding.rvSeries.addOnScrollListener(shaderScrollThrottleListener)
     }
 
     private fun setupClickListeners() {

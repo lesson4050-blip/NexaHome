@@ -52,8 +52,6 @@ class SmartTvApplication : Application(), ImageLoaderFactory {
             override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
             override fun onActivityDestroyed(activity: Activity) {}
         })
-
-        com.orbit.tv.launcher.features.cast.CastServerManager.start(this)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -152,7 +150,7 @@ class SmartTvApplication : Application(), ImageLoaderFactory {
             .bitmapConfig(Bitmap.Config.RGB_565) // 50% memory saving over ARGB_8888
             .memoryCache {
                 MemoryCache.Builder(this)
-                    .maxSizePercent(0.18) // Cap at 18% of available heap
+                    .maxSizePercent(0.10) // 10% of available heap is optimal for 1-2GB TV boxes
                     .build()
             }
             .diskCache {

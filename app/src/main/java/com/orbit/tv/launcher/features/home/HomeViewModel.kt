@@ -94,7 +94,10 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         loadInstalledApps()
-        loadMediaShelves()
+        viewModelScope.launch {
+            delay(150) // Let initial apps shelf & UI frame layout first
+            loadMediaShelves()
+        }
         startClockTicker()
     }
 
@@ -135,9 +138,9 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun loadInstalledApps() {
+    fun loadInstalledApps(forceRefresh: Boolean = false) {
         viewModelScope.launch {
-            val systemApps = packageManagerRepository.getInstalledTvApps()
+            val systemApps = packageManagerRepository.getInstalledTvApps(forceRefresh)
             val pinnedList = appPrefsRepository.getPinnedPackages()
             val hiddenSet = appPrefsRepository.getHiddenPackages()
 
