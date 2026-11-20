@@ -135,6 +135,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
+        TvWallpaperHelper.pause(silkShaderView)
         try {
             unregisterReceiver(wallpaperReceiver)
         } catch (_: Exception) {}
@@ -144,6 +145,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        TvWallpaperHelper.resume(silkShaderView)
         java.util.Locale.setDefault(viewModel.getActiveLocale())
         if (isFirstResume) {
             isFirstResume = false
@@ -159,6 +161,15 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) {
+            TvWallpaperHelper.resume(silkShaderView)
+        } else {
+            TvWallpaperHelper.pause(silkShaderView)
+        }
+    }
+
     override fun onPause() {
         super.onPause()
         TvWallpaperHelper.pause(silkShaderView)
@@ -167,6 +178,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        TvWallpaperHelper.pause(silkShaderView)
         speechRecognizer?.destroy()
         speechRecognizer = null
         super.onDestroy()

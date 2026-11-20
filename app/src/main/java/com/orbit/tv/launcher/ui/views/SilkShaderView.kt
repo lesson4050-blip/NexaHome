@@ -53,15 +53,15 @@ class SilkShaderView @JvmOverloads constructor(
         renderThread?.resumeRendering()
     }
 
-    companion object {
-        private const val FBO_WIDTH = 640
-        private const val FBO_HEIGHT = 360
+    private val isLowRam: Boolean by lazy {
+        val am = context.getSystemService(Context.ACTIVITY_SERVICE) as? android.app.ActivityManager
+        am?.isLowRamDevice == true
     }
 
     override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
-        android.util.Log.e("SilkDebug", "onSurfaceTextureAvailable: w=$width, h=$height")
+        android.util.Log.e("SilkDebug", "onSurfaceTextureAvailable: w=$width, h=$height, isLowRam=$isLowRam")
         stopThread()
-        renderThread = SilkRenderThread(surface, width, height, currentPalette).apply {
+        renderThread = SilkRenderThread(surface, width, height, currentPalette, isLowRam).apply {
             start()
         }
     }
@@ -101,12 +101,18 @@ class SilkShaderView @JvmOverloads constructor(
         private val surfaceTexture: SurfaceTexture,
         private var bufferWidth: Int,
         private var bufferHeight: Int,
-        @Volatile private var palette: Int
+        @Volatile private var palette: Int,
+        private val isLowRam: Boolean
     ) : Thread("SilkShaderThread") {
 
         @Volatile private var isRunning = true
         @Volatile private var isPaused = false
         private val pauseLock = Object()
+
+        private val fboWidth: Int = if (isLowRam) 960 else (if (bufferWidth > 0) bufferWidth else 1920)
+        private val fboHeight: Int = if (isLowRam) 540 else (if (bufferHeight > 0) bufferHeight else 1080)
+        private val surfWidth = IntArray(1)
+        private val surfHeight = IntArray(1)
 
         private var eglDisplay: EGLDisplay = EGL14.EGL_NO_DISPLAY
         private var eglContext: EGLContext = EGL14.EGL_NO_CONTEXT
@@ -389,7 +395,7 @@ class SilkShaderView @JvmOverloads constructor(
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, fboTextureId)
             GLES20.glTexImage2D(
                 GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA,
-                FBO_WIDTH, FBO_HEIGHT, 0,
+                fboWidth, fboHeight, 0,
                 GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, null
             )
             GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR)
@@ -417,16 +423,16 @@ class SilkShaderView @JvmOverloads constructor(
         }
 
         private fun drawFrame(timeSec: Float) {
-            // === PASS 1: Render silk into low-res 640x360 FBO ===
+            // === PASS 1: Render silk into FBO ===
             GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, fboId)
-            GLES20.glViewport(0, 0, FBO_WIDTH, FBO_HEIGHT)
+            GLES20.glViewport(0, 0, fboWidth, fboHeight)
             GLES20.glClearColor(0.02f, 0.02f, 0.04f, 1.0f)
             GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
 
             GLES20.glUseProgram(silkProgramId)
 
             GLES20.glUniform1f(uTimeHandle, timeSec)
-            GLES20.glUniform2f(uResHandle, FBO_WIDTH.toFloat(), FBO_HEIGHT.toFloat())
+            GLES20.glUniform2f(uResHandle, fboWidth.toFloat(), fboHeight.toFloat())
             GLES20.glUniform1i(uPaletteHandle, palette)
 
             GLES20.glEnableVertexAttribArray(aPosHandle)
@@ -441,8 +447,6 @@ class SilkShaderView @JvmOverloads constructor(
             GLES20.glDisableVertexAttribArray(aTexCoordHandle)
 
             // === PASS 2: Bilinear blit from FBO to physical window surface (Full Screen 1080p) ===
-            val surfWidth = IntArray(1)
-            val surfHeight = IntArray(1)
             EGL14.eglQuerySurface(eglDisplay, eglSurface, EGL14.EGL_WIDTH, surfWidth, 0)
             EGL14.eglQuerySurface(eglDisplay, eglSurface, EGL14.EGL_HEIGHT, surfHeight, 0)
             val screenW = if (surfWidth[0] > 0) surfWidth[0] else if (bufferWidth > 0) bufferWidth else 1920
