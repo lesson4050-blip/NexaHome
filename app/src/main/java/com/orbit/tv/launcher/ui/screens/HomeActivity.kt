@@ -92,10 +92,6 @@ class HomeActivity : AppCompatActivity() {
         binding.root.post {
             val tPost = android.os.SystemClock.uptimeMillis()
             android.util.Log.i("OrbitPerf", "FIRST_FRAME_POST=${tPost-t0}ms")
-            lifecycleScope.launch(kotlinx.coroutines.Dispatchers.IO) {
-                kotlinx.coroutines.delay(1200)
-                com.orbit.tv.launcher.features.cast.CastServerManager.start(applicationContext)
-            }
         }
     }
 

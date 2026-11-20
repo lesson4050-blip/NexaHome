@@ -77,6 +77,7 @@ object TvWallpaperHelper {
         if (currentRes != drawableRes) {
             backdropView?.tag = drawableRes
             backdropView?.load(drawableRes) {
+                bitmapConfig(android.graphics.Bitmap.Config.RGB_565)
                 crossfade(false)
             }
         }

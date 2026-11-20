@@ -72,8 +72,13 @@ class AppsAdapter(
             resetTransform()
             binding.tvAppLabel.text = app.label
             binding.tvAppLabel.paintFlags = binding.tvAppLabel.paintFlags or android.graphics.Paint.SUBPIXEL_TEXT_FLAG or android.graphics.Paint.ANTI_ALIAS_FLAG
-            if (app.iconDrawable != null) {
-                binding.ivAppIcon.setImageDrawable(app.iconDrawable)
+            val icon = app.iconDrawable ?: try {
+                binding.root.context.packageManager.getApplicationIcon(app.packageName)
+            } catch (_: Exception) {
+                null
+            }
+            if (icon != null) {
+                binding.ivAppIcon.setImageDrawable(icon)
             } else {
                 binding.ivAppIcon.setImageResource(R.drawable.ic_nav_apps)
             }

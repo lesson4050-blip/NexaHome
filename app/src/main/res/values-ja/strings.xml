@@ -18,7 +18,6 @@
     <string name="history_empty">視聴履歴はありません。\nホームから映画やドラマを開いてここで再開できます。</string>
     <string name="nav_home_apps">アプリ</string>
     <string name="nav_iptv">TVチャンネル</string>
-    <string name="nav_games">ゲーム</string>
     <string name="nav_optimizer">最適化</string>
     <string name="nav_cast">画面ミラーリング</string>
     <string name="nav_power">電源メニュー</string>
@@ -26,7 +25,6 @@
     <string name="subtitle_movies_trending">今週のトレンド</string>
     <string name="title_series">ドラマ・シリーズ</string>
     <string name="subtitle_series_top">人気のテレビ番組</string>
-    <string name="see_all">全て見る</string>
     <string name="badge_movie">映画</string>
     <string name="badge_series">ドラマ</string>
     <string name="genre_feature">特徴</string>
@@ -37,8 +35,6 @@
     <string name="tab_favorites">お気に入り</string>
     <string name="tab_hidden">非表示</string>
     <string name="app_cant_launch">%1$s を起動できません</string>
-    <string name="unable_open_wifi_settings">Wi-Fi設定を開けません</string>
-    <string name="unable_open_settings">設定を開けません</string>
     <string name="apps_empty_favorites">お気に入りのアプリはまだ固定されていません。\nここに固定するには、任意のアプリで [OK] または [MENU] を押し続けます。</string>
     <string name="apps_empty_hidden">非表示のアプリはありません。\nブロートウェア アプリを非表示にするには、[OK] または [MENU] を押し続けます。</string>
     <string name="apps_empty_all">アプリケーションが見つかりませんでした。</string>
@@ -68,8 +64,6 @@
     <string name="cat_sports">スポーツ</string>
     <string name="cat_cinema">シネマ</string>
     <string name="cat_news">ニュース</string>
-    <string name="iptv_stream_error">ストリーム エラー: %1$s</string>
-    <string name="iptv_no_channels">このカテゴリにはチャンネルがありません</string>
     <string name="iptv_next_program_format">次へ: %1$s</string>
     <string name="power_dialog_title">電源管理</string>
     <string name="power_dialog_subtitle">電源モードとスリープモードを管理する</string>
@@ -94,7 +88,6 @@
     <string name="optimizer_ram_details">無料: %1$d MB • システム: %2$d MB</string>
     <string name="optimizer_btn_boost">TV をブースト (RAM をクリア)</string>
     <string name="optimizer_btn_boosting">洗浄プロセス...</string>
-    <string name="optimizer_boost_freed">%1$d MB の RAM を解放しました</string>
     <string name="optimizer_boost_done">RAMはすでに最適化されています</string>
     <string name="optimizer_card_storage_title">内部ストレージ（フラッシュ）</string>
     <string name="optimizer_storage_format">%1$.1f GB/%2$.1f GB (%3$d%%)</string>
@@ -109,11 +102,9 @@
     <string name="optimizer_net_wifi">Wi-Fiネットワークに接続されています</string>
     <string name="optimizer_net_vpn">安全な VPN トンネルがアクティブです</string>
     <string name="optimizer_net_online">インターネット接続がアクティブです</string>
-    <string name="optimizer_ping_prefix">ピン:</string>
     <string name="optimizer_ping_testing">Ping: テスト中...</string>
     <string name="optimizer_ping_format">Ping: %1$s ミリ秒</string>
     <string name="optimizer_ping_unavailable">Ping: 利用不可</string>
-    <string name="optimizer_speed_prefix">スピード：</string>
     <string name="optimizer_speed_testing">速度: テスト中...</string>
     <string name="optimizer_speed_format">速度: %1$.1f Mbps</string>
     <string name="optimizer_speed_available">速度: 利用可能</string>
@@ -143,7 +134,6 @@
     <string name="cast_refresh_pin">PINを更新する</string>
     <string name="cast_qr_hint">スキャンして接続</string>
     <string name="cast_expiry_format">有効期限: %1$02d:%2$02d</string>
-    <string name="cast_pin_new_format">新しい PIN が生成されました: %1$s</string>
     <string name="cast_proto_airplay_title">Apple AirPlay</string>
     <string name="cast_proto_airplay_desc">iPhone、iPad、Mac からの画面ミラーリング</string>
     <string name="cast_proto_chromecast_title">Googleキャスト/クロームキャスト</string>
@@ -151,36 +141,21 @@
     <string name="cast_proto_miracast_title">Miracast (Wi-Fi ディスプレイ)</string>
     <string name="cast_proto_miracast_desc">Android および Windows からの直接画面ミラーリング</string>
     <string name="cast_badge_connect">接続する</string>
-    <string name="cast_miracast_toast">ミラキャストの準備ができました。携帯電話/PC で「ワイヤレス ディスプレイ」または「Smart View」を開きます</string>
-    <string name="cast_chromecast_toast">Chromecast は YouTube、Chrome、または Google Home からキャストする準備ができています</string>
-    <string name="cast_airscreen_toast">%1$s は AirScreen 経由でアクティブです。デバイスで Orbit TV を選択します</string>
-    <string name="cast_airplay_dialog_title">Apple AirPlay</string>
-    <string name="cast_airplay_dialog_msg">iPhone、iPad、または Mac からストリーミングするには、デバイスが同じ Wi-Fi に接続されていることを確認してください。\n\nTV 名: Orbit TV\nIP アドレス: %1$s\n\n推奨: Google Play から AirScreen をインストールします。</string>
     <string name="cast_btn_install_airscreen">エアスクリーンをインストールする</string>
     <string name="cast_btn_understood">わかった</string>
-    <string name="cast_toast_yt_started">携帯電話から YouTube の再生が開始されました</string>
-    <string name="cast_toast_video_started">ビデオの再生が開始されました</string>
-    <string name="cast_toast_media_failed">メディアを開けません</string>
-    <string name="cast_toast_file_opened">テレビで開かれたメディア ファイル</string>
-    <string name="cast_toast_file_received">テレビで受信したファイル (%1$d KB)</string>
-    <string name="search_dialog_hint">映画、シリーズ、アプリを検索...</string>
     <string name="search_btn_youtube">YouTube を検索</string>
     <string name="search_btn_google">Googleで検索</string>
     <string name="search_empty_hint">クエリを入力して、インストールされているアプリ、映画、ビデオを検索します</string>
     <string name="search_section_apps">マッチングアプリ</string>
     <string name="search_section_media">映画とシリーズ</string>
     <string name="search_no_results">このクエリでは何も見つかりませんでした</string>
-    <string name="search_voice_prompt">映画またはアプリケーション名を読み上げる</string>
-    <string name="search_voice_unavailable">このデバイスでは音声入力は利用できません。キーボードを使用します。</string>
     <string name="search_default_yt_query">映画の予告編</string>
     <string name="search_default_web_query">映画ニュース</string>
     <string name="search_cant_open_yt">YouTubeを開けません</string>
     <string name="search_cant_open_browser">ブラウザを開けません</string>
-    <string name="media_genre_fallback">長編映画</string>
     <string name="media_desc_unavailable">説明はありません。</string>
     <string name="media_btn_trailer">予告編</string>
     <string name="media_btn_search_apps">アプリで開く</string>
-    <string name="media_search_toast">%1$s を検索しています...</string>
     <string name="genre_all">すべて</string>
     <string name="genre_action">アクション</string>
     <string name="genre_adventure">アドベンチャー</string>
@@ -209,11 +184,8 @@
     <string name="vpn_active_country">VPN アクティブ • %1$s</string>
     <string name="vpn_disconnected">VPNが切断されました</string>
     <string name="vpn_traffic_unencrypted">すべての TV トラフィックは暗号化されていない • 直接接続</string>
-    <string name="vpn_clients_title">インストールされている VPN クライアント</string>
-    <string name="vpn_no_clients">サードパーティの VPN アプリは検出されませんでした (WireGuard、Amnezia、OpenVPN)</string>
     <string name="vpn_btn_system_settings">システム VPN 設定 (Android)</string>
     <string name="accessibility_home_service_label">オービットTVホームガード</string>
-    <string name="accessibility_home_service_desc">テレビのリモコンでホームを押したときに、優先的に Orbit TV のホーム画面に戻るようにしました。</string>
     <string name="cast_web_connected">テレビに接続しました (PIN: %1$s)</string>
     <string name="cast_web_tab_youtube">YouTube / ストリーム</string>
     <string name="cast_web_tab_files">ファイル</string>
@@ -237,29 +209,20 @@
     <string name="cast_web_cmd_done">実行されたコマンド</string>
     <string name="trailer_title_format">%1$s — 予告編</string>
     <string name="trailer_btn_open_yt">YouTubeで開く</string>
-    <string name="trailer_loading">予告編を読み込み中…</string>
     <string name="search_voice_listening">聞き取り中…</string>
     <string name="search_voice_processing">認識中…</string>
     <string name="vpn_btn_connect">VPN に接続</string>
     <string name="vpn_btn_disconnect">VPN を切断</string>
     <string name="vpn_locations_title">サーバーの場所</string>
-    <string name="vpn_loc_warp">⚡ Cloudflare WARP</string>
-    <string name="vpn_loc_us">🇺🇸 米国</string>
-    <string name="vpn_loc_de">🇩🇪 ドイツ</string>
-    <string name="vpn_loc_pl">🇵🇱 ポーランド</string>
 
     <!-- Launcher Settings Screen -->
     <string name="launcher_settings_title">Launcher Settings</string>
     <string name="launcher_settings_subtitle">Hidden apps, cache &amp; preferences</string>
     <string name="settings_section_hidden">Hidden Applications</string>
     <string name="settings_hidden_count">Hidden: %1$d</string>
-    <string name="settings_hidden_empty">No hidden applications. Long-press any app in Apps Hub to hide it.</string>
     <string name="settings_btn_unhide_all">Unhide All</string>
     <string name="settings_btn_unhide">RESTORE</string>
     <string name="settings_section_storage">Storage &amp; Disk Cache</string>
-    <string name="settings_cache_images">Posters: %1$s</string>
-    <string name="settings_cache_catalog">Catalogs: %1$s</string>
-    <string name="settings_cache_total">Total: %1$s</string>
     <string name="settings_btn_clear_images">Clear Posters</string>
     <string name="settings_btn_clear_all">Clear All Cache</string>
     <string name="settings_cache_cleared">Cache cleared successfully</string>
@@ -269,4 +232,5 @@
     <string name="settings_player_always_ask">Always Ask</string>
     <string name="settings_toast_unhidden">Restored: %1$s</string>
 
+    <string name="accessibility_home_service_desc">Ensures priority return to home screen when pressing Home on TV remotes.</string>
 </resources>

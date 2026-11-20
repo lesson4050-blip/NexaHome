@@ -18,7 +18,6 @@
     <string name="history_empty">Historia oglądania jest pusta.\nOtwórz filmy lub seriale na stronie głównej, aby wznowić oglądanie tutaj.</string>
     <string name="nav_home_apps">Aplikacje</string>
     <string name="nav_iptv">Kanały TV</string>
-    <string name="nav_games">Gry</string>
     <string name="nav_optimizer">Optymalizacja</string>
     <string name="nav_cast">Przesyłanie ekranu</string>
     <string name="nav_power">Zasilanie</string>
@@ -26,7 +25,6 @@
     <string name="subtitle_movies_trending">Trendy w tym tygodniu</string>
     <string name="title_series">Seriale</string>
     <string name="subtitle_series_top">Najlepsze programy telewizyjne</string>
-    <string name="see_all">Zobacz wszystko</string>
     <string name="badge_movie">FILM</string>
     <string name="badge_series">SERIAL</string>
     <string name="genre_feature">Funkcja</string>
@@ -37,8 +35,6 @@
     <string name="tab_favorites">Ulubione</string>
     <string name="tab_hidden">Ukryte</string>
     <string name="app_cant_launch">Nie można uruchomić %1$s</string>
-    <string name="unable_open_wifi_settings">Nie można otworzyć ustawień Wi-Fi</string>
-    <string name="unable_open_settings">Nie można otworzyć Ustawień</string>
     <string name="apps_empty_favorites">Nie przypięto jeszcze żadnych ulubionych aplikacji.\nPrzytrzymaj [OK] lub [MENU] na dowolnej aplikacji, aby przypiąć ją tutaj.</string>
     <string name="apps_empty_hidden">Żadnych ukrytych aplikacji.\nPrzytrzymaj [OK] lub [MENU] w przypadku aplikacji typu bloatware, aby je ukryć.</string>
     <string name="apps_empty_all">Nie znaleziono żadnych aplikacji.</string>
@@ -68,8 +64,6 @@
     <string name="cat_sports">Lekkoatletyka</string>
     <string name="cat_cinema">Kino</string>
     <string name="cat_news">Aktualności</string>
-    <string name="iptv_stream_error">Błąd transmisji: %1$s</string>
-    <string name="iptv_no_channels">Brak kanałów w tej kategorii</string>
     <string name="iptv_next_program_format">Dalej: %1$s</string>
     <string name="power_dialog_title">Zasilanie TV</string>
     <string name="power_dialog_subtitle">Zarządzaj trybami zasilania i uśpienia</string>
@@ -94,7 +88,6 @@
     <string name="optimizer_ram_details">Bezpłatny: %1$d MB • System: %2$d MB</string>
     <string name="optimizer_btn_boost">Zwiększ TV (wyczyść pamięć RAM)</string>
     <string name="optimizer_btn_boosting">Procesy czyszczenia...</string>
-    <string name="optimizer_boost_freed">Zwolniono %1$d MB pamięci RAM</string>
     <string name="optimizer_boost_done">Pamięć RAM jest już zoptymalizowana</string>
     <string name="optimizer_card_storage_title">Pamięć wewnętrzna (flash)</string>
     <string name="optimizer_storage_format">%1$.1f GB z %2$.1f GB (%3$d%%)</string>
@@ -109,11 +102,9 @@
     <string name="optimizer_net_wifi">Połączono sieć Wi-Fi</string>
     <string name="optimizer_net_vpn">Bezpieczny tunel VPN aktywny</string>
     <string name="optimizer_net_online">Połączenie internetowe aktywne</string>
-    <string name="optimizer_ping_prefix">Świst:</string>
     <string name="optimizer_ping_testing">Ping: testowanie...</string>
     <string name="optimizer_ping_format">Ping: %1$s ms</string>
     <string name="optimizer_ping_unavailable">Ping: niedostępny</string>
-    <string name="optimizer_speed_prefix">Prędkość:</string>
     <string name="optimizer_speed_testing">Prędkość: testowanie...</string>
     <string name="optimizer_speed_format">Szybkość: %1$.1f Mb/s</string>
     <string name="optimizer_speed_available">Prędkość: dostępna</string>
@@ -143,7 +134,6 @@
     <string name="cast_refresh_pin">Odśwież PIN</string>
     <string name="cast_qr_hint">SKANUJ, ABY POŁĄCZYĆ</string>
     <string name="cast_expiry_format">Wygasa za: %1$02d:%2$02d</string>
-    <string name="cast_pin_new_format">Wygenerowano nowy PIN: %1$s</string>
     <string name="cast_proto_airplay_title">Apple AirPlay</string>
     <string name="cast_proto_airplay_desc">Kopiowanie ekranu z iPhone\'a, iPada i komputera Mac</string>
     <string name="cast_proto_chromecast_title">Google Cast/Chromecast</string>
@@ -151,36 +141,21 @@
     <string name="cast_proto_miracast_title">Miracast (wyświetlacz Wi-Fi)</string>
     <string name="cast_proto_miracast_desc">Bezpośrednie kopiowanie ekranu z systemów Android i Windows</string>
     <string name="cast_badge_connect">Łączyć</string>
-    <string name="cast_miracast_toast">Miracast gotowy. Otwórz „Wyświetlacz bezprzewodowy” lub „Smart View” na telefonie/komputerze</string>
-    <string name="cast_chromecast_toast">Chromecast gotowy do przesyłania z YouTube, Chrome lub Google Home</string>
-    <string name="cast_airscreen_toast">%1$s aktywny przez AirScreen. Wybierz Orbit TV na swoim urządzeniu</string>
-    <string name="cast_airplay_dialog_title">Apple AirPlay</string>
-    <string name="cast_airplay_dialog_msg">Aby przesyłać strumieniowo z iPhone\'a, iPada lub komputera Mac, upewnij się, że Twoje urządzenie jest podłączone do tej samej sieci Wi-Fi.\n\nNazwa telewizora: Orbit TV\nAdres IP: %1$s\n\nZalecane: zainstaluj AirScreen z Google Play.</string>
     <string name="cast_btn_install_airscreen">Zainstaluj AirScreen</string>
     <string name="cast_btn_understood">Rozumiem</string>
-    <string name="cast_toast_yt_started">Odtwarzanie YouTube rozpoczęło się z telefonu</string>
-    <string name="cast_toast_video_started">Rozpoczęło się odtwarzanie wideo</string>
-    <string name="cast_toast_media_failed">Nie można otworzyć multimediów</string>
-    <string name="cast_toast_file_opened">Plik multimedialny otwarty na telewizorze</string>
-    <string name="cast_toast_file_received">Plik odebrany na telewizorze (%1$d KB)</string>
-    <string name="search_dialog_hint">Wyszukaj filmy, seriale lub aplikacje...</string>
     <string name="search_btn_youtube">Wyszukaj w YouTube</string>
     <string name="search_btn_google">Wyszukaj w Google</string>
     <string name="search_empty_hint">Wprowadź zapytanie, aby wyszukać zainstalowane aplikacje, filmy i wideo</string>
     <string name="search_section_apps">Pasujące aplikacje</string>
     <string name="search_section_media">Filmy i seriale</string>
     <string name="search_no_results">Nic nie znaleziono dla tego zapytania</string>
-    <string name="search_voice_prompt">Wypowiedz nazwę filmu lub aplikacji</string>
-    <string name="search_voice_unavailable">Wprowadzanie głosowe niedostępne na tym urządzeniu. Użyj klawiatury.</string>
     <string name="search_default_yt_query">Zwiastuny filmów</string>
     <string name="search_default_web_query">Nowości filmowe</string>
     <string name="search_cant_open_yt">Nie można otworzyć YouTube</string>
     <string name="search_cant_open_browser">Nie można otworzyć przeglądarki</string>
-    <string name="media_genre_fallback">Film fabularny</string>
     <string name="media_desc_unavailable">Opis niedostępny.</string>
     <string name="media_btn_trailer">Zwiastun</string>
     <string name="media_btn_search_apps">Otwórz w aplikacjach</string>
-    <string name="media_search_toast">Wyszukiwanie %1$s...</string>
     <string name="genre_all">Wszystkie</string>
     <string name="genre_action">Akcja</string>
     <string name="genre_adventure">Przygodowy</string>
@@ -209,11 +184,8 @@
     <string name="vpn_active_country">VPN AKTYWNY • %1$s</string>
     <string name="vpn_disconnected">VPN ODŁĄCZONY</string>
     <string name="vpn_traffic_unencrypted">Cały ruch telewizyjny nieszyfrowany • Połączenie bezpośrednie</string>
-    <string name="vpn_clients_title">Zainstalowani klienci VPN</string>
-    <string name="vpn_no_clients">Nie wykryto aplikacji VPN innych firm (WireGuard, Amnezia, OpenVPN)</string>
     <string name="vpn_btn_system_settings">Systemowe ustawienia VPN (Android)</string>
     <string name="accessibility_home_service_label">Strażnik domowy telewizji Orbit</string>
-    <string name="accessibility_home_service_desc">Zapewnia priorytetowy powrót do ekranu głównego Orbit TV po naciśnięciu przycisku Home na pilocie telewizora.</string>
     <string name="cast_web_connected">Podłączono do telewizora (PIN: %1$s)</string>
     <string name="cast_web_tab_youtube">YouTube/Stream</string>
     <string name="cast_web_tab_files">Akta</string>
@@ -237,29 +209,20 @@
     <string name="cast_web_cmd_done">Polecenie wykonane</string>
     <string name="trailer_title_format">%1$s — Zwiastun</string>
     <string name="trailer_btn_open_yt">Otwórz w YouTube</string>
-    <string name="trailer_loading">Ładowanie zwiastuna…</string>
     <string name="search_voice_listening">Słucham…</string>
     <string name="search_voice_processing">Rozpoznawanie…</string>
     <string name="vpn_btn_connect">Połącz z VPN</string>
     <string name="vpn_btn_disconnect">Rozłącz VPN</string>
     <string name="vpn_locations_title">Lokalizacja serwera</string>
-    <string name="vpn_loc_warp">⚡ Cloudflare WARP</string>
-    <string name="vpn_loc_us">🇺🇸 Stany Zjednoczone</string>
-    <string name="vpn_loc_de">🇩🇪 Niemcy</string>
-    <string name="vpn_loc_pl">🇵🇱 Polska</string>
 
     <!-- Launcher Settings Screen -->
     <string name="launcher_settings_title">Launcher Settings</string>
     <string name="launcher_settings_subtitle">Hidden apps, cache &amp; preferences</string>
     <string name="settings_section_hidden">Hidden Applications</string>
     <string name="settings_hidden_count">Hidden: %1$d</string>
-    <string name="settings_hidden_empty">No hidden applications. Long-press any app in Apps Hub to hide it.</string>
     <string name="settings_btn_unhide_all">Unhide All</string>
     <string name="settings_btn_unhide">RESTORE</string>
     <string name="settings_section_storage">Storage &amp; Disk Cache</string>
-    <string name="settings_cache_images">Posters: %1$s</string>
-    <string name="settings_cache_catalog">Catalogs: %1$s</string>
-    <string name="settings_cache_total">Total: %1$s</string>
     <string name="settings_btn_clear_images">Clear Posters</string>
     <string name="settings_btn_clear_all">Clear All Cache</string>
     <string name="settings_cache_cleared">Cache cleared successfully</string>
@@ -269,4 +232,5 @@
     <string name="settings_player_always_ask">Always Ask</string>
     <string name="settings_toast_unhidden">Restored: %1$s</string>
 
+    <string name="accessibility_home_service_desc">Ensures priority return to home screen when pressing Home on TV remotes.</string>
 </resources>

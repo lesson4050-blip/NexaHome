@@ -92,8 +92,13 @@ class AppOptionsDialog : DialogFragment() {
 
         binding.tvDialogAppTitle.text = app.label
         binding.tvDialogAppPackage.text = app.packageName
-        if (app.iconDrawable != null) {
-            binding.ivDialogAppIcon.setImageDrawable(app.iconDrawable)
+        val icon = app.iconDrawable ?: try {
+            binding.root.context.packageManager.getApplicationIcon(app.packageName)
+        } catch (_: Exception) {
+            null
+        }
+        if (icon != null) {
+            binding.ivDialogAppIcon.setImageDrawable(icon)
         } else {
             binding.ivDialogAppIcon.setImageResource(R.drawable.ic_nav_apps)
         }

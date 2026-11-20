@@ -18,7 +18,6 @@
     <string name="nav_history">History</string>
     <string name="nav_home_apps">Apps</string>
     <string name="nav_iptv">TV Channels</string>
-    <string name="nav_games">Gaming Arcade</string>
     <string name="nav_optimizer">Optimizer</string>
     <string name="nav_cast">Screen Cast</string>
     <string name="nav_power">System Power</string>
@@ -30,14 +29,10 @@
     <string name="history_empty">Watch history is empty.\nOpen movies or series from Home to resume them here.</string>
 
     <!-- Home Screen Shelves -->
-    <string name="title_recent">Continue Watching</string>
-    <string name="subtitle_recent">Recently opened movies &amp; shows</string>
-    <string name="badge_continue">CONTINUE</string>
     <string name="title_movies">Movies</string>
     <string name="subtitle_movies_trending">Trending this week</string>
     <string name="title_series">Series</string>
     <string name="subtitle_series_top">Top TV Shows</string>
-    <string name="see_all">See all</string>
     <string name="badge_movie">MOVIE</string>
     <string name="badge_series">TV SERIES</string>
     <string name="genre_feature">Feature</string>
@@ -54,8 +49,6 @@
     <string name="recommended_install">INSTALL</string>
     <string name="recommended_open">OPEN</string>
     <string name="app_cant_launch">Cannot launch %1$s</string>
-    <string name="unable_open_wifi_settings">Unable to open Wi-Fi settings</string>
-    <string name="unable_open_settings">Unable to open Settings</string>
     <string name="apps_empty_favorites">No favorite apps pinned yet.\nHold [OK] or [MENU] on any app to pin it here.</string>
     <string name="apps_empty_hidden">No hidden apps.\nHold [OK] or [MENU] on bloatware apps to hide them.</string>
     <string name="apps_empty_all">No applications found.</string>
@@ -88,13 +81,8 @@
     <string name="cat_all">All</string>
     <string name="cat_sports">Sports</string>
     <string name="cat_news">News</string>
-    <string name="cat_ukraine">Ukraine</string>
-    <string name="cat_cis">CIS</string>
     <string name="cat_cinema">Cinema</string>
-    <string name="cat_movies">Movies</string>
     <string name="iptv_manage_playlists">M3U Playlists</string>
-    <string name="iptv_stream_error">Stream error: %1$s</string>
-    <string name="iptv_no_channels">No channels in this category</string>
     <string name="iptv_next_program_format">Next: %1$s</string>
 
     <!-- TV Power Dialog -->
@@ -123,7 +111,6 @@
     <string name="optimizer_ram_details">Free: %1$d MB • System: %2$d MB</string>
     <string name="optimizer_btn_boost">Boost TV (Clear RAM)</string>
     <string name="optimizer_btn_boosting">Cleaning processes...</string>
-    <string name="optimizer_boost_freed">Freed %1$d MB of RAM</string>
     <string name="optimizer_boost_done">RAM is already optimized</string>
     <string name="optimizer_card_storage_title">Internal Storage (Flash)</string>
     <string name="optimizer_storage_format">%1$.1f GB of %2$.1f GB (%3$d%%)</string>
@@ -138,11 +125,9 @@
     <string name="optimizer_net_wifi">Wi-Fi network connected</string>
     <string name="optimizer_net_vpn">Secure VPN tunnel active</string>
     <string name="optimizer_net_online">Internet connection active</string>
-    <string name="optimizer_ping_prefix">Ping: </string>
     <string name="optimizer_ping_testing">Ping: testing...</string>
     <string name="optimizer_ping_format">Ping: %1$s ms</string>
     <string name="optimizer_ping_unavailable">Ping: unavailable</string>
-    <string name="optimizer_speed_prefix">Speed: </string>
     <string name="optimizer_speed_testing">Speed: testing...</string>
     <string name="optimizer_speed_format">Speed: %1$.1f Mbps</string>
     <string name="optimizer_speed_available">Speed: available</string>
@@ -174,7 +159,6 @@
     <string name="cast_refresh_pin">Refresh PIN</string>
     <string name="cast_qr_hint">SCAN TO CONNECT</string>
     <string name="cast_expiry_format">Expires in: %1$02d:%2$02d</string>
-    <string name="cast_pin_new_format">New PIN generated: %1$s</string>
     <string name="cast_proto_dlna_title">DLNA / UPnP Media</string>
     <string name="cast_proto_dlna_desc">Windows Cast to Device, VLC, BubbleUPnP, Samsung / Xiaomi Gallery</string>
     <string name="cast_proto_dlna_badge">ACTIVE</string>
@@ -186,11 +170,6 @@
     <string name="cast_proto_miracast_title">Miracast (Wi-Fi Display)</string>
     <string name="cast_proto_miracast_desc">Android Smart View, Quick Settings Cast, Win + K</string>
     <string name="cast_badge_connect">Connect</string>
-    <string name="cast_miracast_toast">Miracast ready. Open \"Wireless display\" or \"Smart View\" on phone/PC</string>
-    <string name="cast_chromecast_toast">Chromecast ready to cast from YouTube, Chrome, or Google Home</string>
-    <string name="cast_airscreen_toast">Opening AirScreen receiver</string>
-    <string name="cast_airplay_dialog_title">Apple AirPlay</string>
-    <string name="cast_airplay_dialog_msg">To stream from iPhone, iPad or Mac, make sure your device is connected to the same Wi-Fi.\n\nDevice: Smart TV\nIP Address: %1$s\n\nRecommended: install AirScreen from Google Play.</string>
     <string name="cast_btn_install_airscreen">Install AirScreen</string>
     <string name="cast_btn_understood">Got it</string>
     <string name="cast_network_offline">No network connection • Connect TV to Wi-Fi</string>
@@ -203,43 +182,30 @@
     <string name="cast_pin_access_label">REMOTE ACCESS PIN</string>
     <string name="cast_pin_purpose_hint">PIN is only for web remote • Not needed for Miracast / DLNA</string>
     <string name="cast_btn_launch_airscreen">Launch AirScreen (Receiver)</string>
-    <string name="cast_btn_display_settings">Android Display Settings</string>
     <string name="cast_airplay_instructions">1. Connect iPhone, iPad or Mac to the same Wi-Fi network as TV.\n2. Open Control Center and tap \'Screen Mirroring\'.\n3. Select Smart TV to mirror your screen.\n4. Use AirScreen for hardware-accelerated AirPlay reception.</string>
     <string name="cast_chromecast_instructions">1. Connect your phone or PC to the same Wi-Fi.\n2. Tap the Cast icon in YouTube, Chrome, or Google Home.\n3. The TV is ready to receive streams via built-in DLNA or Google Cast.</string>
     <string name="cast_miracast_instructions">1. Open \'Smart View\' (Samsung) or \'Wireless Display\' (Android/Windows).\n2. Select Smart TV to mirror your screen directly.\n3. If your TV lacks hardware Wi-Fi Direct sink, AirScreen provides software Miracast receiver.\n4. PIN on screen is NOT needed for Miracast / DLNA — it is strictly for the web remote on the left.</string>
     <string name="cast_section_web_title">WEB REMOTE &amp; DIRECT STREAM</string>
     <string name="cast_section_web_subtitle">From any phone without installing apps</string>
-    <string name="cast_section_web_desc">Point phone camera (iPhone or Android) at the QR code to stream YouTube, photos and videos directly to TV.</string>
     <string name="cast_section_mirror_title">SCREEN MIRRORING &amp; DLNA</string>
     <string name="cast_section_mirror_subtitle">Direct wireless streaming and mirroring</string>
-    <string name="cast_miracast_guide">To mirror from Android: open quick settings and tap \"Smart View\" or \"Cast\". On Windows PC: press Win + K.\n\nDevice: Smart TV\nIf your TV lacks native Wi-Fi Direct hardware, AirScreen acts as the universal receiver.</string>
-    <string name="cast_toast_yt_started">YouTube playback started from phone</string>
-    <string name="cast_toast_video_started">Video playback started</string>
-    <string name="cast_toast_media_failed">Unable to open media</string>
-    <string name="cast_toast_file_opened">Media file opened on TV</string>
-    <string name="cast_toast_file_received">File received on TV (%1$d KB)</string>
 
     <!-- Search Dialog -->
-    <string name="search_dialog_hint">Search movies, series, or apps...</string>
     <string name="search_btn_youtube">Search YouTube</string>
     <string name="search_btn_google">Search Google</string>
     <string name="search_empty_hint">Enter query to search installed apps, movies, and videos</string>
     <string name="search_section_apps">Matching Apps</string>
     <string name="search_section_media">Movies &amp; Series</string>
     <string name="search_no_results">Nothing found for this query</string>
-    <string name="search_voice_prompt">Speak movie or application name</string>
-    <string name="search_voice_unavailable">Voice input unavailable on this device. Use keyboard.</string>
     <string name="search_default_yt_query">Movie trailers</string>
     <string name="search_default_web_query">Movie news</string>
     <string name="search_cant_open_yt">Unable to open YouTube</string>
     <string name="search_cant_open_browser">Unable to open browser</string>
 
     <!-- Media Detail Dialog -->
-    <string name="media_genre_fallback">Feature Film</string>
     <string name="media_desc_unavailable">Description unavailable.</string>
     <string name="media_btn_trailer">Trailer</string>
     <string name="media_btn_search_apps">Watch in Apps</string>
-    <string name="media_search_toast">Opening %1$s...</string>
     <string name="watch_dialog_title">Watch Movie</string>
     <string name="watch_dialog_section_hint">INSTALLED PLAYERS &amp; SERVICES</string>
     <string name="watch_badge_open">OPEN</string>
@@ -276,13 +242,10 @@
     <string name="vpn_active_country">VPN ACTIVE • %1$s</string>
     <string name="vpn_disconnected">VPN DISCONNECTED</string>
     <string name="vpn_traffic_unencrypted">All TV traffic unencrypted • Direct connection</string>
-    <string name="vpn_clients_title">Installed VPN Clients</string>
-    <string name="vpn_no_clients">No third-party VPN apps detected (WireGuard, Amnezia, OpenVPN)</string>
     <string name="vpn_btn_system_settings">System VPN Settings (Android)</string>
 
     <!-- Accessibility Service -->
     <string name="accessibility_home_service_label">Orbit TV Home Guard</string>
-    <string name="accessibility_home_service_desc">Ensures priority return to Orbit TV home screen when pressing Home on TV remotes.</string>
 
     <!-- Cast Web Remote (Served to mobile browsers) -->
     <string name="cast_web_connected">Connected to TV (PIN: %1$s)</string>
@@ -308,36 +271,25 @@
     <string name="cast_web_cmd_done">Command executed</string>
     <string name="trailer_title_format">%1$s — Trailer</string>
     <string name="trailer_btn_open_yt">Open in YouTube</string>
-    <string name="trailer_loading">Loading trailer…</string>
     <string name="search_voice_listening">Listening…</string>
     <string name="search_voice_processing">Recognizing…</string>
     <string name="vpn_btn_connect">Connect VPN</string>
     <string name="vpn_btn_disconnect">Disconnect VPN</string>
     <string name="vpn_locations_title">Server Location</string>
-    <string name="vpn_loc_warp">⚡ Cloudflare WARP</string>
-    <string name="vpn_loc_us">🇺🇸 United States</string>
-    <string name="vpn_loc_de">🇩🇪 Germany</string>
-    <string name="vpn_loc_pl">🇵🇱 Poland</string>
-    <string name="google_assistant">Google Assistant</string>
     <string name="assistant_btn_search">Search</string>
     <string name="cat_favorites">Favorites</string>
     <string name="osd_hint_navigation">[OK] Select • [BACK] Close</string>
     <string name="iptv_web_import_hint">Or open on phone: %1$s</string>
     <string name="iptv_web_import_emulator_hint">Emulator: open in PC browser http://localhost:8080 (via adb forward)</string>
-    <string name="iptv_channels_count_format">%1$d channels</string>
 
     <!-- Launcher Settings Screen -->
     <string name="launcher_settings_title">Launcher Settings</string>
     <string name="launcher_settings_subtitle">Hidden apps, cache &amp; preferences</string>
     <string name="settings_section_hidden">Hidden Applications</string>
     <string name="settings_hidden_count">Hidden: %1$d</string>
-    <string name="settings_hidden_empty">No hidden applications. Long-press any app in Apps Hub to hide it.</string>
     <string name="settings_btn_unhide_all">Unhide All</string>
     <string name="settings_btn_unhide">RESTORE</string>
     <string name="settings_section_storage">Storage &amp; Disk Cache</string>
-    <string name="settings_cache_images">Posters: %1$s</string>
-    <string name="settings_cache_catalog">Catalogs: %1$s</string>
-    <string name="settings_cache_total">Total: %1$s</string>
     <string name="settings_btn_clear_images">Clear Posters</string>
     <string name="settings_btn_clear_all">Clear All Cache</string>
     <string name="settings_cache_cleared">Cache cleared successfully</string>
@@ -346,9 +298,6 @@
     <string name="settings_section_player">Preferred Video Player</string>
     <string name="settings_player_always_ask">Always Ask</string>
     <string name="settings_section_wallpaper">Wallpaper Theme</string>
-    <string name="settings_wallpaper_focus">Dark Focus</string>
-    <string name="settings_wallpaper_scenery">Mountain Scenery</string>
-    <string name="settings_wallpaper_nebula">Deep Nebula</string>
     <string name="settings_wallpaper_silk_violet">Violet Silk</string>
     <string name="settings_wallpaper_silk_cyan">Cyan Silk</string>
     <string name="settings_wallpaper_silk_emerald">Emerald Silk</string>
@@ -366,7 +315,6 @@
     <string name="settings_dialog_player_title">Select Preferred Media Player</string>
     <string name="settings_press_to_change">Press to choose</string>
     <string name="settings_options_dialog_badge">Settings</string>
-    <string name="settings_dialog_back_hint">Press Back to close</string>
     <string name="settings_options_dialog_count">%d options available</string>
     <string name="settings_wallpaper_category_silk">Animated Silk</string>
     <string name="settings_wallpaper_category_photo">Scenery Photo</string>
@@ -382,10 +330,6 @@
     <string name="settings_wallpaper_phone_dialog_subtitle">Wireless Wi-Fi Fast Transfer</string>
     <string name="settings_wallpaper_phone_dialog_instructions">1. Connect your smartphone to the same Wi-Fi network.\n2. Open the following address in your phone\'s browser:\n   %1$s\n3. Switch to the \"Wallpaper\" tab and select any image.\nIt will instantly become your TV wallpaper!</string>
     <string name="settings_wallpaper_storage_empty">No pictures found in TV storage or USB drive</string>
-    <string name="settings_section_dimmer">Background Dimmer</string>
-    <string name="settings_dimmer_light">60% (Light)</string>
-    <string name="settings_dimmer_medium">80% (Balanced)</string>
-    <string name="settings_dimmer_deep">95% (Deep Dark)</string>
     <string name="settings_btn_clear_catalogs">Clear Catalogs</string>
     <string name="settings_hidden_empty_compact">All apps are currently visible in launcher</string>
     <string name="settings_toast_unhidden">Restored: %1$s</string>
@@ -401,4 +345,5 @@
     <string name="watch_next_badge">WATCH NEXT</string>
     <string name="history_local_title">Launcher Playback History</string>
 
+    <string name="accessibility_home_service_desc">Ensures priority return to home screen when pressing Home on TV remotes.</string>
 </resources>

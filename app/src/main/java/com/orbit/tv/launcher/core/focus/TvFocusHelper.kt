@@ -34,7 +34,6 @@ object TvFocusHelper {
                     .translationZ(0f)
                     .setDuration(duration)
                     .setInterpolator(interpolator)
-                    .withLayer()
                     .start()
             }
         }

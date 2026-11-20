@@ -37,8 +37,13 @@ class HiddenAppsAdapter(
 
         fun bind(app: AppModel) {
             binding.tvAppName.text = app.label
-            if (app.iconDrawable != null) {
-                binding.ivAppIcon.setImageDrawable(app.iconDrawable)
+            val icon = app.iconDrawable ?: try {
+                binding.root.context.packageManager.getApplicationIcon(app.packageName)
+            } catch (_: Exception) {
+                null
+            }
+            if (icon != null) {
+                binding.ivAppIcon.setImageDrawable(icon)
             }
             binding.cardContainer.setOnClickListener {
                 onUnhideClick(app)

@@ -18,7 +18,6 @@
     <string name="history_empty">İzleme geçmişi boş.\nBuradan devam etmek için Ana Sayfadan film veya dizi açın.</string>
     <string name="nav_home_apps">Uygulamalar</string>
     <string name="nav_iptv">TV Kanalları</string>
-    <string name="nav_games">Oyunlar</string>
     <string name="nav_optimizer">Optimizasyon</string>
     <string name="nav_cast">Ekran Yansıtma</string>
     <string name="nav_power">Güç Menüsü</string>
@@ -26,7 +25,6 @@
     <string name="subtitle_movies_trending">Bu haftanın trendi</string>
     <string name="title_series">Diziler</string>
     <string name="subtitle_series_top">En Popüler TV Programları</string>
-    <string name="see_all">Tümünü gör</string>
     <string name="badge_movie">FİLM</string>
     <string name="badge_series">DİZİ</string>
     <string name="genre_feature">Özellik</string>
@@ -37,8 +35,6 @@
     <string name="tab_favorites">Favoriler</string>
     <string name="tab_hidden">Gizli</string>
     <string name="app_cant_launch">%1$s başlatılamıyor</string>
-    <string name="unable_open_wifi_settings">Wi-Fi ayarları açılamıyor</string>
-    <string name="unable_open_settings">Ayarlar açılamıyor</string>
     <string name="apps_empty_favorites">Henüz sabitlenmiş favori uygulama yok.\nHerhangi bir uygulamayı buraya sabitlemek için üzerinde [OK] veya [MENU] tuşunu basılı tutun.</string>
     <string name="apps_empty_hidden">Gizli uygulama yok.\nBloatware uygulamalarını gizlemek için [OK] veya [MENU] tuşunu basılı tutun.</string>
     <string name="apps_empty_all">Hiçbir uygulama bulunamadı.</string>
@@ -68,8 +64,6 @@
     <string name="cat_sports">Spor</string>
     <string name="cat_cinema">Sinema</string>
     <string name="cat_news">Haberler</string>
-    <string name="iptv_stream_error">Akış hatası: %1$s</string>
-    <string name="iptv_no_channels">Bu kategoride kanal yok</string>
     <string name="iptv_next_program_format">Sonraki: %1$s</string>
     <string name="power_dialog_title">Güç Yönetimi</string>
     <string name="power_dialog_subtitle">Güç ve uyku modlarını yönetin</string>
@@ -94,7 +88,6 @@
     <string name="optimizer_ram_details">Ücretsiz: %1$d MB • Sistem: %2$d MB</string>
     <string name="optimizer_btn_boost">TV\'yi Güçlendirin (RAM\'i Temizle)</string>
     <string name="optimizer_btn_boosting">Temizlik işlemleri...</string>
-    <string name="optimizer_boost_freed">%1$d MB RAM serbest bırakıldı</string>
     <string name="optimizer_boost_done">RAM zaten optimize edilmiştir</string>
     <string name="optimizer_card_storage_title">Dahili Depolama (Flash)</string>
     <string name="optimizer_storage_format">%1$.1f GB / %2$.1f GB (%3$d%%)</string>
@@ -109,11 +102,9 @@
     <string name="optimizer_net_wifi">Wi-Fi ağı bağlandı</string>
     <string name="optimizer_net_vpn">Güvenli VPN tüneli etkin</string>
     <string name="optimizer_net_online">İnternet bağlantısı etkin</string>
-    <string name="optimizer_ping_prefix">Ping:</string>
     <string name="optimizer_ping_testing">Ping: test ediliyor...</string>
     <string name="optimizer_ping_format">Ping: %1$s ms</string>
     <string name="optimizer_ping_unavailable">Ping: kullanılamıyor</string>
-    <string name="optimizer_speed_prefix">Hız:</string>
     <string name="optimizer_speed_testing">Hız: test ediliyor...</string>
     <string name="optimizer_speed_format">Hız: %1$.1f Mb/sn</string>
     <string name="optimizer_speed_available">Hız: mevcut</string>
@@ -143,7 +134,6 @@
     <string name="cast_refresh_pin">PIN\'i yenile</string>
     <string name="cast_qr_hint">BAĞLANMAK İÇİN TARAMA</string>
     <string name="cast_expiry_format">Son kullanma tarihi: %1$02d:%2$02d</string>
-    <string name="cast_pin_new_format">Yeni PIN oluşturuldu: %1$s</string>
     <string name="cast_proto_airplay_title">Apple AirPlay</string>
     <string name="cast_proto_airplay_desc">iPhone, iPad ve Mac\'ten ekran yansıtma</string>
     <string name="cast_proto_chromecast_title">Google Cast / Chromecast</string>
@@ -151,36 +141,21 @@
     <string name="cast_proto_miracast_title">Miracast (Wi-Fi Ekranı)</string>
     <string name="cast_proto_miracast_desc">Android ve Windows\'tan doğrudan ekran yansıtma</string>
     <string name="cast_badge_connect">Bağlan</string>
-    <string name="cast_miracast_toast">Miracast hazır. Telefonda/PC\'de \"Kablosuz ekran\" veya \"Smart View\"ı açın</string>
-    <string name="cast_chromecast_toast">Chromecast, YouTube, Chrome veya Google Home\'dan yayınlanmaya hazır</string>
-    <string name="cast_airscreen_toast">%1$s AirScreen aracılığıyla etkin. Cihazınızda Orbit TV\'yi seçin</string>
-    <string name="cast_airplay_dialog_title">Apple AirPlay</string>
-    <string name="cast_airplay_dialog_msg">iPhone, iPad veya Mac\'ten yayın yapmak için cihazınızın aynı Wi-Fi\'ye bağlı olduğundan emin olun.\n\nTV Adı: Orbit TV\nIP Adresi: %1$s\n\nÖnerilen: AirScreen\'i Google Play\'den yükleyin.</string>
     <string name="cast_btn_install_airscreen">AirScreen\'i yükleyin</string>
     <string name="cast_btn_understood">Anladım</string>
-    <string name="cast_toast_yt_started">YouTube oynatma telefondan başlatıldı</string>
-    <string name="cast_toast_video_started">Video oynatma başlatıldı</string>
-    <string name="cast_toast_media_failed">Medya açılamıyor</string>
-    <string name="cast_toast_file_opened">Medya dosyası TV\'de açıldı</string>
-    <string name="cast_toast_file_received">Dosya TV\'ye alındı (%1$d KB)</string>
-    <string name="search_dialog_hint">Film, dizi veya uygulama arayın...</string>
     <string name="search_btn_youtube">YouTube\'da ara</string>
     <string name="search_btn_google">Google\'da ara</string>
     <string name="search_empty_hint">Yüklü uygulamaları, filmleri ve videoları aramak için sorguyu girin</string>
     <string name="search_section_apps">Eşleşen Uygulamalar</string>
     <string name="search_section_media">Filmler ve Diziler</string>
     <string name="search_no_results">Bu sorgu için hiçbir şey bulunamadı</string>
-    <string name="search_voice_prompt">Film veya uygulama adını söyleyin</string>
-    <string name="search_voice_unavailable">Bu cihazda ses girişi kullanılamıyor. Klavyeyi kullanın.</string>
     <string name="search_default_yt_query">Film fragmanları</string>
     <string name="search_default_web_query">Film haberleri</string>
     <string name="search_cant_open_yt">YouTube açılamıyor</string>
     <string name="search_cant_open_browser">Tarayıcı açılamıyor</string>
-    <string name="media_genre_fallback">Uzun Metrajlı Film</string>
     <string name="media_desc_unavailable">Açıklama kullanılamıyor.</string>
     <string name="media_btn_trailer">Fragman</string>
     <string name="media_btn_search_apps">Uygulamalarda Aç</string>
-    <string name="media_search_toast">%1$s aranıyor...</string>
     <string name="genre_all">Tümü</string>
     <string name="genre_action">Eylem</string>
     <string name="genre_adventure">Macera</string>
@@ -209,11 +184,8 @@
     <string name="vpn_active_country">VPN AKTİF • %1$s</string>
     <string name="vpn_disconnected">VPN BAĞLANTISI KESİLDİ</string>
     <string name="vpn_traffic_unencrypted">Tüm TV trafiği şifrelenmemiş • Doğrudan bağlantı</string>
-    <string name="vpn_clients_title">Yüklü VPN İstemcileri</string>
-    <string name="vpn_no_clients">Hiçbir üçüncü taraf VPN uygulaması algılanmadı (WireGuard, Amnezia, OpenVPN)</string>
     <string name="vpn_btn_system_settings">Sistem VPN Ayarları (Android)</string>
     <string name="accessibility_home_service_label">Orbit TV Ev Koruması</string>
-    <string name="accessibility_home_service_desc">TV uzaktan kumandasında Ana Sayfa tuşuna basıldığında Orbit TV ana ekranına öncelikli dönüş sağlar.</string>
     <string name="cast_web_connected">TV\'ye bağlanıldı (PIN: %1$s)</string>
     <string name="cast_web_tab_youtube">YouTube / Akış</string>
     <string name="cast_web_tab_files">Dosyalar</string>
@@ -237,29 +209,20 @@
     <string name="cast_web_cmd_done">Komut yürütüldü</string>
     <string name="trailer_title_format">%1$s — Fragman</string>
     <string name="trailer_btn_open_yt">YouTube\'da Aç</string>
-    <string name="trailer_loading">Fragman yükleniyor…</string>
     <string name="search_voice_listening">Dinleniyor…</string>
     <string name="search_voice_processing">Tanınıyor…</string>
     <string name="vpn_btn_connect">VPN Bağlan</string>
     <string name="vpn_btn_disconnect">VPN Bağlantısını Kes</string>
     <string name="vpn_locations_title">Sunucu Konumu</string>
-    <string name="vpn_loc_warp">⚡ Cloudflare WARP</string>
-    <string name="vpn_loc_us">🇺🇸 ABD</string>
-    <string name="vpn_loc_de">🇩🇪 Almanya</string>
-    <string name="vpn_loc_pl">🇵🇱 Polonya</string>
 
     <!-- Launcher Settings Screen -->
     <string name="launcher_settings_title">Launcher Settings</string>
     <string name="launcher_settings_subtitle">Hidden apps, cache &amp; preferences</string>
     <string name="settings_section_hidden">Hidden Applications</string>
     <string name="settings_hidden_count">Hidden: %1$d</string>
-    <string name="settings_hidden_empty">No hidden applications. Long-press any app in Apps Hub to hide it.</string>
     <string name="settings_btn_unhide_all">Unhide All</string>
     <string name="settings_btn_unhide">RESTORE</string>
     <string name="settings_section_storage">Storage &amp; Disk Cache</string>
-    <string name="settings_cache_images">Posters: %1$s</string>
-    <string name="settings_cache_catalog">Catalogs: %1$s</string>
-    <string name="settings_cache_total">Total: %1$s</string>
     <string name="settings_btn_clear_images">Clear Posters</string>
     <string name="settings_btn_clear_all">Clear All Cache</string>
     <string name="settings_cache_cleared">Cache cleared successfully</string>
@@ -269,4 +232,5 @@
     <string name="settings_player_always_ask">Always Ask</string>
     <string name="settings_toast_unhidden">Restored: %1$s</string>
 
+    <string name="accessibility_home_service_desc">Ensures priority return to home screen when pressing Home on TV remotes.</string>
 </resources>

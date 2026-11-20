@@ -18,7 +18,6 @@
     <string name="history_empty">시청 기록이 비어 있습니다.\n홈에서 영화나 시리즈를 열어 여기서 이어보세요.</string>
     <string name="nav_home_apps">앱</string>
     <string name="nav_iptv">TV 채널</string>
-    <string name="nav_games">게임</string>
     <string name="nav_optimizer">최적화</string>
     <string name="nav_cast">화면 전송</string>
     <string name="nav_power">전원 관리</string>
@@ -26,7 +25,6 @@
     <string name="subtitle_movies_trending">이번주 트렌드</string>
     <string name="title_series">시리즈</string>
     <string name="subtitle_series_top">인기 TV 프로그램</string>
-    <string name="see_all">모두 보기</string>
     <string name="badge_movie">영화</string>
     <string name="badge_series">TV 시리즈</string>
     <string name="genre_feature">특징</string>
@@ -37,8 +35,6 @@
     <string name="tab_favorites">즐겨찾기</string>
     <string name="tab_hidden">숨김</string>
     <string name="app_cant_launch">%1$s을(를) 실행할 수 없습니다</string>
-    <string name="unable_open_wifi_settings">Wi-Fi 설정을 열 수 없습니다.</string>
-    <string name="unable_open_settings">설정을 열 수 없습니다.</string>
     <string name="apps_empty_favorites">즐겨찾는 앱이 아직 고정되어 있지 않습니다.\n여기에 고정하려면 앱에서 [확인] 또는 [메뉴]를 길게 누르세요.</string>
     <string name="apps_empty_hidden">숨겨진 앱이 없습니다.\n블로트웨어 앱을 숨기려면 [확인] 또는 [메뉴]를 길게 누르세요.</string>
     <string name="apps_empty_all">애플리케이션을 찾을 수 없습니다.</string>
@@ -68,8 +64,6 @@
     <string name="cat_sports">스포츠</string>
     <string name="cat_cinema">영화</string>
     <string name="cat_news">소식</string>
-    <string name="iptv_stream_error">스트림 오류: %1$s</string>
-    <string name="iptv_no_channels">이 카테고리에는 채널이 없습니다</string>
     <string name="iptv_next_program_format">다음: %1$s</string>
     <string name="power_dialog_title">전원 옵션</string>
     <string name="power_dialog_subtitle">전원 및 절전 모드 관리</string>
@@ -94,7 +88,6 @@
     <string name="optimizer_ram_details">무료: %1$dMB • 시스템: %2$dMB</string>
     <string name="optimizer_btn_boost">부스트 TV(RAM 지우기)</string>
     <string name="optimizer_btn_boosting">청소 과정...</string>
-    <string name="optimizer_boost_freed">%1$dMB의 RAM을 확보했습니다.</string>
     <string name="optimizer_boost_done">RAM은 이미 최적화되어 있습니다.</string>
     <string name="optimizer_card_storage_title">내부 저장소(플래시)</string>
     <string name="optimizer_storage_format">%2$.1fGB 중 %1$.1fGB(%3$d%%)</string>
@@ -109,11 +102,9 @@
     <string name="optimizer_net_wifi">Wi-Fi 네트워크가 연결됨</string>
     <string name="optimizer_net_vpn">보안 VPN 터널 활성화</string>
     <string name="optimizer_net_online">인터넷 연결 활성</string>
-    <string name="optimizer_ping_prefix">핑:</string>
     <string name="optimizer_ping_testing">핑: 테스트 중...</string>
     <string name="optimizer_ping_format">핑: %1$sms</string>
     <string name="optimizer_ping_unavailable">핑: 사용할 수 없음</string>
-    <string name="optimizer_speed_prefix">속도:</string>
     <string name="optimizer_speed_testing">속도: 테스트 중...</string>
     <string name="optimizer_speed_format">속도: %1$.1fMbps</string>
     <string name="optimizer_speed_available">속도: 가능</string>
@@ -143,7 +134,6 @@
     <string name="cast_refresh_pin">PIN 새로고침</string>
     <string name="cast_qr_hint">연결하려면 스캔하세요</string>
     <string name="cast_expiry_format">만료 날짜: %1$02d:%2$02d</string>
-    <string name="cast_pin_new_format">새로운 PIN이 생성되었습니다: %1$s</string>
     <string name="cast_proto_airplay_title">애플 에어플레이</string>
     <string name="cast_proto_airplay_desc">iPhone, iPad, Mac에서 화면 미러링</string>
     <string name="cast_proto_chromecast_title">구글캐스트/크롬캐스트</string>
@@ -151,36 +141,21 @@
     <string name="cast_proto_miracast_title">Miracast(Wi-Fi 디스플레이)</string>
     <string name="cast_proto_miracast_desc">Android 및 Windows에서 직접 화면 미러링</string>
     <string name="cast_badge_connect">연결하다</string>
-    <string name="cast_miracast_toast">미라캐스트가 준비되었습니다. 휴대폰/PC에서 \"무선 디스플레이\" 또는 \"Smart View\" 열기</string>
-    <string name="cast_chromecast_toast">YouTube, Chrome, Google Home에서 전송할 수 있는 Chromecast</string>
-    <string name="cast_airscreen_toast">%1$s은 AirScreen을 통해 활성화됩니다. 기기에서 Orbit TV를 선택하세요.</string>
-    <string name="cast_airplay_dialog_title">애플 에어플레이</string>
-    <string name="cast_airplay_dialog_msg">iPhone, iPad 또는 Mac에서 스트리밍하려면 기기가 동일한 Wi-Fi에 연결되어 있는지 확인하세요.\n\nTV 이름: Orbit TV\nIP 주소: %1$s\n\n권장: Google Play에서 AirScreen을 설치하세요.</string>
     <string name="cast_btn_install_airscreen">에어스크린 설치</string>
     <string name="cast_btn_understood">알았어요</string>
-    <string name="cast_toast_yt_started">휴대전화에서 YouTube 재생이 시작되었습니다.</string>
-    <string name="cast_toast_video_started">비디오 재생이 시작되었습니다</string>
-    <string name="cast_toast_media_failed">미디어를 열 수 없습니다.</string>
-    <string name="cast_toast_file_opened">TV에서 열린 미디어 파일</string>
-    <string name="cast_toast_file_received">TV에서 수신된 파일(%1$dKB)</string>
-    <string name="search_dialog_hint">영화, 시리즈, 앱 검색...</string>
     <string name="search_btn_youtube">유튜브 검색</string>
     <string name="search_btn_google">구글 검색</string>
     <string name="search_empty_hint">설치된 앱, 영화, 동영상을 검색하려면 쿼리를 입력하세요.</string>
     <string name="search_section_apps">매칭 앱</string>
     <string name="search_section_media">영화 및 시리즈</string>
     <string name="search_no_results">이 검색어에 대한 내용을 찾을 수 없습니다.</string>
-    <string name="search_voice_prompt">영화 또는 애플리케이션 이름을 말하세요.</string>
-    <string name="search_voice_unavailable">이 기기에서는 음성 입력을 사용할 수 없습니다. 키보드를 사용하세요.</string>
     <string name="search_default_yt_query">영화 예고편</string>
     <string name="search_default_web_query">영화 뉴스</string>
     <string name="search_cant_open_yt">YouTube를 열 수 없습니다.</string>
     <string name="search_cant_open_browser">브라우저를 열 수 없습니다</string>
-    <string name="media_genre_fallback">장편영화</string>
     <string name="media_desc_unavailable">설명을 사용할 수 없습니다.</string>
     <string name="media_btn_trailer">예고편</string>
     <string name="media_btn_search_apps">앱에서 열기</string>
-    <string name="media_search_toast">%1$s 검색 중...</string>
     <string name="genre_all">전체</string>
     <string name="genre_action">행동</string>
     <string name="genre_adventure">모험</string>
@@ -209,11 +184,8 @@
     <string name="vpn_active_country">VPN 활성 • %1$s</string>
     <string name="vpn_disconnected">VPN 연결이 끊어졌습니다</string>
     <string name="vpn_traffic_unencrypted">모든 TV 트래픽은 암호화되지 않음 • 직접 연결</string>
-    <string name="vpn_clients_title">설치된 VPN 클라이언트</string>
-    <string name="vpn_no_clients">타사 VPN 앱이 감지되지 않음(WireGuard, Amnezia, OpenVPN)</string>
     <string name="vpn_btn_system_settings">시스템 VPN 설정(Android)</string>
     <string name="accessibility_home_service_label">궤도 TV 홈 가드</string>
-    <string name="accessibility_home_service_desc">TV 리모컨에서 홈을 누르면 우선적으로 Orbit TV 홈 화면으로 돌아가도록 보장합니다.</string>
     <string name="cast_web_connected">TV에 연결됨(PIN: %1$s)</string>
     <string name="cast_web_tab_youtube">유튜브/스트림</string>
     <string name="cast_web_tab_files">파일</string>
@@ -237,29 +209,20 @@
     <string name="cast_web_cmd_done">명령이 실행됨</string>
     <string name="trailer_title_format">%1$s — 예고편</string>
     <string name="trailer_btn_open_yt">YouTube에서 열기</string>
-    <string name="trailer_loading">예고편 로드 중…</string>
     <string name="search_voice_listening">듣는 중…</string>
     <string name="search_voice_processing">인식 중…</string>
     <string name="vpn_btn_connect">VPN 연결</string>
     <string name="vpn_btn_disconnect">VPN 연결 해제</string>
     <string name="vpn_locations_title">서버 위치</string>
-    <string name="vpn_loc_warp">⚡ Cloudflare WARP</string>
-    <string name="vpn_loc_us">🇺🇸 미국</string>
-    <string name="vpn_loc_de">🇩🇪 독일</string>
-    <string name="vpn_loc_pl">🇵🇱 폴란드</string>
 
     <!-- Launcher Settings Screen -->
     <string name="launcher_settings_title">Launcher Settings</string>
     <string name="launcher_settings_subtitle">Hidden apps, cache &amp; preferences</string>
     <string name="settings_section_hidden">Hidden Applications</string>
     <string name="settings_hidden_count">Hidden: %1$d</string>
-    <string name="settings_hidden_empty">No hidden applications. Long-press any app in Apps Hub to hide it.</string>
     <string name="settings_btn_unhide_all">Unhide All</string>
     <string name="settings_btn_unhide">RESTORE</string>
     <string name="settings_section_storage">Storage &amp; Disk Cache</string>
-    <string name="settings_cache_images">Posters: %1$s</string>
-    <string name="settings_cache_catalog">Catalogs: %1$s</string>
-    <string name="settings_cache_total">Total: %1$s</string>
     <string name="settings_btn_clear_images">Clear Posters</string>
     <string name="settings_btn_clear_all">Clear All Cache</string>
     <string name="settings_cache_cleared">Cache cleared successfully</string>
@@ -269,4 +232,5 @@
     <string name="settings_player_always_ask">Always Ask</string>
     <string name="settings_toast_unhidden">Restored: %1$s</string>
 
+    <string name="accessibility_home_service_desc">Ensures priority return to home screen when pressing Home on TV remotes.</string>
 </resources>

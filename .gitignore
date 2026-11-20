@@ -20,7 +20,13 @@ app/build/
 !app/src/main/res/**/*.png
 scratch/
 
-
-
 __pycache__/
 *.pyc
+
+# Security & Signing keys
+*.jks
+*.keystore
+*.key
+*.p12
+*.pem
+secrets.properties

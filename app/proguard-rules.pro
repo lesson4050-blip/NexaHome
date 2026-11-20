@@ -28,13 +28,10 @@
 # Keep ZXing QR Code generator
 -keep class com.google.zxing.** { *; }
 
-# Keep Javascript Interface for Arcade WebViews
+# Keep Javascript Interface for WebView bridges (e.g. TvTrailerDialog)
 -keepclassmembers class * {
     @android.webkit.JavascriptInterface <methods>;
 }
-
-# Android TV Leanback
--keep class androidx.leanback.** { *; }
 
 # Keep Custom Views for XML inflation
 -keep class com.orbit.tv.launcher.ui.views.** { *; }

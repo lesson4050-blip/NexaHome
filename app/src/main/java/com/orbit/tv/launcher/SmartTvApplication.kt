@@ -151,15 +151,16 @@ class SmartTvApplication : Application(), ImageLoaderFactory {
         return ImageLoader.Builder(this)
             .bitmapConfig(Bitmap.Config.RGB_565) // 50% memory saving over ARGB_8888
             .allowRgb565(true)
+            .allowHardware(false) // Never allocate GraphicBuffers into GL mtrack
             .memoryCache {
                 MemoryCache.Builder(this)
-                    .maxSizePercent(0.05) // 5% of available heap limit
+                    .maxSizePercent(0.03) // 3% of available heap limit
                     .build()
             }
             .diskCache {
                 DiskCache.Builder()
                     .directory(cacheDir.resolve("image_cache"))
-                    .maxSizeBytes(20L * 1024 * 1024) // 20 MB max disk cache
+                    .maxSizeBytes(15L * 1024 * 1024) // 15 MB max disk cache
                     .build()
             }
             .respectCacheHeaders(false)

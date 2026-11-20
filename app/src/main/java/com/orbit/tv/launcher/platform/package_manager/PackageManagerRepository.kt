@@ -43,7 +43,6 @@ class PackageManagerRepository(private val context: Context) {
             if (pkg.startsWith("com.orbit.tv.launcher")) continue
 
             val label = resolveInfo.loadLabel(packageManager).toString()
-            val icon = resolveInfo.loadIcon(packageManager)
             val isGame = (resolveInfo.activityInfo.applicationInfo.flags and ApplicationInfo.FLAG_IS_GAME) != 0
             val launchIntent = Intent(Intent.ACTION_MAIN).apply {
                 addCategory(Intent.CATEGORY_LEANBACK_LAUNCHER)
@@ -54,7 +53,7 @@ class PackageManagerRepository(private val context: Context) {
             appsMap[pkg] = AppModel(
                 packageName = pkg,
                 label = label,
-                iconDrawable = icon,
+                iconDrawable = null,
                 isGame = isGame,
                 launchIntent = launchIntent
             )
@@ -71,7 +70,6 @@ class PackageManagerRepository(private val context: Context) {
             if (pkg.startsWith("com.orbit.tv.launcher") || appsMap.containsKey(pkg)) continue
 
             val label = resolveInfo.loadLabel(packageManager).toString()
-            val icon = resolveInfo.loadIcon(packageManager)
             val isGame = (resolveInfo.activityInfo.applicationInfo.flags and ApplicationInfo.FLAG_IS_GAME) != 0
             val launchIntent = Intent(Intent.ACTION_MAIN).apply {
                 addCategory(Intent.CATEGORY_LAUNCHER)
@@ -82,7 +80,7 @@ class PackageManagerRepository(private val context: Context) {
             appsMap[pkg] = AppModel(
                 packageName = pkg,
                 label = label,
-                iconDrawable = icon,
+                iconDrawable = null,
                 isGame = isGame,
                 launchIntent = launchIntent
             )
