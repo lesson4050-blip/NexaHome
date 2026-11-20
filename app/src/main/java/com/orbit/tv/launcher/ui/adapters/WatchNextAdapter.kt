@@ -17,7 +17,11 @@ class WatchNextAdapter(
     private val onItemClick: (WatchNextItem) -> Unit
 ) : ListAdapter<WatchNextItem, WatchNextAdapter.ViewHolder>(DiffCallback) {
 
-    class ViewHolder(val binding: ItemWatchNextCardBinding) : RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding: ItemWatchNextCardBinding) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            TvFocusHelper.bindFocusScale(binding.root, scaleRatio = 1.05f, elevationDp = 6f)
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemWatchNextCardBinding.inflate(
@@ -50,8 +54,6 @@ class WatchNextAdapter(
                 placeholder(R.drawable.bg_media_placeholder)
                 error(R.drawable.bg_media_placeholder)
             }
-
-            TvFocusHelper.bindFocusScale(root, scaleRatio = 1.05f, elevationDp = 6f)
 
             root.setOnClickListener {
                 onItemClick(item)

@@ -15,9 +15,11 @@ class AppPreferencesRepository(context: Context) {
     private val prefs: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     fun getPinnedPackages(): List<String> {
+        cachedPinnedList?.let { return it }
         val raw = prefs.getString(KEY_PINNED_APPS, "") ?: ""
-        if (raw.isBlank()) return emptyList()
-        return raw.split(",").filter { it.isNotBlank() }
+        val list = if (raw.isBlank()) emptyList() else raw.split(",").filter { it.isNotBlank() }
+        cachedPinnedList = list
+        return list
     }
 
     fun isPinned(packageName: String): Boolean {
@@ -50,11 +52,15 @@ class AppPreferencesRepository(context: Context) {
     }
 
     private fun savePinnedPackages(packages: List<String>) {
+        cachedPinnedList = packages
         prefs.edit().putString(KEY_PINNED_APPS, packages.joinToString(",")).apply()
     }
 
     fun getHiddenPackages(): Set<String> {
-        return prefs.getStringSet(KEY_HIDDEN_APPS, emptySet()) ?: emptySet()
+        cachedHiddenSet?.let { return it }
+        val set = prefs.getStringSet(KEY_HIDDEN_APPS, emptySet()) ?: emptySet()
+        cachedHiddenSet = set
+        return set
     }
 
     fun isHidden(packageName: String): Boolean {
@@ -66,12 +72,14 @@ class AppPreferencesRepository(context: Context) {
         current.add(packageName)
         // Also unpin if it was pinned
         unpinApp(packageName)
+        cachedHiddenSet = current
         prefs.edit().putStringSet(KEY_HIDDEN_APPS, current).apply()
     }
 
     fun unhideApp(packageName: String) {
         val current = getHiddenPackages().toMutableSet()
         current.remove(packageName)
+        cachedHiddenSet = current
         prefs.edit().putStringSet(KEY_HIDDEN_APPS, current).apply()
     }
 
@@ -86,14 +94,19 @@ class AppPreferencesRepository(context: Context) {
     }
 
     fun unhideAll() {
+        cachedHiddenSet = emptySet()
         prefs.edit().remove(KEY_HIDDEN_APPS).apply()
     }
 
     fun getContentLanguage(): String {
-        return prefs.getString(KEY_CONTENT_LANGUAGE, "SYSTEM") ?: "SYSTEM"
+        cachedContentLanguage?.let { return it }
+        val lang = prefs.getString(KEY_CONTENT_LANGUAGE, "SYSTEM") ?: "SYSTEM"
+        cachedContentLanguage = lang
+        return lang
     }
 
     fun setContentLanguage(lang: String) {
+        cachedContentLanguage = lang
         prefs.edit().putString(KEY_CONTENT_LANGUAGE, lang).apply()
     }
 
@@ -106,10 +119,14 @@ class AppPreferencesRepository(context: Context) {
     }
 
     fun getWallpaperTheme(): String {
-        return prefs.getString(KEY_WALLPAPER_THEME, "SCENERY") ?: "SCENERY"
+        cachedWallpaperTheme?.let { return it }
+        val theme = prefs.getString(KEY_WALLPAPER_THEME, "SCENERY") ?: "SCENERY"
+        cachedWallpaperTheme = theme
+        return theme
     }
 
     fun setWallpaperTheme(theme: String) {
+        cachedWallpaperTheme = theme
         prefs.edit().putString(KEY_WALLPAPER_THEME, theme).apply()
     }
 
@@ -122,10 +139,14 @@ class AppPreferencesRepository(context: Context) {
     }
 
     fun getHomeLayoutMode(): String {
-        return prefs.getString(KEY_HOME_LAYOUT_MODE, HOME_LAYOUT_DEFAULT) ?: HOME_LAYOUT_DEFAULT
+        cachedHomeLayoutMode?.let { return it }
+        val mode = prefs.getString(KEY_HOME_LAYOUT_MODE, HOME_LAYOUT_DEFAULT) ?: HOME_LAYOUT_DEFAULT
+        cachedHomeLayoutMode = mode
+        return mode
     }
 
     fun setHomeLayoutMode(mode: String) {
+        cachedHomeLayoutMode = mode
         prefs.edit().putString(KEY_HOME_LAYOUT_MODE, mode).apply()
     }
 
@@ -138,6 +159,12 @@ class AppPreferencesRepository(context: Context) {
         private const val KEY_WALLPAPER_THEME = "key_wallpaper_theme"
         private const val KEY_DIMMER_OPACITY = "key_dimmer_opacity"
         private const val KEY_HOME_LAYOUT_MODE = "key_home_layout_mode"
+
+        @Volatile private var cachedPinnedList: List<String>? = null
+        @Volatile private var cachedHiddenSet: Set<String>? = null
+        @Volatile private var cachedWallpaperTheme: String? = null
+        @Volatile private var cachedHomeLayoutMode: String? = null
+        @Volatile private var cachedContentLanguage: String? = null
 
         const val HOME_LAYOUT_DEFAULT = "DEFAULT"
         const val HOME_LAYOUT_CINEMA = "CINEMA"

@@ -10,6 +10,7 @@ import android.provider.Settings
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 /**
  * Capability-aware manager for detecting system VPN status
@@ -24,10 +25,13 @@ class VpnCapabilityManager(private val context: Context) {
     val isVpnActive: StateFlow<Boolean> = _isVpnActive.asStateFlow()
 
     private var networkCallback: ConnectivityManager.NetworkCallback? = null
+    private val scope = kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.IO + kotlinx.coroutines.SupervisorJob())
 
     init {
-        checkCurrentVpnState()
-        registerNetworkCallback()
+        scope.launch {
+            checkCurrentVpnState()
+            registerNetworkCallback()
+        }
     }
 
     private fun checkCurrentVpnState() {

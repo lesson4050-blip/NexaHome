@@ -28,15 +28,12 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     private val packageManagerRepository = PackageManagerRepository(application)
     val appPrefsRepository = com.orbit.tv.launcher.features.apps.repository.AppPreferencesRepository(application)
-    val watchHistoryRepository = WatchHistoryRepository(application)
+    val watchHistoryRepository by lazy { WatchHistoryRepository(application) }
     val vpnManager = com.orbit.tv.launcher.features.vpn.VpnManager(application)
     val networkStateManager = com.orbit.tv.launcher.platform.device_capabilities.NetworkStateManager(application)
     val networkStatus = networkStateManager.networkStatus
     val isWifiActive = networkStateManager.isWifiActive
     val wifiUiState = networkStateManager.wifiUiState
-
-    val recentMedia: StateFlow<List<MediaModel>> = watchHistoryRepository.recentMedia
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     private val _rawInstalledApps = MutableStateFlow<List<AppModel>>(emptyList())
     val rawInstalledApps: StateFlow<List<AppModel>> = _rawInstalledApps.asStateFlow()
@@ -139,7 +136,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun loadInstalledApps(forceRefresh: Boolean = false) {
-        viewModelScope.launch {
+        viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
             val systemApps = packageManagerRepository.getInstalledTvApps(forceRefresh)
             val pinnedList = appPrefsRepository.getPinnedPackages()
             val hiddenSet = appPrefsRepository.getHiddenPackages()
@@ -167,7 +164,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun recordWatched(media: MediaModel, targetApp: String? = null) {
-        viewModelScope.launch {
+        viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
             watchHistoryRepository.recordWatched(media, targetApp)
         }
     }
@@ -188,7 +185,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun startClockTicker() {
-        viewModelScope.launch {
+        viewModelScope.launch(kotlinx.coroutines.Dispatchers.Default) {
             val app = getApplication<Application>()
             var cachedLocale: Locale? = null
             var cached24Hour: Boolean? = null
@@ -203,7 +200,6 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                 if (currentLocale != cachedLocale || is24Hour != cached24Hour) {
                     cachedLocale = currentLocale
                     cached24Hour = is24Hour
-                    Locale.setDefault(currentLocale)
                     val timePattern = if (is24Hour) "HH:mm" else "hh:mm a"
                     timeFormat = SimpleDateFormat(timePattern, currentLocale)
                     dateFormat = SimpleDateFormat("d MMMM yyyy", currentLocale)

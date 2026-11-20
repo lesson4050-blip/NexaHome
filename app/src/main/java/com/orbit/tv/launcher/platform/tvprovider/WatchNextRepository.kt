@@ -29,9 +29,23 @@ data class WatchNextItem(
  */
 class WatchNextRepository(private val context: Context) {
 
+    companion object {
+        @Volatile
+        private var isTvProviderAvailable: Boolean? = null
+        private val appNameCache = java.util.concurrent.ConcurrentHashMap<String, String>()
+    }
+
     private val packageManager = context.packageManager
 
     fun getWatchNextPrograms(): List<WatchNextItem> {
+        val available = isTvProviderAvailable ?: run {
+            val provider = try {
+                packageManager.resolveContentProvider("android.media.tv", 0)
+            } catch (_: Exception) { null }
+            (provider != null).also { isTvProviderAvailable = it }
+        }
+        if (!available) return emptyList()
+
         val list = mutableListOf<WatchNextItem>()
         val seenTitles = mutableSetOf<String>()
 
@@ -169,7 +183,8 @@ class WatchNextRepository(private val context: Context) {
 
     private fun resolveAppName(pkg: String?): String {
         if (pkg.isNullOrBlank()) return "Media Player"
-        return try {
+        appNameCache[pkg]?.let { return it }
+        val name = try {
             val appInfo = packageManager.getApplicationInfo(pkg, 0)
             packageManager.getApplicationLabel(appInfo).toString()
         } catch (_: Exception) {
@@ -179,6 +194,8 @@ class WatchNextRepository(private val context: Context) {
                 else -> pkg
             }
         }
+        appNameCache[pkg] = name
+        return name
     }
 
     fun launch(item: WatchNextItem): Boolean {

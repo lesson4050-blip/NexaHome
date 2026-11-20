@@ -12,6 +12,7 @@ import android.net.wifi.WifiManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 enum class NetworkStatus {
     WIFI_CONNECTED,
@@ -36,13 +37,15 @@ class NetworkStateManager(private val context: Context) {
     private val wifiManager =
         context.applicationContext.getSystemService(Context.WIFI_SERVICE) as? WifiManager
 
-    private val _networkStatus = MutableStateFlow(determineCurrentStatus())
+    private val scope = kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.IO + kotlinx.coroutines.SupervisorJob())
+
+    private val _networkStatus = MutableStateFlow(NetworkStatus.DISCONNECTED)
     val networkStatus: StateFlow<NetworkStatus> = _networkStatus.asStateFlow()
 
-    private val _isWifiActive = MutableStateFlow(isWifiEnabled())
+    private val _isWifiActive = MutableStateFlow(false)
     val isWifiActive: StateFlow<Boolean> = _isWifiActive.asStateFlow()
 
-    private val _wifiUiState = MutableStateFlow(determineWifiUiState())
+    private val _wifiUiState = MutableStateFlow(WifiUiState.DISCONNECTED)
     val wifiUiState: StateFlow<WifiUiState> = _wifiUiState.asStateFlow()
 
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
@@ -66,34 +69,40 @@ class NetworkStateManager(private val context: Context) {
     }
 
     init {
-        try {
-            connectivityManager.registerDefaultNetworkCallback(networkCallback)
-        } catch (e: Exception) {
+        scope.launch {
             try {
-                val request = NetworkRequest.Builder()
-                    .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-                    .build()
-                connectivityManager.registerNetworkCallback(request, networkCallback)
-            } catch (e2: Exception) {}
-        }
+                connectivityManager.registerDefaultNetworkCallback(networkCallback)
+            } catch (e: Exception) {
+                try {
+                    val request = NetworkRequest.Builder()
+                        .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                        .build()
+                    connectivityManager.registerNetworkCallback(request, networkCallback)
+                } catch (e2: Exception) {}
+            }
 
-        val filter = IntentFilter().apply {
-            addAction(WifiManager.WIFI_STATE_CHANGED_ACTION)
-            addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION)
-            @Suppress("DEPRECATION")
-            addAction(ConnectivityManager.CONNECTIVITY_ACTION)
+            val filter = IntentFilter().apply {
+                addAction(WifiManager.WIFI_STATE_CHANGED_ACTION)
+                addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION)
+                @Suppress("DEPRECATION")
+                addAction(ConnectivityManager.CONNECTIVITY_ACTION)
+            }
+            try {
+                context.registerReceiver(wifiStateReceiver, filter)
+            } catch (e: Exception) {}
+
+            _wifiUiState.value = determineWifiUiState()
+            _isWifiActive.value = isWifiEnabled()
+            _networkStatus.value = determineCurrentStatus()
         }
-        try {
-            context.registerReceiver(wifiStateReceiver, filter)
-        } catch (e: Exception) {}
-        
-        updateStatus()
     }
 
     fun updateStatus() {
-        _wifiUiState.value = determineWifiUiState()
-        _isWifiActive.value = isWifiEnabled()
-        _networkStatus.value = determineCurrentStatus()
+        scope.launch {
+            _wifiUiState.value = determineWifiUiState()
+            _isWifiActive.value = isWifiEnabled()
+            _networkStatus.value = determineCurrentStatus()
+        }
     }
 
     fun isWifiEnabled(): Boolean {

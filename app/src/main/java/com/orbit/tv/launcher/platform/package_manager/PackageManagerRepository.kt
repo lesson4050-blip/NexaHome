@@ -6,6 +6,7 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import com.orbit.tv.launcher.features.home.model.AppModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
@@ -18,8 +19,39 @@ class PackageManagerRepository(private val context: Context) {
         @Volatile
         private var memoryCachedApps: List<AppModel>? = null
 
+        private val iconCache = android.util.LruCache<String, android.graphics.drawable.Drawable>(150)
+
+        fun getCachedIcon(packageName: String): android.graphics.drawable.Drawable? {
+            return iconCache.get(packageName)
+        }
+
+        fun putCachedIcon(packageName: String, icon: android.graphics.drawable.Drawable) {
+            iconCache.put(packageName, icon)
+        }
+
         fun invalidateCache() {
             memoryCachedApps = null
+        }
+
+        fun loadIconAsync(context: Context, packageName: String, onLoaded: (android.graphics.drawable.Drawable) -> Unit) {
+            val cached = iconCache.get(packageName)
+            if (cached != null) {
+                onLoaded(cached)
+                return
+            }
+            kotlinx.coroutines.CoroutineScope(Dispatchers.IO).launch {
+                val icon = try {
+                    context.packageManager.getApplicationIcon(packageName)
+                } catch (_: Exception) {
+                    null
+                }
+                if (icon != null) {
+                    iconCache.put(packageName, icon)
+                    withContext(Dispatchers.Main) {
+                        onLoaded(icon)
+                    }
+                }
+            }
         }
     }
 
@@ -50,10 +82,14 @@ class PackageManagerRepository(private val context: Context) {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
 
+            val icon = iconCache.get(pkg) ?: try {
+                resolveInfo.loadIcon(packageManager)?.also { iconCache.put(pkg, it) }
+            } catch (_: Exception) { null }
+
             appsMap[pkg] = AppModel(
                 packageName = pkg,
                 label = label,
-                iconDrawable = null,
+                iconDrawable = icon,
                 isGame = isGame,
                 launchIntent = launchIntent
             )
@@ -77,10 +113,14 @@ class PackageManagerRepository(private val context: Context) {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
 
+            val icon = iconCache.get(pkg) ?: try {
+                resolveInfo.loadIcon(packageManager)?.also { iconCache.put(pkg, it) }
+            } catch (_: Exception) { null }
+
             appsMap[pkg] = AppModel(
                 packageName = pkg,
                 label = label,
-                iconDrawable = null,
+                iconDrawable = icon,
                 isGame = isGame,
                 launchIntent = launchIntent
             )

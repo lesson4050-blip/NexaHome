@@ -72,15 +72,19 @@ class AppsAdapter(
             resetTransform()
             binding.tvAppLabel.text = app.label
             binding.tvAppLabel.paintFlags = binding.tvAppLabel.paintFlags or android.graphics.Paint.SUBPIXEL_TEXT_FLAG or android.graphics.Paint.ANTI_ALIAS_FLAG
-            val icon = app.iconDrawable ?: try {
-                binding.root.context.packageManager.getApplicationIcon(app.packageName)
-            } catch (_: Exception) {
-                null
-            }
+            val icon = app.iconDrawable ?: com.orbit.tv.launcher.platform.package_manager.PackageManagerRepository.getCachedIcon(app.packageName)
             if (icon != null) {
                 binding.ivAppIcon.setImageDrawable(icon)
             } else {
                 binding.ivAppIcon.setImageResource(R.drawable.ic_nav_apps)
+                com.orbit.tv.launcher.platform.package_manager.PackageManagerRepository.loadIconAsync(
+                    binding.root.context,
+                    app.packageName
+                ) { loadedIcon ->
+                    if (binding.tvAppLabel.text == app.label) {
+                        binding.ivAppIcon.setImageDrawable(loadedIcon)
+                    }
+                }
             }
 
             // Pin badge indicator (shown in AppsHub, hidden on Home shelf)

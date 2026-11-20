@@ -26,6 +26,10 @@ object GoogleAssistantHelper {
         cachedAvailable = available
         return available
     }
+
+    suspend fun isAvailableAsync(context: Context): Boolean = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+        isAvailable(context)
+    }
     fun launch(context: Context): Boolean {
         // 1. Prioritize Katniss Assistant TV search trampoline
         try {

@@ -37,6 +37,8 @@ import com.orbit.tv.launcher.ui.overlays.SearchDialogFragment
 import com.orbit.tv.launcher.ui.overlays.TvOptionPickerDialog
 import com.orbit.tv.launcher.ui.overlays.TvPowerDialog
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.Dispatchers
 
 class HomeActivity : AppCompatActivity() {
 
@@ -415,10 +417,11 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun updateGoogleAssistantVisibility() {
-        binding.btnGoogleAssistant.visibility = if (GoogleAssistantHelper.isAvailable(this)) {
-            View.VISIBLE
-        } else {
-            View.GONE
+        lifecycleScope.launch(Dispatchers.IO) {
+            val available = GoogleAssistantHelper.isAvailable(this@HomeActivity)
+            withContext(Dispatchers.Main) {
+                binding.btnGoogleAssistant.visibility = if (available) View.VISIBLE else View.GONE
+            }
         }
     }
 

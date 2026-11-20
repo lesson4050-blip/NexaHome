@@ -70,13 +70,20 @@ class MediaAdapter(
             when {
                 media.id.startsWith("app_") -> {
                     val pkg = media.id.removePrefix("app_")
-                    try {
-                        val icon = binding.root.context.packageManager.getApplicationIcon(pkg)
-                        binding.ivPoster.scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
+                    val icon = com.orbit.tv.launcher.platform.package_manager.PackageManagerRepository.getCachedIcon(pkg)
+                    binding.ivPoster.scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
+                    if (icon != null) {
                         binding.ivPoster.setImageDrawable(icon)
-                    } catch (_: Exception) {
-                        binding.ivPoster.scaleType = android.widget.ImageView.ScaleType.CENTER_CROP
+                    } else {
                         binding.ivPoster.setImageResource(R.drawable.ic_nav_apps)
+                        com.orbit.tv.launcher.platform.package_manager.PackageManagerRepository.loadIconAsync(
+                            binding.root.context,
+                            pkg
+                        ) { loadedIcon ->
+                            if (media.id == "app_$pkg") {
+                                binding.ivPoster.setImageDrawable(loadedIcon)
+                            }
+                        }
                     }
                 }
                 media.id.startsWith("iptv_") -> {

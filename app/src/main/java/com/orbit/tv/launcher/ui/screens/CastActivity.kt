@@ -42,10 +42,14 @@ class CastActivity : AppCompatActivity() {
         binding = ActivityCastBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        CastServerManager.start(this)
         setupFocus()
         setupListeners()
         setupBackNavigation()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        CastServerManager.start(this)
     }
 
     override fun onResume() {
@@ -390,8 +394,14 @@ class CastActivity : AppCompatActivity() {
         })
     }
 
+    override fun onStop() {
+        super.onStop()
+        CastServerManager.stop()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         countdownJob?.cancel()
+        CastServerManager.stop()
     }
 }
