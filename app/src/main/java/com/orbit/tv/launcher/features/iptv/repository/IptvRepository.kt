@@ -2,11 +2,16 @@ package com.orbit.tv.launcher.features.iptv.repository
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.room.withTransaction
 import com.orbit.tv.launcher.features.iptv.data.ChannelEntity
 import com.orbit.tv.launcher.features.iptv.data.OrbitDatabase
+import com.orbit.tv.launcher.features.iptv.data.ProgramEntity
+import com.orbit.tv.launcher.features.iptv.epg.EpgChannelSchedule
 import com.orbit.tv.launcher.features.iptv.epg.XmltvParser
 import com.orbit.tv.launcher.features.iptv.model.IptvChannel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.InputStream
@@ -26,13 +31,28 @@ class IptvRepository(private val context: Context) {
 
     private val prefs: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
+    @Volatile
+    private var memoryCachedChannels: List<IptvChannel>? = null
+
     suspend fun loadDefaultChannels(forceRefresh: Boolean = false): List<IptvChannel> = withContext(Dispatchers.IO) {
         try {
+            // 0. Return in-memory cached channels if available
+            if (!forceRefresh && memoryCachedChannels != null) {
+                return@withContext memoryCachedChannels!!
+            }
+
+            // Cleanup stale programs older than 24 hours
+            val nowMs = System.currentTimeMillis()
+            val cutoff = nowMs - (24 * 60 * 60 * 1000L)
+            iptvDao.clearOldPrograms(cutoff)
+
             // 1. Check offline Room DB cache
             val cachedEntities = iptvDao.getAllChannels()
             val hasCustomUrl = !getCustomPlaylistUrl().isNullOrBlank()
             if (!forceRefresh && cachedEntities.isNotEmpty() && (hasCustomUrl || cachedEntities.size >= 50)) {
-                return@withContext mapEntitiesToDomain(cachedEntities)
+                val channels = mapEntitiesToDomain(cachedEntities)
+                memoryCachedChannels = channels
+                return@withContext channels
             }
 
             // 2. If custom playlist URL exists, try to re-fetch from that URL
@@ -42,9 +62,13 @@ class IptvRepository(private val context: Context) {
                 if (remoteResult.isSuccess && remoteResult.getOrNull()?.isNotEmpty() == true) {
                     val rawChannels = remoteResult.getOrThrow()
                     val entities = rawToEntities(rawChannels)
-                    iptvDao.clearAllChannels()
-                    iptvDao.insertChannels(entities)
-                    return@withContext mapEntitiesToDomain(entities)
+                    db.withTransaction {
+                        iptvDao.clearAllChannels()
+                        iptvDao.insertChannelsBatched(entities, batchSize = 300)
+                    }
+                    val channels = mapEntitiesToDomain(entities)
+                    memoryCachedChannels = channels
+                    return@withContext channels
                 }
             }
 
@@ -52,12 +76,18 @@ class IptvRepository(private val context: Context) {
             val rawChannels = parseM3uFromAssets()
             if (rawChannels.isNotEmpty()) {
                 val entities = rawToEntities(rawChannels)
-                iptvDao.clearAllChannels()
-                iptvDao.insertChannels(entities)
-                return@withContext mapEntitiesToDomain(entities)
+                db.withTransaction {
+                    iptvDao.clearAllChannels()
+                    iptvDao.insertChannelsBatched(entities, batchSize = 300)
+                }
+                val channels = mapEntitiesToDomain(entities)
+                memoryCachedChannels = channels
+                return@withContext channels
             }
 
-            mapEntitiesToDomain(cachedEntities)
+            val channels = mapEntitiesToDomain(cachedEntities)
+            memoryCachedChannels = channels
+            channels
         } catch (e: Exception) {
             e.printStackTrace()
             emptyList()
@@ -82,9 +112,12 @@ class IptvRepository(private val context: Context) {
             }
 
             val entities = rawToEntities(rawChannels)
-            iptvDao.clearAllChannels()
-            iptvDao.insertChannels(entities)
+            db.withTransaction {
+                iptvDao.clearAllChannels()
+                iptvDao.insertChannelsBatched(entities, batchSize = 300)
+            }
 
+            memoryCachedChannels = null
             prefs.edit().putString(KEY_CUSTOM_PLAYLIST_URL, trimmedUrl).apply()
 
             Result.success(entities.size)
@@ -96,10 +129,14 @@ class IptvRepository(private val context: Context) {
     suspend fun resetToDefaultPlaylist(): Result<Int> = withContext(Dispatchers.IO) {
         try {
             prefs.edit().remove(KEY_CUSTOM_PLAYLIST_URL).apply()
-            iptvDao.clearAllChannels()
             val rawChannels = parseM3uFromAssets()
             val entities = rawToEntities(rawChannels)
-            iptvDao.insertChannels(entities)
+            db.withTransaction {
+                iptvDao.clearAllChannels()
+                iptvDao.clearAllPrograms()
+                iptvDao.insertChannelsBatched(entities, batchSize = 300)
+            }
+            memoryCachedChannels = null
             Result.success(entities.size)
         } catch (e: Exception) {
             Result.failure(e)
@@ -112,6 +149,9 @@ class IptvRepository(private val context: Context) {
 
     suspend fun toggleFavorite(channelId: String, isFavorite: Boolean) = withContext(Dispatchers.IO) {
         iptvDao.updateFavorite(channelId, isFavorite)
+        memoryCachedChannels = memoryCachedChannels?.map {
+            if (it.id == channelId) it.copy(isFavorite = isFavorite) else it
+        }
     }
 
     suspend fun updateLastWatched(channelId: String) = withContext(Dispatchers.IO) {
@@ -134,13 +174,31 @@ class IptvRepository(private val context: Context) {
     }
 
     private suspend fun mapEntitiesToDomain(entities: List<ChannelEntity>): List<IptvChannel> = withContext(Dispatchers.IO) {
-        val channelIds = entities.map { it.id }.toSet()
-        val epgSchedules = try {
-            context.assets.open("default_epg.xml").use { epgStream ->
-                xmltvParser.parseStream(epgStream, channelIds)
+        if (entities.isEmpty()) return@withContext emptyList()
+
+        val channelIds = entities.map { it.id }
+        val nowMs = System.currentTimeMillis()
+
+        // 1. Check if we have upcoming programs in Room DB
+        val cachedPrograms = iptvDao.getUpcomingProgramsForChannels(channelIds, nowMs)
+        val epgSchedules: Map<String, EpgChannelSchedule> = if (cachedPrograms.isNotEmpty()) {
+            buildSchedulesFromPrograms(cachedPrograms, nowMs)
+        } else {
+            // 2. Stream-parse default_epg.xml from assets, persist into Room, and return schedules
+            try {
+                val parseResult = context.assets.open("default_epg.xml").use { epgStream ->
+                    xmltvParser.parseStream(epgStream, channelIds.toSet())
+                }
+                if (parseResult.programEntities.isNotEmpty()) {
+                    db.withTransaction {
+                        iptvDao.insertProgramsBatched(parseResult.programEntities, batchSize = 300)
+                    }
+                }
+                parseResult.schedules
+            } catch (e: Exception) {
+                e.printStackTrace()
+                emptyMap()
             }
-        } catch (e: Exception) {
-            emptyMap()
         }
 
         entities.map { entity ->
@@ -161,9 +219,35 @@ class IptvRepository(private val context: Context) {
         }
     }
 
-    private fun fetchChannelsFromUrl(playlistUrl: String): Result<List<RawChannelData>> {
+    private fun buildSchedulesFromPrograms(programs: List<ProgramEntity>, nowMs: Long): Map<String, EpgChannelSchedule> {
+        val grouped = programs.groupBy { it.channelId }
+        val result = mutableMapOf<String, EpgChannelSchedule>()
+
+        for ((channelId, progs) in grouped) {
+            val sorted = progs.sortedBy { it.startTime }
+            val current = sorted.firstOrNull { nowMs in it.startTime until it.endTime }
+                ?: sorted.firstOrNull { it.startTime >= nowMs }
+                ?: sorted.lastOrNull()
+                ?: continue
+
+            val next = sorted.firstOrNull { it.startTime >= current.endTime }
+            val totalDuration = (current.endTime - current.startTime).coerceAtLeast(1)
+            val elapsed = (nowMs - current.startTime).coerceIn(0, totalDuration)
+            val percent = ((elapsed * 100) / totalDuration).toInt().coerceIn(5, 95)
+
+            result[channelId] = EpgChannelSchedule(
+                currentProgram = current.title,
+                nextProgram = next?.title ?: "Upcoming Broadcast",
+                timeRange = current.timeRange,
+                progressPercent = percent
+            )
+        }
+        return result
+    }
+
+    private suspend fun fetchChannelsFromUrl(playlistUrl: String): Result<List<RawChannelData>> = withContext(Dispatchers.IO) {
         var connection: HttpURLConnection? = null
-        return try {
+        try {
             val url = URL(playlistUrl)
             connection = (url.openConnection() as HttpURLConnection).apply {
                 connectTimeout = 15000
@@ -175,7 +259,7 @@ class IptvRepository(private val context: Context) {
 
             val responseCode = connection.responseCode
             if (responseCode !in 200..299) {
-                return Result.failure(Exception("HTTP $responseCode: Сервер отклонил запрос плейлиста"))
+                return@withContext Result.failure(Exception("HTTP $responseCode: Сервер отклонил запрос плейлиста"))
             }
 
             connection.inputStream.use { stream ->
@@ -189,8 +273,8 @@ class IptvRepository(private val context: Context) {
         }
     }
 
-    private fun parseM3uFromAssets(): List<RawChannelData> {
-        return try {
+    private suspend fun parseM3uFromAssets(): List<RawChannelData> = withContext(Dispatchers.IO) {
+        try {
             context.assets.open("default_channels.m3u").use { inputStream ->
                 parseM3uStream(inputStream, maxChannels = 200)
             }
@@ -200,7 +284,7 @@ class IptvRepository(private val context: Context) {
         }
     }
 
-    private fun parseM3uStream(inputStream: InputStream, maxChannels: Int = 500): List<RawChannelData> {
+    private suspend fun parseM3uStream(inputStream: InputStream, maxChannels: Int = 500): List<RawChannelData> {
         val rawChannels = mutableListOf<RawChannelData>()
         BufferedReader(InputStreamReader(inputStream, Charsets.UTF_8)).use { reader ->
             var currentLine: String? = reader.readLine()
@@ -208,6 +292,7 @@ class IptvRepository(private val context: Context) {
             var channelIndex = 1
 
             while (currentLine != null && rawChannels.size < maxChannels) {
+                currentCoroutineContext().ensureActive()
                 val line = currentLine.trim()
                 if (line.startsWith("#EXTINF:", ignoreCase = true)) {
                     pendingExtinf = line

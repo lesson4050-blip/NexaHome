@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
 import com.orbit.tv.launcher.features.home.data.WatchHistoryDao
 import com.orbit.tv.launcher.features.home.data.WatchHistoryEntity
 
-@Database(entities = [ChannelEntity::class, ProgramEntity::class, WatchHistoryEntity::class], version = 2, exportSchema = false)
+@Database(entities = [ChannelEntity::class, ProgramEntity::class, WatchHistoryEntity::class], version = 3, exportSchema = false)
 abstract class OrbitDatabase : RoomDatabase() {
 
     abstract fun iptvDao(): IptvDao

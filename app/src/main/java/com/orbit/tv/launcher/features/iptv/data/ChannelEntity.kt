@@ -1,9 +1,16 @@
 package com.orbit.tv.launcher.features.iptv.data
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "channels")
+@Entity(
+    tableName = "channels",
+    indices = [
+        Index(value = ["isFavorite", "number"]),
+        Index(value = ["groupTitle"])
+    ]
+)
 data class ChannelEntity(
     @PrimaryKey
     val id: String,
@@ -15,3 +22,4 @@ data class ChannelEntity(
     val isFavorite: Boolean = false,
     val lastWatchedTimestamp: Long = 0L
 )
+
